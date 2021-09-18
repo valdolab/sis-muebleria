@@ -1,4 +1,4 @@
-# sis-muebleria-cf
+# sis-muebleria
 Sistema de la muebleria compra facil Ver-0.7
 
 Sistema incompleto, aún le faltan detalles.
