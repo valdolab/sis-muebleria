@@ -5,26 +5,26 @@ include "accion/conexion.php";
   if (!empty($_POST['usuario'])) {
     $idusuario = $_POST['usuario'];
 
-    $query_delete = mysqli_query($conexion, "DELETE FROM usuario WHERE idusuario = '$idusuario'");
     $query_delete2 = mysqli_query($conexion, "DELETE FROM sucursal_usuario WHERE sucursal_idusuario = '$idusuario'");
 
     $query_select1 = mysqli_query($conexion,"SELECT *  from permiso_usuario WHERE sucursal_idusuario = '$idusuario'");
     if (mysqli_num_rows($query_select1) > 0)
     {
-      $query_delete3 = mysqli_query($conexion, "DELETE FROM permiso_usuario WHERE sucursal_idusuario = '$idusuario'");
+      $query_delete3 = mysqli_query($conexion, "DELETE FROM permiso_usuario WHERE permiso_idusuario = '$idusuario'");
     }
     else
     {
       $query_delete3 = 1;
     }
+    $query_delete = mysqli_query($conexion, "DELETE FROM usuario WHERE idusuario = '$idusuario'");
 
     mysqli_close($conexion);
     if ($query_delete and $query_delete2 and $query_delete3) {
-      $data = 1;
+      $elimino_usuario = 1;
     }else {
-      $data = 0;
+      $elimino_usuario = 0;
     }
-    echo json_encode($data,JSON_UNESCAPED_UNICODE);
+    echo json_encode($elimino_usuario,JSON_UNESCAPED_UNICODE);
   }
   exit;
 }
@@ -34,15 +34,15 @@ include "accion/conexion.php";
   if (!empty($_POST['documento'])) {
     $id_documento = $_POST['documento'];
 
-    $query_delete2 = mysqli_query($conexion, "DELETE FROM documento WHERE iddocumento = '$id_documento'");
+    $query_doc = mysqli_query($conexion, "DELETE FROM documento WHERE iddocumento = '$id_documento'");
 
     mysqli_close($conexion);
-    if ($query_delete2) {
-      $datad = 1;
+    if ($query_doc) {
+      $elimino_doc = 1;
     }else {
-      $datad = 0;
+      $elimino_doc = 0;
     }
-    echo json_encode($datad,JSON_UNESCAPED_UNICODE);
+    echo json_encode($elimino_doc,JSON_UNESCAPED_UNICODE);
   }
   exit;
 }
@@ -52,15 +52,36 @@ include "accion/conexion.php";
   if (!empty($_POST['sucursal'])) {
     $id_sucursal = $_POST['sucursal'];
 
-    $query_delete3 = mysqli_query($conexion, "DELETE FROM sucursales WHERE idsucursales = $id_sucursal");
+    $query_delete_sucursal = mysqli_query($conexion, "DELETE FROM sucursales WHERE idsucursales = $id_sucursal");
 
     mysqli_close($conexion);
-    if ($query_delete3) {
-      $datas = 1;
+    if ($query_delete_sucursal) {
+      $elimino_sucursal = 1;
     }else {
-      $datas = 0;
+      $elimino_sucursal = 0;
     }
-    echo json_encode($datas,JSON_UNESCAPED_UNICODE);
+    echo json_encode($elimino_sucursal,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+#eliminar cliente
+if ($_POST['action'] == 'eliminarCliente') 
+{
+  include "accion/conexion.php";
+  if (!empty($_POST['cliente'])) {
+    $id_cliente = $_POST['cliente'];
+    $query_delete_cliente = mysqli_query($conexion, "DELETE FROM cliente WHERE idcliente = '$id_cliente'");
+    $query_delete_cliente_refs = mysqli_query($conexion, "DELETE FROM referencias_cliente WHERE idcliente = '$id_cliente'");
+
+    mysqli_close($conexion);
+    if ($query_delete_cliente and $query_delete_cliente_refs) 
+    {
+      $elimino_cliente = 1;
+    }else {
+      $elimino_cliente = 0;
+    }
+    echo json_encode($elimino_cliente,JSON_UNESCAPED_UNICODE);
   }
   exit;
 }
@@ -82,24 +103,64 @@ include "accion/conexion.php";
       $newestado = 0;
     }
 
-    $query_update = mysqli_query($conexion, "UPDATE sucursales SET estado = $newestado where idsucursales = $id_sucursal");
+    $query_update_sucursal = mysqli_query($conexion, "UPDATE sucursales SET estado = $newestado where idsucursales = $id_sucursal");
 
     mysqli_close($conexion);
-    if ($query_update) {
-      $datass = 1;
+    if ($query_update_sucursal) {
+      $suspendio_sucursal = 1;
     }else {
-      $datass = 0;
+      $suspendio_sucursal = 0;
     }
 
-    if ($datass == 1 and $newestado == 0)
+    if ($suspendio_sucursal == 1 and $newestado == 0)
     {
-      $datass = 1;
+      $suspendio_sucursal = 1;
     }
-    else if($datass == 1 and $newestado == 1)
+    else if($suspendio_sucursal == 1 and $newestado == 1)
     {
-      $datass = 2;
+      $suspendio_sucursal = 2;
     }
-    echo json_encode($datass,JSON_UNESCAPED_UNICODE);
+    echo json_encode($suspendio_sucursal,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+#suspender cliente
+  if ($_POST['action'] == 'suspenderCliente') {
+  include "accion/conexion.php";
+  if (!empty($_POST['cliente'])) {
+    $id_cliente = $_POST['cliente'];
+
+    $sql1 = mysqli_query($conexion, "SELECT estado_cliente from cliente where idcliente = '$id_cliente'");
+    $estadoCliente = mysqli_fetch_array($sql1)['estado_cliente'];
+    if ($estadoCliente == 0)
+    {
+      $newestadoCliente = 1;
+    }
+    else
+    {
+      $newestadoCliente = 0;
+    }
+
+    $query_update_cliente = mysqli_query($conexion, "UPDATE cliente SET estado_cliente = $newestadoCliente where idcliente = '$id_cliente'");
+
+    mysqli_close($conexion);
+    if ($query_update_cliente) 
+    {
+      $suspendio_cliente = 1;
+    }else {
+      $suspendio_cliente = 0;
+    }
+
+    if ($suspendio_cliente == 1 and $newestadoCliente == 0)
+    {
+      $suspendio_cliente = 1;
+    }
+    else if($suspendio_cliente == 1 and $newestadoCliente == 1)
+    {
+      $suspendio_cliente = 2;
+    }
+    echo json_encode($suspendio_cliente,JSON_UNESCAPED_UNICODE);
   }
   exit;
 }
@@ -129,11 +190,11 @@ include "accion/conexion.php";
 
     mysqli_close($conexion);
     if ($query_update2) {
-      $dataa = 1;
+      $asigno_matriz = 1;
     }else {
-      $dataa = 0;
+      $asigno_matriz = 0;
     }
-    echo json_encode($dataa,JSON_UNESCAPED_UNICODE);
+    echo json_encode($asigno_matriz,JSON_UNESCAPED_UNICODE);
   }
   exit;
 }
@@ -145,21 +206,21 @@ if ($_POST['action'] == 'searchSubzonas')
   if (!empty($_POST['zona'])) {
     $idzona = $_POST['zona'];
 
-    if($idzona==-1)
+    if($idzona=="newzona")
     {
-      $cadena = "<select id='colonia' name='colonia' class='form-control' required>  <option selected hidden value=''>Seleccione una colonia (subzona)</option><option onClick='add_subzona()' value='-1'>Agregar nueva colonia (subzona)...</option>  </select>";
+      $cadena = "<select id='subzona' name='subzona' class='form-control' required><option selected hidden value=''>Seleccione una colonia (subzona)</option></select>";
     }
     else
     {
       $query = mysqli_query($conexion, "SELECT idsubzona,subzona from subzonas where idzona=$idzona");
       if (mysqli_num_rows($query) > 0) 
       { 
-        $cadena = "<select id='colonia' name='colonia' class='form-control' required>  <option selected hidden value=''>Seleccione una colonia (subzona)</option>";
+        $cadena = "<select id='subzona' name='subzona' class='form-control' required><option selected hidden value=''>Seleccione una colonia (subzona)</option>";
         while($row = mysqli_fetch_assoc($query))
         {
           $cadena = $cadena."<option value='".$row['idsubzona']."'>".$row['subzona']."</option>";
         }
-        $cadena = $cadena."<option onClick='add_subzona()' value='-1'>Agregar nueva colonia (subzona)...</option>  </select>";
+        $cadena = $cadena."</select>";
       }
       else
       {
@@ -171,3 +232,4 @@ if ($_POST['action'] == 'searchSubzonas')
   }
   exit;
 }
+

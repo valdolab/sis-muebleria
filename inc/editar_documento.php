@@ -4,13 +4,13 @@ include_once "header.php";
 include "accion/conexion.php";
 
 // Mostrar Datos
-if (empty($_GET['id'])) 
+$id_documento = $_GET['id'];
+if (empty($id_documento)) 
 {
   header("Location: documentos.php");
 }
 else
 {
-    $id_documento = $_GET['id'];
     $sql = mysqli_query($conexion, "SELECT * FROM documento WHERE iddocumento = '$id_documento'");
     $result_sql = mysqli_num_rows($sql);
     if ($result_sql == 0) {
@@ -38,23 +38,6 @@ if (!empty($_POST))
     else 
     {
         $ban = $_POST['bandera'];
-        /*if ($ban == 'folio')
-        {
-          $new_folio = $_POST['newfolio'];
-          $insert_puesto = mysqli_query($conexion, "INSERT INTO folio(idfolio) values ('$new_folio')");
-              if ($insert_puesto) {
-                  $alert = '<div class="alert alert-primary" role="alert">
-                              Folio registrado
-                          </div>';
-                  #header("Location: agregar_documento.php");
-              } 
-              else
-              {
-                  $alert = '<div class="alert alert-danger" role="alert">
-                          Error al registrar
-                      </div>';
-              }
-        }*/ //elseif
         if($ban == 'sucursal')
         {
           $nomsucursal = $_POST['newsucursal'];
@@ -76,19 +59,21 @@ if (!empty($_POST))
         else if($ban == 'newdocumento')
         {
           #$id_doc = md5($_POST['nombre']);
-          #$name_documento = $_POST['nombre'];
+          $name_documento = $_POST['nombre'];
           $folio = $_POST['folio'];
           $serie = $_POST['serie'];
           $sucursal = $_POST['sucursal'];
 
         
-                #$query_insert = mysqli_query($conexion,"UPDATE documento SET name_documento='$name_documento',folio='$folio',serie='$serie',idsucursal='$sucursal' where iddocumento = '$id_documento'");
-                $query_insert = mysqli_query($conexion,"UPDATE documento SET folio='$folio',serie='$serie',idsucursal='$sucursal' where iddocumento = '$id_documento'");
+                $query_insert = mysqli_query($conexion,"UPDATE documento SET name_documento='$name_documento',folio='$folio',serie='$serie',idsucursal=$sucursal where iddocumento = $id_documento");
+                #$query_insert = mysqli_query($conexion,"UPDATE documento SET name_documento='$name_documento', serie='$serie',idsucursal='$sucursal' where folio = '$id_documento'");
                     if (!$query_insert)
                     {
                               $alert = '<div class="alert alert-danger" role="alert">
                                       Hubo un Error al registrar
                                   </div>';
+                                  #echo $id_documento;
+                                  #echo mysqli_error($conexion);
                     }
                     else
                     {
@@ -150,21 +135,6 @@ if (!empty($_POST))
             <div class="modal-body">
                 <form action="" method="post" autocomplete="off">
                     <div class="form-group">
-                      <label for="sucursal">Sucursales existentes</label>
-                      <select class="form-control" id="s" name="s" >
-                        <?php
-                        #codigo para la lista de sucursales que se extraen de la base de datos
-                        $result = mysqli_query($conexion,"SELECT idsucursales,sucursales FROM sucursales");                        
-                        if (mysqli_num_rows($result) > 0) {  
-                          while($row = mysqli_fetch_assoc($result)){
-                          echo "<option value='".$row["idsucursales"]."'>".$row["sucursales"]."</option>";
-                          }
-                        }
-                        ?>                        
-                      </select>
-                    </div>
-
-                    <div class="form-group">
                         <label for="correo">Nueva Sucursal</label>
                         <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newsucursal" id="newsucursal" required>
                     </div>
@@ -198,7 +168,7 @@ if (!empty($_POST))
                     <div class="row">
                         <div class="form-group col-lg-4">
                             <label for="correo">Nombre del documento</label>
-                            <input disabled onkeyup="mayusculas(this)" type="text" class="form-control" placeholder="Ingrese Nombre del documento" name="nombre" id="nombre" value="<?php echo $up_name_documento; ?>">
+                            <input onkeyup="mayusculas(this)" type="text" class="form-control" placeholder="Ingrese Nombre del documento" name="nombre" id="nombre" value="<?php echo $up_name_documento; ?>">
                         </div>
                         <div class="form-group col-lg-2">
 
@@ -232,7 +202,7 @@ if (!empty($_POST))
                               }
                             }
                             ?>                     
-                            <option onClick="agregar_sucursal()" value="-1" >Agregar nueva sucursal...</option>    
+                            <option value="newsucursal" >Agregar nueva sucursal...</option>    
                           </select>
                         </div>
                     </div>
@@ -263,16 +233,6 @@ if (!empty($_POST))
 
 
 <script type="text/javascript">
-
-function agregar_sucursal()
-{
-      $('#nueva_sucursal').modal('show');
-}
-
-function agregar_folio()
-{
-      $('#nuevo_folio').modal('show');
-}
 
 // Funcion JavaScript para la conversion a mayusculas
 function mayusculas(e) {

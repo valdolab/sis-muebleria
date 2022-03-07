@@ -3,13 +3,10 @@ ob_start();
 include_once "header.php";
 include "accion/conexion.php";
 
-#editar permisos
-
 
 ?>
 
 <div class="col-lg-12">
-<br>
 
 <div class="card">
 <div class="card-body">
@@ -35,22 +32,23 @@ include "accion/conexion.php";
     <table class="table" id="tbl">
         <thead class="thead-light">
             <tr>
-                <th>#</th>
+                <th>No.</th>
                 <th>Documento</th>
                 <th>Folio</th>
                 <th>Serie</th>
                 <th>Sucursal</th>
-                <th></th>
+                <th style="text-align: center;">Herramientas</th>
             </tr>
         </thead>
         <tbody>
             <?php
-            $query = mysqli_query($conexion, "SELECT iddocumento,name_documento,folio,serie,idsucursal,estado FROM documento ORDER BY name_documento ASC");
+            $query = mysqli_query($conexion, "SELECT iddocumento,name_documento,folio,serie,idsucursal,estado FROM documento ORDER BY iddocumento ASC");
             $result = mysqli_num_rows($query);
 
-            if ($result > 0) {
-                $contador = 1;
-                while ($data = mysqli_fetch_assoc($query)) {
+            if ($result > 0) 
+            {
+                while ($data = mysqli_fetch_assoc($query)) 
+                {
                     if ($data['estado'] == 1) {
                         $estado = '<span class="badge badge-pill badge-success">Activo</span>';
                     } else {
@@ -85,27 +83,37 @@ include "accion/conexion.php";
                         }
                         $sucursales = "<a data-toggle='modal' data-target='#ver_sucursales' onClick='visualizar(\"$data[idusuario]\",\"$lista\");' href='#'>Ver todas <i class='fas fa-eye'></i></a>";                        
                     }
-
+                    $ceros = "000";
+                        if ($id_documento > 9)
+                        {
+                            $ceros = "00";
+                        }
+                        elseif ($id_documento > 99) 
+                        {
+                            $ceros = "0";
+                        }
+                        elseif ($id_documento > 999) 
+                        {
+                            $ceros = "";
+                        }
+                        
                     ?>
                     <tr>
-                        <td><?php echo $contador; ?></td>
+                        <td><?php echo $ceros.$id_documento; ?></td>
                         <td><?php echo $data['name_documento']; ?></td>
                         <td><?php echo $data['folio']; ?></td>
                         <td><?php echo $data['serie']; ?></td>
                         <td><?php echo $sucursales ?></td>
-                        <td WIDTH="110">
+                        <td align="center">
                             <?php if ($data['estado'] == 1) { ?>
                                 <a href="editar_documento.php?id=<?php echo $id_documento; ?>" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
                                 <button onClick='eliminar_doc("<?php echo $id_documento; ?>")' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
-                                    
-                                
                             <?php }else {
                                 echo $estado;
                             } ?>
                         </td>
                     </tr>
             <?php 
-                $contador = $contador + 1;
                 }
             } 
             ?>

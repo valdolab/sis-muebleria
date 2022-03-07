@@ -1,10 +1,13 @@
 <?php
     $host = "localhost";
+    #local
     $user = "root";
     $clave = "";
     $bd = "dbmuebleria";
     #para el servidor
-    #$bd = '';
+    #$user = "id17012782_userdbmuebleria";
+    #$clave = "[3s45zDdh=GORzIP";
+    #$bd = "id17012782_dbmuebleria";
 
     $conexion = mysqli_connect($host,$user,$clave,$bd);
     if (mysqli_connect_errno()){
