@@ -19,27 +19,17 @@ else
     $data = mysqli_fetch_array($sql);
     $up_nombre = $data['nombre'];
     $up_idusuario = $data['idusuario'];
-    $up_rol = $data['idrol'];
+    $up_rol = $data['rol'];
     $up_puesto = $data['puesto'];
 
     $sql2 = mysqli_query($conexion, "SELECT sucursal_idsucursales FROM sucursal_usuario WHERE sucursal_idusuario = '$idusuario'");
-    $result_sql2 = mysqli_num_rows($sql2);
-    if ($result_sql2 == 1)
+    #$up_sucursal_array = mysqli_fetch_assoc($sql2);
+    while($row = mysqli_fetch_assoc($sql2))
     {
-      $data2 = mysqli_fetch_array($sql2);
-      $up_sucursal = $data2['sucursal_idsucursales'];
+      $up_sucursal_array[] = $row["sucursal_idsucursales"];
+      #echo $row["sucursal_idsucursales"];
     }
-    else if ($result_sql2 > 1)
-    {
-      $up_sucursal = 0;
-      #$up_sucursal_array = mysqli_fetch_assoc($sql2);
-      while($row = mysqli_fetch_assoc($sql2))
-      {
-        $up_sucursal_array[] = $row["sucursal_idsucursales"];
-        #echo $row["sucursal_idsucursales"];
-      }
-      #print_r($up_sucursal_array);
-    }
+    #print_r($up_sucursal_array);
     #$existe = in_array(2, $up_sucursal_array);
     #echo $existe;
     #$sucursal = $data['sucursal'];
@@ -96,19 +86,6 @@ if (!empty($_POST))
         {
           #poner checkboxs para ver de cuales quieres cambiar 
           #ver cuales checkboxs estan seleccionados
-          #ACTUALIZA NOMBRE
-          $flag_act_correcto = 0;
-          if (isset($_POST['actualizar_nombre']))
-          {
-            #si esta palomeado el checkbox hace esto, o sea significa que quiere actualizar ese campo
-            $nombre = $_POST['nombre'];
-            $query_insert1 = mysqli_query($conexion, "UPDATE usuario SET nombre='$nombre' where idusuario='$idusuario'");
-                    if (!$query_insert1) 
-                    {
-                      $flag_act_correcto = 1;
-                    }
-          }#en el ELSE no hacer nada, no actulizar el campo
-          
           #ACTUALIZA IDUSUARIO
           if (isset($_POST['actualizar_idusuario']))
           {
@@ -153,8 +130,21 @@ if (!empty($_POST))
 
               #borramos las sucursales del viejo usuario
               $query_insert2_1 = mysqli_query($conexion, "DELETE FROM sucursal_usuario WHERE sucursal_idusuario = '$idusuario'");
-
+              $idusuario = $id_user;
             }
+          }#en el ELSE no hacer nada, no actulizar el campo
+
+          #ACTUALIZA NOMBRE
+          $flag_act_correcto = 0;
+          if (isset($_POST['actualizar_nombre']))
+          {
+            #si esta palomeado el checkbox hace esto, o sea significa que quiere actualizar ese campo
+            $nombre = $_POST['nombre'];
+            $query_insert1 = mysqli_query($conexion, "UPDATE usuario SET nombre='$nombre' where idusuario='$idusuario'");
+                    if (!$query_insert1) 
+                    {
+                      $flag_act_correcto = 1;
+                    }
           }#en el ELSE no hacer nada, no actulizar el campo
           
           #ACTUALIZA CONTRASEÑA
@@ -174,7 +164,15 @@ if (!empty($_POST))
           {
             #si esta palomeado el checkbox hace esto, o sea significa que quiere actualizar ese campo
             $rol = $_POST['rol'];
-            $query_insert4 = mysqli_query($conexion, "UPDATE usuario SET idrol=$rol where idusuario='$idusuario'");
+            if($rol == "SuperAdmin")
+            {
+                $superadmin = 1;
+            }
+            else
+            {
+                $superadmin = 0;
+            }
+            $query_insert4 = mysqli_query($conexion, "UPDATE usuario SET rol=$rol, superadmin=$superadmin where idusuario='$idusuario'");
                     if (!$query_insert4) 
                     {
                               $flag_act_correcto = 1;
@@ -217,7 +215,7 @@ if (!empty($_POST))
                           $con = $con + 1;
                         }
                     }
-                    if ($con != sizeof($check_sucursales)) 
+                    if ($con != sizeof($sucursal)) 
                       {
                           $flag_act_correcto = 1;
                       }  
@@ -310,21 +308,6 @@ if (!empty($_POST))
             <div class="modal-body">
                 <form action="" method="post" autocomplete="off">
                     <div class="form-group">
-                      <label for="sucursal">Puestos existentes</label>
-                      <select class="form-control" id="p" name="p">
-                        <?php
-                        #codigo para la lista de sucursales que se extraen de la base de datos
-                        $result = mysqli_query($conexion,"SELECT idpuesto,puesto FROM puesto");                        
-                        if (mysqli_num_rows($result) > 0) {  
-                          while($row = mysqli_fetch_assoc($result)){
-                          echo "<option value='".$row["idpuesto"]."'>".$row["puesto"]."</option>";
-                          }
-                        }
-                        ?>                        
-                      </select>
-                    </div>
-
-                    <div class="form-group">
                         <label for="correo">Nuevo puesto</label>
                         <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newpuesto" id="newpuesto" required>
                     </div>
@@ -396,7 +379,7 @@ if (!empty($_POST))
     <div class="col-md-9 mx-auto">
         <div class="card">
             <div class="card-header bg text-dark">
-                <h5><strong>EDITAR USUARIO</strong></h5>
+                <h5><strong>PERFIL DEL USUARIO</strong></h5>
             </div>
             <div class="card-body">
                 <form action="#" method="POST" autocomplete="off">
@@ -440,30 +423,40 @@ if (!empty($_POST))
                         <div class="form-group col-lg-3">
                           <label>Rol</label>
                           <select disabled class="form-control" id="rol" name="rol" required>
-                            <option hidden value="">Seleccione una opción</option>
-                            <?php
-                            #codigo para la lista de sucursales que se extraen de la base de datos
-                            $result = mysqli_query($conexion,"SELECT idrol,rol FROM rol");                        
-                            if (mysqli_num_rows($result) > 0) {  
-                              while($row = mysqli_fetch_assoc($result))
-                              {
-                                if ($row[idrol] == $up_rol)
+                            <?php 
+                            $iduser = $_SESSION['iduser'];
+                            $query = mysqli_query($conexion, "SELECT rol FROM usuario where idusuario='$iduser'");
+                            $rol = mysqli_fetch_assoc($query)['rol'];
+                            if ($rol=="SuperAdmin")
+                            {
+                                $NoesSuperAdmin = "";
+                            }
+                            else
+                            {
+                                $NoesSuperAdmin = "hidden";
+                            }
+                            if ($up_rol=="SuperAdmin")
                                 {
-                                  echo "<option selected value='".$row[idrol]."'>".$row[rol]."</option>";
+                                    echo "<option selected value='SuperAdmin'>SuperAdmin</option>";
+                                }
+                                else if ($up_rol=="Administrador")
+                                {
+                                    echo "<option ".$NoesSuperAdmin." value='SuperAdmin'>SuperAdmin</option>";
+                                    echo "<option selected value='Administrador'>Administrador</option>";
+                                    echo "<option value='Usuario'>Usuario</option>";
                                 }
                                 else
                                 {
-                                  echo "<option value='".$row[idrol]."'>".$row[rol]."</option>";
+                                    echo "<option ".$NoesSuperAdmin." value='SuperAdmin'>SuperAdmin</option>";
+                                    echo "<option value='Administrador'>Administrador</option>";
+                                    echo "<option selected value='Usuario'>Usuario</option>";
                                 }
-                                
-                              }
-                            }
-                            ?>                    
+                            ?>                 
                           </select>
 
                           &nbsp;&nbsp;&nbsp;&nbsp;
                           <?php 
-                            if ($up_rol == 1)
+                            if ($up_rol == "SuperAdmin")
                             {
                            ?>
                             <input disabled onchange="bloquear_campo()" name="actualizar_rol" class="form-check-input" type="checkbox" value="actualizar_rol" id="flexCheckDefaultr">
@@ -506,7 +499,7 @@ if (!empty($_POST))
                               }
                             }
                             ?>   
-                            <option data-toggle="modal" data-target="#nuevo_puesto" value="-1" >Agregar nuevo puesto...</option>    
+                            <option value="newpuesto" >Agregar nuevo puesto...</option>    
                           </select>
 
                           &nbsp;&nbsp;&nbsp;&nbsp;
@@ -517,19 +510,22 @@ if (!empty($_POST))
 
                         </div>
                     
-                        <div class="form-group col-lg-5">
+                        <div class="form-group col-lg-4">
                           <label>Sucursal</label>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <a id="agregar_todos">Agregar todas</a>
                           &nbsp;
-                          <a data-toggle="modal" data-target="#nueva_sucursal" title="Agregar nueva sucursal" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></a>
-
-                          <select required disabled class="form-control js-example-basic-multiple" id="sucursal" name="sucursal[]" multiple="multiple" required>
+                          <div class="input-group mb-3">
+                          <select disabled class="form-control js-example-basic-multiple" id="sucursal" name="sucursal[]" multiple="multiple" required>
                             <?php
                             #codigo para la lista de sucursales que se extraen de la base de datos
                             $result = mysqli_query($conexion,"SELECT idsucursales,sucursales FROM sucursales");                        
-                            if (mysqli_num_rows($result) > 0) {  
+                            if (mysqli_num_rows($result) > 0) 
+                            {  
                               while($row = mysqli_fetch_assoc($result))
                               {
-                                if ($row[idsucursales] == $up_sucursal)
+                                if (in_array($row[idsucursales],$up_sucursal_array))
                                 {
                                   echo "<option selected value='".$row[idsucursales]."'>".$row[sucursales]."</option>";
                                 }
@@ -542,6 +538,11 @@ if (!empty($_POST))
                             }
                             ?>                        
                           </select>
+                          <div class="input-group-append">
+                            <a data-toggle="modal" data-target="#nueva_sucursal" title="Agregar nueva sucursal" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></a>
+                        </div>
+                    </div>
+
 
                           &nbsp;&nbsp;&nbsp;&nbsp;
                             <input onchange="bloquear_campo()" name="actualizar_sucursal" class="form-check-input" type="checkbox" value="actualizar_sucursal" id="flexCheckDefaults">
@@ -627,13 +628,19 @@ function bloquear_campo()
   if (document.getElementById('flexCheckDefaults').checked)
   {
     $('#sucursal').removeAttr('disabled');
+    $('#agregar_todos').attr('href', "#");
+    $('#agregar_todos').attr('onClick', 'cargar_todas_sucursales();');
   }
   else
   {
     $('#sucursal').attr('disabled','disabled');
+    $('#agregar_todos').removeAttr('href');
+    $('#agregar_todos').removeAttr('onClick');
   }
   
 }
+
+document.getElementById('divzoom').style.zoom = "100%";
 
 </script>
 

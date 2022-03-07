@@ -108,21 +108,6 @@ if (!empty($_POST))
             </div>
             <div class="modal-body">
                 <form action="" method="post" autocomplete="off">
-                    <div class="form-group">
-                      <label for="sucursal">Sucursales existentes</label>
-                      <select class="form-control" id="s" name="s" >
-                        <?php
-                        #codigo para la lista de sucursales que se extraen de la base de datos
-                        $result = mysqli_query($conexion,"SELECT idsucursales,sucursales FROM sucursales");                        
-                        if (mysqli_num_rows($result) > 0) {  
-                          while($row = mysqli_fetch_assoc($result)){
-                          echo "<option value='".$row["idsucursales"]."'>".$row["sucursales"]."</option>";
-                          }
-                        }
-                        ?>                        
-                      </select>
-                    </div>
-
                     <hr>
 
                     <div class="form-group">
@@ -148,8 +133,9 @@ if (!empty($_POST))
     </div>
 </div>
 
+
+
 <div class="col-lg-12">
-<br>
 
 <div class="card">
 <div class="card-body">
@@ -175,22 +161,23 @@ if (!empty($_POST))
     <table class="table" id="tbl">
         <thead class="thead-light">
             <tr>
-                <th>#</th>
+                <th>No.</th>
                 <th>Sucursal</th>
                 <th>Descripción</th>
-                <th>Asignados a usuarios</th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th>Usuarios asignados</th>
+                <th>Documentos asignados</th>
+                <th style="text-align: center;">Sucursal Matriz</th>
+                <th style="text-align: center;">Estatus</th>
+                <th style="text-align: center;">Herramientas</th>
             </tr>
         </thead>
         <tbody>
             <?php
-            $query = mysqli_query($conexion, "SELECT idsucursales,sucursales,descripcion,estado,matriz FROM sucursales ORDER BY matriz DESC");
+            $query = mysqli_query($conexion, "SELECT idsucursales,sucursales,descripcion,estado,matriz FROM sucursales ORDER BY matriz DESC, idsucursales DESC");
             $result = mysqli_num_rows($query);
 
-            if ($result > 0) {
-                $contador = 1;
+            if ($result > 0) 
+            {
                 while ($data = mysqli_fetch_assoc($query)) {
                     if ($data['estado'] == 1) {
                         $estado = '<a title="Sucursal Activo"><span class="badge badge-pill badge-success">Activo</span></a>';
@@ -204,6 +191,9 @@ if (!empty($_POST))
 
                     $query4 = mysqli_query($conexion, "SELECT count(sucursal_idsucursales) as num_sucursales from sucursal_usuario where sucursal_idsucursales = $id_sucursal");
                     $num_asignaciones = mysqli_fetch_array($query4)['num_sucursales'];
+                    #buscamos cuantos documentos tiene asignados esa matriz
+                    $query5 = mysqli_query($conexion, "SELECT count(folio) as num_docs from documento where idsucursal = $id_sucursal");
+                    $num_asignaciones_docs = mysqli_fetch_array($query5)['num_docs'];
 
                     if ($data['matriz'] == 1)
                     {
@@ -211,36 +201,61 @@ if (!empty($_POST))
                     }
                     else
                     {
-                        $matriz = '<a onclick="asignar_matriz('.$id_sucursal.')" '.$estado_matriz.' title="Asignar como matriz"><span class="badge badge-pill badge-secondary">No Matriz</span></a>';
+                        if ($data['estado'] == 1)
+                        {
+                            $matriz = '<a onclick="asignar_matriz('.$id_sucursal.')" '.$estado_matriz.' title="Asignar como matriz"><span class="badge badge-pill badge-secondary">No Matriz</span></a>';
+                        }
+                        else
+                        {
+                            $matriz = '<a disabled '.$estado_matriz.' title="Se encuentra suspendido, activala para asignar como matriz"><span class="badge badge-pill badge-secondary">No Matriz</span></a>';
+                        }
                     }
+                    $ceros = "00";
+                        if ($id_sucursal > 9)
+                        {
+                            $ceros = "0";
+                        }
+                        elseif ($id_sucursal > 99) 
+                        {
+                            $ceros = "";
+                        }
 
                     ?>
                     <tr>
-                        <td><?php echo $contador; ?></td>
+                        <td><?php echo $ceros.$id_sucursal; ?></td>
                         <td><?php echo $data['sucursales']; ?></td>
-                        <td WIDTH="400"><?php echo $data['descripcion'] ?></td>
-                        <td WIDTH="200" align="center"><?php echo $num_asignaciones ?></td>
-                        <td WIDTH="100"> <?php echo $matriz; ?> </td>
-                        <td WIDTH="100"> <?php echo $estado; ?> </td>
+                        <td><?php echo $data['descripcion'] ?></td>
+                        <td align="center"><?php echo $num_asignaciones ?></td>
+                        <td align="center"><?php echo $num_asignaciones_docs ?></td>
+                        <td align="center"> <?php echo $matriz; ?> </td>
+                        <td align="center"> <?php echo $estado; ?> </td>
                         
-                        <td WIDTH="130">
-                            <?php if ($data['estado'] == 1) 
+                        <td>
+                            <?php 
+                            if ($data['estado'] == 1) 
                             { 
                                 $sql = mysqli_query($conexion, "SELECT matriz FROM sucursales WHERE idsucursales = $id_sucursal");
                                 $data = mysqli_fetch_array($sql);
                                 if ($data['matriz'] == 1)
                                 {
-                                    #si es matriz no dejar editarlo
-                                    echo '<button disabled title="editar" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
+                                    #si es matriz no dejar editarlo, ni eliminarlo ni suspenderlo
+                                    echo '<a title="editar" href="editar_sucursal.php?id='.$id_sucursal.'" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>';
+                                    echo "&nbsp;";
+                                    echo "<button disabled title='suspender' class='btn btn-warning btn-sm' type='submit'><i style='color: white;' class='fas fa-power-off'></i></button>";
+                                    echo "&nbsp;";
+                                    echo "<button disabled title='eliminar' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>";
+                                    echo "&nbsp;";
                                 }
                                 else
                                 {
                                     echo '<a title="editar" href="editar_sucursal.php?id='.$id_sucursal.'" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>';
+                                    echo "&nbsp;";
+                                    echo "<button title='suspender' onClick='suspender_sucursal(\"$id_sucursal\");' class='btn btn-warning btn-sm' type='submit'><i style='color: white;' class='fas fa-power-off'></i></button>";
+                                    echo "&nbsp;";
+                                    echo "<button title='eliminar' onClick='eliminar_sucursal(\"$id_sucursal\");' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>";
+                                    echo "&nbsp;";
                                 }
                                 ?>
-                                
-                                <button title="suspender" onClick='suspender_sucursal(<?php echo $id_sucursal; ?>)' class='btn btn-warning btn-sm' type='submit'><i style='color: white;' class='fas fa-power-off'></i></button>
-                                <button title="eliminar" onClick='eliminar_sucursal(<?php echo $id_sucursal; ?>)' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
                             <?php 
                             }
                             else
@@ -254,7 +269,6 @@ if (!empty($_POST))
                         </td>
                     </tr>
             <?php 
-                $contador = $contador + 1;
                 }
             } 
             ?>

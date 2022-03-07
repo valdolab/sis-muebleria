@@ -1,5 +1,5 @@
 <!-- Footer -->
-
+</div>
 <footer class="sticky-footer bg-gray">
   <div class="container my-auto">
     <div class="copyright text-center my-auto">
@@ -42,15 +42,16 @@
 
 <script src="../js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
 <script src="../js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script src="../js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-<script src="../js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+<script src="../js/datatables.min.js" crossorigin="anonymous"></script>
+<!--<script src="../js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>-->
+
 <script src="../js/sweetalert2.all.min.js"></script>
 <!--<script src="../js/jquery-ui/jquery-ui.min.js"></script>-->
 <script src="../js/Chart.bundle.min.js"></script>
-<script src="../js/funciones.js"></script>
 <script src="../js/all.min.js"></script>
 <script src="../js/select2.min.js"></script>
 <script src="../js/bootstrap4-toggle.min.js"></script>
+<script src="../js/funciones.js"></script>
 
 <script type="text/javascript">
   //Spanish

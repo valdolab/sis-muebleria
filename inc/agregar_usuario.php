@@ -60,7 +60,7 @@ if (!empty($_POST))
           $puesto = $_POST['puesto'];
           $sucursal = $_POST['sucursal'];
 
-          $query = mysqli_query($conexion, "SELECT * FROM usuario where idusuario = '$idusuario'");
+          $query = mysqli_query($conexion, "SELECT idusuario FROM usuario where idusuario = '$idusuario'");
           $result = mysqli_fetch_array($query);
           if ($result > 0) {
               $alert = '<div class="alert alert-warning" role="alert">
@@ -71,9 +71,18 @@ if (!empty($_POST))
           {
             #print_r($sucursal);
             #echo $sucursal[0];
+            if($rol == "SuperAdmin")
+            {
+                $superadmin = 1;
+            }
+            else
+            {
+                $superadmin = 0;
+            }
+
               if (sizeof($sucursal) != 1) #es para insertar con varias sucursales, multisucursal
               {
-                    $query_insert = mysqli_query($conexion, "INSERT INTO usuario(idusuario,nombre,pass,idrol,puesto,estado) values ('$idusuario', '$nombre', '$pass', $rol,$puesto,1)");
+                    $query_insert = mysqli_query($conexion, "INSERT INTO usuario(idusuario,nombre,pass,rol,puesto,estado,superadmin) values ('$idusuario', '$nombre', '$pass', '$rol', $puesto, 1, $superadmin)");
                     if (!$query_insert)
                     { 
                               $alert = '<div class="alert alert-danger" role="alert">
@@ -111,7 +120,7 @@ if (!empty($_POST))
               else if(sizeof($sucursal) == 1)
               {
                 $sucursal_val = $sucursal[0];
-                $query_insert = mysqli_query($conexion, "INSERT INTO usuario(idusuario,nombre,pass,idrol,puesto,estado) values ('$idusuario', '$nombre', '$pass', $rol,$puesto,1)");
+                $query_insert = mysqli_query($conexion, "INSERT INTO usuario(idusuario,nombre,pass,rol,puesto,estado,superadmin) values ('$idusuario', '$nombre', '$pass', '$rol' ,$puesto, 1, $superadmin)");
                     if (!$query_insert)
                     {
                         #$modal = "$('#mensaje_error').modal('show');"; 
@@ -130,8 +139,9 @@ if (!empty($_POST))
                   else
                   {
                       $alert = '<div class="alert alert-danger" role="alert">
-                              Error al registrar sucursal
+                              Error al registrar usuario
                           </div>';
+                          #echo mysqli_error($conexion);
                         $query_delete3 = mysqli_query($conexion, "DELETE FROM usuario WHERE idusuario = '$idusuario'");
                         $query_delete4 = mysqli_query($conexion, "DELETE FROM sucursal_usuario WHERE sucursal_idusuario = '$idusuario'");
                   }
@@ -193,21 +203,6 @@ if (!empty($_POST))
             <div class="modal-body">
                 <form action="" method="post" autocomplete="off">
                     <div class="form-group">
-                      <label for="sucursal">Puestos existentes</label>
-                      <select class="form-control" id="p" name="p">
-                        <?php
-                        #codigo para la lista de sucursales que se extraen de la base de datos
-                        $result = mysqli_query($conexion,"SELECT idpuesto,puesto FROM puesto");                        
-                        if (mysqli_num_rows($result) > 0) {  
-                          while($row = mysqli_fetch_assoc($result)){
-                          echo "<option value='".$row["idpuesto"]."'>".$row["puesto"]."</option>";
-                          }
-                        }
-                        ?>                        
-                      </select>
-                    </div>
-
-                    <div class="form-group">
                         <label for="correo">Nuevo puesto</label>
                         <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newpuesto" id="newpuesto" required>
                     </div>
@@ -238,21 +233,6 @@ if (!empty($_POST))
             </div>
             <div class="modal-body">
                 <form action="" method="post" autocomplete="off"> 
-                    <div class="form-group">
-                      <label for="sucursal">Sucursales existentes</label>
-                      <select class="form-control" id="s" name="s" >
-                        <?php
-                        #codigo para la lista de sucursales que se extraen de la base de datos
-                        $result = mysqli_query($conexion,"SELECT idsucursales,sucursales FROM sucursales");                        
-                        if (mysqli_num_rows($result) > 0) {  
-                          while($row = mysqli_fetch_assoc($result)){
-                          echo "<option value='".$row["idsucursales"]."'>".$row["sucursales"]."</option>";
-                          }
-                        }
-                        ?>                        
-                      </select>
-                    </div>
-
                     <div class="form-group">
                         <label for="correo">Nueva Sucursal</label>
                         <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newsucursal" id="newsucursal" required>
@@ -302,16 +282,23 @@ if (!empty($_POST))
                         <div class="form-group col-lg-3">
                           <label>Rol</label>
                           <select class="form-control" id="rol" name="rol" required>
-                            <option hidden value="" selected>Seleccione una opción</option>
-                            <?php
-                            #codigo para la lista de sucursales que se extraen de la base de datos
-                            $result = mysqli_query($conexion,"SELECT idrol,rol FROM rol");                        
-                            if (mysqli_num_rows($result) > 0) {  
-                              while($row = mysqli_fetch_assoc($result)){
-                              echo "<option value='".$row["idrol"]."'>".$row["rol"]."</option>";
-                              }
+                            <option hidden value='' selected>Seleccione una opción</option>
+                            <?php 
+                            $iduser = $_SESSION['iduser'];
+                            $query = mysqli_query($conexion, "SELECT rol FROM usuario where idusuario='$iduser'");
+                            $rol = mysqli_fetch_assoc($query)['rol'];
+                            if ($rol=="SuperAdmin")
+                            {
+                                echo "<option value='SuperAdmin'>SuperAdmin</option>";
+                                echo "<option value='Administrador'>Administrador</option>";
+                                echo "<option value='Usuario'>Usuario</option>";
                             }
-                            ?>                    
+                            else
+                            {
+                                echo "<option value='Administrador'>Administrador</option>";
+                                echo "<option value='Usuario'>Usuario</option>";
+                            }
+                             ?>                
                           </select>
                         </div>
 
@@ -328,17 +315,19 @@ if (!empty($_POST))
                               }
                             }
                             ?>   
-                            <option data-toggle="modal" data-target="#nuevo_puesto" value="-1" >Agregar nuevo puesto...</option>    
+                            <option value="newpuesto" >Agregar nuevo puesto...</option>    
                           </select>
                         </div>
                     
                     
                         <div class="form-group col-lg-4">
                           <label>Sucursal</label>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <a onclick="cargar_todas_sucursales();" href="#">Agregar todas</a>
                           &nbsp;
-                          <a data-toggle="modal" data-target="#nueva_sucursal" title="Agregar nueva sucursal" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></a>
-
-                          <select class="form-control js-example-basic-multiple" id="sucursal" name="sucursal[]" multiple="multiple" required>
+                            <div class="input-group mb-3">
+                              <select class="form-control js-example-basic-multiple" id="sucursal" name="sucursal[]" multiple="multiple" required>
                             <?php
                             #codigo para la lista de sucursales que se extraen de la base de datos
                             $result = mysqli_query($conexion,"SELECT idsucursales,sucursales FROM sucursales");                        
@@ -347,9 +336,13 @@ if (!empty($_POST))
                               echo "<option value='".$row["idsucursales"]."'>".$row["sucursales"]."</option>";
                               }
                             }
-                            ?>                        
+                            ?>                  
                           </select>
-                          <label>* Seleccione una opción</label>
+
+                              <div class="input-group-append">
+                                <a data-toggle="modal" data-target="#nueva_sucursal" title="Agregar nueva sucursal" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></a>
+                              </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -374,6 +367,10 @@ if (!empty($_POST))
 </div>
 <br><br><br><br>
 <!-- End of Main Content -->
+
+<script type="">
+  document.getElementById('divzoom').style.zoom = "100%";
+</script>
 
 <?php ob_end_flush(); ?>
 <?php include_once "footer.php"; ?>
