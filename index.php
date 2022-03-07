@@ -63,7 +63,7 @@ if (!empty($_SESSION['active'])) {
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Muebleria Compra Facil Nuevo cambio</title>
+  <title>Muebleria Compra Facil</title>
 
   <!-- Custom fonts for this template-->
   <link href="css/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
