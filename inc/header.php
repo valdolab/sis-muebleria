@@ -8,13 +8,11 @@ include "functions.php";
 include "accion/conexion.php";
 // datos Empresa
 
-$dni = '$infoEmpresa';
-$nombre_empresa = '$infoEmpresa';
-$razonSocial = '$infoEmpresa';
-$telEmpresa = '$infoEmpresa';
-$emailEmpresa = '$infoEmpresa';
-$dirEmpresa = '$infoEmpresa';
-$igv = '$infoEmpresa';
+$idsucursal = $_SESSION['idsucursal'];
+$iduser = $_SESSION['iduser'];
+$query2 = mysqli_query($conexion, "SELECT sucursales from sucursales where idsucursales = $idsucursal");
+$dato = mysqli_fetch_array($query2)['sucursales'];
+$name_sucursal = $dato;
 
 ?>
 <!DOCTYPE html>
@@ -31,11 +29,15 @@ $igv = '$infoEmpresa';
 
 	<!-- Custom styles for this template-->
 	<link href="../css/sb-admin-3.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="../css/dataTables.bootstrap4.min.css">
+	<link rel="stylesheet" href="../css/datatables.min">
 	<link href="../css/select2.min.css" rel="stylesheet">
 	<link href="../css/bootstrap4-toggle.min.css" rel="stylesheet">
-
-
+	<link href="../css/datatables.min.css" rel="stylesheet">
+	<style type="text/css">
+		.div-interno{
+			  zoom: 85%;
+			}
+	</style>
 </head>
 
 <body id="page-top">
@@ -69,7 +71,7 @@ $igv = '$infoEmpresa';
 						<!-- Nav Item - User Information -->
 						<li class="nav-item dropdown no-arrow">
 							<a class="nav-link dropdown-toggle" id="selectSucursal" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<span title="Da click para cambiar sucursal" style="font-size: 15px;" class="mr-2 d-none d-lg-inline small text-dark"> <strong>Sucursal: </strong> <?php echo $_SESSION['nomsucursal']; ?></span>
+								<span title="Da click para cambiar sucursal" style="font-size: 15px;" class="mr-2 d-none d-lg-inline small text-dark"> <strong>Sucursal: </strong> <?php echo $name_sucursal; ?></span>
 							</a>
 
 							<!-- Cambio de sucursales --> <!-- 
@@ -105,7 +107,10 @@ $igv = '$infoEmpresa';
 							</a>
 							<!-- Dropdown - User Information -->
 							<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-								<a class="dropdown-item" href="#">
+								<?php 
+									$dicc_perfil = "perfil.php?id=".$_SESSION['iduser'];
+								 ?>
+								<a class="dropdown-item" href="<?php echo $dicc_perfil; ?>">
 									<i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
 									Perfil
 								</a>
@@ -122,7 +127,7 @@ $igv = '$infoEmpresa';
 
 					<?php 
 						#si no no es superadministrador que no tenga las nofiticaciones
-						if ($_SESSION['idrol'] == 1) 
+						if ($_SESSION['rol'] == "SuperAdmin") 
 						{
 					 ?>
 
@@ -186,3 +191,5 @@ $igv = '$infoEmpresa';
 					 ?>
 
 				</nav>
+
+<div id="divzoom" class="div-interno">

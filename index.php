@@ -25,7 +25,7 @@ if (!empty($_SESSION['active'])) {
         $idsucursal = $_POST['idsucursal_flag'];
       }
 
-      $query = mysqli_query($conexion, "SELECT idusuario,nombre,pass,idrol FROM usuario WHERE idusuario = '$user' AND pass = '$clave'");
+      $query = mysqli_query($conexion, "SELECT idusuario,nombre,pass,rol FROM usuario WHERE idusuario = '$user' AND pass = '$clave'");
       $resultado = mysqli_num_rows($query);
       if ($resultado > 0) 
       {
@@ -33,15 +33,9 @@ if (!empty($_SESSION['active'])) {
 
         $_SESSION['active'] = true;
         $_SESSION['iduser'] = $dato['idusuario'];
-        $_SESSION['nombre'] = $dato['nombre'];
-        $_SESSION['pass'] = $dato['pass'];
-        $_SESSION['idrol'] = $dato['idrol'];
-
-        $queryrol = mysqli_query($conexion,'SELECT rol from rol where idrol=$dato["idrol"]');
-        $nombrerol = mysqli_fetch_array($queryrol);
-        $_SESSION['rol'] = $nombrerol['rol'];
+        $_SESSION['nombre'] = $dato['nombre'];;
+        $_SESSION['rol'] = $dato['rol'];
         $_SESSION['idsucursal'] = $idsucursal;
-        $_SESSION['nomsucursal'] = $sucursal_name_aux;
 
         header('location: inc/');
       }
@@ -120,7 +114,7 @@ if (!empty($_SESSION['active'])) {
                         <div class="form-group" id="divSucursal" name="divSucursal" hidden>
                           <label for="">Selecciona sucursal</label>
                           <select class="form-control" id="SelectSucursal" name="SelectSucursal">
-                            <option value="" selected>Seleccione una opción</option>
+                            <option value="" hidden selected>Seleccione una opción</option>
                             <?php
                             #codigo para la lista de sucursales que se extraen de la base de datos
                             $result = mysqli_query($conexion,"SELECT idsucursales,sucursales FROM sucursales");                        

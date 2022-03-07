@@ -94,23 +94,6 @@ if (!empty($_POST))
             <div class="card-body">
                 <form action="" method="post" autocomplete="off">
                     <div class="form-group">
-                      <label for="sucursal">Sucursales existentes</label>
-                      <select class="form-control" id="s" name="s" >
-                        <?php
-                        #codigo para la lista de sucursales que se extraen de la base de datos
-                        $result = mysqli_query($conexion,"SELECT idsucursales,sucursales FROM sucursales");                        
-                        if (mysqli_num_rows($result) > 0) {  
-                          while($row = mysqli_fetch_assoc($result)){
-                          echo "<option value='".$row["idsucursales"]."'>".$row["sucursales"]."</option>";
-                          }
-                        }
-                        ?>                        
-                      </select>
-                    </div>
-
-                    <hr>
-
-                    <div class="form-group">
                         <label for="correo">Nueva Sucursal</label>
                         <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newsucursal" id="newsucursal" required value="<?php echo $up_sucursales; ?>">
                     </div>
