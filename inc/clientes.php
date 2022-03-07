@@ -3,17 +3,7 @@ ob_start();
 include_once "header.php";
 include "accion/conexion.php";
 
-#editar permisos
-
-
 ?>
-
-<input onClick='se_agrego()' name='bandera' id='bandera' value='new' hidden>
-
-<div class="col-lg-12">
-
-<br>
-
 
 <div id="ver_sucursales" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -34,6 +24,7 @@ include "accion/conexion.php";
     </div>
 </div>
 
+<div class="col-lg-12">
 
 <div class="card">
 <div class="card-body">
@@ -42,9 +33,17 @@ include "accion/conexion.php";
             <h4><strong>GESTION DE CLIENTES</strong></h4>
             <!--<input type="" name="prueba" id="prueba">-->
         </div>
-
         <div align="right" class="col-lg-2">
-            <a href="agregar_cliente.php" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nuevo cliente</a>
+            <?php 
+            if($nuevo_cliente)
+            {
+                echo '<a href="agregar_cliente.php" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nuevo cliente</a>';
+            }
+            else
+            {
+                echo '<button disabled class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nuevo cliente</button>';
+            }
+         ?>
         </div>
     </div>
 </div>
@@ -54,101 +53,111 @@ include "accion/conexion.php";
 
 <div class="card">
 <div class="card-body">
-<div class="table-responsive">
+<div class="table-responsive ">
     <table class="table" id="tbl">
         <thead class="thead-light">
             <tr>
-                <th>#</th>
-                <th>Rol</th>
-                <th>Nombre</th>
-                <th>Puesto</th>
-                <th>Sucursal</th>
-                <th>Usuario</th>
-                <th></th>
+                <th>ID</th>
+                <th>Nombre del Cliente</th>
+                <th>Zona</th>
+                <th>Subzona</th>
+                <th>Teléfono</th>
+                <th>Nivel de credito</th>
+                <th style="text-align: center;">Herramientas</th>
             </tr>
         </thead>
         <tbody>
             <?php
-            $query = mysqli_query($conexion, "SELECT idusuario,nombre,pass,idrol,puesto,estado FROM usuario ORDER BY idrol,estado ASC");
+            $query = mysqli_query($conexion, "SELECT * FROM cliente ORDER BY nivel_apto ASC, idcliente ASC");
             $result = mysqli_num_rows($query);
 
-            if ($result > 0) {
-                $contador = 1;
-                #while ($data = mysqli_fetch_assoc($query))
-                while ($data = 0) {
-                    if ($data['estado'] == 1) {
-                        $estado = '<span class="badge badge-pill badge-success">Activo</span>';
-                    } else {
-                        $estado = '<span class="badge badge-pill badge-danger">Inactivo</span>';
-                    }
-                    $idrol = $data['idrol'];
-                    $idpuesto = $data['puesto'];
-
-                    #esto es para lo del rol y puesto
-                    $query2 = mysqli_query($conexion, "SELECT rol FROM rol where idrol=$idrol");
-                    $rol_usuario = mysqli_fetch_array($query2);
-                    $query3 = mysqli_query($conexion, "SELECT puesto FROM puesto where idpuesto=$idpuesto");
-                    $puesto_usuario = mysqli_fetch_array($query3);
-                    
-                    #calculamos a que sucursales puede entrar el usuario
-                    $idusuario = $data['idusuario'];
-                    $query4 = mysqli_query($conexion, "SELECT sucursales from sucursales where idsucursales in (select sucursal_idsucursales from sucursal_usuario where sucursal_idusuario='$idusuario')");
-                    $cuantas = mysqli_num_rows($query4);
-                    if ($cuantas == 1)
+            if ($result > 0) 
+            {
+                while ($data = mysqli_fetch_assoc($query))
+                {
+                    $idcliente = $data['idcliente'];
+                    $no_cliente = $data['no_cliente'];
+                    if($data['estado_cliente'])
                     {
-                        $sucursal_usuario = mysqli_fetch_array($query4);
-                        $sucursales = $sucursal_usuario['sucursales'];
+                        if ($data['apto_credito'] == 1) 
+                        {
+                            if ($data['nivel_apto'] == 0)
+                            {
+                                $estado = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-warning">'.$data['nivel_apto'].'</span></h5></div>';
+                            }
+                            else
+                            {
+                                $estado = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-success">'.$data['nivel_apto'].'</span></h5></div>';
+                            }
+                        } 
+                        else 
+                        {
+                            $estado = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-danger">NoApto</span></h5></div>';
+                        }
+                        #lo del boton editar cuando esta suspendido
+                        $button_editar = '<a href="editar_cliente.php?id='.$idcliente.'" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>';
                     }
                     else
                     {
-                        $lista = "";
-                        $new_array = [];
-                        while ($row = mysqli_fetch_assoc($query4))
-                        {
-                            $new_array[] = $row;
-                        }
-
-                        foreach($new_array as $fila)
-                        {
-                         foreach($fila as $columna)
-                         {
-                            $lista = $lista."<li>".$columna."</li>";
-                            #echo $columna;
-                         }
-                        #echo "<br>";
-                        }
-                        $sucursales = "<a data-toggle='modal' data-target='#ver_sucursales' onClick='visualizar(\"$data[idusuario]\",\"$lista\");' href='#'>Ver todas <i class='fas fa-eye'></i></a>";                        
+                        $estado = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-secondary">Suspendido</span></h5></div>';
+                        $button_editar = '<button disabled class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
                     }
 
-                    ##poner que no se puueda borrar a superadmin
-                        if ($idrol == 1)
+                    $idzona = $data['zona'];
+                    $idsubzona = $data['subzona'];
+
+                    #esto es para lo del rol y puesto
+                    $query2 = mysqli_query($conexion, "SELECT zona FROM zonas where idzona=$idzona");
+                    $zona_cliente = mysqli_fetch_array($query2)['zona'];
+                    $query3 = mysqli_query($conexion, "SELECT subzona FROM subzonas where idsubzona=$idsubzona");
+                    $subzona_cliente = mysqli_fetch_array($query3)['subzona'];
+                    $ceros = "0000";
+                        if ($no_cliente > 9)
                         {
-                            $boton_eliminar = "<button disabled class='btn btn-danger btn-sm' type='submit'><i style='color: white;'' class='fas fa-trash-alt'></i></button>";
+                            $ceros = "000";
                         }
-                        else
+                        elseif ($no_cliente > 99) 
                         {
-                            $boton_eliminar = "<button onClick='eliminar(\"$data[idusuario]\");' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>";
+                            $ceros = "00";
+                        }
+                        elseif ($no_cliente > 999) 
+                        {
+                            $ceros = "0";
+                        }
+                        elseif ($no_cliente > 9999) 
+                        {
+                            $ceros = "";
                         }
                     ?>
                     <tr>
-                        <td><?php echo $contador; ?></td>
-                        <td><?php echo $rol_usuario['rol']; ?></td>
-                        <td><?php echo $data['nombre']; ?></td>
-                        <td><?php echo $puesto_usuario['puesto']; ?></td>
-                        <td><?php echo $sucursales; ?></td>
-                        <td><?php echo $data['idusuario']; ?></td>
-                        <td WIDTH="110">
-                            <?php if ($data['estado'] == 1) { ?>
-                                <a href="rol.php?id=<?php echo $data['idusuario']; ?>" class="btn btn-warning btn-sm"><i class='fas fa-key'></i></a>
-                                <a href="editar_usuario.php?id=<?php echo $data['idusuario']; ?>" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
-                                <?php echo $boton_eliminar; ?>
-                                    
+                        <td><?php echo $ceros.$no_cliente; ?></td>
+                        <td><?php echo $data['nombre_cliente']; ?></td>
+                        <td><?php echo $zona_cliente; ?></td>
+                        <td><?php echo $subzona_cliente; ?></td>
+                        <td><?php echo $data['tel1_cliente']; ?></td>
+                        <td><?php echo $estado; ?></td>
+                        <td align="center">
+                                <?php 
+                                echo $button_editar; 
+                                if($editar_cliente_full)
+                                {
+                                    ?>
+                                        <button title='suspender cliente' onClick='suspender_cliente("<?php echo $idcliente; ?>");' class='btn btn-warning btn-sm' type='submit'><i style='color: white;' class='fas fa-power-off'></i></button>
+                                        <button onClick='eliminar_cliente("<?php echo $idcliente ?>")' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
+                                    <?php 
+                                }
+                                else
+                                {
+                                    ?>
+                                        <button disabled title='suspender cliente' class='btn btn-warning btn-sm' type='submit'><i style='color: white;' class='fas fa-power-off'></i></button>
+                                        <button disabled class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
+                                    <?php 
+                                }
+                                ?>
                                 
-                            <?php } ?>
                         </td>
                     </tr>
             <?php 
-                $contador = $contador + 1;
                 }
             } 
             ?>
@@ -159,88 +168,6 @@ include "accion/conexion.php";
 </div>
 </div>
 <br><br>
-
-<script type="text/javascript">
-function visualizar(idusuario,lista)
-        {
-          //alert(m+"  "+q);
-          var xmlhttp;      
-            if (window.XMLHttpRequest)
-            {
-            xmlhttp=new XMLHttpRequest();
-            }
-          else
-            {
-            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-          xmlhttp.onreadystatechange=function()
-            {
-            if (xmlhttp.readyState==4 && xmlhttp.status==200)
-             {
-             document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
-             }
-            }
-
-          $("#my_modal_title").html("Sucursales permitidas a "+idusuario);  
-          $("#listamodal_sucursales").html(lista); 
-
-          $('#ver_sucursales').modal('show');
-        }
-
-function eliminar(idusuario)
-{
-    Swal.fire({
-            title: 'Esta seguro de eliminar?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'SI, Eliminar!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                var action = 'eliminarUsuario';
-                $.ajax({
-                  url: 'eliminador.php',
-                  type: "POST",
-                  async: true,
-                  data: {action:action,usuario:idusuario},
-                  success: function(response) {
-                    //$('#prueba').val(response);
-                    if (response == 0) 
-                    {
-                        Swal.fire({
-                          icon: 'Error',
-                          title: 'Oops...',
-                          text: 'Ocurrio un error, intente de nuevo!',
-                        }).then((result) => {
-                            if (result.isConfirmed){
-                                window.location.href = "usuarios.php";
-                            }
-                        })   
-                    }
-                    else
-                    {
-                        Swal.fire(
-                          'Eliminado!',
-                          'Se elimino correctamente!',
-                          'success'
-                        ).then((result) => {
-                            if (result.isConfirmed){
-                                window.location.href = "usuarios.php";
-                            }
-                        })
-                    }
-                    
-                  },
-                  error: function(error) {
-                    //$('#prueba').val('error');
-                  }
-                });      
-              }
-        })
-}
-
-</script>
 
 <?php 
 ob_end_flush();

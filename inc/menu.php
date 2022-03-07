@@ -27,6 +27,72 @@
 	</div>
 
 	<!-- Nav Item - Pages Collapse Menu -->
+	<?php 
+		$id_usuario = $_SESSION['iduser'];
+		$sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
+		$array_permisos = [];
+        while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
+        {
+            $array_permisos[] = $row['permiso_idpermiso'];
+        }
+        #print_r($array_permisos);
+        $num_permisos = sizeof($array_permisos);
+        #PERMISOS
+        if($_SESSION['rol'] == "SuperAdmin")
+        {
+        	#es super admin y titene permiso a TODO
+        	$ventas = 1;
+	        $nueva_venta = 1;
+	        $editar_ventas = 1;
+	        $productos = 1;
+	        $nuevo_producto = 1;
+	        $editar_productos = 1;
+	        $compras = 1;
+	        $clientes = 1;
+	        $nuevo_cliente = 1;
+	        $editar_cliente_full = 1;
+	        $editar_cliente_lim = 1;
+	        $cobranza = 1;
+	        $proveedor = 1;
+	        $nuevo_proveedor = 1;
+	        $editar_proveedor = 1;
+	        $configuracion = 1;
+	        $usuarios = 1;
+	        $sucursales = 1;
+	        $documentos = 1;
+	        $general = 1;
+        }
+        else
+        {
+        	#permisos asignados
+        	$ventas = in_array(1, $array_permisos);
+	        $nueva_venta = in_array(2, $array_permisos);
+	        $editar_ventas = in_array(3, $array_permisos);
+	        $productos = in_array(4, $array_permisos);
+	        $nuevo_producto = in_array(5, $array_permisos);
+	        $editar_productos = in_array(6, $array_permisos);
+	        $compras = in_array(7, $array_permisos);
+	        $clientes = in_array(8, $array_permisos);
+	        $nuevo_cliente = in_array(9, $array_permisos);
+	        $editar_cliente_full = in_array(10, $array_permisos);
+	        $editar_cliente_lim = in_array(11, $array_permisos);
+	        $cobranza = in_array(12, $array_permisos);
+	        $proveedor = in_array(13, $array_permisos);
+	        $nuevo_proveedor = in_array(14, $array_permisos);
+	        $editar_proveedor = in_array(15, $array_permisos);
+	        $configuracion = in_array(16, $array_permisos);
+	        $usuarios = in_array(17, $array_permisos);
+	        $sucursales = in_array(18, $array_permisos);
+	        $documentos = in_array(19, $array_permisos);
+	        $general = in_array(20, $array_permisos);
+        }
+	 ?>
+	
+	<div id="opciones_menu">
+
+<?php if ($ventas) 
+{ 
+?>
 	<li class="nav-item secundary">
 		<a class="nav-link collapsed text-dark" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
 			<i class="fab fa-shopify"></i>
@@ -34,13 +100,19 @@
 		</a>
 		<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="nueva_venta.php">Nueva venta</a>
-				<a class="collapse-item" href="ventas.php">Ventas</a>
+				<a class="collapse-item" href="pagetemp.php">Ventas</a>
+				<?php 
+					if($nueva_venta)
+					{
+						echo '<a class="collapse-item" href="pagetemp.php">Nueva venta</a>';
+					}
+				 ?>
 			</div>
 		</div>
 	</li>
+<?php } ?>
 
-	<!-- Nav Item - Productos Collapse Menu -->
+<?php if ($productos) { ?>
 	<li class="nav-item secundary">
 		<a class="nav-link collapsed text-dark" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
 			<i class="fas fa-fw fa-clipboard-list"></i>
@@ -48,13 +120,23 @@
 		</a>
 		<div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="registro_producto.php">Nuevo Producto</a>
-				<a class="collapse-item" href="lista_productos.php">Productos</a>
+				<a class="collapse-item" href="pagetemp.php">Productos</a>
+				<?php 
+					if($nuevo_producto)
+					{
+						echo '<a class="collapse-item" href="pagetemp.php">Nuevo Producto</a>';
+					}
+					if($compras)
+					{
+						echo '<a class="collapse-item" href="pagetemp.php">Compras</a>';
+					}
+				 ?>
 			</div>
 		</div>
 	</li>
+<?php } ?>
 
-	<!-- Nav Item - Clientes Collapse Menu -->
+<?php if ($clientes) { ?>
 	<li class="nav-item">
 		<a class="nav-link collapsed text-dark" href="#" data-toggle="collapse" data-target="#collapseClientes" aria-expanded="true" aria-controls="collapseUtilities">
 			<i class="fas fa-users"></i>
@@ -62,12 +144,24 @@
 		</a>
 		<div id="collapseClientes" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="agregar_cliente.php">Nuevo Clientes</a>
 				<a class="collapse-item" href="clientes.php">Clientes</a>
+				<?php 
+					if($nuevo_cliente)
+					{
+						echo '<a class="collapse-item" href="agregar_cliente.php">Nuevo Cliente</a>';
+					}
+
+					if($cobranza)
+					{
+						echo '<a class="collapse-item" href="pagetemp.php">Cobranza</a>';
+					}
+				 ?>
 			</div>
 		</div>
 	</li>
-	<!-- Nav Item - Utilities Collapse Menu -->
+<?php } ?>
+
+<?php if ($proveedor) { ?>
 	<li class="nav-item">
 		<a class="nav-link collapsed text-dark" href="#" data-toggle="collapse" data-target="#collapseProveedor" aria-expanded="true" aria-controls="collapseUtilities">
 			<i class="fas fa-hospital"></i>
@@ -75,13 +169,19 @@
 		</a>
 		<div id="collapseProveedor" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="registro_proveedor.php">Nuevo Proveedor</a>
-				<a class="collapse-item" href="lista_proveedor.php">Proveedores</a>
+				<a class="collapse-item" href="pagetemp.php">Proveedores</a>
+				<?php 
+					if($nuevo_proveedor)
+					{
+						echo '<a class="collapse-item" href="pagetemp.php">Nuevo Proveedor</a>';
+					}
+				 ?>
 			</div>
 		</div>
 	</li>
+<?php } ?>
 
-	<?php if ($_SESSION['idrol'] == 1) { ?>
+	<?php if ($configuracion) { ?>
 
 		<li class="nav-item">
 			<a class="nav-link collapsed text-dark" href="#" data-toggle="collapse" data-target="#collapseconfi" aria-expanded="true" aria-controls="collapseUtilities">
@@ -90,12 +190,28 @@
 			</a>
 			<div id="collapseconfi" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
-					<a class="collapse-item" href="usuarios.php">Usuarios</a>
-					<a class="collapse-item" href="documentos.php">Documentos</a>
-					<a class="collapse-item" href="sucursales.php">Sucursales</a>
+					<?php 
+						if($usuarios)
+						{
+							echo '<a class="collapse-item" href="usuarios.php">Usuarios</a>';
+						}
+						if($sucursales)
+						{
+							echo '<a class="collapse-item" href="sucursales.php">Sucursales</a>';
+						}
+						if($documentos)
+						{
+							echo '<a class="collapse-item" href="documentos.php">Documentos</a>';
+						}
+						if($general)
+						{
+							echo '<a class="collapse-item" href="pagetemp.php">General</a>';
+						}
+					 ?>
 				</div>
 			</div>
 		</li>
 	<?php } ?>
 
+	</div>
 </ul>

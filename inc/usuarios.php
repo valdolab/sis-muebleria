@@ -3,16 +3,11 @@ ob_start();
 include_once "header.php";
 include "accion/conexion.php";
 
-#editar permisos
 
 
 ?>
 
 <input onClick='se_agrego()' name='bandera' id='bandera' value='new' hidden>
-
-<div class="col-lg-12">
-
-<br>
 
 <div id="nuevo_usuario" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -34,7 +29,7 @@ include "accion/conexion.php";
 
 
 <div id="ver_sucursales" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="my_modal_title"></h5>
@@ -52,7 +47,7 @@ include "accion/conexion.php";
     </div>
 </div>
 
-
+<div class="col-lg-12">
 <div class="card">
 <div class="card-body">
     <div class="row">
@@ -76,34 +71,36 @@ include "accion/conexion.php";
     <table class="table" id="tbl">
         <thead class="thead-light">
             <tr>
-                <th>#</th>
-                <th>Rol</th>
+                <th>ID</th>
+                <th>Usuario</th>
                 <th>Nombre</th>
+                <th>Rol</th>
                 <th>Puesto</th>
                 <th>Sucursal</th>
-                <th>Usuario</th>
-                <th></th>
+                <th style="text-align: center;">Herramientas</th>
             </tr>
         </thead>
         <tbody>
             <?php
-            $query = mysqli_query($conexion, "SELECT idusuario,nombre,pass,idrol,puesto,estado FROM usuario ORDER BY idrol,estado ASC");
+            $query = mysqli_query($conexion, "SELECT idusuario,nombre,pass,rol,puesto,estado,superadmin,iduser_auto FROM usuario ORDER BY superadmin DESC, rol ASC");
             $result = mysqli_num_rows($query);
-
-            if ($result > 0) {
-                $contador = 1;
-                while ($data = mysqli_fetch_assoc($query)) {
-                    if ($data['estado'] == 1) {
+            if ($result > 0) 
+            {
+                while ($data = mysqli_fetch_assoc($query)) 
+                {
+                    $id = $data['iduser_auto'];
+                    if ($data['estado'] == 1) 
+                    {
                         $estado = '<span class="badge badge-pill badge-success">Activo</span>';
-                    } else {
+                    }
+                    else
+                    {
                         $estado = '<span class="badge badge-pill badge-danger">Inactivo</span>';
                     }
-                    $idrol = $data['idrol'];
+                    $rol = $data['rol'];
                     $idpuesto = $data['puesto'];
 
-                    #esto es para lo del rol y puesto
-                    $query2 = mysqli_query($conexion, "SELECT rol FROM rol where idrol=$idrol");
-                    $rol_usuario = mysqli_fetch_array($query2);
+                    #esto es para lo del puesto
                     $query3 = mysqli_query($conexion, "SELECT puesto FROM puesto where idpuesto=$idpuesto");
                     $puesto_usuario = mysqli_fetch_array($query3);
                     
@@ -122,23 +119,14 @@ include "accion/conexion.php";
                         $new_array = [];
                         while ($row = mysqli_fetch_assoc($query4))
                         {
-                            $new_array[] = $row;
+                            $lista = $lista.'<li>'.$row["sucursales"].'</li>';
                         }
 
-                        foreach($new_array as $fila)
-                        {
-                         foreach($fila as $columna)
-                         {
-                            $lista = $lista."<li>".$columna."</li>";
-                            #echo $columna;
-                         }
-                        #echo "<br>";
-                        }
                         $sucursales = "<a data-toggle='modal' data-target='#ver_sucursales' onClick='visualizar(\"$data[idusuario]\",\"$lista\");' href='#'>Ver todas <i class='fas fa-eye'></i></a>";                        
                     }
 
                     ##poner que no se puueda borrar a superadmin
-                        if ($idrol == 1)
+                        if ($rol == "SuperAdmin")
                         {
                             $boton_eliminar = "<button disabled class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>";
                             $boton_permisos = "<button disabled class='btn btn-warning btn-sm'><i class='fas fa-key'></i></button>";
@@ -148,26 +136,40 @@ include "accion/conexion.php";
                             $boton_eliminar = "<button onClick='eliminar_user(\"$data[idusuario]\");' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>";
                             $boton_permisos = "<a href='permisos.php?id=".$data["idusuario"]."' class='btn btn-warning btn-sm'><i class='fas fa-key'></i></a>";
                         }
+                        $ceros = "00";
+                        if ($id > 9)
+                        {
+                            $ceros = "0";
+                        }
+                        elseif ($id > 99) 
+                        {
+                            $ceros = "";
+                        }
                     ?>
                     <tr>
-                        <td><?php echo $contador; ?></td>
-                        <td><?php echo $rol_usuario['rol']; ?></td>
+                        <td><?php echo $ceros.$id; ?></td>
+                        <td><?php echo $data['idusuario']; ?></td>
                         <td><?php echo $data['nombre']; ?></td>
+                        <td><?php echo $rol; ?></td>
                         <td><?php echo $puesto_usuario['puesto']; ?></td>
                         <td><?php echo $sucursales; ?></td>
-                        <td><?php echo $data['idusuario']; ?></td>
-                        <td WIDTH="120">
-                            <?php if ($data['estado'] == 1) { ?>
-                                <?php echo $boton_permisos; ?>
-                                <a href="editar_usuario.php?id=<?php echo $data['idusuario']; ?>" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
-                                <?php echo $boton_eliminar; ?>
-                                    
+                        <td align="center">
+                            <?php if ($data['estado'] == 1) 
+                            { 
+                                echo $boton_permisos;
+                                ?>
+
+                                <a href="editar_usuario.php?id=<?php echo $data['idusuario']; ?>" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
                                 
-                            <?php } ?>
+                                <?php 
+                                echo $boton_eliminar;
+                            }
+                            else
+                                echo $estado;
+                            ?>
                         </td>
                     </tr>
             <?php 
-                $contador = $contador + 1;
                 }
             } 
             ?>
