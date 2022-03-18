@@ -35,7 +35,7 @@ $name_sucursal = $dato;
 	<link href="../css/datatables.min.css" rel="stylesheet">
 	<style type="text/css">
 		.div-interno{
-			  zoom: 85%;
+			  zoom: 80%;
 			}
 	</style>
 </head>

@@ -4,6 +4,9 @@
   <div class="container my-auto">
     <div class="copyright text-center my-auto">
       <span>Copyright &copy; Muebleria Compra Facil <?php echo date("Y"); ?></span>
+      <br>
+      <br>
+      <span>Version 1.0</span>
     </div>
   </div>
 </footer>

@@ -18,6 +18,26 @@ else
     else
     {
         $data = mysqli_fetch_array($sql);
+        $no_cliente = $data['no_cliente'];
+        $ceros = "0000";
+                        if ($no_cliente > 9)
+                        {
+                            $ceros = "000";
+                        }
+                        elseif ($no_cliente > 99) 
+                        {
+                            $ceros = "00";
+                        }
+                        elseif ($no_cliente > 999) 
+                        {
+                            $ceros = "0";
+                        }
+                        elseif ($no_cliente > 9999) 
+                        {
+                            $ceros = "";
+                        }
+        $num_cliente = $ceros.$no_cliente;
+
         $up_nombre_cliente = $data['nombre_cliente'];
         $up_zona = $data['zona'];
         $up_domicilio_cliente = $data['domicilio_cliente'];
@@ -392,29 +412,35 @@ if (!empty($_POST))
 <div class="row">
     <div class="col-md-9 mx-auto">
         <form action="" method="post" autocomplete="on">
-            <div align="left">
-                <a href="clientes.php"  class="btn btn-secondary btn-lg" type="button" >Regresar</a> 
-                <input name="bandera" id="bandera" value="newcliente" hidden>
-                <?php 
-                    if($editar_cliente_full)
-                    {
-                        echo '<input type="submit" value="Actualizar cliente" class="btn btn-primary btn-lg">';
-                        $disabled_full = "";
-                        $disabled_lim = "";
-                    }
-                    else if($editar_cliente_lim)
-                    {
-                        echo '<input type="submit" value="Actualizar cliente" class="btn btn-primary btn-lg">';
-                        $disabled_lim = "";
-                        $disabled_full = "disabled";
-                    }
-                    else
-                    {
-                        echo '<button disabled class="btn btn-primary btn-lg">Actualizar cliente</button>';
-                        $disabled_lim = "disabled";
-                        $disabled_full = "disabled";
-                    }
-                 ?>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 align="left"><strong>ID cliente: <?php echo $num_cliente; ?></strong></h2>
+                </div>
+                <div class="col-lg-6" align="right">
+                        <a href="clientes.php"  class="btn btn-secondary btn-lg" type="button" >Regresar</a> 
+                        <input name="bandera" id="bandera" value="newcliente" hidden>
+                        <?php 
+                            if($editar_cliente_full)
+                            {
+                                echo '<input type="submit" value="Actualizar cliente" class="btn btn-primary btn-lg">';
+                                $disabled_full = "";
+                                $disabled_lim = "";
+                            }
+                            else if($editar_cliente_lim)
+                            {
+                                echo '<input type="submit" value="Actualizar cliente" class="btn btn-primary btn-lg">';
+                                $disabled_lim = "";
+                                $disabled_full = "disabled";
+                            }
+                            else
+                            {
+                                echo '<button disabled class="btn btn-primary btn-lg">Actualizar cliente</button>';
+                                $disabled_lim = "disabled";
+                                $disabled_full = "disabled";
+                            }
+                         ?>
+                </div>
             </div>
              <br>
         <div class="card">

@@ -512,10 +512,7 @@ if (!empty($_POST))
                     
                         <div class="form-group col-lg-4">
                           <label>Sucursal</label>
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                           <a id="agregar_todos">Agregar todas</a>
-                          &nbsp;
                           <div class="input-group mb-3">
                           <select disabled class="form-control js-example-basic-multiple" id="sucursal" name="sucursal[]" multiple="multiple" required>
                             <?php
