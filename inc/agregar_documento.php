@@ -4,22 +4,6 @@ include_once "header.php";
 include "accion/conexion.php";
 
 $alert = "";
-if (!empty($_GET['msgsuc'])) 
-{
-  if($_GET['msgsuc'] == "sucursal_insertada")
-  {
-    $alert = '<div class="alert alert-primary" role="alert">
-                              Nueva Sucursal registrada
-                          </div>';
-  }  
-  else if($_GET['msgsuc'] == "error_nueva_sucursal")
-  {
-    $alert = '<div class="alert alert-danger" role="alert">
-                          Error al registrar la sucursal, verifique nuevamente
-                      </div>';
-  }
-}
-
 if (!empty($_GET['msgdoc'])) 
 {
   if($_GET['msgdoc'] == "error_nuevo_doc")
@@ -74,36 +58,6 @@ if (!empty($_GET['msgdoc']))
     </div>
 </div>
 
-<div id="nueva_sucursal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="my-modal-title">Nueva Sucursal</h5>
-                <button class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="accion/agregar_sucursal.php" method="post" autocomplete="off">
-                    <div class="form-group">
-                        <label for="correo">Nueva Sucursal</label>
-                        <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newsucursal" id="newsucursal" required>
-                    </div>
-
-                    <div class="form-group">
-                         <textarea class="form-control" name="desc_sucursal" title="Ingrese descripción de la sucursal" id="desc_sucursal" placeholder="Indicar una breve descripción sobre la sucursal (Opcional)" maxlength="1000"></textarea>
-                    </div>
-
-                    <input value="sucursal" name="bandera" id="bandera" hidden>
-                    <div align="right">
-                        <input type="submit" value="Agregar" class="btn btn-primary">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 <br>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -152,8 +106,7 @@ if (!empty($_GET['msgdoc']))
                               echo "<option value='".$row["idsucursales"]."'>".$row["sucursales"]."</option>";
                               }
                             }
-                            ?>                     
-                            <option value="newsucursal" >Agregar nueva sucursal...</option>    
+                            ?>                        
                           </select>
                         </div>
                     </div>

@@ -191,13 +191,13 @@
 			<div id="collapseconfi" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
 					<?php 
-						if($usuarios)
-						{
-							echo '<a class="collapse-item" href="usuarios.php">Usuarios</a>';
-						}
 						if($sucursales)
 						{
 							echo '<a class="collapse-item" href="sucursales.php">Sucursales</a>';
+						}
+						if($usuarios)
+						{
+							echo '<a class="collapse-item" href="usuarios.php">Usuarios</a>';
 						}
 						if($documentos)
 						{

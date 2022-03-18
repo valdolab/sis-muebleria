@@ -38,25 +38,7 @@ if (!empty($_POST))
     else 
     {
         $ban = $_POST['bandera'];
-        if($ban == 'sucursal')
-        {
-          $nomsucursal = $_POST['newsucursal'];
-          $desc_sucursal = $_POST['desc_sucursal'];
-          $insert_sucursal= mysqli_query($conexion, "INSERT INTO sucursales(sucursales,descripcion) values ('$nomsucursal','$desc_sucursal')");
-              if ($insert_sucursal) {
-                  $alert = '<div class="alert alert-primary" role="alert">
-                              Sucursal registrado
-                          </div>';
-                          #header("Location: agregar_documento.php");
-              }
-              else
-              {
-                  $alert = '<div class="alert alert-danger" role="alert">
-                          Error al registrar
-                      </div>';
-              }
-        }
-        else if($ban == 'newdocumento')
+        if($ban == 'newdocumento')
         {
           #$id_doc = md5($_POST['nombre']);
           $name_documento = $_POST['nombre'];
@@ -123,36 +105,6 @@ if (!empty($_POST))
     </div>
 </div>
 
-<div id="nueva_sucursal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="my-modal-title">Nueva Sucursal</h5>
-                <button class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="" method="post" autocomplete="off">
-                    <div class="form-group">
-                        <label for="correo">Nueva Sucursal</label>
-                        <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newsucursal" id="newsucursal" required>
-                    </div>
-                    
-                    <div class="form-group">
-                         <textarea class="form-control" name="desc_sucursal" title="Ingrese descripción de la sucursal" id="desc_sucursal" placeholder="Indicar una breve descripción sobre la sucursal (Opcional)" maxlength="1000"></textarea>
-                    </div>
-
-                    <input value="sucursal" name="bandera" id="bandera" hidden>
-                    <div align="right">
-                        <input type="submit" value="Agregar" class="btn btn-primary">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 <br>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -184,7 +136,6 @@ if (!empty($_POST))
                         <div class="form-group col-lg-4">
                           <label>Sucursal</label>
                           <select onchange="mostrarSucursal()" class="form-control" id="sucursal" name="sucursal" required>
-                            <option id="opSucursal" value="" selected>Seleccione una opción</option>
                             <?php
                             #codigo para la lista de sucursales que se extraen de la base de datos
                             $result = mysqli_query($conexion,"SELECT idsucursales,sucursales FROM sucursales");                        
@@ -201,8 +152,7 @@ if (!empty($_POST))
                                 }
                               }
                             }
-                            ?>                     
-                            <option value="newsucursal" >Agregar nueva sucursal...</option>    
+                            ?>                      
                           </select>
                         </div>
                     </div>

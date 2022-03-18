@@ -108,8 +108,6 @@ if (!empty($_POST))
             </div>
             <div class="modal-body">
                 <form action="" method="post" autocomplete="off">
-                    <hr>
-
                     <div class="form-group">
                         <label for="correo">Nueva Sucursal</label>
                         <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newsucursal" id="newsucursal" required>

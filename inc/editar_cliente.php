@@ -412,30 +412,31 @@ if (!empty($_POST))
 <div class="row">
     <div class="col-md-9 mx-auto">
         <form action="" method="post" autocomplete="on">
-
             <div class="row">
                 <div class="col-lg-6">
                     <h2 align="left"><strong>ID cliente: <?php echo $num_cliente; ?></strong></h2>
                 </div>
                 <div class="col-lg-6" align="right">
-                        <a href="clientes.php"  class="btn btn-secondary btn-lg" type="button" >Regresar</a> 
                         <input name="bandera" id="bandera" value="newcliente" hidden>
                         <?php 
                             if($editar_cliente_full)
                             {
-                                echo '<input type="submit" value="Actualizar cliente" class="btn btn-primary btn-lg">';
+                                echo '<button id="btneditar_cliente" class="btn btn-primary btn-lg" type="button">Editar</button> ';
+                                echo '<button id="update_cliente" disabled type="submit" class="btn btn-success btn-lg">Guardar <i class="fas fa-save"></i></button>';
                                 $disabled_full = "";
                                 $disabled_lim = "";
                             }
                             else if($editar_cliente_lim)
                             {
-                                echo '<input type="submit" value="Actualizar cliente" class="btn btn-primary btn-lg">';
+                                echo '<button id="btneditar_cliente" class="btn btn-primary btn-lg" type="button">Editar</button>' ;
+                                echo '<button id="update_cliente" disabled type="submit" class="btn btn-success btn-lg">Guardar <i class="fas fa-save"></i></button>';
                                 $disabled_lim = "";
                                 $disabled_full = "disabled";
                             }
                             else
                             {
-                                echo '<button disabled class="btn btn-primary btn-lg">Actualizar cliente</button>';
+                                echo '<button disabled class="btn btn-primary btn-lg" type="button">Editar</button> ';
+                                echo '<button disabled class="btn btn-success btn-lg">Guardar <i class="fas fa-save"></i></button>';
                                 $disabled_lim = "disabled";
                                 $disabled_full = "disabled";
                             }
@@ -443,11 +444,8 @@ if (!empty($_POST))
                 </div>
             </div>
              <br>
+    <fieldset id="all_inputs" disabled>
         <div class="card">
-            <!-- 
-            <div class="card-header bg text-dark">
-                <h3><strong>AGREGAR CLIENTE</strong></h3>
-            </div> -->
             <div class="card-body">
                 <div id="prueba">
                     
@@ -912,7 +910,7 @@ if (!empty($_POST))
                                         else
                                         {
                                             echo "<div class='col-lg-1' align='right'>
-                                                <a href='#referencias' onclick='borrar_card(".$newidnota.")' class='remover_campo'><i style='color: red;' class='fas fa-trash-alt fa-2x'></i></a>
+                                                <a id='btneliminar_refs' style='pointer-events: none;' href='#referencias' onclick='borrar_card(".$newidnota.")' class='remover_campo'><i style='color: red;' class='fas fa-trash-alt fa-2x'></i></a>
                                             </div>";
                                         }
                                         
@@ -1072,8 +1070,8 @@ if (!empty($_POST))
                     </div>
             </div>
         </div>
+    </fieldset>
     <br>
-            
         </form>
     </div>
 </div>
