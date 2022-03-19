@@ -227,7 +227,7 @@ if (!empty($_POST))
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="usuario">Contraseña</label>
-                            <input type="text" class="form-control" placeholder="Ingrese Contraseña" name="pass" id="pass" required>
+                            <input type="password" class="form-control" placeholder="Ingrese Contraseña" name="pass" id="pass" required>
                         </div>
                     </div>
                     <div class="row">

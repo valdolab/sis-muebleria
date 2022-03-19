@@ -11,7 +11,7 @@ if (empty($_GET['id']))
 else
 {
     $id_sucursal = $_GET['id'];
-    $sql = mysqli_query($conexion, "SELECT idsucursales,sucursales,descripcion FROM sucursales WHERE idsucursales = $id_sucursal");
+    $sql = mysqli_query($conexion, "SELECT idsucursales,sucursales,descripcion,estado,matriz FROM sucursales WHERE idsucursales = $id_sucursal");
     $result_sql = mysqli_num_rows($sql);
     if ($result_sql == 0) {
       header("Location: sucursales.php");
@@ -21,6 +21,7 @@ else
         $data = mysqli_fetch_array($sql);
         $up_sucursales = $data['sucursales'];
         $up_desc = $data['descripcion'];
+        $es_matriz = $data['matriz'];
     } 
 }
 
@@ -30,7 +31,14 @@ if (!empty($_POST))
 {
     $new_sucursales = $_POST['newsucursal'];
     $new_desc = $_POST['desc_sucursal'];
-    $insert_sucursal= mysqli_query($conexion, "UPDATE sucursales set sucursales = '$new_sucursales', descripcion = '$new_desc') where idsucursales = $id_sucursal");
+
+    //ver si se edito una matriz
+    if($es_matriz)
+    {
+        $new_sucursales = $new_sucursales."-Matriz";
+    }
+
+    $insert_sucursal= mysqli_query($conexion, "UPDATE sucursales set sucursales = '$new_sucursales', descripcion = '$new_desc' where idsucursales = $id_sucursal");
     if ($insert_sucursal) 
     {
         
@@ -67,11 +75,11 @@ if (!empty($_POST))
 
                         <div class="swal2-content">
                             <div id="swal2-content" class="swal2-html-container" style="display: block;">
-                                Documento agregado correctamete
+                                Surursal editada correctamete
                             </div>
                         </div>
                         <div class="swal2-actions">
-                            <a href="documentos.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
+                            <a href="sucursales.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
                         </div>
 
                     </div>
@@ -89,14 +97,42 @@ if (!empty($_POST))
     <div class="col-md-8 mx-auto">
         <div class="card">
             <div class="card-header bg text-dark">
-                <h5><strong>EDITAR SUCURSAL</strong></h5>
+                <h5><strong>EDITAR SUCURSAL <?php echo ($es_matriz ? "MATRIZ" : ""); ?></strong></h5>
             </div>
             <div class="card-body">
-                <form action="" method="post" autocomplete="off">
-                    <div class="form-group">
-                        <label for="correo">Nueva Sucursal</label>
-                        <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newsucursal" id="newsucursal" required value="<?php echo $up_sucursales; ?>">
-                    </div>
+                <form action="" method="post" autocomplete="off">    
+                    <?php 
+                        if ($es_matriz)
+                        {
+                            //calculamos solo el nombre, sin el -Matriz
+                            $name_sinmatriz = explode("-", $up_sucursales)[0];
+                            ?>
+                            <div class="row">
+                            <div class="col-lg-9">
+                                <div class="form-group">
+                                    <label for="correo">Nueva Sucursal</label>
+                                    <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newsucursal" id="newsucursal" required value="<?php echo $name_sinmatriz; ?>">
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label for="correo">&nbsp</label>
+                                    <input disabled type="text" class="form-control" required value="-Matriz">
+                                </div>
+                            </div>
+                            </div>
+                            <?php 
+                        }
+                        else
+                        {
+                            ?>
+                                <div class="form-group">
+                                    <label for="correo">Nueva Sucursal</label>
+                                    <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newsucursal" id="newsucursal" required value="<?php echo $up_sucursales; ?>">
+                                </div>
+                            <?php 
+                        }
+                     ?>
 
                     <div class="form-group">
                          <textarea class="form-control" name="desc_sucursal" title="Ingrese descripción de la sucursal" id="desc_sucursal" placeholder="Indicar una breve descripción sobre la sucursal (Opcional)" maxlength="1000"><?php echo $up_desc; ?></textarea>
@@ -134,6 +170,7 @@ function mayusculas(e) {
     e.value = e.value.toUpperCase();
 }
 
+document.getElementById('divzoom').style.zoom = "95%";
 </script>
 
 <?php ob_end_flush(); ?>

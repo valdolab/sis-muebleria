@@ -96,19 +96,30 @@ if (!empty($_POST))
                         $flag_act_correcto = 1;
                     }
 
-                    foreach($check_sucursales as $value)
+                    if(is_array($check_sucursales))
                     {
-                        $sql_insert2 = mysqli_query($conexion, "INSERT INTO sucursal_usuario(sucursal_idusuario,sucursal_idsucursales) values ('$id_user', $value)");
-                        if ($sql_insert2) 
+                        foreach($check_sucursales as $value)
                         {
-                          $con = $con + 1;
+                            $sql_insert2 = mysqli_query($conexion, "INSERT INTO sucursal_usuario(sucursal_idusuario,sucursal_idsucursales) values ('$id_user', $value)");
+                            if ($sql_insert2) 
+                            {
+                              $con = $con + 1;
+                            }
+                        }
+                        if ($con != sizeof($check_sucursales)) 
+                          {
+                              $flag_act_correcto = 1;
+                          } 
+                    }
+                    else
+                    {
+                        $sucursal_user = $check_sucursales['sucursal_idsucursales'];
+                        $sql_insert3 = mysqli_query($conexion, "INSERT INTO sucursal_usuario(sucursal_idusuario,sucursal_idsucursales) values ('$id_user', $sucursal_user)");
+                        if (!$sql_insert3) 
+                        {
+                            $flag_act_correcto = 1;
                         }
                     }
-                    
-                    if ($con != sizeof($check_sucursales)) 
-                      {
-                          $flag_act_correcto = 1;
-                      } 
 
               #borramos las sucursales del viejo usuario
               $query_insert2_1 = mysqli_query($conexion, "DELETE FROM sucursal_usuario WHERE sucursal_idusuario = '$idusuario'");
@@ -154,7 +165,7 @@ if (!empty($_POST))
             {
                 $superadmin = 0;
             }
-            $query_insert4 = mysqli_query($conexion, "UPDATE usuario SET rol=$rol, superadmin=$superadmin where idusuario='$idusuario'");
+            $query_insert4 = mysqli_query($conexion, "UPDATE usuario SET rol='$rol', superadmin=$superadmin where idusuario='$idusuario'");
                     if (!$query_insert4) 
                     {
                               $flag_act_correcto = 1;
@@ -346,7 +357,7 @@ if (!empty($_POST))
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="con">Contraseña</label>
-                            <input required disabled type="text" class="form-control" placeholder="Ingrese Contraseña" name="pass" id="pass">
+                            <input required disabled type="password" class="form-control" placeholder="Ingrese Contraseña" name="pass" id="pass">
 
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <input onchange="bloquear_campo()" name="actualizar_pass" class="form-check-input" type="checkbox" value="actualizar_pass" id="flexCheckDefaultc">

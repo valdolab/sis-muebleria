@@ -109,7 +109,7 @@ if (!empty($_POST))
                 $tel_conyugue = $_POST['tel_conyugue'];
                 $conyugue = 1;
 
-                $sql_insert = "INSERT INTO cliente(idcliente, nombre_cliente, zona, domicilio_cliente, subzona, tel1_cliente, tel2_cliente, cp_cliente, idestado_civil, trabajo_cliente, puesto_cliente, direccion_trabajo_cliente, antiguedadA_trabajo_cliente, antiguedadM_trabajo_cliente, ingresos_cliente, tipo_ingresos_cliente, nombre_conyugue_cliente, antiguedadA_vinculo, antiguedadM_vinculo, trabajo_conyugue, puesto_conyugue, ingreso_mensual_conyugue, direccion_trabajo_conyugue, tel_conyugue, tipo_vivienda_cliente, edad_residencia, renta_mensual, ndependientes, nombre_aval, tel_aval, domicilio_aval, trabajo_aval, puesto_aval, ingreso_mensual_aval, nombre_conyugue_aval, apto_credito, nivel_apto) VALUES ('$idcliente', '$nombre_cliente', $zona, '$domicilio_cliente', $subzona, ".(!empty($tel1_cliente) ? "'$tel1_cliente'" : "NULL").", ".(!empty($tel2_cliente) ? "'$tel2_cliente'" : "NULL").", $cp_cliente, $conyugue, '$trabajo_cliente', '$puesto_cliente', '$direccion_trabajo_cliente', $antiguedadA_trabajo_cliente, $antiguedadM_trabajo_cliente, $ingresos_cliente, '$tipo_ingreso_cliente', '$nombre_conyugue_cliente', $antiguedadA_vinculo, $antiguedadM_vinculo, '$trabajo_conyugue', '$puesto_conyugue', $ingreso_mensual_conyugue, '$direccion_trabajo_conyugue', '$tel_conyugue', '$tipo_vivienda_cliente', $edad_residencia, $renta_mensual, $ndependientes, ".(!empty($nombre_aval) ? "'$nombre_aval'" : "NULL").", ".(!empty($tel_aval) ? "'$tel_aval'" : "NULL").", ".(!empty($domicilio_aval) ? "'$domicilio_aval'" : "NULL").", ".(!empty($trabajo_aval) ? "'$trabajo_aval'" : "NULL").", ".(!empty($puesto_aval) ? "'$puesto_aval'" : "NULL").", ".(!empty($ingreso_mensual_aval) ? "$ingreso_mensual_aval" : "NULL").", ".(!empty($nombre_conyugue_aval) ? "'$nombre_conyugue_aval'" : "NULL").", $apto_credito, $nivel_apto)";
+                $sql_insert = "INSERT INTO cliente(idcliente, nombre_cliente, zona, domicilio_cliente, subzona, tel1_cliente, tel2_cliente, cp_cliente, idestado_civil, trabajo_cliente, puesto_cliente, direccion_trabajo_cliente, antiguedadA_trabajo_cliente, antiguedadM_trabajo_cliente, ingresos_cliente, tipo_ingresos_cliente, nombre_conyugue_cliente, antiguedadA_vinculo, antiguedadM_vinculo, trabajo_conyugue, puesto_conyugue, ingreso_mensual_conyugue, direccion_trabajo_conyugue, tel_conyugue, tipo_vivienda_cliente, edad_residencia, renta_mensual, ndependientes, nombre_aval, tel_aval, domicilio_aval, trabajo_aval, puesto_aval, ingreso_mensual_aval, nombre_conyugue_aval, apto_credito, nivel_apto) VALUES ('$idcliente', '$nombre_cliente', $zona, ".(!empty($domicilio_cliente) ? "'$domicilio_cliente'" : "NULL").", $subzona, ".(!empty($tel1_cliente) ? "'$tel1_cliente'" : "NULL").", ".(!empty($tel2_cliente) ? "'$tel2_cliente'" : "NULL").", ".(!empty($cp_cliente) ? "'$cp_cliente'" : "NULL").", $conyugue, ".(!empty($trabajo_cliente) ? "'$trabajo_cliente'" : "NULL").", ".(!empty($puesto_cliente) ? "'$puesto_cliente'" : "NULL").", ".(!empty($direccion_trabajo_cliente) ? "'$direccion_trabajo_cliente'" : "NULL").", $antiguedadA_trabajo_cliente, $antiguedadM_trabajo_cliente, $ingresos_cliente, '$tipo_ingreso_cliente', '$nombre_conyugue_cliente', $antiguedadA_vinculo, $antiguedadM_vinculo, ".(!empty($trabajo_conyugue) ? "'$trabajo_conyugue'" : "NULL").", ".(!empty($puesto_conyugue) ? "'$puesto_conyugue'" : "NULL").", $ingreso_mensual_conyugue, ".(!empty($direccion_trabajo_conyugue) ? "'$direccion_trabajo_conyugue'" : "NULL").", ".(!empty($tel_conyugue) ? "'$tel_conyugue'" : "NULL").", '$tipo_vivienda_cliente', $edad_residencia, $renta_mensual, $ndependientes, ".(!empty($nombre_aval) ? "'$nombre_aval'" : "NULL").", ".(!empty($tel_aval) ? "'$tel_aval'" : "NULL").", ".(!empty($domicilio_aval) ? "'$domicilio_aval'" : "NULL").", ".(!empty($trabajo_aval) ? "'$trabajo_aval'" : "NULL").", ".(!empty($puesto_aval) ? "'$puesto_aval'" : "NULL").", ".(!empty($ingreso_mensual_aval) ? "$ingreso_mensual_aval" : "NULL").", ".(!empty($nombre_conyugue_aval) ? "'$nombre_conyugue_aval'" : "NULL").", $apto_credito, $nivel_apto)";
 
             $insert_correctly = FALSE;
             $insert_cliente = mysqli_query($conexion, $sql_insert);
@@ -120,7 +120,7 @@ if (!empty($_POST))
             else#no tiene conyugue y no guardamos nada, puro null
             {
                 $conyugue = 0;
-                $sql_insert = "INSERT INTO cliente(idcliente, nombre_cliente, zona, domicilio_cliente, subzona, tel1_cliente, tel2_cliente, cp_cliente, idestado_civil, trabajo_cliente, puesto_cliente, direccion_trabajo_cliente, antiguedadA_trabajo_cliente, antiguedadM_trabajo_cliente, ingresos_cliente, tipo_ingresos_cliente, nombre_conyugue_cliente, antiguedadA_vinculo, antiguedadM_vinculo, trabajo_conyugue, puesto_conyugue, ingreso_mensual_conyugue, direccion_trabajo_conyugue, tel_conyugue, tipo_vivienda_cliente, edad_residencia, renta_mensual, ndependientes, nombre_aval, tel_aval, domicilio_aval, trabajo_aval, puesto_aval, ingreso_mensual_aval, nombre_conyugue_aval, apto_credito, nivel_apto) VALUES ('$idcliente', '$nombre_cliente', $zona, '$domicilio_cliente', $subzona, ".(!empty($tel1_cliente) ? "'$tel1_cliente'" : "NULL").", ".(!empty($tel2_cliente) ? "'$tel2_cliente'" : "NULL").", $cp_cliente, $conyugue, '$trabajo_cliente', '$puesto_cliente', '$direccion_trabajo_cliente', $antiguedadA_trabajo_cliente, $antiguedadM_trabajo_cliente, $ingresos_cliente, '$tipo_ingreso_cliente', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$tipo_vivienda_cliente', $edad_residencia, $renta_mensual, $ndependientes, ".(!empty($nombre_aval) ? "'$nombre_aval'" : "NULL").", ".(!empty($tel_aval) ? "'$tel_aval'" : "NULL").", ".(!empty($domicilio_aval) ? "'$domicilio_aval'" : "NULL").", ".(!empty($trabajo_aval) ? "'$trabajo_aval'" : "NULL").", ".(!empty($puesto_aval) ? "'$puesto_aval'" : "NULL").", ".(!empty($ingreso_mensual_aval) ? "$ingreso_mensual_aval" : "NULL").", ".(!empty($nombre_conyugue_aval) ? "'$nombre_conyugue_aval'" : "NULL").", $apto_credito, $nivel_apto)";
+                $sql_insert = "INSERT INTO cliente(idcliente, nombre_cliente, zona, domicilio_cliente, subzona, tel1_cliente, tel2_cliente, cp_cliente, idestado_civil, trabajo_cliente, puesto_cliente, direccion_trabajo_cliente, antiguedadA_trabajo_cliente, antiguedadM_trabajo_cliente, ingresos_cliente, tipo_ingresos_cliente, nombre_conyugue_cliente, antiguedadA_vinculo, antiguedadM_vinculo, trabajo_conyugue, puesto_conyugue, ingreso_mensual_conyugue, direccion_trabajo_conyugue, tel_conyugue, tipo_vivienda_cliente, edad_residencia, renta_mensual, ndependientes, nombre_aval, tel_aval, domicilio_aval, trabajo_aval, puesto_aval, ingreso_mensual_aval, nombre_conyugue_aval, apto_credito, nivel_apto) VALUES ('$idcliente', '$nombre_cliente', $zona, ".(!empty($domicilio_cliente) ? "'$domicilio_cliente'" : "NULL").", $subzona, ".(!empty($tel1_cliente) ? "'$tel1_cliente'" : "NULL").", ".(!empty($tel2_cliente) ? "'$tel2_cliente'" : "NULL").", ".(!empty($cp_cliente) ? "'$cp_cliente'" : "NULL").", $conyugue, ".(!empty($trabajo_cliente) ? "'$trabajo_cliente'" : "NULL").", ".(!empty($puesto_cliente) ? "'$puesto_cliente'" : "NULL").", ".(!empty($direccion_trabajo_cliente) ? "'$direccion_trabajo_cliente'" : "NULL").", $antiguedadA_trabajo_cliente, $antiguedadM_trabajo_cliente, $ingresos_cliente, '$tipo_ingreso_cliente', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$tipo_vivienda_cliente', $edad_residencia, $renta_mensual, $ndependientes, ".(!empty($nombre_aval) ? "'$nombre_aval'" : "NULL").", ".(!empty($tel_aval) ? "'$tel_aval'" : "NULL").", ".(!empty($domicilio_aval) ? "'$domicilio_aval'" : "NULL").", ".(!empty($trabajo_aval) ? "'$trabajo_aval'" : "NULL").", ".(!empty($puesto_aval) ? "'$puesto_aval'" : "NULL").", ".(!empty($ingreso_mensual_aval) ? "$ingreso_mensual_aval" : "NULL").", ".(!empty($nombre_conyugue_aval) ? "'$nombre_conyugue_aval'" : "NULL").", $apto_credito, $nivel_apto)";
 
                 $insert_correctly = FALSE;
                 $insert_cliente = mysqli_query($conexion, $sql_insert);
@@ -330,7 +330,7 @@ if (!empty($_POST))
 
                         <div class="form-group col-lg-7">
                             <label for="domicilio_cliente">Domicilio</label>
-                            <input maxlength="400" required type="text" class="form-control" placeholder="" name="domicilio_cliente" id="domicilio_cliente">
+                            <input maxlength="400" type="text" class="form-control" placeholder="" name="domicilio_cliente" id="domicilio_cliente">
                         </div>
                         <div class="form-group col-lg-5">
                                 <label for="subzona">Colonia (Subzona) </label>
@@ -353,14 +353,13 @@ if (!empty($_POST))
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="cp_cliente">Código Postal</label>
-                            <input type="number" class="form-control" placeholder="" name="cp_cliente" id="cp_cliente" required>
+                            <input type="number" class="form-control" placeholder="" name="cp_cliente" id="cp_cliente">
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="idestado_civil">Conyugue</label>
                                 <select class="form-control" id="idestado_civil" name="idestado_civil" required>
-                                <option selected hidden>Seleccione una opción</option>
                                 <option value="si" >Sí</option>
-                                <option value="no" >No</option>
+                                <option selected value="no" >No</option>
                               </select>
                         </div>
                     </div>
@@ -382,16 +381,16 @@ if (!empty($_POST))
 
                         <div class="form-group col-lg-7">
                             <label for="trabajo_cliente">Lugar de Trabajo</label>
-                            <input type="text" class="form-control" placeholder="" name="trabajo_cliente" id="trabajo_cliente" required>
+                            <input type="text" class="form-control" placeholder="" name="trabajo_cliente" id="trabajo_cliente">
                         </div>
                         <div class="form-group col-lg-5">
                             <label for="puesto_cliente">Actividad o Puesto</label>
-                            <input type="text" class="form-control" placeholder="" name="puesto_cliente" id="puesto_cliente" required>
+                            <input type="text" class="form-control" placeholder="" name="puesto_cliente" id="puesto_cliente">
                         </div>
 
                         <div class="form-group col-lg-5">
                             <label for="direccion_trabajo_cliente">Dirección</label>
-                            <input type="text" class="form-control" placeholder="" name="direccion_trabajo_cliente" id="direccion_trabajo_cliente" required>
+                            <input type="text" class="form-control" placeholder="" name="direccion_trabajo_cliente" id="direccion_trabajo_cliente">
                         </div>
 
                         <div class="col-lg-2"></div>
@@ -421,16 +420,11 @@ if (!empty($_POST))
                               <div class="input-group-prepend">
                                 <span class="input-group-text">$</span>
                               </div>
-                              <input name="ingresos_cliente" id="ingresos_cliente" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
+                              <input name="ingresos_cliente" id="ingresos_cliente" type="number" class="form-control" aria-label="Monto en pesos mexicanos" value="0">
                               <div class="input-group-append">
                                 <span class="input-group-text">.00</span>
                               </div>
                             </div>
-
-                            <!--
-                            <input type="text" name="ingresos_cliente" id="ingresos_cliente" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="" data-type="currency" placeholder="$10,000.00" class="form-control" required>
-                            -->
-                            
 
                         </div>
 
@@ -516,7 +510,7 @@ if (!empty($_POST))
                               <div class="input-group-prepend">
                                 <span class="input-group-text">$</span>
                               </div>
-                              <input name="ingreso_mensual_conyugue" id="ingreso_mensual_conyugue" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
+                              <input name="ingreso_mensual_conyugue" id="ingreso_mensual_conyugue" type="number" class="form-control" aria-label="Monto en pesos mexicanos" value="0">
                               <div class="input-group-append">
                                 <span class="input-group-text">.00</span>
                               </div>
@@ -719,13 +713,11 @@ if (!empty($_POST))
                               <div class="input-group-prepend">
                                 <span class="input-group-text">$</span>
                               </div>
-                              <input name="ingreso_mensual_aval" id="ingreso_mensual_aval" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
+                              <input name="ingreso_mensual_aval" id="ingreso_mensual_aval" type="number" class="form-control" aria-label="Monto en pesos mexicanos" value="0">
                               <div class="input-group-append">
                                 <span class="input-group-text">.00</span>
                               </div>
                             </div>
-
-                            <!--<input type="text" name="ingreso_mensual_aval" id="ingreso_mensual_aval" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="" data-type="currency" placeholder="$10,000.00" class="form-control" required>-->
                         </div>
                     </div>
             </div>

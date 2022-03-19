@@ -5,15 +5,11 @@ include "accion/conexion.php";
 
 $modal = "";
 // Mostrar Datos
-$idusuario = $_GET['id'];
-if (empty($idusuario)) 
-{
-  header("Location: usuarios.php");
-}
+$idusuario = $_SESSION['iduser'];
 $sql = mysqli_query($conexion, "SELECT * FROM usuario WHERE idusuario = '$idusuario'");
 $result_sql = mysqli_num_rows($sql);
 if ($result_sql == 0) {
-  header("Location: usuarios.php");
+  header("Location: index.php");
 }
 else 
 {
@@ -21,7 +17,9 @@ else
     $up_nombre = $data['nombre'];
     $up_idusuario = $data['idusuario'];
     $up_rol = $data['rol'];
-    $up_puesto = $data['puesto'];
+    $up_idpuesto = $data['puesto'];
+    $sqlpuesto = mysqli_query($conexion, "SELECT puesto FROM puesto WHERE idpuesto = $up_idpuesto");
+    $up_name_puesto = mysqli_fetch_assoc($sqlpuesto)['puesto'];
 
     $sql2 = mysqli_query($conexion, "SELECT sucursal_idsucursales FROM sucursal_usuario WHERE sucursal_idusuario = '$idusuario'");
     #$up_sucursal_array = mysqli_fetch_assoc($sql2);
@@ -30,6 +28,17 @@ else
       $up_sucursal_array[] = $row["sucursal_idsucursales"];
       #echo $row["sucursal_idsucursales"];
     }
+    $result = mysqli_query($conexion,"SELECT idsucursales,sucursales FROM sucursales");                        
+                            if (mysqli_num_rows($result) > 0) 
+                            {  
+                              while($row = mysqli_fetch_assoc($result))
+                              {
+                                if (in_array($row['idsucursales'],$up_sucursal_array))
+                                {
+                                  $up_name_sucursales[] = $row['sucursales'];
+                                }
+                              }
+                            }
     #print_r($up_sucursal_array);
     #$existe = in_array(2, $up_sucursal_array);
     #echo $existe;
@@ -38,17 +47,11 @@ else
 
 if (!empty($_POST)) 
 {
-      $new_nombre = $_POST['nombre'];
-       $query_actualizar_user = mysqli_query($conexion,"UPDATE usuario SET nombre='$new_nombre' where idusuario = '$idusuario'");
-                    if ($query_actualizar_user)
-                    {
-                         $actualizo_user = TRUE;
-                    }
-                    else
-                    {
-                        $actualizo_user = FALSE;
-                    }
+    //verificar si la contraseña actual es la correcta
+    
+    //luego comparar que las dos nuevas pass conicidan
 
+    //por ultimo, actualizar la passs, lo de aqui abajo
     $actualizo_pass = 0;
     if(!empty($_POST['pass']))
     {
@@ -63,7 +66,7 @@ if (!empty($_POST))
                         $actualizo_pass = -1;
                     }
     }
-    if($actualizo_user and $actualizo_pass >= 0)
+    if($actualizo_pass >= 0)
     {
       $modal = "$('#mensaje_success').modal('show');";
     }
@@ -118,134 +121,74 @@ if (!empty($_POST))
 <!-- Begin Page Content -->
 <div class="container-fluid">
 <div class="row">
-    <div class="col-md-6 mx-auto">
-        <div class="card">
-            <div class="card-header bg text-dark">
-                <h5><strong>PERFIL DEL USUARIO</strong></h5>
-            </div>
-            <div class="card-body">
-                <form action="#" method="POST" autocomplete="off">
-                    <?php echo isset($alert) ? $alert : ''; ?>
+    <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5>Información Personal</h5>
+                </div>
+                <div class="card-body">
                     <div class="row">
-                      <div class="form-group col-lg-3">
-                            <label for="nombre">Usuario</label>
-                            <input required disabled value="<?php echo $up_idusuario; ?>" type="text" class="form-control" placeholder="Ingrese Usuario" name="usuario" id="usuario">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Nombre: <strong><?php echo $up_nombre; ?></strong></label>
+                            </div>
+                            <div class="form-group">
+                                <label>Usuario: <strong><?php echo $up_idusuario; ?></strong></label>
+                            </div>
+                            <div class="form-group">
+                                <label>Rol: <strong><?php echo $up_rol; ?></strong></label>
+                            </div>
                         </div>
-
-                        <div class="form-group col-lg-5">
-                            <label for="correo">Nombre completo</label>
-                            <input value="<?php echo $up_nombre; ?>" type="text" class="form-control" placeholder="Ingrese Nombre completo" name="nombre" id="nombre">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Puesto: <strong><?php echo $up_name_puesto; ?></strong></label>
+                            </div>
+                            <div class="form-group">
+                                <label>Sucursales asignadas: </label>
+                                <ul>
+                                    <?php 
+                                        foreach ($up_name_sucursales as $value) 
+                                        {
+                                            echo "<li>".$value."</li>";     
+                                        }
+                                     ?>
+                                </ul>
+                            </div>
                         </div>
-
-                        <div class="form-group col-lg-4">
-                            <label for="con">Contraseña</label>
-                            <input type="text" class="form-control" placeholder="Ingrese Contraseña" name="pass" id="pass">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-3">
-                          <label>Rol</label>
-                          <select disabled class="form-control" id="rol" name="rol" required>
-                            <?php 
-                            $iduser = $_SESSION['iduser'];
-                            $query = mysqli_query($conexion, "SELECT rol FROM usuario where idusuario='$iduser'");
-                            $rol = mysqli_fetch_assoc($query)['rol'];
-                            if ($rol=="SuperAdmin")
-                            {
-                                $NoesSuperAdmin = "";
-                            }
-                            else
-                            {
-                                $NoesSuperAdmin = "hidden";
-                            }
-                            if ($up_rol=="SuperAdmin")
-                                {
-                                    echo "<option selected value='SuperAdmin'>SuperAdmin</option>";
-                                }
-                                else if ($up_rol=="Administrador")
-                                {
-                                    echo "<option ".$NoesSuperAdmin." value='SuperAdmin'>SuperAdmin</option>";
-                                    echo "<option selected value='Administrador'>Administrador</option>";
-                                    echo "<option value='Usuario'>Usuario</option>";
-                                }
-                                else
-                                {
-                                    echo "<option ".$NoesSuperAdmin." value='SuperAdmin'>SuperAdmin</option>";
-                                    echo "<option value='Administrador'>Administrador</option>";
-                                    echo "<option selected value='Usuario'>Usuario</option>";
-                                }
-                            ?>                 
-                          </select>
-                        </div>
-
-                        <div class="form-group col-lg-4">
-                          <label>Puesto</label>
-                          <select disabled class="form-control" id="puesto" name="puesto" required>
-                            <option value="" hidden selected>Seleccione una opción</option>
-                            <?php
-                            #codigo para la lista de sucursales que se extraen de la base de datos
-                            $result = mysqli_query($conexion,"SELECT idpuesto,puesto FROM puesto");                        
-                            if (mysqli_num_rows($result) > 0) {  
-                              while($row = mysqli_fetch_assoc($result))
-                              {
-                                if ($row[idpuesto] == $up_puesto)
-                                {
-                                  echo "<option selected value='".$row[idpuesto]."'>".$row[puesto]."</option>";
-                                }
-                                else
-                                {
-                                  echo "<option value='".$row[idpuesto]."'>".$row[puesto]."</option>";
-                                }
-                              }
-                            }
-                            ?>   
-                            <option value="newpuesto" >Agregar nuevo puesto...</option>    
-                          </select>
-                        </div>
-                    
-                        <div class="form-group col-lg-5">
-                          <label>Sucursal</label>
-                          &nbsp;
-                          <div class="input-group mb-4">
-                          <select disabled class="form-control js-example-basic-multiple" id="sucursal" name="sucursal[]" multiple="multiple" required>
-                            <?php
-                            #codigo para la lista de sucursales que se extraen de la base de datos
-                            $result = mysqli_query($conexion,"SELECT idsucursales,sucursales FROM sucursales");                        
-                            if (mysqli_num_rows($result) > 0) 
-                            {  
-                              while($row = mysqli_fetch_assoc($result))
-                              {
-                                if (in_array($row[idsucursales],$up_sucursal_array))
-                                {
-                                  echo "<option selected value='".$row[idsucursales]."'>".$row[sucursales]."</option>";
-                                }
-                                else
-                                {
-                                  echo "<option value='".$row[idsucursales]."'>".$row[sucursales]."</option>";
-                                }
-                                
-                              }
-                            }
-                            ?>                        
-                          </select>
                     </div>
                 </div>
-                    </div>
+            </div>
 
-                    <br>
-
-                    <div class="row">
-                        <div align="right" class="col-lg-10">
-                        </div>
-                        <div align="right" class="col-lg-2">
-                            <input type="submit" value="Actualizar" class="btn btn-primary">
-                        </div>
-                    </div>
-                </form>
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5>Cambio de Contraseña</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <form action="" method=" post" name="frmChangePass" id="frmChangePass" class="p-3">
+                            <div class="form-group">
+                                <label>Contraseña Actual</label>
+                                <input type="password" name="actual_pass" id="actual_pass" required class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Nueva Contraseña</label>
+                                <input type="password" name="newpass" id="newpass" required class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirmar Contraseña</label>
+                                <input type="password" name="confirmpass" id="confirmpass" required class="form-control">
+                            </div>
+                            <?php echo isset($alert) ? $alert : ''; ?>
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-m">Cambiar Contraseña</button>
+                            </div>
+                        </form>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 <!-- /.container-fluid -->
 </div>

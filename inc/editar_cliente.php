@@ -269,10 +269,15 @@ if (!empty($_POST))
             }
             else if($editar_cliente_lim)
             {
-                #SOLO PUEDE EDITAR SUS TELEFONOS, entonces solo actualizamos
+                #SOLO PUEDE EDITAR SUS TELEFONOS, cp, domicilio, zona y subzona, entonces solo actualizamos ESO
                 $tel1_cliente = $_POST['tel1_cliente'];
                 $tel2_cliente = $_POST['tel2_cliente'];
-                $query_update_cliente = mysqli_query($conexion,"UPDATE cliente SET tel1_cliente='$tel1_cliente',tel2_cliente='$tel2_cliente' where idcliente = '$id_cliente'");
+                $zona = $_POST['zona'];
+                $subzona = $_POST['subzona'];
+                $domicilio_cliente = $_POST['domicilio_cliente'];
+                $cp_cliente = $_POST['cp_cliente'];
+
+                $query_update_cliente = mysqli_query($conexion,"UPDATE cliente SET tel1_cliente='$tel1_cliente',tel2_cliente='$tel2_cliente', zona=$zona, subzona=$subzona, domicilio_cliente='$domicilio_cliente', cp_cliente=$cp_cliente  where idcliente = '$id_cliente'");
                 if($query_update_cliente)
                 {
                     $modal = "$('#mensaje_success').modal('show');"; 
@@ -418,6 +423,7 @@ if (!empty($_POST))
                 </div>
                 <div class="col-lg-6" align="right">
                         <input name="bandera" id="bandera" value="newcliente" hidden>
+                        <a href="clientes.php" type="button" class="btn btn-secondary btn-lg">Regresar</a>
                         <?php 
                             if($editar_cliente_full)
                             {
@@ -428,7 +434,7 @@ if (!empty($_POST))
                             }
                             else if($editar_cliente_lim)
                             {
-                                echo '<button id="btneditar_cliente" class="btn btn-primary btn-lg" type="button">Editar</button>' ;
+                                echo '<button id="btneditar_cliente" class="btn btn-primary btn-lg" type="button">Editar</button> ' ;
                                 echo '<button id="update_cliente" disabled type="submit" class="btn btn-success btn-lg">Guardar <i class="fas fa-save"></i></button>';
                                 $disabled_lim = "";
                                 $disabled_full = "disabled";
@@ -461,7 +467,7 @@ if (!empty($_POST))
 
                         <div class="col-lg-5">
                             <label for="zona">Zona</label>
-                            <select class="form-control" id="zona" name="zona" required <?php echo $disabled_full; ?>>
+                            <select class="form-control" id="zona" name="zona" required <?php echo $disabled_lim; ?>>
                                 <option selected hidden>Seleccione una opción</option>
                                 <?php
                                 $result = mysqli_query($conexion,"SELECT idzona,zona FROM zonas");                         
@@ -486,13 +492,13 @@ if (!empty($_POST))
 
                         <div class="form-group col-lg-7">
                             <label for="domicilio_cliente">Domicilio</label>
-                            <input maxlength="400" required type="text" class="form-control" placeholder="" name="domicilio_cliente" id="domicilio_cliente" value="<?php echo $up_domicilio_cliente ?>" <?php echo $disabled_full; ?>>
+                            <input maxlength="400" required type="text" class="form-control" placeholder="" name="domicilio_cliente" id="domicilio_cliente" value="<?php echo $up_domicilio_cliente ?>" <?php echo $disabled_lim; ?>>
                         </div>
                         <div class="form-group col-lg-5">
                             <label for="subzona">Colonia (Subzona) </label>
                             <button data-toggle="modal" data-target="#nueva_subzona" title="Agregar nueva Subzona" class="btn btn-primary btn-xs" type="button" href="#" <?php echo $disabled_full; ?>><i class="fas fa-plus"></i></button>
                             <div id="select_subzonas">
-                                    <select id='subzona' name='subzona' class='form-control' required <?php echo $disabled_full; ?>>
+                                    <select id='subzona' name='subzona' class='form-control' required <?php echo $disabled_lim; ?>>
                                         <?php 
                                             $result = mysqli_query($conexion,"SELECT idsubzona,subzona FROM subzonas where idzona=$up_zona");                         
                                             if (mysqli_num_rows($result) > 0) {  
@@ -523,7 +529,7 @@ if (!empty($_POST))
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="cp_cliente">Código Postal</label>
-                            <input type="number" class="form-control" placeholder="" name="cp_cliente" id="cp_cliente" required value="<?php echo $up_cp_cliente; ?>" <?php echo $disabled_full; ?>>
+                            <input type="number" class="form-control" placeholder="" name="cp_cliente" id="cp_cliente" required value="<?php echo $up_cp_cliente; ?>" <?php echo $disabled_lim; ?>>
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="idestado_civil">Conyugue</label>
