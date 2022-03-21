@@ -427,7 +427,12 @@ if (!empty($_POST))
                         </div>
 
                         <div class="form-group col-lg-4">
-                          <label>Puesto</label>
+                          <fieldset id="tools" disabled>
+                            <label>Puesto</label>
+                              <button data-toggle="modal" data-target="#nuevo_puesto" title="Agregar nuevo puesto" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
+                              <button onclick="editar_puesto();" title="editar puesto" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
+                              <button onclick="eliminar_puesto();" title="Eliminar puesto" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
+                          </fieldset>
                           <select disabled class="form-control" id="puesto" name="puesto" required>
                             <option value="" hidden selected>Seleccione una opción</option>
                             <?php
@@ -446,8 +451,7 @@ if (!empty($_POST))
                                 }
                               }
                             }
-                            ?>   
-                            <option value="newpuesto" >Agregar nuevo puesto...</option>    
+                            ?>       
                           </select>
 
                           &nbsp;&nbsp;&nbsp;&nbsp;
@@ -561,10 +565,12 @@ function bloquear_campo()
   if (document.getElementById('flexCheckDefaultp').checked)
   {
     $('#puesto').removeAttr('disabled');
+    $('#tools').removeAttr('disabled');
   }
   else
   {
     $('#puesto').attr('disabled','disabled');
+    $('#tools').attr('disabled','disabled');
   }
 
   if (document.getElementById('flexCheckDefaults').checked)

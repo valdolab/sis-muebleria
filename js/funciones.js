@@ -214,27 +214,9 @@ $('#btneditar_cliente').click (function(e) {
     $('#all_inputs').removeAttr("disabled");
     $('#update_cliente').removeAttr("disabled");
     $('#btneliminar_refs').removeAttr("style");
+    $('#tools_zona').removeAttr("disabled");
+    $('#tools_subzona').removeAttr("disabled");
 });
-
-//para mostrar los modales de agregar en las diferentes cosas
-//modal puesto
-$('#puesto').change(function() { //jQuery Change Function
-        var opval = $(this).val(); //Get value from select element
-        if(opval=="newpuesto"){ //Compare it and if true
-            $('#nuevo_puesto').modal("show"); //Open Modal
-        }
-    });
-
-//modal zona
-$('#zona').change(function() { //jQuery Change Function
-        var opval = $(this).val(); //Get value from select element
-        if(opval=="newzona"){ //Compare it and if true
-            $('#nueva_zona').modal('show');
-        }
-    });
-
-//modal subzona
-
 
 //mostrar conyugue
 $('#idestado_civil').change(function() { 

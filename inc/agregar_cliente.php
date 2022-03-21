@@ -311,6 +311,10 @@ if (!empty($_POST))
 
                         <div class="col-lg-5">
                             <label for="zona">Zona</label>
+                            <button data-toggle="modal" data-target="#nueva_zona" title="Agregar nueva zona" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
+                          <button onclick="editar_zona();" title="editar zona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
+                          <button onclick="eliminar_zona();" title="Eliminar zona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
+
                             <select class="form-control" id="zona" name="zona" required>
                                 <option selected hidden>Seleccione una opción</option>
                                 <?php
@@ -323,7 +327,6 @@ if (!empty($_POST))
                                   }
                                 }
                                 ?>
-                                <option value="newzona">Agregar nueva zona...</option>
                               </select>
                         </div>
 
@@ -334,7 +337,9 @@ if (!empty($_POST))
                         </div>
                         <div class="form-group col-lg-5">
                                 <label for="subzona">Colonia (Subzona) </label>
-                                <a data-toggle="modal" data-target="#nueva_subzona" title="Agregar nueva Subzona" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></a>
+                                <button data-toggle="modal" data-target="#nueva_subzona" title="Agregar nueva subzona" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
+                              <button onclick="editar_subzona();" title="editar subzona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
+                              <button onclick="eliminar_subzona();" title="Eliminar subzona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
 
                                 <div id="select_subzonas">
                                         <select id='subzona' name='subzona' class='form-control' required>

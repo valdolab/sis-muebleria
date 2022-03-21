@@ -39,42 +39,53 @@ else
                                 }
                               }
                             }
-    #print_r($up_sucursal_array);
-    #$existe = in_array(2, $up_sucursal_array);
-    #echo $existe;
-    #$sucursal = $data['sucursal'];
 }
 
 if (!empty($_POST)) 
-{
-    //verificar si la contraseña actual es la correcta
-    
-    //luego comparar que las dos nuevas pass conicidan
-
+{   
     //por ultimo, actualizar la passs, lo de aqui abajo
-    $actualizo_pass = 0;
-    if(!empty($_POST['pass']))
+    if(!empty($_POST['actual_pass']) and !empty($_POST['newpass']) and !empty($_POST['confirmpass']))
     {
-      $new_pass = md5($_POST['pass']);
-       $query_actualizar_user = mysqli_query($conexion,"UPDATE usuario SET pass='$new_pass' where idusuario = '$idusuario'");
+        $actual_pass = md5($_POST['actual_pass']);
+        //verificar si la contraseña actual es la correcta
+        $select_pass = mysqli_query($conexion,"SELECT pass from usuario where idusuario='$idusuario'");
+        $Trueactual_pass = mysqli_fetch_assoc($select_pass)['pass'];
+        if($Trueactual_pass == $actual_pass)
+        {
+            //si es la pass actual, entonces procedemos con comparar las nuevas
+            //luego comparar que las dos nuevas pass conicidan
+            $new_pass= md5($_POST['newpass']);
+            $confirm_pass = md5($_POST['confirmpass']);
+            if($new_pass == $confirm_pass)
+            {
+                //si son iguales, actualizamos la nueva pass
+                $query_actualizar_user = mysqli_query($conexion,"UPDATE usuario SET pass='$new_pass' where idusuario = '$idusuario'");
                     if ($query_actualizar_user)
                     {
-                       $actualizo_pass = 1;       
+                       $modal = "$('#mensaje_success').modal('show');";      
                     }
                     else
                     {
-                        $actualizo_pass = -1;
-                    }
-    }
-    if($actualizo_pass >= 0)
-    {
-      $modal = "$('#mensaje_success').modal('show');";
-    }
-    else
-    {
-      $alert = '<div class="alert alert-danger" role="alert">
-                                      Hubo un error al actualizar tus datos, intenta de nuevo!
+                        $alert = '<div class="alert alert-danger" role="alert">
+                                      ¡Hubo un error al actualizar tus datos, intenta de nuevo!
                                   </div>';
+                    }
+            }
+            else
+            {
+                //no coiciden, avisar
+                $alert = '<div class="alert alert-warning" role="alert">
+                                      ¡Contraseñas no coiciden!. Verifica que la nueva contraseña sea la misma que la contraseña de confirmación. 
+                                  </div>';
+            }
+        }
+        else
+        {
+            //avisar que no es la pass actual
+            $alert = '<div class="alert alert-warning" role="alert">
+                                      ¡Contraseña actual incorrecta!
+                                  </div>';
+        }
     }
 }
 ?>
@@ -97,12 +108,12 @@ if (!empty($_POST))
                                 <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
                                 <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
                             </div>    
-                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">Actualizado!</h2>
+                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">¡Actualizado!</h2>
                         </div>
 
                         <div class="swal2-content">
                             <div id="swal2-content" class="swal2-html-container" style="display: block;">
-                                Usuario editado correctamete
+                                Contraseña guardada correctamente
                             </div>
                         </div>
                         <div class="swal2-actions">
@@ -166,18 +177,39 @@ if (!empty($_POST))
                 </div>
                 <div class="card-body">
                     <ul class="list-group">
-                        <form action="" method=" post" name="frmChangePass" id="frmChangePass" class="p-3">
+                        <form action="" method="post">
                             <div class="form-group">
                                 <label>Contraseña Actual</label>
-                                <input type="password" name="actual_pass" id="actual_pass" required class="form-control">
+                                <div class="input-group">
+                                    <input type="password" name="actual_pass" id="actual_pass" required class="form-control border-right-0">
+                                    <span onclick="mostrar_pass();" class="input-group-append bg-white border-left-0">
+                                        <span class="input-group-text bg-transparent">
+                                            <i id="apass" class="fa fa-eye-slash"></i>
+                                        </span>
+                                    </span>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Nueva Contraseña</label>
-                                <input type="password" name="newpass" id="newpass" required class="form-control">
+                                <div class="input-group">
+                                    <input type="password" name="newpass" id="newpass" required class="form-control border-right-0">
+                                    <span onclick="mostrar_pass2();" class="input-group-append bg-white border-left-0">
+                                        <span class="input-group-text bg-transparent">
+                                            <i id="npass" class="fa fa-eye-slash"></i>
+                                        </span>
+                                    </span>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Confirmar Contraseña</label>
-                                <input type="password" name="confirmpass" id="confirmpass" required class="form-control">
+                                <div class="input-group">
+                                    <input type="password" name="confirmpass" id="confirmpass" required class="form-control border-right-0">
+                                    <span onclick="mostrar_pass3();" class="input-group-append bg-white border-left-0">
+                                        <span class="input-group-text bg-transparent">
+                                            <i id="cpass" class="fa fa-eye-slash"></i>
+                                        </span>
+                                    </span>
+                                </div>
                             </div>
                             <?php echo isset($alert) ? $alert : ''; ?>
                             <div>
@@ -198,8 +230,50 @@ if (!empty($_POST))
 
 
 <script type="text/javascript">
-
 document.getElementById('divzoom').style.zoom = "100%";
+
+function mostrar_pass()
+{
+        var cambio = document.getElementById("actual_pass");
+        if(cambio.type == "password")
+        {
+            cambio.type = "text";
+            $('#apass').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+        }
+        else
+        {
+            cambio.type = "password";
+            $('#apass').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+        }
+} 
+function mostrar_pass2()
+{
+        var cambio = document.getElementById("newpass");
+        if(cambio.type == "password")
+        {
+            cambio.type = "text";
+            $('#npass').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+        }
+        else
+        {
+            cambio.type = "password";
+            $('#npass').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+        }
+} 
+function mostrar_pass3()
+{
+        var cambio = document.getElementById("confirmpass");
+        if(cambio.type == "password")
+        {
+            cambio.type = "text";
+            $('#cpass').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+        }
+        else
+        {
+            cambio.type = "password";
+            $('#cpass').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+        }
+} 
 
 </script>
 
