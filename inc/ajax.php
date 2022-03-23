@@ -105,6 +105,44 @@ if ($_POST['action'] == 'eliminarCliente')
   exit;
 }
 
+# #eliminar zona
+  if ($_POST['action'] == 'eliminarZona') {
+  include "accion/conexion.php";
+  if (!empty($_POST['zona'])) {
+    $id_zona = $_POST['zona'];
+
+    $query_zona = mysqli_query($conexion, "DELETE FROM zonas WHERE idzona = $id_zona");
+
+    mysqli_close($conexion);
+    if ($query_zona) {
+      $elimino_zona = 1;
+    }else {
+      $elimino_zona = 0;
+    }
+    echo json_encode($elimino_zona,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+# #eliminar zona
+  if ($_POST['action'] == 'eliminarSubzona') {
+  include "accion/conexion.php";
+  if (!empty($_POST['subzona'])) {
+    $id_subzona = $_POST['subzona'];
+
+    $query_subzona = mysqli_query($conexion, "DELETE FROM subzonas WHERE idsubzona = $id_subzona");
+
+    mysqli_close($conexion);
+    if ($query_subzona) {
+      $elimino_subzona = 1;
+    }else {
+      $elimino_subzona = 0;
+    }
+    echo json_encode($elimino_subzona,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
 ##buscar datos sobre el puesto para poder editar puesto
   if ($_POST['action'] == 'SelectPuesto') {
   include "accion/conexion.php";
@@ -121,6 +159,46 @@ if ($_POST['action'] == 'eliminarCliente')
       $data_puesto = 0;
     }
     echo json_encode($data_puesto,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+##buscar datos sobre de la zona para poder editar zona
+  if ($_POST['action'] == 'SelectZona') {
+  include "accion/conexion.php";
+  if (!empty($_POST['zona'])) {
+    $id_zona = $_POST['zona'];
+
+    $select_zona = mysqli_query($conexion, "SELECT zona from zonas where idzona = $id_zona");
+    mysqli_close($conexion);
+    $result_zona = mysqli_num_rows($select_zona);
+    $data_zona = '';
+    if ($result_zona > 0) {
+      $data_zona = mysqli_fetch_assoc($select_zona);
+    }else {
+      $data_zona = 0;
+    }
+    echo json_encode($data_zona,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+##buscar datos sobre de la zona para poder editar zona
+  if ($_POST['action'] == 'SelectSubzona') {
+  include "accion/conexion.php";
+  if (!empty($_POST['subzona'])) {
+    $id_subzona = $_POST['subzona'];
+
+    $select_subzona = mysqli_query($conexion, "SELECT subzona,idzona from subzonas where idsubzona = $id_subzona");
+    mysqli_close($conexion);
+    $result_subzona = mysqli_num_rows($select_subzona);
+    $data_subzona = '';
+    if ($result_subzona > 0) {
+      $data_subzona = mysqli_fetch_assoc($select_subzona);
+    }else {
+      $data_subzona = 0;
+    }
+    echo json_encode($data_subzona,JSON_UNESCAPED_UNICODE);
   }
   exit;
 }
@@ -247,19 +325,18 @@ if ($_POST['action'] == 'searchSubzonas')
 
     if($idzona=="newzona")
     {
-      $cadena = "<select id='subzona' name='subzona' class='form-control' required><option selected hidden value=''>Seleccione una colonia (subzona)</option></select>";
+      $cadena = "<option selected hidden value=''>Seleccione una colonia (subzona)</option>";
     }
     else
     {
       $query = mysqli_query($conexion, "SELECT idsubzona,subzona from subzonas where idzona=$idzona");
       if (mysqli_num_rows($query) > 0) 
       { 
-        $cadena = "<select id='subzona' name='subzona' class='form-control' required><option selected hidden value=''>Seleccione una colonia (subzona)</option>";
+        $cadena = "<option selected hidden value=''>Seleccione una colonia (subzona)</option>";
         while($row = mysqli_fetch_assoc($query))
         {
           $cadena = $cadena."<option value='".$row['idsubzona']."'>".$row['subzona']."</option>";
         }
-        $cadena = $cadena."</select>";
       }
       else
       {

@@ -255,15 +255,19 @@ $('#zona').change(function(e)
         if (response != 0)
         {
           var data = $.parseJSON(response);
-          $('#select_subzonas').html(data);
-          //$('#nombre').val(data); 
+          $("#subzona").empty();
+          $('#subzona').append(data);
+          //$('#prueba').html(data); 
         }
       },
       error: function(error) {
         //$('#sucursal').val('error');
       }
     });
-    //$('#prueba').html("Hello <b>"+name_zonas+"</b>!");
+    $('#btnedit_zona').attr('onClick', 'editar_zona('+idzona+');');
+    $('#btneliminar_zona').attr('onClick', 'eliminar_zona('+idzona+');');
+    $('#btnedit_zona').removeAttr('disabled');
+    $('#btneliminar_zona').removeAttr('disabled');
 });
 
 //funcion para crear el boton de elimnar y editar de los puestos
@@ -271,11 +275,21 @@ $('#puesto').change(function(e)
 {
     e.preventDefault();
     var idpuesto = $(this).val();
-    
     $('#btn_editarpuesto').attr('onClick', 'editar_puesto('+idpuesto+');');
     $('#btn_eliminarpuesto').attr('onClick', 'eliminar_puesto('+idpuesto+');');
     $('#btn_editarpuesto').removeAttr('disabled');
     $('#btn_eliminarpuesto').removeAttr('disabled');
+});
+
+$('#subzona').change(function(e) 
+{
+    e.preventDefault();
+    var idsubzona = $(this).val();
+
+    $('#btnedit_subzona').attr('onClick', 'editar_subzona('+idsubzona+');');
+    $('#btneliminar_subzona').attr('onClick', 'eliminar_subzona('+idsubzona+');');
+    $('#btnedit_subzona').removeAttr('disabled');
+    $('#btneliminar_subzona').removeAttr('disabled');
 });
 
 //eliminar usuario
@@ -578,7 +592,8 @@ function editar_puesto(idpuesto)
 function eliminar_zona(idzona)
 {
     Swal.fire({
-            title: 'Esta seguro de eliminar?',
+            title: '¿Esta seguro de eliminar?',
+            text: 'Todas las subzonas (colonias) pertenecientes a esta zona serán eliminadas',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -632,20 +647,19 @@ function eliminar_zona(idzona)
 //para editar puesto
 function editar_zona(idzona)
 {
-    var action = 'SelectPuesto';
+    var action = 'SelectZona';
     $.ajax({
         url: 'ajax.php',
         type: "POST",
         async: true,
-        data: {action:action,puesto:idpuesto},
+        data: {action:action,zona:idzona},
         success: function(response) {
             //$('#prueba').val(response);
             if (response != 0) 
             {
               var data = $.parseJSON(response);
-                $('#newpuesto_edit').val(data.puesto);
-                $('#desc_puesto_edit').val(data.descripcion);
-                $('#idpuesto_flag').val(idpuesto);
+                $('#newzona_edit').val(data.zona);
+                $('#idnewzona_edit').val(idzona);
             }
         },
         error: function(error) {
@@ -658,7 +672,7 @@ function editar_zona(idzona)
 function eliminar_subzona(idsubzona)
 {
     Swal.fire({
-            title: 'Esta seguro de eliminar?',
+            title: '¿Esta seguro de eliminar?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -666,12 +680,12 @@ function eliminar_subzona(idsubzona)
             confirmButtonText: 'SI, Eliminar!'
         }).then((result) => {
             if (result.isConfirmed) {
-                var action = 'eliminarPuesto';
+                var action = 'eliminarSubzona';
                 $.ajax({
                   url: 'ajax.php',
                   type: "POST",
                   async: true,
-                  data: {action:action,puesto:idpuesto},
+                  data: {action:action,subzona:idsubzona},
                   success: function(response) {
                     //$('#prueba').val(response);
                     if (response == 0) 
@@ -712,20 +726,21 @@ function eliminar_subzona(idsubzona)
 //para editar puesto
 function editar_subzona(idsubzona)
 {
-    var action = 'SelectPuesto';
+    var action = 'SelectSubzona';
     $.ajax({
         url: 'ajax.php',
         type: "POST",
         async: true,
-        data: {action:action,puesto:idpuesto},
+        data: {action:action,subzona:idsubzona},
         success: function(response) {
             //$('#prueba').val(response);
             if (response != 0) 
             {
               var data = $.parseJSON(response);
-                $('#newpuesto_edit').val(data.puesto);
-                $('#desc_puesto_edit').val(data.descripcion);
-                $('#idpuesto_flag').val(idpuesto);
+                $('#newsubzona_edit').val(data.subzona);
+                $('#zona_subzona_edit').val(data.idzona).change();
+                $('#idnewsubzona_edit').val(idsubzona);
+                //$('#idpuesto_flag').val(idpuesto);
             }
         },
         error: function(error) {

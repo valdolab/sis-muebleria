@@ -48,7 +48,7 @@ if (!empty($_POST))
               else
               {
                   $alert = '<div class="alert alert-danger" role="alert">
-                          Error al actualizar el puesto, intente de nuevos.
+                          Error al actualizar el puesto, intente de nuevo.
                       </div>';
               }
         }

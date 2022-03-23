@@ -142,16 +142,55 @@ if (!empty($_POST))
                       </div>';
               } 
         }
+        else if($ban == 'editzona')
+        {
+          $id_zona = $_POST['idnewzona_edit'];
+          $nomzona_edit = $_POST['newzona_edit'];
+          $update_zona = mysqli_query($conexion, "UPDATE zonas SET zona='$nomzona_edit' where idzona=$id_zona");
+              if ($update_zona) {
+                  $alert = '<div class="alert alert-success" role="alert">
+                              ¡Zona actualizada!
+                          </div>';
+                  #header("Location: agregar_usuario.php");
+              } 
+              else
+              {
+                  $alert = '<div class="alert alert-danger" role="alert">
+                          Error al actualizar la zona, intente de nuevo.
+                      </div>';
+              }
+        }
+        else if($ban == 'editsubzona')
+        {
+          $id_subzona = $_POST['idnewsubzona_edit'];
+          $nomsubzona_edit = $_POST['newsubzona_edit'];
+          $newid_zona_edit = $_POST['zona_subzona_edit'];
+          $update_subzona = mysqli_query($conexion, "UPDATE subzonas SET subzona='$nomsubzona_edit', idzona=$newid_zona_edit where idsubzona=$id_subzona");
+              if ($update_subzona) {
+                  $alert = '<div class="alert alert-success" role="alert">
+                              ¡Subzona actualizada!
+                          </div>';
+                  #header("Location: agregar_usuario.php");
+              } 
+              else
+              {
+                  $alert = '<div class="alert alert-danger" role="alert">
+                          Error al actualizar la subzona, intente de nuevo.
+                      </div>';//.mysqli_error($conexion).'/'.$id_subzona;
+              }
+        }
         else if($ban == 'newcliente')
         {
             #vemos si tiene permisos full o lim
             if($editar_cliente_full)
             {
+                //borrar el cliente del ID viejo y poner el nuevo cliente con su nuevo ID
+                $old_id_cliente = $id_cliente;
                 $nombre_cliente = $_POST['nombre_cliente'];
-                $idcliente = md5($nombre_cliente);
+                $newidcliente = md5($nombre_cliente);
                 #primero borramos todo lo de ese cliente para insertarlo de nuevo con lo actualizado
-                $query_delete_cliente_refs = mysqli_query($conexion, "DELETE FROM referencias_cliente WHERE idcliente = '$idcliente'");
-                $query_delete_cliente = mysqli_query($conexion, "DELETE FROM cliente WHERE idcliente = '$idcliente'");
+                $query_delete_cliente_refs = mysqli_query($conexion, "DELETE FROM referencias_cliente WHERE idcliente = '$old_id_cliente'");
+                $query_delete_cliente = mysqli_query($conexion, "DELETE FROM cliente WHERE idcliente = '$old_id_cliente'");
                 if ($query_delete_cliente and $query_delete_cliente_refs) 
                 {
                   $elimino_cliente = 1;
@@ -212,7 +251,7 @@ if (!empty($_POST))
                     $tel_conyugue = $_POST['tel_conyugue'];
                     $conyugue = 1;
 
-                   $sql_insert = "INSERT INTO cliente(idcliente, nombre_cliente, zona, domicilio_cliente, subzona, tel1_cliente, tel2_cliente, cp_cliente, idestado_civil, trabajo_cliente, puesto_cliente, direccion_trabajo_cliente, antiguedadA_trabajo_cliente, antiguedadM_trabajo_cliente, ingresos_cliente, tipo_ingresos_cliente, nombre_conyugue_cliente, antiguedadA_vinculo, antiguedadM_vinculo, trabajo_conyugue, puesto_conyugue, ingreso_mensual_conyugue, direccion_trabajo_conyugue, tel_conyugue, tipo_vivienda_cliente, edad_residencia, renta_mensual, ndependientes, nombre_aval, tel_aval, domicilio_aval, trabajo_aval, puesto_aval, ingreso_mensual_aval, nombre_conyugue_aval, apto_credito, nivel_apto) VALUES ('$idcliente', '$nombre_cliente', $zona, '$domicilio_cliente', $subzona, ".(!empty($tel1_cliente) ? "'$tel1_cliente'" : "NULL").", ".(!empty($tel2_cliente) ? "'$tel2_cliente'" : "NULL").", $cp_cliente, $conyugue, '$trabajo_cliente', '$puesto_cliente', '$direccion_trabajo_cliente', $antiguedadA_trabajo_cliente, $antiguedadM_trabajo_cliente, $ingresos_cliente, '$tipo_ingreso_cliente', '$nombre_conyugue_cliente', $antiguedadA_vinculo, $antiguedadM_vinculo, '$trabajo_conyugue', '$puesto_conyugue', $ingreso_mensual_conyugue, '$direccion_trabajo_conyugue', '$tel_conyugue', '$tipo_vivienda_cliente', $edad_residencia, $renta_mensual, $ndependientes, ".(!empty($nombre_aval) ? "'$nombre_aval'" : "NULL").", ".(!empty($tel_aval) ? "'$tel_aval'" : "NULL").", ".(!empty($domicilio_aval) ? "'$domicilio_aval'" : "NULL").", ".(!empty($trabajo_aval) ? "'$trabajo_aval'" : "NULL").", ".(!empty($puesto_aval) ? "'$puesto_aval'" : "NULL").", ".(!empty($ingreso_mensual_aval) ? "$ingreso_mensual_aval" : "NULL").", ".(!empty($nombre_conyugue_aval) ? "'$nombre_conyugue_aval'" : "NULL").", $apto_credito, $nivel_apto)";
+                   $sql_insert = "INSERT INTO cliente(idcliente, nombre_cliente, zona, domicilio_cliente, subzona, tel1_cliente, tel2_cliente, cp_cliente, idestado_civil, trabajo_cliente, puesto_cliente, direccion_trabajo_cliente, antiguedadA_trabajo_cliente, antiguedadM_trabajo_cliente, ingresos_cliente, tipo_ingresos_cliente, nombre_conyugue_cliente, antiguedadA_vinculo, antiguedadM_vinculo, trabajo_conyugue, puesto_conyugue, ingreso_mensual_conyugue, direccion_trabajo_conyugue, tel_conyugue, tipo_vivienda_cliente, edad_residencia, renta_mensual, ndependientes, nombre_aval, tel_aval, domicilio_aval, trabajo_aval, puesto_aval, ingreso_mensual_aval, nombre_conyugue_aval, apto_credito, nivel_apto) VALUES ('$newidcliente', '$nombre_cliente', $zona, ".(!empty($domicilio_cliente) ? "'$domicilio_cliente'" : "NULL").", $subzona, ".(!empty($tel1_cliente) ? "'$tel1_cliente'" : "NULL").", ".(!empty($tel2_cliente) ? "'$tel2_cliente'" : "NULL").", ".(!empty($cp_cliente) ? "'$cp_cliente'" : "NULL").", $conyugue, ".(!empty($trabajo_cliente) ? "'$trabajo_cliente'" : "NULL").", ".(!empty($puesto_cliente) ? "'$puesto_cliente'" : "NULL").", ".(!empty($direccion_trabajo_cliente) ? "'$direccion_trabajo_cliente'" : "NULL").", $antiguedadA_trabajo_cliente, $antiguedadM_trabajo_cliente, $ingresos_cliente, '$tipo_ingreso_cliente', '$nombre_conyugue_cliente', $antiguedadA_vinculo, $antiguedadM_vinculo, ".(!empty($trabajo_conyugue) ? "'$trabajo_conyugue'" : "NULL").", ".(!empty($puesto_conyugue) ? "'$puesto_conyugue'" : "NULL").", $ingreso_mensual_conyugue, ".(!empty($direccion_trabajo_conyugue) ? "'$direccion_trabajo_conyugue'" : "NULL").", ".(!empty($tel_conyugue) ? "'$tel_conyugue'" : "NULL").", '$tipo_vivienda_cliente', $edad_residencia, $renta_mensual, $ndependientes, ".(!empty($nombre_aval) ? "'$nombre_aval'" : "NULL").", ".(!empty($tel_aval) ? "'$tel_aval'" : "NULL").", ".(!empty($domicilio_aval) ? "'$domicilio_aval'" : "NULL").", ".(!empty($trabajo_aval) ? "'$trabajo_aval'" : "NULL").", ".(!empty($puesto_aval) ? "'$puesto_aval'" : "NULL").", ".(!empty($ingreso_mensual_aval) ? "$ingreso_mensual_aval" : "NULL").", ".(!empty($nombre_conyugue_aval) ? "'$nombre_conyugue_aval'" : "NULL").", $apto_credito, $nivel_apto)";
 
                 $insert_correctly = FALSE;
                 $insert_cliente = mysqli_query($conexion, $sql_insert);
@@ -223,7 +262,7 @@ if (!empty($_POST))
                 else#no tiene conyugue y no guardamos nada, puro null
                 {
                     $conyugue = 0;
-                    $sql_insert = "INSERT INTO cliente(idcliente, nombre_cliente, zona, domicilio_cliente, subzona, tel1_cliente, tel2_cliente, cp_cliente, idestado_civil, trabajo_cliente, puesto_cliente, direccion_trabajo_cliente, antiguedadA_trabajo_cliente, antiguedadM_trabajo_cliente, ingresos_cliente, tipo_ingresos_cliente, nombre_conyugue_cliente, antiguedadA_vinculo, antiguedadM_vinculo, trabajo_conyugue, puesto_conyugue, ingreso_mensual_conyugue, direccion_trabajo_conyugue, tel_conyugue, tipo_vivienda_cliente, edad_residencia, renta_mensual, ndependientes, nombre_aval, tel_aval, domicilio_aval, trabajo_aval, puesto_aval, ingreso_mensual_aval, nombre_conyugue_aval, apto_credito, nivel_apto) VALUES ('$idcliente', '$nombre_cliente', $zona, '$domicilio_cliente', $subzona, ".(!empty($tel1_cliente) ? "'$tel1_cliente'" : "NULL").", ".(!empty($tel2_cliente) ? "'$tel2_cliente'" : "NULL").", $cp_cliente, $conyugue, '$trabajo_cliente', '$puesto_cliente', '$direccion_trabajo_cliente', $antiguedadA_trabajo_cliente, $antiguedadM_trabajo_cliente, $ingresos_cliente, '$tipo_ingreso_cliente', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$tipo_vivienda_cliente', $edad_residencia, $renta_mensual, $ndependientes, ".(!empty($nombre_aval) ? "'$nombre_aval'" : "NULL").", ".(!empty($tel_aval) ? "'$tel_aval'" : "NULL").", ".(!empty($domicilio_aval) ? "'$domicilio_aval'" : "NULL").", ".(!empty($trabajo_aval) ? "'$trabajo_aval'" : "NULL").", ".(!empty($puesto_aval) ? "'$puesto_aval'" : "NULL").", ".(!empty($ingreso_mensual_aval) ? "$ingreso_mensual_aval" : "NULL").", ".(!empty($nombre_conyugue_aval) ? "'$nombre_conyugue_aval'" : "NULL").", $apto_credito, $nivel_apto)";
+                    $sql_insert = "INSERT INTO cliente(idcliente, nombre_cliente, zona, domicilio_cliente, subzona, tel1_cliente, tel2_cliente, cp_cliente, idestado_civil, trabajo_cliente, puesto_cliente, direccion_trabajo_cliente, antiguedadA_trabajo_cliente, antiguedadM_trabajo_cliente, ingresos_cliente, tipo_ingresos_cliente, nombre_conyugue_cliente, antiguedadA_vinculo, antiguedadM_vinculo, trabajo_conyugue, puesto_conyugue, ingreso_mensual_conyugue, direccion_trabajo_conyugue, tel_conyugue, tipo_vivienda_cliente, edad_residencia, renta_mensual, ndependientes, nombre_aval, tel_aval, domicilio_aval, trabajo_aval, puesto_aval, ingreso_mensual_aval, nombre_conyugue_aval, apto_credito, nivel_apto) VALUES ('$newidcliente', '$nombre_cliente', $zona, ".(!empty($domicilio_cliente) ? "'$domicilio_cliente'" : "NULL").", $subzona, ".(!empty($tel1_cliente) ? "'$tel1_cliente'" : "NULL").", ".(!empty($tel2_cliente) ? "'$tel2_cliente'" : "NULL").", ".(!empty($cp_cliente) ? "'$cp_cliente'" : "NULL").", $conyugue, ".(!empty($trabajo_cliente) ? "'$trabajo_cliente'" : "NULL").", ".(!empty($puesto_cliente) ? "'$puesto_cliente'" : "NULL").", ".(!empty($direccion_trabajo_cliente) ? "'$direccion_trabajo_cliente'" : "NULL").", $antiguedadA_trabajo_cliente, $antiguedadM_trabajo_cliente, $ingresos_cliente, '$tipo_ingreso_cliente', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$tipo_vivienda_cliente', $edad_residencia, $renta_mensual, $ndependientes, ".(!empty($nombre_aval) ? "'$nombre_aval'" : "NULL").", ".(!empty($tel_aval) ? "'$tel_aval'" : "NULL").", ".(!empty($domicilio_aval) ? "'$domicilio_aval'" : "NULL").", ".(!empty($trabajo_aval) ? "'$trabajo_aval'" : "NULL").", ".(!empty($puesto_aval) ? "'$puesto_aval'" : "NULL").", ".(!empty($ingreso_mensual_aval) ? "$ingreso_mensual_aval" : "NULL").", ".(!empty($nombre_conyugue_aval) ? "'$nombre_conyugue_aval'" : "NULL").", $apto_credito, $nivel_apto)";
 
                     $insert_correctly = FALSE;
                     $insert_cliente = mysqli_query($conexion, $sql_insert);
@@ -246,7 +285,7 @@ if (!empty($_POST))
                 for ($i=0; $i < $size_refs; $i++) 
                 { 
                     //insertamos cada uno de las referencias
-                    $query_insertrefs = "INSERT INTO referencias_cliente(nombre, domicilio, relacion, tel, nota, idcliente) VALUES ('$nombre_ref[$i]', '$domicilio_ref[$i]', '$relacion_ref[$i]', '$tel_ref[$i]', '$notas_ref[$i]', '$idcliente')";
+                    $query_insertrefs = "INSERT INTO referencias_cliente(nombre, domicilio, relacion, tel, nota, idcliente) VALUES ('$nombre_ref[$i]', '$domicilio_ref[$i]', '$relacion_ref[$i]', '$tel_ref[$i]', '$notas_ref[$i]', '$newidcliente')";
                     $sql = mysqli_query($conexion, $query_insertrefs);
                     if (!$sql) 
                     {
@@ -264,7 +303,6 @@ if (!empty($_POST))
                       $alert = '<div class="alert alert-danger" role="alert">
                               Pudo haber ocurrido un error al actualizar el cliente, verifique, actualize e intente de nuevo en caso de ser necesario.
                           </div>';#.mysqli_error($conexion);
-
                   }
             }
             else if($editar_cliente_lim)
@@ -277,7 +315,7 @@ if (!empty($_POST))
                 $domicilio_cliente = $_POST['domicilio_cliente'];
                 $cp_cliente = $_POST['cp_cliente'];
 
-                $query_update_cliente = mysqli_query($conexion,"UPDATE cliente SET tel1_cliente='$tel1_cliente',tel2_cliente='$tel2_cliente', zona=$zona, subzona=$subzona, domicilio_cliente='$domicilio_cliente', cp_cliente=$cp_cliente  where idcliente = '$id_cliente'");
+                $query_update_cliente = mysqli_query($conexion,"UPDATE cliente SET tel1_cliente='$tel1_cliente',tel2_cliente='$tel2_cliente', zona=$zona, subzona=$subzona, domicilio_cliente='$domicilio_cliente', cp_cliente=$cp_cliente  where idcliente = '$newidcliente'");
                 if($query_update_cliente)
                 {
                     $modal = "$('#mensaje_success').modal('show');"; 
@@ -319,7 +357,7 @@ if (!empty($_POST))
 
                         <div class="swal2-content">
                             <div id="swal2-content" class="swal2-html-container" style="display: block;">
-                                Cliente registrado correctamete
+                                Información Guardada!
                             </div>
                         </div>
                         <div class="swal2-actions">
@@ -368,7 +406,7 @@ if (!empty($_POST))
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="my-modal-title">Nueva subZona (Colonia)</h5>
+                <h5 class="modal-title" id="my-modal-title">Nueva subzona (Colonia)</h5>
                 <button class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -403,6 +441,85 @@ if (!empty($_POST))
                     </div>
 
                     <input value="subzona" name="bandera" id="bandera" hidden>
+                    <div align="right">
+                        <input type="submit" value="Agregar" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editar_zona" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="my-modal-title">Editar zona</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="off">
+                    <div class="row">
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <label for="correo">zona</label>
+                            <input type="text" name="idnewzona_edit" id="idnewzona_edit" hidden>
+                            <input type="text" class="form-control" name="newzona_edit" id="newzona_edit" required>
+                        </div>  
+                        </div>
+                    </div>
+
+                    <input value="editzona" name="bandera" id="bandera" hidden>
+                    <div align="right">
+                        <input type="submit" value="Actualizar" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editar_subzona" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="my-modal-title">Editar subzona (Colonia)</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="off">
+                    <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="correo">subzona</label>
+                            <input type="text" name="idnewsubzona_edit" id="idnewsubzona_edit" hidden>
+                            <input type="text" class="form-control" name="newsubzona_edit" id="newsubzona_edit" required>
+                        </div>  
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="correo">Pertenece a la zona:</label>
+                            <select class="form-control" id="zona_subzona_edit" name="zona_subzona_edit" required>
+                                <?php
+                                #codigo para la lista de sucursales que se extraen de la base de datos
+                                $result = mysqli_query($conexion,"SELECT idzona,zona FROM zonas");                        
+                                if (mysqli_num_rows($result) > 0) {  
+                                  while($row = mysqli_fetch_assoc($result))
+                                  {
+                                    echo "<option value='".$row["idzona"]."'>".$row["zona"]."</option>";
+                                  }
+                                }
+                                ?>
+                              </select>
+                        </div>  
+                        </div>
+                    </div>
+
+                    <input value="editsubzona" name="bandera" id="bandera" hidden>
                     <div align="right">
                         <input type="submit" value="Agregar" class="btn btn-primary">
                     </div>
@@ -469,8 +586,8 @@ if (!empty($_POST))
                             <fieldset id="tools_zona" disabled>
                             <label for="zona">Zona</label>
                               <button data-toggle="modal" data-target="#nueva_zona" title="Agregar nueva zona" class="btn btn-primary btn-xs" type="button" href="#" <?php echo $disabled_lim; ?> ><i class="fas fa-plus"></i></button>
-                              <button onclick="editar_zona();" title="editar zona" class="btn btn-success btn-xs" type="button" href="#" <?php echo $disabled_lim; ?>><i class="fas fa-edit"></i></button>
-                              <button onclick="eliminar_zona();" title="Eliminar zona" class="btn btn-danger btn-xs" type="button" href="#" <?php echo $disabled_lim; ?>><i class="fas fa-trash"></i></button>
+                              <button id="btnedit_zona" data-toggle="modal" data-target="#editar_zona" onclick="editar_zona(<?php echo $up_zona; ?>);" title="editar zona" class="btn btn-success btn-xs" type="button" href="#" <?php echo $disabled_lim; ?>><i class="fas fa-edit"></i></button>
+                              <button id="btneliminar_zona" onclick="eliminar_zona(<?php echo $up_zona; ?>);" title="Eliminar zona" class="btn btn-danger btn-xs" type="button" href="#" <?php echo $disabled_lim; ?>><i class="fas fa-trash"></i></button>
                           </fieldset>
 
                             <select class="form-control" id="zona" name="zona" required <?php echo $disabled_lim; ?>>
@@ -497,17 +614,16 @@ if (!empty($_POST))
 
                         <div class="form-group col-lg-7">
                             <label for="domicilio_cliente">Domicilio</label>
-                            <input maxlength="400" required type="text" class="form-control" placeholder="" name="domicilio_cliente" id="domicilio_cliente" value="<?php echo $up_domicilio_cliente ?>" <?php echo $disabled_lim; ?>>
+                            <input maxlength="400" type="text" class="form-control" placeholder="" name="domicilio_cliente" id="domicilio_cliente" value="<?php echo $up_domicilio_cliente ?>" <?php echo $disabled_lim; ?>>
                         </div>
                         <div class="form-group col-lg-5">
                           <fieldset id="tools_subzona" disabled>
                             <label for="subzona">Colonia (Subzona) </label>
-                              <button data-toggle="modal" data-target="#nueva_subzona" title="Agregar nueva subzona" class="btn btn-primary btn-xs" type="button" href="#" <?php echo $disabled_lim; ?>><i class="fas fa-plus"></i></button>
-                              <button onclick="editar_subzona();" title="editar subzona" class="btn btn-success btn-xs" type="button" href="#" <?php echo $disabled_lim; ?>><i class="fas fa-edit"></i></button>
-                              <button onclick="eliminar_subzona();" title="Eliminar subzona" class="btn btn-danger btn-xs" type="button" href="#" <?php echo $disabled_lim; ?>><i class="fas fa-trash"></i></button>
-                          </fieldset>
 
-                            <div id="select_subzonas">
+                              <button data-toggle="modal" data-target="#nueva_subzona" title="Agregar nueva subzona" class="btn btn-primary btn-xs" type="button" href="#" <?php echo $disabled_lim; ?>><i class="fas fa-plus"></i></button>
+                              <button id="btnedit_subzona" data-toggle="modal" data-target="#editar_subzona" onclick="editar_subzona(<?php echo $up_subzona; ?>);" title="editar subzona" class="btn btn-success btn-xs" type="button" href="#" <?php echo $disabled_lim; ?>><i class="fas fa-edit"></i></button>
+                              <button id="btneliminar_subzona" onclick="eliminar_subzona(<?php echo $up_subzona; ?>);" title="Eliminar subzona" class="btn btn-danger btn-xs" type="button" href="#" <?php echo $disabled_lim; ?>><i class="fas fa-trash"></i></button>
+                          </fieldset>
                                     <select id='subzona' name='subzona' class='form-control' required <?php echo $disabled_lim; ?>>
                                         <?php 
                                             $result = mysqli_query($conexion,"SELECT idsubzona,subzona FROM subzonas where idzona=$up_zona");                         
@@ -526,7 +642,6 @@ if (!empty($_POST))
                                             } 
                                          ?>
                                     </select>
-                            </div>
                         </div>
 
                         <div class="form-group col-lg-3">
@@ -539,7 +654,7 @@ if (!empty($_POST))
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="cp_cliente">Código Postal</label>
-                            <input type="number" class="form-control" placeholder="" name="cp_cliente" id="cp_cliente" required value="<?php echo $up_cp_cliente; ?>" <?php echo $disabled_lim; ?>>
+                            <input type="number" class="form-control" placeholder="" name="cp_cliente" id="cp_cliente" value="<?php echo $up_cp_cliente; ?>" <?php echo $disabled_lim; ?>>
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="idestado_civil">Conyugue</label>
@@ -577,16 +692,16 @@ if (!empty($_POST))
 
                         <div class="form-group col-lg-7">
                             <label for="trabajo_cliente">Lugar de Trabajo</label>
-                            <input type="text" class="form-control" placeholder="" name="trabajo_cliente" id="trabajo_cliente" required value="<?php echo $up_trabajo_cliente; ?>" <?php echo $disabled_full; ?>>
+                            <input type="text" class="form-control" placeholder="" name="trabajo_cliente" id="trabajo_cliente" value="<?php echo $up_trabajo_cliente; ?>" <?php echo $disabled_full; ?>>
                         </div>
                         <div class="form-group col-lg-5">
                             <label for="puesto_cliente">Actividad o Puesto</label>
-                            <input type="text" class="form-control" placeholder="" name="puesto_cliente" id="puesto_cliente" required value="<?php echo $up_puesto_cliente; ?>" <?php echo $disabled_full; ?>>
+                            <input type="text" class="form-control" placeholder="" name="puesto_cliente" id="puesto_cliente" value="<?php echo $up_puesto_cliente; ?>" <?php echo $disabled_full; ?>>
                         </div>
 
                         <div class="form-group col-lg-5">
                             <label for="direccion_trabajo_cliente">Dirección</label>
-                            <input type="text" class="form-control" placeholder="" name="direccion_trabajo_cliente" id="direccion_trabajo_cliente" required value="<?php echo $up_direccion_trabajo_cliente; ?>" <?php echo $disabled_full; ?>>
+                            <input type="text" class="form-control" placeholder="" name="direccion_trabajo_cliente" id="direccion_trabajo_cliente" value="<?php echo $up_direccion_trabajo_cliente; ?>" <?php echo $disabled_full; ?>>
                         </div>
 
                         <div class="col-lg-2"></div>
@@ -597,12 +712,12 @@ if (!empty($_POST))
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <input type="number" class="form-control" placeholder="" name="antiguedadA_trabajo_cliente" id="antiguedadA_trabajo_cliente" required value="<?php echo $up_antiguedadA_trabajo_cliente; ?>" <?php echo $disabled_full; ?>> 
+                                    <input required type="number" class="form-control" placeholder="" name="antiguedadA_trabajo_cliente" id="antiguedadA_trabajo_cliente" value="<?php echo $up_antiguedadA_trabajo_cliente; ?>" <?php echo $disabled_full; ?>> 
                                 </div>
                                 Años
                                 
                                 <div class="col-md-3">
-                                    <input type="number" class="form-control" placeholder="" name="antiguedadM_trabajo_cliente" id="antiguedadM_trabajo_cliente" required value="<?php echo $up_antiguedadM_trabajo_cliente; ?>" <?php echo $disabled_full; ?>> 
+                                    <input required type="number" class="form-control" placeholder="" name="antiguedadM_trabajo_cliente" id="antiguedadM_trabajo_cliente" value="<?php echo $up_antiguedadM_trabajo_cliente; ?>" <?php echo $disabled_full; ?>> 
                                 </div>
                                 Meses
                             </div>
@@ -819,7 +934,7 @@ if (!empty($_POST))
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input type="number" class="form-control" placeholder="" name="edad_residencia" id="edad_residencia" required value="<?php echo $up_edad_residencia; ?>" <?php echo $disabled_full; ?>> 
+                                    <input required type="number" class="form-control" placeholder="" name="edad_residencia" id="edad_residencia" value="<?php echo $up_edad_residencia; ?>" <?php echo $disabled_full; ?>> 
                                 </div>
                                 Años
                             </div>
@@ -827,7 +942,7 @@ if (!empty($_POST))
 
                         <div class="form-group col-lg-4">
                             <label for="ndependientes">N° de dependientes Económicos</label>
-                            <input type="number" class="form-control" placeholder="" name="ndependientes" id="ndependientes" required value="<?php echo $up_ndependientes; ?>" <?php echo $disabled_full; ?>>
+                            <input required type="number" class="form-control" placeholder="" name="ndependientes" id="ndependientes" value="<?php echo $up_ndependientes; ?>" <?php echo $disabled_full; ?>>
                         </div>
                         <!--<div class="col-lg-1"></div>-->
 
@@ -959,29 +1074,29 @@ if (!empty($_POST))
 
                         <div class="form-group col-lg-7">
                             <label for="nombre_aval">Nombre completo</label>
-                            <input type="text" class="form-control" placeholder="Ingrese Nombre con apellidos" name="nombre_aval" id="nombre_aval" required value="<?php echo $up_nombre_aval; ?>" <?php echo $disabled_full; ?>>
+                            <input type="text" class="form-control" placeholder="Ingrese Nombre con apellidos" name="nombre_aval" id="nombre_aval" value="<?php echo $up_nombre_aval; ?>" <?php echo $disabled_full; ?>>
                         </div>
 
                         <div class="form-group col-lg-5">
                             <label for="tel_aval">Teléfono</label>
-                            <input type="text" class="form-control" placeholder="exp. 9610000000" name="tel_aval" id="tel_aval" required oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" value="<?php echo $up_tel_aval; ?>" <?php echo $disabled_full; ?>>
+                            <input type="text" class="form-control" placeholder="exp. 9610000000" name="tel_aval" id="tel_aval" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" value="<?php echo $up_tel_aval; ?>" <?php echo $disabled_full; ?>>
                         </div>
 
                         <div class="form-group col-lg-8">
                             <label for="domicilio_aval">Domicilio</label>
-                            <input type="text" class="form-control" placeholder="" name="domicilio_aval" id="domicilio_aval" required value="<?php echo $up_domicilio_aval; ?>" <?php echo $disabled_full; ?>>
+                            <input type="text" class="form-control" placeholder="" name="domicilio_aval" id="domicilio_aval" value="<?php echo $up_domicilio_aval; ?>" <?php echo $disabled_full; ?>>
                         </div>
                         <div class="form-group col-lg-4">
                             <label for="trabajo_aval">Trabajo actual</label>
-                            <input type="text" class="form-control" placeholder="" name="trabajo_aval" id="trabajo_aval" required value="<?php echo $up_trabajo_aval; ?>" <?php echo $disabled_full; ?>>
+                            <input type="text" class="form-control" placeholder="" name="trabajo_aval" id="trabajo_aval" value="<?php echo $up_trabajo_aval; ?>" <?php echo $disabled_full; ?>>
                         </div>
                         <div class="form-group col-lg-5">
                             <label for="nombre_conyugue_aval">Conyugue</label>
-                            <input type="text" class="form-control" placeholder="" name="nombre_conyugue_aval" id="nombre_conyugue_aval" required value="<?php echo $up_nombre_conyugue_aval; ?>" <?php echo $disabled_full; ?>>
+                            <input type="text" class="form-control" placeholder="" name="nombre_conyugue_aval" id="nombre_conyugue_aval" value="<?php echo $up_nombre_conyugue_aval; ?>" <?php echo $disabled_full; ?>>
                         </div>
                         <div class="form-group col-lg-4">
                             <label for="puesto_aval">Puesto actual</label>
-                            <input type="text" class="form-control" name="puesto_aval" id="puesto_aval" required value="<?php echo $up_puesto_aval; ?>" <?php echo $disabled_full; ?>>
+                            <input type="text" class="form-control" name="puesto_aval" id="puesto_aval" value="<?php echo $up_puesto_aval; ?>" <?php echo $disabled_full; ?>>
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="ingreso_mensual_aval">Ingreso Mensual</label>

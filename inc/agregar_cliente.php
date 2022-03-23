@@ -48,6 +48,43 @@ if (!empty($_POST))
                       </div>';
               }
         }
+        else if($ban == 'editzona')
+        {
+          $id_zona = $_POST['idnewzona_edit'];
+          $nomzona_edit = $_POST['newzona_edit'];
+          $update_zona = mysqli_query($conexion, "UPDATE zonas SET zona='$nomzona_edit' where idzona=$id_zona");
+              if ($update_zona) {
+                  $alert = '<div class="alert alert-success" role="alert">
+                              ¡Zona actualizada!
+                          </div>';
+                  #header("Location: agregar_usuario.php");
+              } 
+              else
+              {
+                  $alert = '<div class="alert alert-danger" role="alert">
+                          Error al actualizar la zona, intente de nuevo.
+                      </div>';
+              }
+        }
+        else if($ban == 'editsubzona')
+        {
+          $id_subzona = $_POST['idnewsubzona_edit'];
+          $nomsubzona_edit = $_POST['newsubzona_edit'];
+          $newid_zona_edit = $_POST['zona_subzona_edit'];
+          $update_subzona = mysqli_query($conexion, "UPDATE subzonas SET subzona='$nomsubzona_edit', idzona=$newid_zona_edit where idsubzona=$id_subzona");
+              if ($update_subzona) {
+                  $alert = '<div class="alert alert-success" role="alert">
+                              ¡Subzona actualizada!
+                          </div>';
+                  #header("Location: agregar_usuario.php");
+              } 
+              else
+              {
+                  $alert = '<div class="alert alert-danger" role="alert">
+                          Error al actualizar la subzona, intente de nuevo.
+                      </div>';//.mysqli_error($conexion).'/'.$id_subzona;
+              }
+        }
         else if($ban == 'newcliente')
         {
             #guardamos los datos a insertar en variables
@@ -250,6 +287,7 @@ if (!empty($_POST))
                         <div class="col-lg-12">
                           <div class="form-group">
                             <label for="correo">zona</label>
+                            <input type="text" name="idnewzona_edit" id="idnewzona_edit" hidden>
                             <input type="text" class="form-control" name="newzona_edit" id="newzona_edit" required>
                         </div>  
                         </div>
@@ -328,6 +366,7 @@ if (!empty($_POST))
                         <div class="col-lg-6">
                           <div class="form-group">
                             <label for="correo">subzona</label>
+                            <input type="text" name="idnewsubzona_edit" id="idnewsubzona_edit" hidden>
                             <input type="text" class="form-control" name="newsubzona_edit" id="newsubzona_edit" required>
                         </div>  
                         </div>
@@ -390,8 +429,8 @@ if (!empty($_POST))
                             <label for="zona">Zona</label>
 
                             <button data-toggle="modal" data-target="#nueva_zona" title="Agregar nueva zona" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
-                          <button data-toggle="modal" data-target="#editar_zona" id="btnedit_zona" onclick="editar_zona();" title="editar zona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
-                          <button id="btneliminar_zona" onclick="eliminar_zona();" title="Eliminar zona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
+                          <button disabled data-toggle="modal" data-target="#editar_zona" id="btnedit_zona" onclick="editar_zona();" title="editar zona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
+                          <button disabled id="btneliminar_zona" onclick="eliminar_zona();" title="Eliminar zona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
 
                             <select class="form-control" id="zona" name="zona" required>
                                 <option selected hidden>Seleccione una opción</option>
@@ -417,14 +456,12 @@ if (!empty($_POST))
                                 <label for="subzona">Colonia (Subzona) </label>
 
                                 <button data-toggle="modal" data-target="#nueva_subzona" title="Agregar nueva subzona" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
-                              <button id="btnedit_subzona" data-toggle="modal" data-target="#editar_subzona" onclick="editar_subzona();" title="editar subzona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
-                              <button id="btneliminar_subzona" onclick="eliminar_subzona();" title="Eliminar subzona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
+                              <button disabled id="btnedit_subzona" data-toggle="modal" data-target="#editar_subzona" onclick="editar_subzona();" title="editar subzona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
+                              <button disabled id="btneliminar_subzona" onclick="eliminar_subzona();" title="Eliminar subzona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
 
-                                <div id="select_subzonas">
                                         <select id='subzona' name='subzona' class='form-control' required>
                                             <option selected hidden value=''>Seleccione una colonia (subzona)</option>
-                                        </select>
-                                </div>  
+                                        </select> 
                         </div>
 
                         <div class="form-group col-lg-3">
