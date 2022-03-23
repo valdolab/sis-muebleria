@@ -120,7 +120,7 @@
 		</a>
 		<div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="pagetemp.php">Productos</a>
+				<a class="collapse-item" href="productos.php">Productos</a>
 				<?php 
 					if($nuevo_producto)
 					{
