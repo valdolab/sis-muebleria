@@ -52,15 +52,34 @@ if (!empty($_POST))
           $desc_puesto = $_POST['desc_puesto'];
           $insert_puesto = mysqli_query($conexion, "INSERT INTO puesto(puesto,descripcion) values ('$nompuesto','$desc_puesto')");
               if ($insert_puesto) {
-                  $alert = '<div class="alert alert-primary" role="alert">
+                  $alert = '<div class="alert alert-success" role="alert">
                               Puesto registrado
                           </div>';
-                  header("Location: editar_usuario.php");
+                  #header("Location: editar_usuario.php");
               } 
               else
               {
                   $alert = '<div class="alert alert-danger" role="alert">
                           Error al actualizar
+                      </div>';
+              }
+        }
+        else if ($ban == 'editpuesto')
+        {
+          $id_puesto = $_POST['idpuesto_flag'];
+          $nompuesto_e = $_POST['newpuesto_edit'];
+          $desc_puesto_e = $_POST['desc_puesto_edit'];
+          $update_puesto = mysqli_query($conexion, "UPDATE puesto SET puesto='$nompuesto_e', descripcion='$desc_puesto_e' where idpuesto=$id_puesto");
+              if ($update_puesto) {
+                  $alert = '<div class="alert alert-success" role="alert">
+                              ¡Puesto actualizado!
+                          </div>';
+                  #header("Location: agregar_usuario.php");
+              } 
+              else
+              {
+                  $alert = '<div class="alert alert-danger" role="alert">
+                          Error al actualizar el puesto, intente de nuevos.
                       </div>';
               }
         }
@@ -320,6 +339,38 @@ if (!empty($_POST))
     </div>
 </div>
 
+<div id="editar_puesto" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="my-modal-title">Editar Puesto</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="off">
+                    <div class="form-group">
+                        <label for="correo">Puesto</label>
+                        <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newpuesto_edit" id="newpuesto_edit" required>
+                        <input type="" name="idpuesto_flag" id="idpuesto_flag" hidden>
+                    </div>
+
+                    <div class="form-group">
+                         <textarea class="form-control" name="desc_puesto_edit" title="Ingrese descripción del puesto" id="desc_puesto_edit" placeholder="Indicar una breve descripción sobre el puesto (Opcional)" maxlength="1000"></textarea>
+                    </div>
+
+                    <input value="editpuesto" name="bandera" id="bandera" hidden>
+
+                    <div align="right">
+                        <input type="submit" value="Actualizar" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <br>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -430,9 +481,11 @@ if (!empty($_POST))
                           <fieldset id="tools" disabled>
                             <label>Puesto</label>
                               <button data-toggle="modal" data-target="#nuevo_puesto" title="Agregar nuevo puesto" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
-                              <button onclick="editar_puesto();" title="editar puesto" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
-                              <button onclick="eliminar_puesto();" title="Eliminar puesto" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
+
+                              <button data-toggle="modal" data-target="#editar_puesto" onclick="editar_puesto(<?php echo $up_puesto; ?>);" title="editar puesto" class="btn btn-success btn-xs" type="button" href="#" id="btn_editarpuesto"><i class="fas fa-edit"></i></button>
+                              <button onclick="eliminar_puesto(<?php echo $up_puesto; ?>);" title="Eliminar puesto" class="btn btn-danger btn-xs" type="button" href="#" id="btn_eliminarpuesto"><i class="fas fa-trash"></i></button>
                           </fieldset>
+                          
                           <select disabled class="form-control" id="puesto" name="puesto" required>
                             <option value="" hidden selected>Seleccione una opción</option>
                             <?php

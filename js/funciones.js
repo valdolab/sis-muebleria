@@ -238,6 +238,46 @@ function cargar_todas_sucursales()
   $('#sucursal').select2('destroy').find('option').prop('selected', 'selected').end().select2();
 }
 
+//para desplegar las subzonas apartir de las zonas
+$('#zona').change(function(e) 
+{
+    e.preventDefault();
+    var name_zona = $(this).val();
+    
+    var action = 'searchSubzonas';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,zona:name_zona},
+      success: function(response) {
+        //$('#nombre').val(response);
+        if (response != 0)
+        {
+          var data = $.parseJSON(response);
+          $('#select_subzonas').html(data);
+          //$('#nombre').val(data); 
+        }
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
+    //$('#prueba').html("Hello <b>"+name_zonas+"</b>!");
+});
+
+//funcion para crear el boton de elimnar y editar de los puestos
+$('#puesto').change(function(e) 
+{
+    e.preventDefault();
+    var idpuesto = $(this).val();
+    
+    $('#btn_editarpuesto').attr('onClick', 'editar_puesto('+idpuesto+');');
+    $('#btn_eliminarpuesto').attr('onClick', 'eliminar_puesto('+idpuesto+');');
+    $('#btn_editarpuesto').removeAttr('disabled');
+    $('#btn_eliminarpuesto').removeAttr('disabled');
+});
+
 //eliminar usuario
 function eliminar_user(idusuario)
 {
@@ -454,6 +494,246 @@ function eliminar_cliente(idcliente)
         })
 }
 
+//funcion para eliminar puestos
+function eliminar_puesto(idpuesto)
+{
+    Swal.fire({
+            title: 'Esta seguro de eliminar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'SI, Eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'eliminarPuesto';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action,puesto:idpuesto},
+                  success: function(response) {
+                    //$('#prueba').val(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'Error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                window.location.href=window.location.href;
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Eliminado!',
+                          'Se elimino correctamente!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                window.location.href=window.location.href;
+                            }
+                        })
+                    }
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });      
+              }
+        })
+}
+
+//para editar puesto
+function editar_puesto(idpuesto)
+{
+    var action = 'SelectPuesto';
+    $.ajax({
+        url: 'ajax.php',
+        type: "POST",
+        async: true,
+        data: {action:action,puesto:idpuesto},
+        success: function(response) {
+            //$('#prueba').val(response);
+            if (response != 0) 
+            {
+              var data = $.parseJSON(response);
+                $('#newpuesto_edit').val(data.puesto);
+                $('#desc_puesto_edit').val(data.descripcion);
+                $('#idpuesto_flag').val(idpuesto);
+            }
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+   });  
+}
+
+//funcion para eliminar zonas
+function eliminar_zona(idzona)
+{
+    Swal.fire({
+            title: 'Esta seguro de eliminar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'SI, Eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'eliminarZona';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action,zona:idzona},
+                  success: function(response) {
+                    //$('#prueba').val(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'Error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                window.location.href=window.location.href;
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Eliminado!',
+                          'Se elimino correctamente!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                window.location.href=window.location.href;
+                            }
+                        })
+                    }
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });      
+              }
+        })
+}
+
+//para editar puesto
+function editar_zona(idzona)
+{
+    var action = 'SelectPuesto';
+    $.ajax({
+        url: 'ajax.php',
+        type: "POST",
+        async: true,
+        data: {action:action,puesto:idpuesto},
+        success: function(response) {
+            //$('#prueba').val(response);
+            if (response != 0) 
+            {
+              var data = $.parseJSON(response);
+                $('#newpuesto_edit').val(data.puesto);
+                $('#desc_puesto_edit').val(data.descripcion);
+                $('#idpuesto_flag').val(idpuesto);
+            }
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+   });  
+}
+
+//funcion para eliminar subzona
+function eliminar_subzona(idsubzona)
+{
+    Swal.fire({
+            title: 'Esta seguro de eliminar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'SI, Eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'eliminarPuesto';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action,puesto:idpuesto},
+                  success: function(response) {
+                    //$('#prueba').val(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'Error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                window.location.href=window.location.href;
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Eliminado!',
+                          'Se elimino correctamente!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                window.location.href=window.location.href;
+                            }
+                        })
+                    }
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });      
+              }
+        })
+}
+
+//para editar puesto
+function editar_subzona(idsubzona)
+{
+    var action = 'SelectPuesto';
+    $.ajax({
+        url: 'ajax.php',
+        type: "POST",
+        async: true,
+        data: {action:action,puesto:idpuesto},
+        success: function(response) {
+            //$('#prueba').val(response);
+            if (response != 0) 
+            {
+              var data = $.parseJSON(response);
+                $('#newpuesto_edit').val(data.puesto);
+                $('#desc_puesto_edit').val(data.descripcion);
+                $('#idpuesto_flag').val(idpuesto);
+            }
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+   });  
+}
+
 //para suspender sucursales
 function suspender_sucursal(idsucursal)
 {
@@ -617,34 +897,6 @@ function asignar_matriz(idsucursal)
         })
 }
 
-//para desplegar las subzonas apartir de las zonas
-$('#zona').change(function(e) 
-{
-    e.preventDefault();
-    var name_zona = $(this).val();
-    
-    var action = 'searchSubzonas';
-    $.ajax({
-      url: 'ajax.php',
-      type: "POST",
-      async: true,
-      data: {action:action,zona:name_zona},
-      success: function(response) {
-        //$('#nombre').val(response);
-        if (response != 0)
-        {
-          var data = $.parseJSON(response);
-          $('#select_subzonas').html(data);
-          //$('#nombre').val(data); 
-        }
-      },
-      error: function(error) {
-        //$('#sucursal').val('error');
-      }
-    });
-
-    //$('#prueba').html("Hello <b>"+name_zonas+"</b>!");
-});
 
 
 

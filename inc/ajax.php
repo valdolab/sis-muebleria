@@ -34,7 +34,7 @@ include "accion/conexion.php";
   if (!empty($_POST['documento'])) {
     $id_documento = $_POST['documento'];
 
-    $query_doc = mysqli_query($conexion, "DELETE FROM documento WHERE iddocumento = '$id_documento'");
+    $query_doc = mysqli_query($conexion, "DELETE FROM documento WHERE iddocumento = $id_documento");
 
     mysqli_close($conexion);
     if ($query_doc) {
@@ -82,6 +82,45 @@ if ($_POST['action'] == 'eliminarCliente')
       $elimino_cliente = 0;
     }
     echo json_encode($elimino_cliente,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+# #eliminar puesto
+  if ($_POST['action'] == 'eliminarPuesto') {
+  include "accion/conexion.php";
+  if (!empty($_POST['puesto'])) {
+    $id_puesto = $_POST['puesto'];
+
+    $query_puesto = mysqli_query($conexion, "DELETE FROM puesto WHERE idpuesto = $id_puesto");
+
+    mysqli_close($conexion);
+    if ($query_puesto) {
+      $elimino_puesto = 1;
+    }else {
+      $elimino_puesto = 0;
+    }
+    echo json_encode($elimino_puesto,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+##buscar datos sobre el puesto para poder editar puesto
+  if ($_POST['action'] == 'SelectPuesto') {
+  include "accion/conexion.php";
+  if (!empty($_POST['puesto'])) {
+    $id_puesto = $_POST['puesto'];
+
+    $select_puesto = mysqli_query($conexion, "SELECT puesto,descripcion from puesto where idpuesto = $id_puesto");
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($select_puesto);
+    $data_puesto = '';
+    if ($result > 0) {
+      $data_puesto = mysqli_fetch_assoc($select_puesto);
+    }else {
+      $data_puesto = 0;
+    }
+    echo json_encode($data_puesto,JSON_UNESCAPED_UNICODE);
   }
   exit;
 }

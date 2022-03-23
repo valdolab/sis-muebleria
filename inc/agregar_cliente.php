@@ -20,7 +20,7 @@ if (!empty($_POST))
             $nueva_zona = $_POST['nuevazona'];
           $insert_zona = mysqli_query($conexion, "INSERT INTO zonas(zona) values ('$nueva_zona')");
               if ($insert_zona) {
-                  $alert = '<div class="alert alert-primary" role="alert">
+                  $alert = '<div class="alert alert-success" role="alert">
                               Zona registrada correctamete.
                           </div>';
               } 
@@ -37,7 +37,7 @@ if (!empty($_POST))
             $idzona_subzona = $_POST['zona_subzona'];
           $insert_subzona = mysqli_query($conexion, "INSERT INTO subzonas(subzona,idzona) values ('$nueva_subzona', $idzona_subzona)");
               if ($insert_subzona) {
-                  $alert = '<div class="alert alert-primary" role="alert">
+                  $alert = '<div class="alert alert-success" role="alert">
                               Subzona registrada correctamete.
                           </div>';
               } 
@@ -235,11 +235,41 @@ if (!empty($_POST))
     </div>
 </div>
 
+<div id="editar_zona" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="my-modal-title">Editar zona</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="off">
+                    <div class="row">
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <label for="correo">zona</label>
+                            <input type="text" class="form-control" name="newzona_edit" id="newzona_edit" required>
+                        </div>  
+                        </div>
+                    </div>
+
+                    <input value="editzona" name="bandera" id="bandera" hidden>
+                    <div align="right">
+                        <input type="submit" value="Actualizar" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="nueva_subzona" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="my-modal-title">Nueva subZona (Colonia)</h5>
+                <h5 class="modal-title" id="my-modal-title">Nueva subzona (Colonia)</h5>
                 <button class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -283,6 +313,53 @@ if (!empty($_POST))
     </div>
 </div>
 
+<div id="editar_subzona" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="my-modal-title">Editar subzona (Colonia)</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="off">
+                    <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="correo">subzona</label>
+                            <input type="text" class="form-control" name="newsubzona_edit" id="newsubzona_edit" required>
+                        </div>  
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="correo">Pertenece a la zona:</label>
+                            <select class="form-control" id="zona_subzona_edit" name="zona_subzona_edit" required>
+                                <?php
+                                #codigo para la lista de sucursales que se extraen de la base de datos
+                                $result = mysqli_query($conexion,"SELECT idzona,zona FROM zonas");                        
+                                if (mysqli_num_rows($result) > 0) {  
+                                  while($row = mysqli_fetch_assoc($result))
+                                  {
+                                    echo "<option value='".$row["idzona"]."'>".$row["zona"]."</option>";
+                                  }
+                                }
+                                ?>
+                              </select>
+                        </div>  
+                        </div>
+                    </div>
+
+                    <input value="editsubzona" name="bandera" id="bandera" hidden>
+                    <div align="right">
+                        <input type="submit" value="Agregar" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Begin Page Content -->
 <br>
 <div class="container-fluid">
@@ -311,9 +388,10 @@ if (!empty($_POST))
 
                         <div class="col-lg-5">
                             <label for="zona">Zona</label>
+
                             <button data-toggle="modal" data-target="#nueva_zona" title="Agregar nueva zona" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
-                          <button onclick="editar_zona();" title="editar zona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
-                          <button onclick="eliminar_zona();" title="Eliminar zona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
+                          <button data-toggle="modal" data-target="#editar_zona" id="btnedit_zona" onclick="editar_zona();" title="editar zona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
+                          <button id="btneliminar_zona" onclick="eliminar_zona();" title="Eliminar zona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
 
                             <select class="form-control" id="zona" name="zona" required>
                                 <option selected hidden>Seleccione una opción</option>
@@ -337,9 +415,10 @@ if (!empty($_POST))
                         </div>
                         <div class="form-group col-lg-5">
                                 <label for="subzona">Colonia (Subzona) </label>
+
                                 <button data-toggle="modal" data-target="#nueva_subzona" title="Agregar nueva subzona" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
-                              <button onclick="editar_subzona();" title="editar subzona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
-                              <button onclick="eliminar_subzona();" title="Eliminar subzona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
+                              <button id="btnedit_subzona" data-toggle="modal" data-target="#editar_subzona" onclick="editar_subzona();" title="editar subzona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
+                              <button id="btneliminar_subzona" onclick="eliminar_subzona();" title="Eliminar subzona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
 
                                 <div id="select_subzonas">
                                         <select id='subzona' name='subzona' class='form-control' required>
