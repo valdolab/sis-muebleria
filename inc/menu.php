@@ -7,7 +7,6 @@
  </style>
 
 <ul class="navbar-nav bg-gradient sidebar accordion" id="accordionSidebar">
-
 	<!-- Sidebar - Brand -->
 	<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
 		<div class="sidebar-brand-icon">
@@ -88,8 +87,7 @@
         }
 	 ?>
 	
-	<div id="opciones_menu">
-
+	<div id="opciones_menu" style="width: 50px;">
 <?php if ($ventas) 
 { 
 ?>

@@ -252,7 +252,7 @@ if (!empty($_POST))
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" autocomplete="off">
+                <form action="" method="post" autocomplete="on">
                     <div class="row">
                         <div class="col-lg-12">
                           <div class="form-group">
