@@ -405,6 +405,7 @@ function eliminar_sucursal(idsucursal)
 {
     Swal.fire({
             title: 'Esta seguro de eliminar?',
+            html: 'Todos los datos pertenecientes a esta sucursal serán transpasados a la <strong>sucursal MATRIZ</strong>',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

@@ -52,8 +52,44 @@ include "accion/conexion.php";
   if (!empty($_POST['sucursal'])) {
     $id_sucursal = $_POST['sucursal'];
 
-    $query_delete_sucursal = mysqli_query($conexion, "DELETE FROM sucursales WHERE idsucursales = $id_sucursal");
+    //primero consultar si tiene algun usuario o documento asignado para luego moverlo a  matriz
+    //numbers of users
+    $select_findusers = mysqli_query($conexion, "SELECT count(sucursal_idsucursales) as num_sucursales from sucursal_usuario where sucursal_idsucursales = $id_sucursal");
+    $users_finded = mysqli_fetch_array($query4);
+    $numusers_assigned = $users_finded['num_sucursales'];
 
+    //numbers of docs finded
+    $select_finddocs = mysqli_query($conexion, "SELECT count(folio) as num_docs from documento where idsucursal = $id_sucursal");
+    $numdocs_assigned = mysqli_fetch_array($query5)['num_docs'];
+    //then find the ID from matrix
+    $select_findMatriz = mysqli_query($conexion, "SELECT idsucursales from sucursales where matriz = 1");
+    $id_sucursalmatriz = mysqli_fetch_assoc($select_findMatriz)['idsucursales'];
+
+
+    //set users to matrix if num_users > 0
+    if($numusers_assigned > 0)
+    {
+      //aqui se hara un for
+      foreach ($users_finded as $iduser) 
+      {
+        $insert_users_matrix = mysqli_query($conexion, "UPDATE sucursal_usuario SET sucursal_idsucursales = $id_sucursalmatriz where sucursal_idusuario = $iduser");
+      }
+    }
+    if($numdocs_assigned > 0)
+    {
+      $insert_docs_matrix = mysqli_query($conexion, "UPDATE documento SET idsucursal = $id_sucursalmatriz");
+      if($insert_docs_matrix)
+      {
+        $no_cambio_docs = 0;
+      }
+      else
+      {
+        $no_cambio_docs = 1;
+      }
+    }
+
+    //ahora si borramos la sucursal
+    $query_delete_sucursal = mysqli_query($conexion, "DELETE FROM sucursales WHERE idsucursales = $id_sucursal");
     mysqli_close($conexion);
     if ($query_delete_sucursal) {
       $elimino_sucursal = 1;
