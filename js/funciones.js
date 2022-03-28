@@ -435,7 +435,7 @@ function eliminar_sucursal(idsucursal)
                     }
                     else
                     {
-                        Swal.fire(
+                      Swal.fire(
                           'Eliminado!',
                           'Se elimino correctamente!',
                           'success'
@@ -444,6 +444,8 @@ function eliminar_sucursal(idsucursal)
                                 window.location.href = "sucursales.php";
                             }
                         })
+                        //var data = $.parseJSON(response);
+                        //$('#prueba').html(response);
                     }
                     
                   },

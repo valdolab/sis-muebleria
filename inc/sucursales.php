@@ -150,6 +150,7 @@ if (!empty($_POST))
     </div>
 </div>
 </div>
+<pre id="prueba"></pre>
 
 <br>
 
