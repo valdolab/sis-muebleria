@@ -20,7 +20,6 @@ if (!empty($_POST))
         $modal = "$('#mensaje_error').modal('show');";
     }
 }
-
 ?>
 
 <div style="posicion: fixed; top: 15%;" id="mensaje_error" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
@@ -150,7 +149,6 @@ if (!empty($_POST))
     </div>
 </div>
 </div>
-<pre id="prueba"></pre>
 
 <br>
 

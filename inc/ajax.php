@@ -55,7 +55,6 @@ include "accion/conexion.php";
     //primero consultar si tiene algun usuario o documento asignado para luego moverlo a  matriz
     //numbers of users
     $select_findusers = mysqli_query($conexion, "SELECT sucursal_idusuario from sucursal_usuario where sucursal_idsucursales = $id_sucursal");
-    $users_finded = mysqli_fetch_assoc($select_findusers);
     $numusers_assigned = mysqli_num_rows($select_findusers);
 
     //numbers of docs finded
@@ -84,13 +83,13 @@ include "accion/conexion.php";
     {
       $flag_changeUsers = 1;
       //actualizar cada alumno de esta sucursal a la sucursal matriz
-      foreach ($users_finded as $iduser)
+      while($row = mysqli_fetch_assoc($select_findusers))
       {
         //verificar si el usuario de esta sucursal a borrar no tiene asgnada paralelamente la sucursal matriz, si es así no hacer nada
-        $finduserINmatriz = mysqli_query($conexion, "SELECT sucursal_idusuario from sucursal_usuario where sucursal_idusuario = '$iduser' and sucursal_idsucursales = $id_sucursalmatriz");
+        $finduserINmatriz = mysqli_query($conexion, "SELECT sucursal_idusuario from sucursal_usuario where sucursal_idusuario = '$row[sucursal_idusuario]' and sucursal_idsucursales = $id_sucursalmatriz");
         if(mysqli_num_rows($finduserINmatriz) == 0)
         {
-          $insert_users_matriz = mysqli_query($conexion, "UPDATE sucursal_usuario SET sucursal_idsucursales = $id_sucursalmatriz where sucursal_idusuario = '$iduser'");
+          $insert_users_matriz = mysqli_query($conexion, "UPDATE sucursal_usuario SET sucursal_idsucursales = $id_sucursalmatriz where sucursal_idusuario = '$row[sucursal_idusuario]'");
           if(!$insert_users_matriz)
           {
             $flag_changeUsers = 0;
