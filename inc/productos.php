@@ -10,6 +10,10 @@ if (!empty($_POST))
     {
         $modal = "$('#mensaje_success').modal('show');";
     }
+    else if($ban == "producto")
+    {
+        $modal = "$('#mensaje_success').modal('show');";
+    }
 }
 
 
@@ -208,114 +212,155 @@ if (!empty($_POST))
             </div>
             <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                           <div class="form-group">
-                                <label for="nombre_cat">Nombre</label>
-                                <input type="text" class="form-control" name="nombre_cat" id="nombre_cat" required>
+                                <label for="nombre_cat">Identificador</label>
+                                <input type="text" class="form-control" name="identificador" id="identificador" required>
+                            </div>  
+                        </div>
+
+                        <div class="col-lg-3">
+                          <div class="form-group">
+                                <label for="atr1">Código de Barras</label>
+                                <input type="text" class="form-control" name="codebarras" id="codebarras">
                             </div>  
                         </div>
 
                         <div class="col-lg-4">
-                          <div class="form-group">
-                                <label for="atr1">Atributo 1</label>
-                                <input type="text" class="form-control" name="atr1" id="atr1">
-                            </div>  
+                            <label>Categorias:</label>
+                            <select class="form-control" id="categoria_producto" name="categoria_producto">
+                                <option selected hidden>Selecciona categoría</option>
+                                <option value="Lavadora">Lavadora</option>
+                                <option value="Televición">Televición</option>
+                                <option value="Refrigerador">Refrigerador</option>
+                            </select>
                         </div>
-
-                        <div class="col-lg-4">
-                          <div class="form-group">
-                                <label for="atr2">Atributo 2</label>
-                                <input type="text" class="form-control" name="atr2" id="atr2">
-                            </div>  
+                        <div class="col-lg-1">
+                            <label for="atr3">Serializado</label>
+                            <input onchange="" id="serializado" name="serializado" value="si_serializado" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="sm" data-on="SI" data-off="NO">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-4">
-                          <div class="form-group">
-                                <label for="atr3">Atributo 3</label>
-                                <input type="text" class="form-control" name="atr3" id="atr3">
-                            </div>  
-                        </div>
-
-                        <div class="col-lg-4">
-                          <div class="form-group">
-                                <label for="atr4">Atributo 4</label>
-                                <input type="text" class="form-control" name="atr4" id="atr4">
-                            </div>  
-                        </div>
-
-                        <div class="col-lg-4">
-                          <div class="form-group">
-                                <label for="atr5">Atributo 5</label>
-                                <input type="text" class="form-control" name="atr5" id="atr5">
-                            </div>  
+                        <div class="col-lg-12">
+                            <label>Descripción</label>
+                            <textarea  class="form-control" name="desc" title="Ingrese la descripción del producto" id="desc" placeholder="Ingrese la descripción detallada del producto" maxlength="50000"></textarea>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="form-group col-lg-3">
+                            <label for="iva">COSTO:</label>
+                            <div class="input-group mb-3">
+                              <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="costo" id="costo" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-2">
                             <label for="iva">IVA:</label>
                             <div class="input-group mb-3">
-                              <input name="iva" id="iva" type="number" class="form-control" aria-label="Monto en pesos mexicanos" value="16" disabled>
-                              <div class="input-group-append">
-                                <span class="input-group-text">%</span>
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
                               </div>
+                              <input name="iva" id="iva" type="number" class="form-control" aria-label="Monto en pesos mexicanos" value="400" disabled>
                             </div>
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="iva">CON:</label>
                             <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
                               <input name="con" id="con" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                              <div class="input-group-append">
-                                <span class="input-group-text">%</span>
-                              </div>
                             </div>
                         </div>
-                        <div class="form-group col-lg-3">
-                            <label for="iva">ESP:</label>
-                            <div class="input-group mb-3">
-                              <input name="esp" id="esp" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                              <div class="input-group-append">
-                                <span class="input-group-text">%</span>
-                              </div>
-                            </div>
+                        <div class="form-group col-lg-2">
+                            <label for="iva">EN-Q:</label>
+                            <input name="enq" id="enq" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
-                        <div class="form-group col-lg-3">
-                            <label for="iva">ALT:</label>
-                            <div class="input-group mb-3">
-                              <input name="alt" id="alt" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                              <div class="input-group-append">
-                                <span class="input-group-text">%</span>
-                              </div>
-                            </div>
+                        <div class="form-group col-lg-2">
+                            <label for="iva">Extra:</label>
+                            <input name="extra" id="extra" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-3">
+                            <label for="iva">ALT:</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="alt" id="alt" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3">
                             <label for="iva">CR1:</label>
                             <div class="input-group mb-3">
-                              <input name="cr1" id="cr1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                              <div class="input-group-append">
-                                <span class="input-group-text">%</span>
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
                               </div>
+                              <input name="cr1" id="cr1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                             </div>
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="iva">CR2:</label>
                             <div class="input-group mb-3">
-                              <input name="cr2" id="cr2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                              <div class="input-group-append">
-                                <span class="input-group-text">%</span>
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
                               </div>
+                              <input name="cr2" id="cr2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                             </div>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="iva">EN-Q:</label>
-                            <input name="enq" id="enq" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            <label for="iva">ESP:</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="esp" id="esp" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            </div>
                         </div>
-                        <div class="form-group col-lg-3">
-                            <label for="iva">Meses de pago:</label>
-                            <input name="meses_pago" id="meses_pago" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                                <label for="atr1">Atributo 1: </label>
+                                <label id="label_atr1" style="font-weight: bold;"></label>
+                                <input type="text" class="form-control" name="atr1_producto" id="atr1_producto" disabled>
+                            </div>  
+                        </div>
+
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                                <label for="atr1">Atributo 2: </label>
+                                <label id="label_atr2" style="font-weight: bold;"></label>
+                                <input type="text" class="form-control" name="atr2_producto" id="atr2_producto" disabled>
+                            </div>  
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                                <label for="atr1">Atributo 3: </label>
+                                <label id="label_atr3" style="font-weight: bold;"></label>
+                                <input type="text" class="form-control" name="atr3_producto" id="atr3_producto" disabled>
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                                <label for="atr1">Atributo 4: </label>
+                                <label id="label_atr4" style="font-weight: bold;"></label>
+                                <input type="text" class="form-control" name="atr4_producto" id="atr4_producto" disabled>
+                            </div>  
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                                <label for="atr1">Atributo 5: </label>
+                                <label id="label_atr5" style="font-weight: bold;"></label>
+                                <input type="text" class="form-control" name="atr5_producto" id="atr5_producto" disabled>
+                            </div>  
                         </div>
                     </div>
                     <input value="producto" name="bandera" id="bandera" hidden>
@@ -354,9 +399,9 @@ if (!empty($_POST))
             <label>Categorias:</label>
             <select class="form-control" id="filtro1" name="filtro1">
                 <option selected hidden>Selecciona categoría</option>
-                <option value="1">Lavadora</option>
-                <option value="1">Televición</option>
-                <option value="1">Refrigerador</option>
+                <option value="Lavadora">Lavadora</option>
+                <option value="Televición">Televición</option>
+                <option value="Refrigerador">Refrigerador</option>
             </select>
         </div>
         <div class="col-lg-1"></div>

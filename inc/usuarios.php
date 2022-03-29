@@ -82,13 +82,13 @@ include "accion/conexion.php";
         </thead>
         <tbody>
             <?php
-            $query = mysqli_query($conexion, "SELECT idusuario,nombre,pass,rol,puesto,estado,superadmin,iduser_auto FROM usuario ORDER BY superadmin DESC, rol ASC");
+            $query = mysqli_query($conexion, "SELECT idusuario,nombre,pass,rol,puesto,estado,superadmin,no_user FROM usuario ORDER BY superadmin DESC, rol ASC");
             $result = mysqli_num_rows($query);
             if ($result > 0) 
             {
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
-                    $id = $data['iduser_auto'];
+                    $id = $data['no_user'];
                     if ($data['estado'] == 1) 
                     {
                         $estado = '<span class="badge badge-pill badge-success">Activo</span>';

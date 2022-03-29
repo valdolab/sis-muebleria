@@ -232,8 +232,14 @@ if (!empty($_POST))
                 {
                     $apto_credito = 0;
                 }
-                
-                $nivel_apto = $_POST['nivel_credito'];
+                if(isset($_POST['nivel_credito']))
+                {
+                  $nivel_apto = $_POST['nivel_credito'];
+                }
+                else
+                {
+                  $nivel_apto = 0;
+                }
 
                 #calculamos si el cliente tiene conyugue
                 #$query = mysqli_query($conexion, "SELECT `es_conyugue` FROM `estado_civil` WHERE idestado_civil = $idestado_civil");
@@ -274,23 +280,26 @@ if (!empty($_POST))
                   
                 #AHORA INSERTAMOS SUS REFERENCIAS
                 #$insert_correctly2 = 1;
-                $nombre_ref = $_POST['nombre_ref'];
-                $relacion_ref = $_POST['relacion_ref'];
-                $domicilio_ref = $_POST['dom_ref'];
-                $tel_ref = $_POST['tel_ref'];
-                $notas_ref = $_POST['notas_ref'];
-
-                $size_refs = sizeof($nombre_ref);
                 $insert_correctly2 = 1;
-                for ($i=0; $i < $size_refs; $i++) 
-                { 
-                    //insertamos cada uno de las referencias
-                    $query_insertrefs = "INSERT INTO referencias_cliente(nombre, domicilio, relacion, tel, nota, idcliente) VALUES ('$nombre_ref[$i]', '$domicilio_ref[$i]', '$relacion_ref[$i]', '$tel_ref[$i]', '$notas_ref[$i]', '$newidcliente')";
-                    $sql = mysqli_query($conexion, $query_insertrefs);
-                    if (!$sql) 
-                    {
-                        $insert_correctly2 = 0;
-                    }
+                if(!empty($_POST['nombre_ref'][0]))
+                {
+                  $nombre_ref = $_POST['nombre_ref'];
+                  $relacion_ref = $_POST['relacion_ref'];
+                  $domicilio_ref = $_POST['dom_ref'];
+                  $tel_ref = $_POST['tel_ref'];
+                  $notas_ref = $_POST['notas_ref'];
+
+                  $size_refs = sizeof($nombre_ref);
+                  for ($i=0; $i < $size_refs; $i++) 
+                  { 
+                      //insertamos cada uno de las referencias
+                      $query_insertrefs = "INSERT INTO referencias_cliente(nombre, domicilio, relacion, tel, nota, idcliente) VALUES ('$nombre_ref[$i]', '$domicilio_ref[$i]', '$relacion_ref[$i]', '$tel_ref[$i]', '$notas_ref[$i]', '$newidcliente')";
+                      $sql = mysqli_query($conexion, $query_insertrefs);
+                      if (!$sql) 
+                      {
+                          $insert_correctly2 = 0;
+                      }
+                  }
                 }
 
                 if ($insert_correctly and $insert_correctly2 and $elimino_cliente) 
@@ -1008,7 +1017,7 @@ if (!empty($_POST))
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <label for="nombre_ref1">Nombre Referencia</label>
-                                    <input type="text" class="form-control" placeholder="" name="nombre_ref[]" required value="<?php echo $up_nombre_ref[$i]; ?>" <?php echo $disabled_full; ?>>
+                                    <input type="text" class="form-control" placeholder="" name="nombre_ref[]" value="<?php echo $up_nombre_ref[$i]; ?>" <?php echo $disabled_full; ?>>
                                 </div>
                                 <div class="col-lg-2" align="center">
                                     <!-- aqui va a ir el boton para hacer las notas -->
@@ -1017,17 +1026,17 @@ if (!empty($_POST))
                                 </div>
                                 <div class="form-group col-lg-3">
                                     <label for="relacion_ref1">Relación</label>
-                                    <input type="text" class="form-control" placeholder="" name="relacion_ref[]" required value="<?php echo $up_relacion_ref[$i]; ?>" <?php echo $disabled_full; ?>>
+                                    <input type="text" class="form-control" placeholder="" name="relacion_ref[]" value="<?php echo $up_relacion_ref[$i]; ?>" <?php echo $disabled_full; ?>>
                                 </div>
 
                                 <div class="form-group col-lg-6">
                                     <label for="dom_ref1">Domicilio Referencia</label>
-                                    <input type="text" class="form-control" placeholder="" name="dom_ref[]" required value="<?php echo $up_domicilio_ref[$i]; ?>" <?php echo $disabled_full; ?>>
+                                    <input type="text" class="form-control" placeholder="" name="dom_ref[]" value="<?php echo $up_domicilio_ref[$i]; ?>" <?php echo $disabled_full; ?>>
                                 </div>
                                 <div class="col-lg-2"></div>
                                 <div class="form-group col-lg-3">
                                     <label for="tel_ref1">Teléfono</label>
-                                    <input type="text" class="form-control" placeholder="exp. 9610000000" name="tel_ref[]" required oninput='this.value = this.value.replace(/[^0-9]/g, "").replace(/(\..*)\./g, "$1");' value="<?php echo $up_tel_ref[$i]; ?>" <?php echo $disabled_full; ?>>
+                                    <input type="text" class="form-control" placeholder="exp. 9610000000" name="tel_ref[]" oninput='this.value = this.value.replace(/[^0-9]/g, "").replace(/(\..*)\./g, "$1");' value="<?php echo $up_tel_ref[$i]; ?>" <?php echo $disabled_full; ?>>
                                 </div>
                                 <?php 
                                     if($newidnota >= 2)
@@ -1196,7 +1205,7 @@ if (!empty($_POST))
                         </div>
 
                         <div class="col-lg-1" align="right">
-                            <input id="apto_credito" name="apto_credito" value="" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="outline-secondary" data-size="sm" data-on="SI" data-off="NO" onchange="bloquear_campo()" required <?php echo $check_apto_credito; ?> <?php echo $disabled_full; ?>>
+                            <input id="apto_credito" name="apto_credito" value="" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="outline-secondary" data-size="sm" data-on="SI" data-off="NO" onchange="bloquear_campo()" <?php echo $check_apto_credito; ?> <?php echo $disabled_full; ?>>
                         </div>
                     </div>
             </div>

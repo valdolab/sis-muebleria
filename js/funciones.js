@@ -292,6 +292,34 @@ $('#subzona').change(function(e)
     $('#btneliminar_subzona').removeAttr('disabled');
 });
 
+//interfaz de producto, mostrar los atributos de categorias
+//funcion para crear el boton de elimnar y editar de los puestos
+$('#categoria_producto').change(function(e) 
+{
+    e.preventDefault();
+    var idcat = $(this).val();
+    if(idcat == "Lavadora")
+    {
+      $('#atr1_producto').removeAttr('disabled');
+      $('#atr2_producto').removeAttr('disabled');
+      $('#atr3_producto').removeAttr('disabled');
+      $('#atr4_producto').removeAttr('disabled');
+      $('#label_atr1').html("Tinas");
+      $('#label_atr2').html("KG"); 
+      $('#label_atr3').html("Tipo"); 
+      $('#label_atr4').html("Secadora"); 
+      $('#label_atr5').html("Sin atributo"); 
+    }
+    else
+    {
+      $('#label_atr1').html("---");
+      $('#label_atr2').html("---"); 
+      $('#label_atr3').html("---");
+      $('#label_atr4').html("---"); 
+      $('#label_atr5').html("---");
+    }
+});
+
 //eliminar usuario
 function eliminar_user(idusuario)
 {
