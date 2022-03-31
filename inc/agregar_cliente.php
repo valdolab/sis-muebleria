@@ -89,13 +89,14 @@ if (!empty($_POST))
         {
             #guardamos los datos a insertar en variables
             $nombre_cliente = $_POST['nombre_cliente'];
-            $idcliente = md5($nombre_cliente);
             $zona = $_POST['zona'];
             $domicilio_cliente = $_POST['domicilio_cliente'];
             $subzona = $_POST['subzona'];
             #numeros de telefono del cliente
             $tel1_cliente = $_POST['tel1_cliente'];
             $tel2_cliente = $_POST['tel2_cliente'];
+            //formamos y calculamos el ID de cliente
+            $idcliente = md5($nombre_cliente.$zona.$subzona.$tel1_cliente);
 
             $cp_cliente = $_POST['cp_cliente'];
             $es_conyugue = $_POST['idestado_civil'];
@@ -434,12 +435,34 @@ if (!empty($_POST))
                             <input maxlength="100" type="text" class="form-control" placeholder="" name="nombre_cliente" id="nombre_cliente" required>
                         </div>
 
-                        <div class="col-lg-5">
-                            <label for="zona">Zona</label>
+                        <?php 
+                            if($editar_cliente_full)
+                            {
+                                $disabled_full = "";
+                                $disabled_lim = "";
+                                $show_modals_btn = 'data-toggle="modal"';
+                            }
+                            else if($editar_cliente_lim)
+                            {
+                                $disabled_lim = "";
+                                $disabled_full = "disabled";
+                                $show_modals_btn = '';
+                            }
+                            else
+                            {
+                                $disabled_lim = "disabled";
+                                $disabled_full = "disabled";
+                                $show_modals_btn = '';
+                            }
+                         ?>
 
-                            <button data-toggle="modal" data-target="#nueva_zona" title="Agregar nueva zona" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
-                          <button disabled data-toggle="modal" data-target="#editar_zona" id="btnedit_zona" onclick="editar_zona();" title="editar zona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
-                          <button disabled id="btneliminar_zona" onclick="eliminar_zona();" title="Eliminar zona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
+                        <div class="col-lg-5">
+                          <fieldset id="tools_zona" <?php echo $disabled_full; ?>>
+                            <label for="zona">Zona</label>
+                            <button <?php echo $show_modals_btn; ?> data-target="#nueva_zona" title="Agregar nueva zona" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
+                            <button disabled <?php echo $show_modals_btn; ?> data-target="#editar_zona" id="btnedit_zona" onclick="editar_zona();" title="editar zona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
+                            <button disabled id="btneliminar_zona" onclick="eliminar_zona();" title="Eliminar zona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
+                          </fieldset>
 
                             <select class="form-control" id="zona" name="zona" required>
                                 <option selected hidden>Seleccione una opción</option>
@@ -462,11 +485,12 @@ if (!empty($_POST))
                             <input maxlength="400" type="text" class="form-control" placeholder="" name="domicilio_cliente" id="domicilio_cliente">
                         </div>
                         <div class="form-group col-lg-5">
+                          <fieldset id="tools_subzona" <?php echo $disabled_full; ?>>
                                 <label for="subzona">Colonia (Subzona) </label>
-
-                                <button data-toggle="modal" data-target="#nueva_subzona" title="Agregar nueva subzona" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
-                              <button disabled id="btnedit_subzona" data-toggle="modal" data-target="#editar_subzona" onclick="editar_subzona();" title="editar subzona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
+                                <button <?php echo $show_modals_btn; ?> data-target="#nueva_subzona" title="Agregar nueva subzona" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
+                              <button disabled id="btnedit_subzona" <?php echo $show_modals_btn; ?> data-target="#editar_subzona" onclick="editar_subzona();" title="editar subzona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
                               <button disabled id="btneliminar_subzona" onclick="eliminar_subzona();" title="Eliminar subzona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
+                          </fieldset>
 
                                         <select id='subzona' name='subzona' class='form-control' required>
                                             <option selected hidden value=''>Seleccione una colonia (subzona)</option>

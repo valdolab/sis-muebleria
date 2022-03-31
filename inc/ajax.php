@@ -386,12 +386,6 @@ if ($_POST['action'] == 'searchSubzonas')
   if (!empty($_POST['zona'])) {
     $idzona = $_POST['zona'];
 
-    if($idzona=="newzona")
-    {
-      $cadena = "<option selected hidden value=''>Seleccione una colonia (subzona)</option>";
-    }
-    else
-    {
       $query = mysqli_query($conexion, "SELECT idsubzona,subzona from subzonas where idzona=$idzona");
       if (mysqli_num_rows($query) > 0) 
       { 
@@ -405,9 +399,29 @@ if ($_POST['action'] == 'searchSubzonas')
       {
         $cadena = 0;
       }
-    }
+      //calculamos si esa zona se esta en uso para no poder borrarlo
+      $queryFind = mysqli_query($conexion, "SELECT idcliente from cliente where zona=$idzona");
+      $resultFind = mysqli_num_rows($queryFind);
+      $array = array("allow_delete" => $resultFind);
+      $array_cadena = array("options" => $cadena);
+      $array = $array + $array_cadena;
+    echo json_encode($array,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
 
-    echo json_encode($cadena,JSON_UNESCAPED_UNICODE);
+//buscar si la subzona esta siendo usada por algun usuario
+if ($_POST['action'] == 'searchSubzonaUsed') 
+{
+  include "accion/conexion.php";
+  if (!empty($_POST['subzona'])) {
+      $idsubzona = $_POST['subzona'];
+
+      //calculamos si esa zona se esta en uso para no poder borrarlo
+      $queryFindsub = mysqli_query($conexion, "SELECT idcliente from cliente where subzona=$idsubzona");
+      $resultFindsub = mysqli_num_rows($queryFindsub);
+      $array_sub = array("allow_delete" => $resultFindsub);
+    echo json_encode($array_sub,JSON_UNESCAPED_UNICODE);
   }
   exit;
 }

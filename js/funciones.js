@@ -214,8 +214,6 @@ $('#btneditar_cliente').click (function(e) {
     $('#all_inputs').removeAttr("disabled");
     $('#update_cliente').removeAttr("disabled");
     $('#btneliminar_refs').removeAttr("style");
-    $('#tools_zona').removeAttr("disabled");
-    $('#tools_subzona').removeAttr("disabled");
 });
 
 //mostrar conyugue
@@ -242,21 +240,33 @@ function cargar_todas_sucursales()
 $('#zona').change(function(e) 
 {
     e.preventDefault();
-    var name_zona = $(this).val();
+    var idzona = $(this).val();
+    $('#btnedit_zona').attr('onClick', 'editar_zona('+idzona+');');
+    $('#btnedit_zona').removeAttr('disabled');
     
     var action = 'searchSubzonas';
     $.ajax({
       url: 'ajax.php',
       type: "POST",
       async: true,
-      data: {action:action,zona:name_zona},
+      data: {action:action,zona:idzona},
       success: function(response) {
         //$('#nombre').val(response);
         if (response != 0)
         {
           var data = $.parseJSON(response);
           $("#subzona").empty();
-          $('#subzona').append(data);
+          $('#subzona').append(data.options);
+          if(data.allow_delete == 0)
+          {
+            $('#btneliminar_zona').attr('onClick', 'eliminar_zona('+idzona+');');
+            $('#btneliminar_zona').removeAttr('disabled');
+          }
+          else
+          {
+            $('#btneliminar_zona').attr('onClick', 'eliminar_zona();');
+            $('#btneliminar_zona').attr('disabled','disabled');
+          }
           //$('#prueba').html(data); 
         }
       },
@@ -264,10 +274,6 @@ $('#zona').change(function(e)
         //$('#sucursal').val('error');
       }
     });
-    $('#btnedit_zona').attr('onClick', 'editar_zona('+idzona+');');
-    $('#btneliminar_zona').attr('onClick', 'eliminar_zona('+idzona+');');
-    $('#btnedit_zona').removeAttr('disabled');
-    $('#btneliminar_zona').removeAttr('disabled');
 });
 
 //funcion para crear el boton de elimnar y editar de los puestos
@@ -285,11 +291,37 @@ $('#subzona').change(function(e)
 {
     e.preventDefault();
     var idsubzona = $(this).val();
-
     $('#btnedit_subzona').attr('onClick', 'editar_subzona('+idsubzona+');');
-    $('#btneliminar_subzona').attr('onClick', 'eliminar_subzona('+idsubzona+');');
     $('#btnedit_subzona').removeAttr('disabled');
-    $('#btneliminar_subzona').removeAttr('disabled');
+
+    var action = 'searchSubzonaUsed';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,subzona:idsubzona},
+      success: function(response) {
+        //$('#nombre').val(response);
+        if (response != 0)
+        {
+          var data = $.parseJSON(response);
+          if(data.allow_delete == 0)
+          {
+            $('#btneliminar_subzona').attr('onClick', 'eliminar_subzona('+idsubzona+');');
+            $('#btneliminar_subzona').removeAttr('disabled');
+          }
+          else
+          {
+            $('#btneliminar_subzona').attr('onClick', 'eliminar_subzona();');
+            $('#btneliminar_subzona').attr('disabled','disabled');
+          }
+          //$('#prueba').html(data); 
+        }
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
 });
 
 //interfaz de producto, mostrar los atributos de categorias

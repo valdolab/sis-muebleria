@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `cliente`;
 CREATE TABLE IF NOT EXISTS `cliente` (
-  `idcliente` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `idcliente` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `nombre_cliente` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `zona` int(11) NOT NULL,
   `domicilio_cliente` varchar(500) COLLATE utf8_spanish_ci DEFAULT NULL,
@@ -419,27 +419,27 @@ INSERT INTO `zonas` (`idzona`, `zona`, `creado_en`) VALUES
 -- Filtros para la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  ADD CONSTRAINT `se encuentra en` FOREIGN KEY (`subzona`) REFERENCES `subzonas` (`idsubzona`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tiene una` FOREIGN KEY (`zona`) REFERENCES `zonas` (`idzona`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `se encuentra en` FOREIGN KEY (`subzona`) REFERENCES `subzonas` (`idsubzona`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `tiene una` FOREIGN KEY (`zona`) REFERENCES `zonas` (`idzona`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Filtros para la tabla `documento`
 --
 ALTER TABLE `documento`
-  ADD CONSTRAINT `es de la` FOREIGN KEY (`idsucursal`) REFERENCES `sucursales` (`idsucursales`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `es de la` FOREIGN KEY (`idsucursal`) REFERENCES `sucursales` (`idsucursales`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Filtros para la tabla `permiso_usuario`
 --
 ALTER TABLE `permiso_usuario`
-  ADD CONSTRAINT `asignado al` FOREIGN KEY (`permiso_idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `es el` FOREIGN KEY (`permiso_idpermiso`) REFERENCES `permiso` (`idpermiso`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `asignado al` FOREIGN KEY (`permiso_idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `es el` FOREIGN KEY (`permiso_idpermiso`) REFERENCES `permiso` (`idpermiso`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Filtros para la tabla `referencias_cliente`
 --
 ALTER TABLE `referencias_cliente`
-  ADD CONSTRAINT `pertenece_a_cliente` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `pertenece_a_cliente` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Filtros para la tabla `subzonas`
@@ -451,14 +451,14 @@ ALTER TABLE `subzonas`
 -- Filtros para la tabla `sucursal_usuario`
 --
 ALTER TABLE `sucursal_usuario`
-  ADD CONSTRAINT `asignado a` FOREIGN KEY (`sucursal_idsucursales`) REFERENCES `sucursales` (`idsucursales`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tiene acceso a` FOREIGN KEY (`sucursal_idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `asignado a` FOREIGN KEY (`sucursal_idsucursales`) REFERENCES `sucursales` (`idsucursales`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `tiene acceso a` FOREIGN KEY (`sucursal_idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Filtros para la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD CONSTRAINT `tiene el puesto` FOREIGN KEY (`puesto`) REFERENCES `puesto` (`idpuesto`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `tiene el puesto` FOREIGN KEY (`puesto`) REFERENCES `puesto` (`idpuesto`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

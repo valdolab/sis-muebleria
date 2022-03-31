@@ -106,6 +106,7 @@ include "accion/conexion.php";
                     
                     #calculamos a que sucursales puede entrar el usuario
                     $idusuario = $data['idusuario'];
+                    //CAMBIAR EL SCRIPT DE ABAJO Y HACERLO CON INNER JOIN
                     $query4 = mysqli_query($conexion, "SELECT sucursales from sucursales where idsucursales in (select sucursal_idsucursales from sucursal_usuario where sucursal_idusuario='$idusuario')");
                     $cuantas = mysqli_num_rows($query4);
                     if ($cuantas == 1)

@@ -161,9 +161,9 @@ if (!empty($_POST))
                 <th>No.</th>
                 <th>Sucursal</th>
                 <th>Descripción</th>
-                <th>Usuarios asignados</th>
-                <th>Documentos asignados</th>
-                <th style="text-align: center;">Sucursal Matriz</th>
+                <th>Usuarios</th>
+                <th>Documentos</th>
+                <th style="text-align: center;">Tipo</th>
                 <th style="text-align: center;">Estatus</th>
                 <th style="text-align: center;">Herramientas</th>
             </tr>
@@ -192,21 +192,6 @@ if (!empty($_POST))
                     $query5 = mysqli_query($conexion, "SELECT count(folio) as num_docs from documento where idsucursal = $id_sucursal");
                     $num_asignaciones_docs = mysqli_fetch_array($query5)['num_docs'];
 
-                    if ($data['matriz'] == 1)
-                    {
-                        $matriz = '<a title="Matriz Asiganda"><span class="badge badge-pill badge-primary">Matriz</span></a>';
-                    }
-                    else
-                    {
-                        if ($data['estado'] == 1)
-                        {
-                            $matriz = '<a onclick="asignar_matriz('.$id_sucursal.')" '.$estado_matriz.' title="Asignar como matriz"><span class="badge badge-pill badge-secondary">No Matriz</span></a>';
-                        }
-                        else
-                        {
-                            $matriz = '<a disabled '.$estado_matriz.' title="Se encuentra suspendido, activala para asignar como matriz"><span class="badge badge-pill badge-secondary">No Matriz</span></a>';
-                        }
-                    }
                     $ceros = "00";
                         if ($id_sucursal > 9)
                         {
@@ -217,14 +202,16 @@ if (!empty($_POST))
                             $ceros = "";
                         }
 
+                        //quitar lo de -matriz del nombre de sucursal
+                        $arraynames_sucursal = explode("-", $data['sucursales']);
                     ?>
                     <tr>
                         <td><?php echo $ceros.$id_sucursal; ?></td>
-                        <td><?php echo $data['sucursales']; ?></td>
+                        <td><?php echo $arraynames_sucursal[0]; ?></td>
                         <td><?php echo $data['descripcion'] ?></td>
                         <td align="center"><?php echo $num_asignaciones ?></td>
                         <td align="center"><?php echo $num_asignaciones_docs ?></td>
-                        <td align="center"> <?php echo $matriz; ?> </td>
+                        <td align="center"> aqui va ir el tipo</td>
                         <td align="center"> <?php echo $estado; ?> </td>
                         
                         <td>
@@ -236,6 +223,8 @@ if (!empty($_POST))
                                 if ($data['matriz'] == 1)
                                 {
                                     #si es matriz no dejar editarlo, ni eliminarlo ni suspenderlo
+                                    echo '<button class="btn btn-primary btn-sm" type="submit" title="Matriz Asiganda"><i style="color: white;" class="fas fa-home"></i></button>';
+                                    echo "&nbsp;";
                                     echo '<a title="editar" href="editar_sucursal.php?id='.$id_sucursal.'" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>';
                                     echo "&nbsp;";
                                     echo "<button disabled title='suspender' class='btn btn-warning btn-sm' type='submit'><i style='color: white;' class='fas fa-power-off'></i></button>";
@@ -245,6 +234,8 @@ if (!empty($_POST))
                                 }
                                 else
                                 {
+                                    echo '<button class="btn btn-secondary btn-sm" type="submit" onclick="asignar_matriz('.$id_sucursal.')" '.$estado_matriz.' title="Asignar como matriz"><i style="color: white;" class="fas fa-home"></i></button>';
+                                    echo "&nbsp;";
                                     echo '<a title="editar" href="editar_sucursal.php?id='.$id_sucursal.'" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>';
                                     echo "&nbsp;";
                                     echo "<button title='suspender' onClick='suspender_sucursal(\"$id_sucursal\");' class='btn btn-warning btn-sm' type='submit'><i style='color: white;' class='fas fa-power-off'></i></button>";
@@ -257,6 +248,7 @@ if (!empty($_POST))
                             }
                             else
                             {
+                                echo '<button class="btn btn-secondary btn-sm" disabled '.$estado_matriz.' title="Se encuentra suspendido, activala para asignar como matriz"><i style="color: white;" class="fas fa-home"></i></button>';
                                 ?>
                                 <button disabled title="editar" href="editar_sucursal.php?id=<?php echo $id_sucursal; ?>" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></button>
                                 <button title="suspender" onClick='suspender_sucursal(<?php echo $id_sucursal; ?>)' class='btn btn-warning btn-sm' type='submit'><i style='color: white;' class='fas fa-power-off'></i></button>
