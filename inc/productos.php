@@ -77,7 +77,11 @@ if (!empty($_POST))
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="nombre_cat">Nombre</label>
-                                <input type="text" class="form-control" name="nombre_cat" id="nombre_cat" required>
+                                <div class="input-group">
+                                  <input type="text" class="form-control" name="nombre_cat" id="nombre_cat" required>
+                                  &nbsp;
+                                  <input onchange="" id="sino_cat" name="sino_cat" value="si_cat" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="m" data-on="SI" data-off="NO">
+                                </div>
                             </div>  
                         </div>
 
@@ -120,36 +124,36 @@ if (!empty($_POST))
                     <hr>
                     <div class="row">
                         <div class="form-group col-lg-3">
-                            <label for="iva">IVA:</label>
+                            <label for="contado">Contado:</label>
                             <div class="input-group mb-3">
-                              <input name="iva" id="iva" type="number" class="form-control" aria-label="Monto en pesos mexicanos" value="16" disabled>
+                              <input name="contado" id="contado" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
                             </div>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="iva">CON:</label>
+                            <label for="especial">Especial:</label>
                             <div class="input-group mb-3">
-                              <input name="con" id="con" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="especial" id="especial" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
                             </div>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="iva">ESP:</label>
+                            <label for="credito1">Credito 1:</label>
                             <div class="input-group mb-3">
-                              <input name="esp" id="esp" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="credito1" id="credito1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
                             </div>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="iva">ALT:</label>
+                            <label for="credito2">Credito 2:</label>
                             <div class="input-group mb-3">
-                              <input name="alt" id="alt" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="credito2" id="credito2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
@@ -158,30 +162,20 @@ if (!empty($_POST))
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-3">
-                            <label for="iva">CR1:</label>
-                            <div class="input-group mb-3">
-                              <input name="cr1" id="cr1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                              <div class="input-group-append">
-                                <span class="input-group-text">%</span>
-                              </div>
-                            </div>
+                            <label for="preriodo1">Preriodo:</label>
+                            <input name="preriodo1" id="preriodo1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="iva">CR2:</label>
-                            <div class="input-group mb-3">
-                              <input name="cr2" id="cr2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                              <div class="input-group-append">
-                                <span class="input-group-text">%</span>
-                              </div>
-                            </div>
+                            <label for="preriodo2">Preriodo 2:</label>
+                            <input name="preriodo2" id="preriodo2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="iva">EN-Q:</label>
-                            <input name="enq" id="enq" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            <label for="eng_qum">ENG-QUM:</label>
+                            <input name="eng_qum" id="eng_qum" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="iva">Meses de pago:</label>
-                            <input name="meses_pago" id="meses_pago" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            <label for="garantia">Garantía:</label>
+                            <input name="garantia" id="garantia" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                     </div>
                     <input value="cat" name="bandera" id="bandera" hidden>
@@ -256,36 +250,36 @@ if (!empty($_POST))
                     <hr>
                     <div class="row">
                         <div class="form-group col-lg-3">
-                            <label for="iva">IVA:</label>
+                            <label for="contado">Contado:</label>
                             <div class="input-group mb-3">
-                              <input name="iva" id="iva" type="number" class="form-control" aria-label="Monto en pesos mexicanos" value="16" disabled>
+                              <input name="contado" id="contado" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
                             </div>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="iva">CON:</label>
+                            <label for="especial">Especial:</label>
                             <div class="input-group mb-3">
-                              <input name="con" id="con" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="especial" id="especial" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
                             </div>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="iva">ESP:</label>
+                            <label for="credito1">Credito 1:</label>
                             <div class="input-group mb-3">
-                              <input name="esp" id="esp" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="credito1" id="credito1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
                             </div>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="iva">ALT:</label>
+                            <label for="credito2">Credito 2:</label>
                             <div class="input-group mb-3">
-                              <input name="alt" id="alt" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="credito2" id="credito2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
@@ -294,30 +288,20 @@ if (!empty($_POST))
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-3">
-                            <label for="iva">CR1:</label>
-                            <div class="input-group mb-3">
-                              <input name="cr1" id="cr1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                              <div class="input-group-append">
-                                <span class="input-group-text">%</span>
-                              </div>
-                            </div>
+                            <label for="preriodo1">Preriodo:</label>
+                            <input name="preriodo1" id="preriodo1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="iva">CR2:</label>
-                            <div class="input-group mb-3">
-                              <input name="cr2" id="cr2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                              <div class="input-group-append">
-                                <span class="input-group-text">%</span>
-                              </div>
-                            </div>
+                            <label for="preriodo2">Preriodo 2:</label>
+                            <input name="preriodo2" id="preriodo2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="iva">EN-Q:</label>
-                            <input name="enq" id="enq" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            <label for="eng_qum">ENG-QUM:</label>
+                            <input name="eng_qum" id="eng_qum" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="iva">Meses de pago:</label>
-                            <input name="meses_pago" id="meses_pago" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            <label for="garantia">Garantía:</label>
+                            <input name="garantia" id="garantia" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                     </div>
                     <input value="cat" name="bandera" id="bandera" hidden>
@@ -360,7 +344,7 @@ if (!empty($_POST))
                             </div>  
                         </div>
 
-                        <div class="col-lg-4">
+                        <div class="col-lg-2">
                             <label>Categorias:</label>
                             <select class="form-control" id="categoria_producto" name="categoria_producto">
                                 <option selected hidden>Selecciona categoría</option>
@@ -369,8 +353,17 @@ if (!empty($_POST))
                                 <option value="Refrigerador">Refrigerador</option>
                             </select>
                         </div>
+                        <div class="col-lg-2">
+                            <label>Subcategorias:</label>
+                            <select class="form-control" id="subcategoria_producto" name="subcategoria_producto">
+                                <option selected hidden>Selecciona subcategoría</option>
+                                <option value="Lavadora">Lavadora</option>
+                                <option value="Televición">Televición</option>
+                                <option value="Refrigerador">Refrigerador</option>
+                            </select>
+                        </div>
                         <div class="col-lg-1">
-                            <label for="atr3">Serializado</label>
+                            <label for="serializado">Serializado</label>
                             <input onchange="" id="serializado" name="serializado" value="si_serializado" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="sm" data-on="SI" data-off="NO">
                         </div>
                     </div>
@@ -380,83 +373,7 @@ if (!empty($_POST))
                             <textarea  class="form-control" name="desc" title="Ingrese la descripción del producto" id="desc" placeholder="Ingrese la descripción detallada del producto" maxlength="50000"></textarea>
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="form-group col-lg-3">
-                            <label for="iva">COSTO:</label>
-                            <div class="input-group mb-3">
-                              <div class="input-group-append">
-                                <span class="input-group-text">$</span>
-                              </div>
-                              <input name="costo" id="costo" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-2">
-                            <label for="iva">IVA:</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-append">
-                                <span class="input-group-text">$</span>
-                              </div>
-                              <input name="iva" id="iva" type="number" class="form-control" aria-label="Monto en pesos mexicanos" value="400" disabled>
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="iva">CON:</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-append">
-                                <span class="input-group-text">$</span>
-                              </div>
-                              <input name="con" id="con" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-2">
-                            <label for="iva">EN-Q:</label>
-                            <input name="enq" id="enq" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                        </div>
-                        <div class="form-group col-lg-2">
-                            <label for="iva">Extra:</label>
-                            <input name="extra" id="extra" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-3">
-                            <label for="iva">ALT:</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-append">
-                                <span class="input-group-text">$</span>
-                              </div>
-                              <input name="alt" id="alt" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="iva">CR1:</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-append">
-                                <span class="input-group-text">$</span>
-                              </div>
-                              <input name="cr1" id="cr1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="iva">CR2:</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-append">
-                                <span class="input-group-text">$</span>
-                              </div>
-                              <input name="cr2" id="cr2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="iva">ESP:</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-append">
-                                <span class="input-group-text">$</span>
-                              </div>
-                              <input name="esp" id="esp" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
+                    <br>
                     <div class="row">
                         <div class="col-lg-4">
                           <div class="form-group">
@@ -465,7 +382,6 @@ if (!empty($_POST))
                                 <input type="text" class="form-control" name="atr1_producto" id="atr1_producto" disabled>
                             </div>  
                         </div>
-
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="atr1">Atributo 2: </label>
@@ -482,6 +398,7 @@ if (!empty($_POST))
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-lg-2"></div>
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="atr1">Atributo 4: </label>
@@ -495,6 +412,100 @@ if (!empty($_POST))
                                 <label id="label_atr5" style="font-weight: bold;"></label>
                                 <input type="text" class="form-control" name="atr5_producto" id="atr5_producto" disabled>
                             </div>  
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-2">
+                            <label for="ettp">ETT.-PB:</label>
+                            <div class="input-group mb-3">
+                              <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="ettp" id="ettp" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-2">
+                            <label for="costo">COSTO:</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="costo" id="costo" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="costoiva">COSTO+IVA:</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="costoiva" id="costoiva" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="contado">Contado:</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="contado" id="contado" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-2">
+                            <label for="especial">Especial:</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="especial" id="especial" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-2">
+                            <label for="cr1">CR1:</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="cr1" id="cr1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-2">
+                            <label for="cr2">CR2:</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="cr2" id="cr2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="p1">P1:</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="p1" id="p1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="p2">P2:</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="p2" id="p2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-2">
+                            <label for="e_q">E-Q:</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="e_q" id="e_q" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            </div>
                         </div>
                     </div>
                     <input value="producto" name="bandera" id="bandera" hidden>

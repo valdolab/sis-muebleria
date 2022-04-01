@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 29-03-2022 a las 09:05:00
--- Versión del servidor: 5.7.36
--- Versión de PHP: 7.4.26
+-- Tiempo de generación: 01-04-2022 a las 07:04:16
+-- Versión del servidor: 5.7.31
+-- Versión de PHP: 7.3.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,6 +38,8 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   `tel2_cliente` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
   `cp_cliente` int(11) DEFAULT NULL,
   `idestado_civil` int(1) NOT NULL DEFAULT '0',
+  `curp` char(18) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `rfc` char(13) COLLATE utf8_spanish_ci DEFAULT NULL,
   `trabajo_cliente` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `puesto_cliente` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `direccion_trabajo_cliente` varchar(400) COLLATE utf8_spanish_ci DEFAULT NULL,
@@ -67,21 +69,22 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   `apto_credito` tinyint(1) NOT NULL,
   `nivel_apto` tinyint(2) NOT NULL,
   `estado_cliente` tinyint(1) NOT NULL DEFAULT '1',
-  `no_cliente` int(11) NOT NULL AUTO_INCREMENT,
+  `no_cliente` int(11) NOT NULL,
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idcliente`),
   KEY `tiene una` (`zona`),
-  KEY `se encuentra en` (`subzona`),
-  KEY `no_cliente` (`no_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  KEY `se encuentra en` (`subzona`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `cliente`
 --
 
-INSERT INTO `cliente` (`idcliente`, `nombre_cliente`, `zona`, `domicilio_cliente`, `subzona`, `tel1_cliente`, `tel2_cliente`, `cp_cliente`, `idestado_civil`, `trabajo_cliente`, `puesto_cliente`, `direccion_trabajo_cliente`, `antiguedadA_trabajo_cliente`, `antiguedadM_trabajo_cliente`, `ingresos_cliente`, `tipo_ingresos_cliente`, `nombre_conyugue_cliente`, `antiguedadA_vinculo`, `antiguedadM_vinculo`, `trabajo_conyugue`, `puesto_conyugue`, `ingreso_mensual_conyugue`, `direccion_trabajo_conyugue`, `tel_conyugue`, `tipo_vivienda_cliente`, `edad_residencia`, `renta_mensual`, `ndependientes`, `nombre_aval`, `tel_aval`, `domicilio_aval`, `trabajo_aval`, `puesto_aval`, `ingreso_mensual_aval`, `nombre_conyugue_aval`, `apto_credito`, `nivel_apto`, `estado_cliente`, `no_cliente`, `creado_en`) VALUES
-('6cf768d73633345419e95d41d5614b95', 'Cliente de prueba', 3, 'cambio de domicilio', 8, '9611920000', '9611926030', 29070, 0, 'asdasd', 'asdasd', 'asdasd', 4, 0, '5000.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 4, 0.0000, 2, 'asdas', '9611926030', 'dsasd', 'asdasd', 'asdasda', 5000.0000, 'asdasd', 1, 0, 1, 1, '2022-03-29 06:17:32'),
-('713e58ea7854e170120ef1aa041760e0', 'Cliente de prueba 3', 3, NULL, 8, NULL, NULL, NULL, 0, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 9, '2022-03-29 09:03:21');
+INSERT INTO `cliente` (`idcliente`, `nombre_cliente`, `zona`, `domicilio_cliente`, `subzona`, `tel1_cliente`, `tel2_cliente`, `cp_cliente`, `idestado_civil`, `curp`, `rfc`, `trabajo_cliente`, `puesto_cliente`, `direccion_trabajo_cliente`, `antiguedadA_trabajo_cliente`, `antiguedadM_trabajo_cliente`, `ingresos_cliente`, `tipo_ingresos_cliente`, `nombre_conyugue_cliente`, `antiguedadA_vinculo`, `antiguedadM_vinculo`, `trabajo_conyugue`, `puesto_conyugue`, `ingreso_mensual_conyugue`, `direccion_trabajo_conyugue`, `tel_conyugue`, `tipo_vivienda_cliente`, `edad_residencia`, `renta_mensual`, `ndependientes`, `nombre_aval`, `tel_aval`, `domicilio_aval`, `trabajo_aval`, `puesto_aval`, `ingreso_mensual_aval`, `nombre_conyugue_aval`, `apto_credito`, `nivel_apto`, `estado_cliente`, `no_cliente`, `creado_en`) VALUES
+('66bf53a2d9114070fb4ac9127240b730', 'probando el nuevo id', 1, 'cambiando el cliente sin cambiar no_cliente', 1, NULL, NULL, NULL, 0, 'VEGO971224HCSLNS00', 'VEGO9712245K7', NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 1, '2022-04-01 02:11:04'),
+('707381d68fe45ec481d00b455b632fce', 'probando lo de nocliente', 3, NULL, 8, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 4, '2022-04-01 02:06:48'),
+('765afbfa860969edbb0b661b7404dd11', 'Cliente de prueba', 3, 'cambio de domicilio', 8, '9611920000', '9611926030', 29070, 0, 'VEGO971224HCSLNS00', 'VEGO9712245K7', 'asdasd', 'asdasd', 'asdasd', 4, 0, '5000.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 4, 0.0000, 2, 'asdas', '9611926030', 'dsasd', 'asdasd', 'asdasda', 5000.0000, 'asdasd', 1, 0, 1, 2, '2022-04-01 01:52:34'),
+('bd9d3bcda3fa2b3547779f2c67fecbea', 'Cliente de prueba 3', 1, 'asdasd', 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 3, '2022-04-01 01:53:50');
 
 -- --------------------------------------------------------
 
@@ -268,15 +271,7 @@ CREATE TABLE IF NOT EXISTS `referencias_cliente` (
   `idcliente` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`idreferencia`),
   KEY `pertenece_a_cliente` (`idcliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `referencias_cliente`
---
-
-INSERT INTO `referencias_cliente` (`idreferencia`, `nombre`, `domicilio`, `relacion`, `tel`, `nota`, `idcliente`) VALUES
-(3, 'referencia1FIN', 'domref', 'asda', '9611926030', 'nota de ref1', '6cf768d73633345419e95d41d5614b95'),
-(4, 'referencia2FIN', 'domref', 'asda', '9611926030', 'nota de ref 2', '6cf768d73633345419e95d41d5614b95');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -419,27 +414,27 @@ INSERT INTO `zonas` (`idzona`, `zona`, `creado_en`) VALUES
 -- Filtros para la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  ADD CONSTRAINT `se encuentra en` FOREIGN KEY (`subzona`) REFERENCES `subzonas` (`idsubzona`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `tiene una` FOREIGN KEY (`zona`) REFERENCES `zonas` (`idzona`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `se encuentra en` FOREIGN KEY (`subzona`) REFERENCES `subzonas` (`idsubzona`),
+  ADD CONSTRAINT `tiene una` FOREIGN KEY (`zona`) REFERENCES `zonas` (`idzona`);
 
 --
 -- Filtros para la tabla `documento`
 --
 ALTER TABLE `documento`
-  ADD CONSTRAINT `es de la` FOREIGN KEY (`idsucursal`) REFERENCES `sucursales` (`idsucursales`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `es de la` FOREIGN KEY (`idsucursal`) REFERENCES `sucursales` (`idsucursales`);
 
 --
 -- Filtros para la tabla `permiso_usuario`
 --
 ALTER TABLE `permiso_usuario`
-  ADD CONSTRAINT `asignado al` FOREIGN KEY (`permiso_idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `es el` FOREIGN KEY (`permiso_idpermiso`) REFERENCES `permiso` (`idpermiso`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `asignado al` FOREIGN KEY (`permiso_idusuario`) REFERENCES `usuario` (`idusuario`),
+  ADD CONSTRAINT `es el` FOREIGN KEY (`permiso_idpermiso`) REFERENCES `permiso` (`idpermiso`);
 
 --
 -- Filtros para la tabla `referencias_cliente`
 --
 ALTER TABLE `referencias_cliente`
-  ADD CONSTRAINT `pertenece_a_cliente` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `pertenece_a_cliente` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`);
 
 --
 -- Filtros para la tabla `subzonas`
@@ -451,14 +446,14 @@ ALTER TABLE `subzonas`
 -- Filtros para la tabla `sucursal_usuario`
 --
 ALTER TABLE `sucursal_usuario`
-  ADD CONSTRAINT `asignado a` FOREIGN KEY (`sucursal_idsucursales`) REFERENCES `sucursales` (`idsucursales`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `tiene acceso a` FOREIGN KEY (`sucursal_idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `asignado a` FOREIGN KEY (`sucursal_idsucursales`) REFERENCES `sucursales` (`idsucursales`),
+  ADD CONSTRAINT `tiene acceso a` FOREIGN KEY (`sucursal_idusuario`) REFERENCES `usuario` (`idusuario`);
 
 --
 -- Filtros para la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD CONSTRAINT `tiene el puesto` FOREIGN KEY (`puesto`) REFERENCES `puesto` (`idpuesto`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `tiene el puesto` FOREIGN KEY (`puesto`) REFERENCES `puesto` (`idpuesto`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
