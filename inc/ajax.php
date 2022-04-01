@@ -420,9 +420,23 @@ if ($_POST['action'] == 'searchSubzonaUsed')
       //calculamos si esa zona se esta en uso para no poder borrarlo
       $queryFindsub = mysqli_query($conexion, "SELECT idcliente from cliente where subzona=$idsubzona");
       $resultFindsub = mysqli_num_rows($queryFindsub);
-      $array_sub = array("allow_delete" => $resultFindsub);
-    echo json_encode($array_sub,JSON_UNESCAPED_UNICODE);
+      #$array_sub = array("allow_delete" => $resultFindsub);
+    echo json_encode($resultFindsub,JSON_UNESCAPED_UNICODE);
   }
   exit;
 }
 
+//buscar si la subzona esta siendo usada por algun usuario
+if ($_POST['action'] == 'searchPuestoUsed') 
+{
+  include "accion/conexion.php";
+  if (!empty($_POST['puesto'])) {
+      $idpuesto = $_POST['puesto'];
+
+      //calculamos si esa zona se esta en uso para no poder borrarlo
+      $queryFindpuesto = mysqli_query($conexion, "SELECT idusuario from usuario where puesto=$idpuesto");
+      $resultFindsub = mysqli_num_rows($queryFindpuesto);
+    echo json_encode($resultFindsub,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}

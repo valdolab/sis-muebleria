@@ -108,11 +108,12 @@ if (!empty($_POST))
             <div class="modal-body">
                 <form action="" method="post" autocomplete="off">
                     <div class="form-group">
-                        <label for="correo">Nueva Sucursal</label>
+                        <label for="newsucursal">Nueva Sucursal</label>
                         <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newsucursal" id="newsucursal" required>
                     </div>
 
                     <div class="form-group">
+                        <label for="desc_sucursal">Descripción</label>
                          <textarea class="form-control" name="desc_sucursal" title="Ingrese descripción de la sucursal" id="desc_sucursal" placeholder="Indicar una breve descripción sobre la sucursal (Opcional)" maxlength="1000"></textarea>
                     </div>
 

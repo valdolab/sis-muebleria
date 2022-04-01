@@ -15,8 +15,6 @@ if (!empty($_POST))
         $modal = "$('#mensaje_success').modal('show');";
     }
 }
-
-
 ?>
 
 <div style="posicion: fixed; top: 15%;" id="mensaje_success" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
@@ -380,7 +378,6 @@ if (!empty($_POST))
         </div>
 
         <div align="right" class="col-lg-4">
-            <button data-toggle="modal" data-target="#nueva_cat" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nueva categoría</button>
             <button data-toggle="modal" data-target="#nuevo_producto" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nuevo producto</button> 
         </div>
     </div>
@@ -392,10 +389,6 @@ if (!empty($_POST))
 <form action="" method="post" autocomplete="off">
     <div class="row">
         <div class="col-lg-1">
-            <h4><strong>FILTROS</strong></h4>
-            <!--<input type="" name="prueba" id="prueba">-->
-        </div>
-        <div class="col-lg-2">
             <label>Categorias:</label>
             <select class="form-control" id="filtro1" name="filtro1">
                 <option selected hidden>Selecciona categoría</option>
@@ -404,7 +397,15 @@ if (!empty($_POST))
                 <option value="Refrigerador">Refrigerador</option>
             </select>
         </div>
-        <div class="col-lg-1"></div>
+        <div class="col-lg-1">
+            <label>Subcategorias:</label>
+            <select class="form-control" id="filtro1" name="filtro1">
+                <option selected hidden>Selecciona categoría</option>
+                <option value="Lavadora">Lavadora</option>
+                <option value="Televición">Televición</option>
+                <option value="Refrigerador">Refrigerador</option>
+            </select>
+        </div>
         <div align="left" class="col-lg-1">
             <label>Atributo 1:</label>
             <select class="form-control" id="filtro1" name="filtro1">
@@ -444,16 +445,28 @@ if (!empty($_POST))
                 <option selected hidden>---</option>
             </select>
         </div>
-        <div class="col-lg-1"></div>
         <div class="col-lg-1">
-            <button type="submit" class="btn btn-primary">Modificar Lista</button>
+            <input value="modificarLista" name="bandera" id="bandera" hidden>
+            <button type="submit" class="btn btn-primary">Ver Costos</button>
+        </div>
+        <div class="col-lg-1">
+            <input value="modificarLista" name="bandera" id="bandera" hidden>
+            <button type="submit" class="btn btn-primary">Editar Listas</button>
+        </div>
+        <div class="col-lg-1">
+            <input value="modificarLista" name="bandera" id="bandera" hidden>
+            <button type="submit" class="btn btn-primary">Descargar Catalogo</button>
+        </div>
+        <div class="col-lg-1">
+            <input value="modificarLista" name="bandera" id="bandera" hidden>
+            <button type="submit" class="btn btn-primary">Descargar Lista</button>
         </div>
     </div>
 </form>
 </div>
 </div>
 
-<br>
+
 
 <div class="card">
 <div class="card-body">
@@ -461,12 +474,20 @@ if (!empty($_POST))
     <table class="table" id="tbl">
         <thead class="thead-light">
             <tr>
-                <th>Identificador</th>
-                <th>Código</th>
-                <th>Categoria</th>
                 <th>Descripción</th>
                 <th>Costo</th>
-                <th>Precio</th>
+                <th>Costo+IVA</th>
+                <th>Ext.-P</th>
+                <th>Ext-M</th>
+                <th>Contado</th>
+                <th>CR1</th>
+                <th>P1</th>
+                <th>CR2</th>
+                <th>P2</th>
+                <th>E-Q</th>
+                <th>P2</th>
+                <th>E-Q</th>
+                <th>GAR</th>
                 <th style="text-align: center;">Herramientas</th>
             </tr>
         </thead>
