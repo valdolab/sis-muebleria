@@ -62,13 +62,149 @@ if (!empty($_POST))
             <div class="modal-header">
                 <h3 class="modal-title">Detalle Categoría</h3>
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-6">
+                        <button type="submit" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close">
+                            Cancelar
+                        </button>
+                    </div>
+                    <div class="col-lg-6">
                         <input type="submit" value="Guardar" class="btn btn-lg btn-success">
                     </div>
-                    <div class="col-lg-4">
-                        <button class="btn btn-lg" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"><i class="fas fa-times fa-lg"></i></span>
+                </div>
+            </div>
+            <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                                <label for="nombre_cat">Nombre</label>
+                                <input type="text" class="form-control" name="nombre_cat" id="nombre_cat" required>
+                            </div>  
+                        </div>
+
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                                <label for="atr1">Atributo 1</label>
+                                <input type="text" class="form-control" name="atr1" id="atr1">
+                            </div>  
+                        </div>
+
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                                <label for="atr2">Atributo 2</label>
+                                <input type="text" class="form-control" name="atr2" id="atr2">
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                                <label for="atr3">Atributo 3</label>
+                                <input type="text" class="form-control" name="atr3" id="atr3">
+                            </div>  
+                        </div>
+
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                                <label for="atr4">Atributo 4</label>
+                                <input type="text" class="form-control" name="atr4" id="atr4">
+                            </div>  
+                        </div>
+
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                                <label for="atr5">Atributo 5</label>
+                                <input type="text" class="form-control" name="atr5" id="atr5">
+                            </div>  
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="form-group col-lg-3">
+                            <label for="iva">IVA:</label>
+                            <div class="input-group mb-3">
+                              <input name="iva" id="iva" type="number" class="form-control" aria-label="Monto en pesos mexicanos" value="16" disabled>
+                              <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="iva">CON:</label>
+                            <div class="input-group mb-3">
+                              <input name="con" id="con" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="iva">ESP:</label>
+                            <div class="input-group mb-3">
+                              <input name="esp" id="esp" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="iva">ALT:</label>
+                            <div class="input-group mb-3">
+                              <input name="alt" id="alt" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-3">
+                            <label for="iva">CR1:</label>
+                            <div class="input-group mb-3">
+                              <input name="cr1" id="cr1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="iva">CR2:</label>
+                            <div class="input-group mb-3">
+                              <input name="cr2" id="cr2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="iva">EN-Q:</label>
+                            <input name="enq" id="enq" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="iva">Meses de pago:</label>
+                            <input name="meses_pago" id="meses_pago" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                        </div>
+                    </div>
+                    <input value="cat" name="bandera" id="bandera" hidden>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+<div id="nueva_subcat" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+        <form action="" method="post" autocomplete="on">
+            <div class="modal-header">
+                <h3 class="modal-title">Detalle Subcategoría</h3>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button type="submit" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close">
+                            Cancelar
                         </button>
+                    </div>
+                    <div class="col-lg-6">
+                        <input type="submit" value="Guardar" class="btn btn-lg btn-success">
                     </div>
                 </div>
             </div>
@@ -198,13 +334,13 @@ if (!empty($_POST))
             <div class="modal-header">
                 <h3 class="modal-title">Detalle del Producto</h3>
                 <div class="row">
-                    <div class="col-lg-8">
-                        <input type="submit" value="Guardar" class="btn btn-lg btn-success">
-                    </div>
-                    <div class="col-lg-4">
-                        <button class="btn btn-lg" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"><i class="fas fa-times fa-lg"></i></span>
+                    <div class="col-lg-6">
+                        <button type="submit" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close">
+                            Cancelar
                         </button>
+                    </div>
+                    <div class="col-lg-6">
+                        <input type="submit" value="Guardar" class="btn btn-lg btn-success">
                     </div>
                 </div>
             </div>
@@ -388,8 +524,12 @@ if (!empty($_POST))
 <div class="card-body">
 <form action="" method="post" autocomplete="off">
     <div class="row">
-        <div class="col-lg-1">
-            <label>Categorias:</label>
+        <div class="col-lg-2">
+            <label>Categoria:</label>
+            <button data-toggle="modal" data-target="#nueva_cat" title="Agregar nuevo puesto" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
+            <button data-toggle="modal" data-target="#editar_puesto" onclick="editar_puesto();" title="editar puesto" class="btn btn-success btn-xs" type="button" href="#" id="btn_editarpuesto"><i class="fas fa-edit"></i></button>
+            <button onclick="eliminar_puesto();" title="Eliminar puesto" class="btn btn-danger btn-xs" type="button" href="#" id="btn_eliminarpuesto"><i class="fas fa-trash"></i></button>
+
             <select class="form-control" id="filtro1" name="filtro1">
                 <option selected hidden>Selecciona categoría</option>
                 <option value="Lavadora">Lavadora</option>
@@ -397,8 +537,12 @@ if (!empty($_POST))
                 <option value="Refrigerador">Refrigerador</option>
             </select>
         </div>
-        <div class="col-lg-1">
-            <label>Subcategorias:</label>
+        <div class="col-lg-2">
+            <label>Subcategoria:</label>
+            <button data-toggle="modal" data-target="#nueva_subcat" title="Agregar nuevo puesto" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
+            <button data-toggle="modal" data-target="#editar_puesto" onclick="editar_puesto();" title="editar puesto" class="btn btn-success btn-xs" type="button" href="#" id="btn_editarpuesto"><i class="fas fa-edit"></i></button>
+            <button onclick="eliminar_puesto();" title="Eliminar puesto" class="btn btn-danger btn-xs" type="button" href="#" id="btn_eliminarpuesto"><i class="fas fa-trash"></i></button>
+
             <select class="form-control" id="filtro1" name="filtro1">
                 <option selected hidden>Selecciona categoría</option>
                 <option value="Lavadora">Lavadora</option>
@@ -445,21 +589,18 @@ if (!empty($_POST))
                 <option selected hidden>---</option>
             </select>
         </div>
-        <div class="col-lg-1">
+        <div class="col-lg-3">
             <input value="modificarLista" name="bandera" id="bandera" hidden>
-            <button type="submit" class="btn btn-primary">Ver Costos</button>
-        </div>
-        <div class="col-lg-1">
+            <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 65px !important;">Ver Costos</button>
+
             <input value="modificarLista" name="bandera" id="bandera" hidden>
-            <button type="submit" class="btn btn-primary">Editar Listas</button>
-        </div>
-        <div class="col-lg-1">
+            <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 70px !important;">Editar Listas</button>
+
             <input value="modificarLista" name="bandera" id="bandera" hidden>
-            <button type="submit" class="btn btn-primary">Descargar Catalogo</button>
-        </div>
-        <div class="col-lg-1">
+            <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Catalogo</button>
+
             <input value="modificarLista" name="bandera" id="bandera" hidden>
-            <button type="submit" class="btn btn-primary">Descargar Lista</button>
+            <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Lista</button>
         </div>
     </div>
 </form>
@@ -493,10 +634,18 @@ if (!empty($_POST))
         </thead>
         <tbody>
             <tr>
-                        <td>DWM-K130PB</td>
-                        <td>12345BC12AS</td>
-                        <td>Lavadora</td>
-                        <td>Esta es la lavadora LG que hace tal cosa</td>
+                        <td>Lavadora LG con secadora</td>
+                        <td>$5,000</td>
+                        <td>$5,500</td>
+                        <td>$4,000</td>
+                        <td>$4,000</td>
+                        <td>$5,000</td>
+                        <td>$4,000</td>
+                        <td>$5,000</td>
+                        <td>$4,000</td>
+                        <td>$5,000</td>
+                        <td>$4,000</td>
+                        <td>$5,000</td>
                         <td>$4,000</td>
                         <td>$5,000</td>
                         <td align="center">
