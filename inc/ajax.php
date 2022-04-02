@@ -206,6 +206,46 @@ if ($_POST['action'] == 'eliminarCliente')
   exit;
 }
 
+# #eliminar tipo
+  if ($_POST['action'] == 'eliminarTipo') {
+  include "accion/conexion.php";
+  if (!empty($_POST['tipo'])) {
+    $id_tipo = $_POST['tipo'];
+
+    $query_tipo = mysqli_query($conexion, "DELETE FROM tipo WHERE idtipo = $id_tipo");
+
+    mysqli_close($conexion);
+    if ($query_tipo) {
+      $elimino_tipo= 1;
+    }else {
+      $elimino_tipo = 0;
+    }
+    echo json_encode($elimino_tipo,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+##buscar datos sobre el tipo para poder editar tipo
+  if ($_POST['action'] == 'SelectTipo') {
+  include "accion/conexion.php";
+  if (!empty($_POST['tipo'])) {
+    $id_tipo = $_POST['tipo'];
+
+    $select_tipo = mysqli_query($conexion, "SELECT idtipo,nombre_tipo from tipo where idtipo = $id_tipo");
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($select_tipo);
+    $data_tipo = '';
+    if ($result > 0) 
+    {
+      $data_tipo = mysqli_fetch_assoc($select_tipo);
+    }else {
+      $data_tipo = 0;
+    }
+    echo json_encode($data_tipo,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
 ##buscar datos sobre el puesto para poder editar puesto
   if ($_POST['action'] == 'SelectPuesto') {
   include "accion/conexion.php";
@@ -437,6 +477,21 @@ if ($_POST['action'] == 'searchPuestoUsed')
       $queryFindpuesto = mysqli_query($conexion, "SELECT idusuario from usuario where puesto=$idpuesto");
       $resultFindsub = mysqli_num_rows($queryFindpuesto);
     echo json_encode($resultFindsub,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+//buscar si la subzona esta siendo usada por algun usuario
+if ($_POST['action'] == 'searchTipoUsed') 
+{
+  include "accion/conexion.php";
+  if (!empty($_POST['tipo'])) {
+      $idtipo = $_POST['tipo'];
+
+      //calculamos si esa zona se esta en uso para no poder borrarlo
+      $queryFindtipo = mysqli_query($conexion, "SELECT idsucursales from sucursales where tipo=$idtipo");
+      $resultFindtipo = mysqli_num_rows($queryFindtipo);
+    echo json_encode($resultFindtipo,JSON_UNESCAPED_UNICODE);
   }
   exit;
 }

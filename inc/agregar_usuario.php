@@ -205,7 +205,7 @@ if (!empty($_POST))
                 <form action="" method="post" autocomplete="off">
                     <div class="form-group">
                         <label for="correo">Nuevo puesto</label>
-                        <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newpuesto" id="newpuesto" required>
+                        <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newpuesto" id="newpuesto" required maxlength="99">
                     </div>
 
                     <div class="form-group">
@@ -236,12 +236,12 @@ if (!empty($_POST))
                 <form action="" method="post" autocomplete="off">
                     <div class="form-group">
                         <label for="correo">Puesto</label>
-                        <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newpuesto_edit" id="newpuesto_edit" required>
+                        <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newpuesto_edit" id="newpuesto_edit" required maxlength="99">
                         <input type="" name="idpuesto_flag" id="idpuesto_flag" hidden>
                     </div>
 
                     <div class="form-group">
-                         <textarea class="form-control" name="desc_puesto_edit" title="Ingrese descripción del puesto" id="desc_puesto_edit" placeholder="Indicar una breve descripción sobre el puesto (Opcional)" maxlength="1000"></textarea>
+                         <textarea class="form-control" name="desc_puesto_edit" title="Ingrese descripción del puesto" id="desc_puesto_edit" placeholder="Indicar una breve descripción sobre el puesto (Opcional)" maxlength="10000"></textarea>
                     </div>
 
                     <input value="editpuesto" name="bandera" id="bandera" hidden>

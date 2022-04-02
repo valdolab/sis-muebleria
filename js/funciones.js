@@ -230,6 +230,39 @@ $('#zona').change(function(e)
     });
 });
 
+$('#subzona').change(function(e) 
+{
+    e.preventDefault();
+    var idsubzona = $(this).val();
+    $('#btnedit_subzona').attr('onClick', 'editar_subzona('+idsubzona+');');
+    $('#btnedit_subzona').removeAttr('disabled');
+
+    var action = 'searchSubzonaUsed';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,subzona:idsubzona},
+      success: function(response) {
+        //var data = $.parseJSON(response);
+        if(response == 0)
+        {
+            $('#btneliminar_subzona').attr('onClick', 'eliminar_subzona('+idsubzona+');');
+            $('#btneliminar_subzona').removeAttr('disabled');
+        }
+        else
+        {
+            $('#btneliminar_subzona').attr('onClick', 'eliminar_subzona();');
+            $('#btneliminar_subzona').attr('disabled','disabled');
+        }
+          //$('#prueba').html(data); 
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
+});
+
 //funcion para crear el boton de elimnar y editar de los puestos
 $('#puesto').change(function(e) 
 {
@@ -263,32 +296,32 @@ $('#puesto').change(function(e)
     });
 });
 
-$('#subzona').change(function(e) 
+//funcion para crear el boton de elimnar y editar de los tipos
+$('#tipo').change(function(e) 
 {
     e.preventDefault();
-    var idsubzona = $(this).val();
-    $('#btnedit_subzona').attr('onClick', 'editar_subzona('+idsubzona+');');
-    $('#btnedit_subzona').removeAttr('disabled');
+    var idtipo = $(this).val();
+    $('#btn_editartipo').attr('onClick', 'editar_tipo('+idtipo+');');
+    $('#btn_editartipo').removeAttr('disabled');
 
-    var action = 'searchSubzonaUsed';
+    var action = 'searchTipoUsed';
     $.ajax({
       url: 'ajax.php',
       type: "POST",
       async: true,
-      data: {action:action,subzona:idsubzona},
+      data: {action:action,tipo:idtipo},
       success: function(response) {
-        //var data = $.parseJSON(response);
         if(response == 0)
         {
-            $('#btneliminar_subzona').attr('onClick', 'eliminar_subzona('+idsubzona+');');
-            $('#btneliminar_subzona').removeAttr('disabled');
+            $('#btn_eliminartipo').attr('onClick', 'eliminar_tipo('+idtipo+');');
+            $('#btn_eliminartipo').removeAttr('disabled');
         }
         else
         {
-            $('#btneliminar_subzona').attr('onClick', 'eliminar_subzona();');
-            $('#btneliminar_subzona').attr('disabled','disabled');
+            $('#btn_eliminartipo').attr('onClick', 'eliminar_tipo();');
+            $('#btn_eliminartipo').attr('disabled','disabled');
         }
-          //$('#prueba').html(data); 
+        //$('#prueba').html(data); 
       },
       error: function(error) {
         //$('#sucursal').val('error');
@@ -775,6 +808,86 @@ function editar_subzona(idsubzona)
                 $('#newsubzona_edit').val(data.subzona);
                 $('#zona_subzona_edit').val(data.idzona).change();
                 $('#idnewsubzona_edit').val(idsubzona);
+                //$('#idpuesto_flag').val(idpuesto);
+            }
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+   });  
+}
+
+//funcion para eliminar subzona
+function eliminar_tipo(idtipo)
+{
+    Swal.fire({
+            title: '¿Esta seguro de eliminar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'SI, Eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'eliminarTipo';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action,tipo:idtipo},
+                  success: function(response) {
+                    //$('#prueba').val(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'Error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                window.location.href=window.location.href;
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Eliminado!',
+                          'Se elimino correctamente!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                window.location.href=window.location.href;
+                            }
+                        })
+                    }
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });      
+              }
+        })
+}
+
+//para editar puesto
+function editar_tipo(idtipo)
+{
+    var action = 'SelectTipo';
+    $.ajax({
+        url: 'ajax.php',
+        type: "POST",
+        async: true,
+        data: {action:action,tipo:idtipo},
+        success: function(response) {
+            //$('#prueba').val(response);
+            if (response != 0) 
+            {
+              var data = $.parseJSON(response);
+                $('#newedit_tipo').val(data.nombre_tipo);
+                $('#idflag_tipo').val(data.idtipo);
                 //$('#idpuesto_flag').val(idpuesto);
             }
         },

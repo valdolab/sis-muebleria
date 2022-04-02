@@ -208,7 +208,7 @@ if (!empty($_POST))
                 $curp = $_POST['curp'];
                 $rfc = $_POST['rfc'];
                 //formamos y calculamos el ID de cliente
-                $newidcliente = md5($nombre_cliente.$zona.$subzona.$curp.$no_cliente);
+                $newidcliente = md5($curp.$no_cliente);
 
                 $cp_cliente = $_POST['cp_cliente'];
                 $es_conyugue = $_POST['idestado_civil'];
@@ -403,7 +403,7 @@ if (!empty($_POST))
                         <div class="col-lg-12">
                           <div class="form-group">
                             <label for="correo">Nueva zona</label>
-                            <input type="text" class="form-control" name="nuevazona" id="nuevazona" required>
+                            <input type="text" class="form-control" name="nuevazona" id="nuevazona" required maxlength="99">
                         </div>  
                         </div>
                     </div>
@@ -433,7 +433,7 @@ if (!empty($_POST))
                         <div class="col-lg-6">
                           <div class="form-group">
                             <label for="correo">Nueva subzona</label>
-                            <input type="text" class="form-control" name="nuevasubzona" id="nuevasubzona" required>
+                            <input type="text" class="form-control" name="nuevasubzona" id="nuevasubzona" required maxlength="99">
                         </div>  
                         </div>
                         <div class="col-lg-6">
@@ -482,7 +482,7 @@ if (!empty($_POST))
                           <div class="form-group">
                             <label for="correo">zona</label>
                             <input type="text" name="idnewzona_edit" id="idnewzona_edit" hidden>
-                            <input type="text" class="form-control" name="newzona_edit" id="newzona_edit" required>
+                            <input type="text" class="form-control" name="newzona_edit" id="newzona_edit" required maxlength="99">
                         </div>  
                         </div>
                     </div>
@@ -513,7 +513,7 @@ if (!empty($_POST))
                           <div class="form-group">
                             <label for="correo">subzona</label>
                             <input type="text" name="idnewsubzona_edit" id="idnewsubzona_edit" hidden>
-                            <input type="text" class="form-control" name="newsubzona_edit" id="newsubzona_edit" required>
+                            <input type="text" class="form-control" name="newsubzona_edit" id="newsubzona_edit" required maxlength="99">
                         </div>  
                         </div>
                         <div class="col-lg-6">

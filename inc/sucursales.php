@@ -3,135 +3,7 @@ ob_start();
 include_once "header.php";
 include "accion/conexion.php";
 
-#agregar nueva sucursal
-if (!empty($_POST)) 
-{
-    $nomsucursal = $_POST['newsucursal'];
-    $desc_sucursal = $_POST['desc_sucursal'];
-    $insert_sucursal= mysqli_query($conexion, "INSERT INTO sucursales(sucursales,descripcion) values ('$nomsucursal','$desc_sucursal')");
-    if ($insert_sucursal) 
-    {
-        #$alert = '<div class="alert alert-primary" role="alert"> Sucursal registrado </div>';
-        $modal = "$('#mensaje_success').modal('show');";
-    }
-    else
-    {
-        #$alert = '<div class="alert alert-danger" role="alert"> Error al registrar </div>';
-        $modal = "$('#mensaje_error').modal('show');";
-    }
-}
 ?>
-
-<div style="posicion: fixed; top: 15%;" id="mensaje_error" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="form-group">
-                    
-                    <div align="center" >
-                        <br>
-                        <!-- <img src="../img/ok.gif" width="100px" height="100px"> -->
-                        <div class="swal2-header">
-                            <div class="swal2-icon swal2-error swal2-icon-show" style="display: flex;">
-                                <span class="swal2-x-mark">
-                                    <span class="swal2-x-mark-line-left"></span>
-                                    <span class="swal2-x-mark-line-right"></span>
-                                </span>
-                            </div>    
-                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">Oops... Ocurrio un problema!</h2>
-                        </div>
-
-                        <div class="swal2-content">
-                            <div id="swal2-content" class="swal2-html-container" style="display: block;">
-                                La sucursal no pudo ser registrada, intente nuevamente.
-                            </div>
-                        </div>
-                        <div class="swal2-actions">
-                            <a href="sucursales.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<div style="posicion: fixed; top: 15%;" id="mensaje_success" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="form-group">
-                    
-                    <div align="center" >
-                        <br>
-                        <!-- <img src="../img/ok.gif" width="100px" height="100px"> -->
-                        <div class="swal2-header">
-                            <div class="swal2-icon swal2-success swal2-icon-show" style="display: flex;">
-                                <div class="swal2-success-circular-line-left" style="background-color: rgb(255, 255, 255);"></div>
-                                <span class="swal2-success-line-tip"></span>
-                                <span class="swal2-success-line-long"></span>
-                                <div class="swal2-success-ring"></div>
-                                <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
-                                <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
-                            </div>    
-                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">Registrada!</h2>
-                        </div>
-
-                        <div class="swal2-content">
-                            <div id="swal2-content" class="swal2-html-container" style="display: block;">
-                                Sucursal registrada correctamete
-                            </div>
-                        </div>
-                        <div class="swal2-actions">
-                            <a href="sucursales.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="nueva_sucursal_avanzado" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="my-modal-title">Nueva Sucursal</h5>
-                <button class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="" method="post" autocomplete="off">
-                    <div class="form-group">
-                        <label for="newsucursal">Nueva Sucursal</label>
-                        <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newsucursal" id="newsucursal" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="desc_sucursal">Descripción</label>
-                         <textarea class="form-control" name="desc_sucursal" title="Ingrese descripción de la sucursal" id="desc_sucursal" placeholder="Indicar una breve descripción sobre la sucursal (Opcional)" maxlength="1000"></textarea>
-                    </div>
-
-                    <!-- <div class="form-group">
-                        <label>Asignar como sucursal Matriz</label> &nbsp;
-                        <input id="esmatriz" name="esmatriz" value="" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="sm" data-on="SI" data-off="NO">
-                    </div> -->
-
-                    <div align="right">
-                        <input type="submit" value="Agregar" class="btn btn-primary">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 
 <div class="col-lg-12">
 
@@ -145,7 +17,7 @@ if (!empty($_POST))
 
         <div align="right" class="col-lg-2">
             <!-- <a data-toggle="modal" data-target="#nuevo_documento"  class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nuevo documento</a> -->
-            <a href="#" data-toggle="modal" data-target="#nueva_sucursal_avanzado" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nueva sucursal</a> 
+            <a href="agregar_sucursal.php" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nueva sucursal</a> 
         </div>
     </div>
 </div>
@@ -171,7 +43,8 @@ if (!empty($_POST))
         </thead>
         <tbody>
             <?php
-            $query = mysqli_query($conexion, "SELECT idsucursales,sucursales,descripcion,estado,matriz FROM sucursales ORDER BY matriz DESC, idsucursales DESC");
+            //HACERLO CON INNER JOIN
+            $query = mysqli_query($conexion, "SELECT idsucursales,sucursales,descripcion,estado,matriz,tipo FROM sucursales ORDER BY matriz DESC, idsucursales DESC");
             $result = mysqli_num_rows($query);
 
             if ($result > 0) 
@@ -204,15 +77,18 @@ if (!empty($_POST))
                         }
 
                         //quitar lo de -matriz del nombre de sucursal
+                        //ESTO SE VA A QUITAR PORQUE VA A IR EL INNER JOIN
                         $arraynames_sucursal = explode("-", $data['sucursales']);
+                        $name_tipo = mysqli_query($conexion, "SELECT nombre_tipo from tipo where idtipo=$data[tipo]");
+                        $name_tipo = mysqli_fetch_assoc($name_tipo)['nombre_tipo'];
                     ?>
                     <tr>
                         <td><?php echo $ceros.$id_sucursal; ?></td>
                         <td><?php echo $arraynames_sucursal[0]; ?></td>
-                        <td><?php echo $data['descripcion'] ?></td>
-                        <td align="center"><?php echo $num_asignaciones ?></td>
-                        <td align="center"><?php echo $num_asignaciones_docs ?></td>
-                        <td align="center"> aqui va ir el tipo</td>
+                        <td><?php echo $data['descripcion']; ?></td>
+                        <td align="center"><?php echo $num_asignaciones; ?></td>
+                        <td align="center"><?php echo $num_asignaciones_docs; ?></td>
+                        <td align="center"><?php echo $name_tipo; ?></td>
                         <td align="center"> <?php echo $estado; ?> </td>
                         
                         <td>

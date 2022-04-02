@@ -56,33 +56,10 @@ include "accion/conexion.php";
                     }
                     #calculamos a que sucursales puede entrar el usuario
                     $id_documento = $data['iddocumento'];
-                    $query4 = mysqli_query($conexion, "SELECT sucursales from sucursales where idsucursales in (select idsucursal from documento where iddocumento='$id_documento')");
-                    $cuantas = mysqli_num_rows($query4);
-                    if ($cuantas == 1)
-                    {
-                        $sucursal_usuario = mysqli_fetch_array($query4);
-                        $sucursales = $sucursal_usuario['sucursales'];
-                    }
-                    else
-                    {
-                        $lista = "";
-                        $new_array = [];
-                        while ($row = mysqli_fetch_assoc($query4))
-                        {
-                            $new_array[] = $row;
-                        }
-
-                        foreach($new_array as $fila)
-                        {
-                         foreach($fila as $columna)
-                         {
-                            $lista = $lista."<li>".$columna."</li>";
-                            #echo $columna;
-                         }
-                        #echo "<br>";
-                        }
-                        $sucursales = "<a data-toggle='modal' data-target='#ver_sucursales' onClick='visualizar(\"$data[idusuario]\",\"$lista\");' href='#'>Ver todas <i class='fas fa-eye'></i></a>";                        
-                    }
+                    $query4 = mysqli_query($conexion, "SELECT sucursales from sucursales where idsucursales = $data[idsucursal]");
+                    $sucursal_usuario = mysqli_fetch_array($query4);
+                    $sucursales = $sucursal_usuario['sucursales'];
+                    
                     $ceros = "000";
                         if ($id_documento > 9)
                         {
