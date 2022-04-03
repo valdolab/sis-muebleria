@@ -83,16 +83,32 @@ include "accion/conexion.php";
                         {
                             if ($data['nivel_apto'] == 0)
                             {
+                                $estado = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-secondary">'.$data['nivel_apto'].'</span></h5></div>';
+                            }
+                            if ($data['nivel_apto'] == 1)
+                            {
+                                $estado = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-dark" style="background-color: #FF7A33;">'.$data['nivel_apto'].'</span></h5></div>';
+                            }
+                            if ($data['nivel_apto'] == 2)
+                            {
                                 $estado = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-warning">'.$data['nivel_apto'].'</span></h5></div>';
                             }
-                            else
+                            if ($data['nivel_apto'] == 3)
                             {
                                 $estado = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-success">'.$data['nivel_apto'].'</span></h5></div>';
+                            }
+                            if ($data['nivel_apto'] == 4)
+                            {
+                                $estado = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-info">'.$data['nivel_apto'].'</span></h5></div>';
+                            }
+                            if ($data['nivel_apto'] == 5)
+                            {
+                                $estado = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-primary">'.$data['nivel_apto'].'</span></h5></div>';
                             }
                         } 
                         else 
                         {
-                            $estado = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-danger">NoApto</span></h5></div>';
+                            $estado = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-danger">NA</span></h5></div>';
                         }
                         #lo del boton editar cuando esta suspendido
                         $button_editar = '<a href="editar_cliente.php?id='.$idcliente.'" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>';

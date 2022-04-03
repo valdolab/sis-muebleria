@@ -341,7 +341,11 @@ $('#categoria_producto').change(function(e)
       $('#atr2_producto').removeAttr('disabled');
       $('#atr3_producto').removeAttr('disabled');
       $('#atr4_producto').removeAttr('disabled');
-      $('#label_atr1').html("Tinas");
+
+      $('#stockmin').removeAttr('disabled');
+      $('#stockmax').removeAttr('disabled');
+
+      $('#label_atr1').html("MARCA");
       $('#label_atr2').html("KG"); 
       $('#label_atr3').html("Tipo"); 
       $('#label_atr4').html("Secadora"); 

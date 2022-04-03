@@ -88,7 +88,7 @@ if (!empty($_POST))
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="atr1">Atributo 1</label>
-                                <input type="text" class="form-control" name="atr1" id="atr1">
+                                <input type="text" class="form-control" name="atr1" id="atr1" disabled value="MARCA">
                             </div>  
                         </div>
 
@@ -161,20 +161,13 @@ if (!empty($_POST))
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-lg-3"></div>
                         <div class="form-group col-lg-3">
-                            <label for="preriodo1">Preriodo:</label>
-                            <input name="preriodo1" id="preriodo1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            <label for="mesespago">Meses de pago:</label>
+                            <input name="mesespago" id="mesespago" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="preriodo2">Preriodo 2:</label>
-                            <input name="preriodo2" id="preriodo2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="eng_qum">ENG-QUM:</label>
-                            <input name="eng_qum" id="eng_qum" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="garantia">Garantía:</label>
+                            <label for="garantia">Meses de garantía:</label>
                             <input name="garantia" id="garantia" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                     </div>
@@ -193,11 +186,20 @@ if (!empty($_POST))
                 <h3 class="modal-title">Detalle Subcategoría</h3>
                 <div class="row">
                     <div class="col-lg-6">
+                        <!-- agrandar SELECT -->
+                        <select class="form-control" id="categoria_subcate" name="categoria_subcate">
+                                <option selected hidden>Selecciona categoría</option>
+                                <option value="Lavadora">Lavadora</option>
+                                <option value="Televición">Televición</option>
+                                <option value="Refrigerador">Refrigerador</option>
+                            </select>
+                    </div>
+                    <div class="col-lg-3">
                         <button type="submit" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close">
                             Cancelar
                         </button>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-3">
                         <input type="submit" value="Guardar" class="btn btn-lg btn-success">
                     </div>
                 </div>
@@ -206,80 +208,80 @@ if (!empty($_POST))
                     <div class="row">
                         <div class="col-lg-4">
                           <div class="form-group">
-                                <label for="nombre_cat">Nombre</label>
-                                <input type="text" class="form-control" name="nombre_cat" id="nombre_cat" required>
+                                <label for="nombre_subcat">Nombre</label>
+                                <input type="text" class="form-control" name="nombre_subcat" id="nombre_subcat" required>
                             </div>  
                         </div>
 
                         <div class="col-lg-4">
                           <div class="form-group">
-                                <label for="atr1">Atributo 1</label>
-                                <input type="text" class="form-control" name="atr1" id="atr1">
+                                <label for="atr1_sub">Atributo 1</label>
+                                <input type="text" class="form-control" name="atr1_sub" id="atr1_sub" value="MARCA" disabled>
                             </div>  
                         </div>
 
                         <div class="col-lg-4">
                           <div class="form-group">
-                                <label for="atr2">Atributo 2</label>
-                                <input type="text" class="form-control" name="atr2" id="atr2">
+                                <label for="atr2_sub">Atributo 2</label>
+                                <input type="text" class="form-control" name="atr2_sub" id="atr2_sub">
                             </div>  
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
                           <div class="form-group">
-                                <label for="atr3">Atributo 3</label>
-                                <input type="text" class="form-control" name="atr3" id="atr3">
+                                <label for="atr3_sub">Atributo 3</label>
+                                <input type="text" class="form-control" name="atr3_sub" id="atr3_sub">
                             </div>  
                         </div>
 
                         <div class="col-lg-4">
                           <div class="form-group">
-                                <label for="atr4">Atributo 4</label>
-                                <input type="text" class="form-control" name="atr4" id="atr4">
+                                <label for="atr4_sub">Atributo 4</label>
+                                <input type="text" class="form-control" name="atr4_sub" id="atr4_sub">
                             </div>  
                         </div>
 
                         <div class="col-lg-4">
                           <div class="form-group">
-                                <label for="atr5">Atributo 5</label>
-                                <input type="text" class="form-control" name="atr5" id="atr5">
+                                <label for="atr5_sub">Atributo 5</label>
+                                <input type="text" class="form-control" name="atr5_sub" id="atr5_sub">
                             </div>  
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="form-group col-lg-3">
-                            <label for="contado">Contado:</label>
+                            <label for="contado_sub">Contado:</label>
                             <div class="input-group mb-3">
-                              <input name="contado" id="contado" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
+                              <input name="contado_sub" id="contado_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
                             </div>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="especial">Especial:</label>
+                            <label for="especial_sub">Especial:</label>
                             <div class="input-group mb-3">
-                              <input name="especial" id="especial" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="especial_sub" id="especial_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
                             </div>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="credito1">Credito 1:</label>
+                            <label for="credito1_sub">Credito 1:</label>
                             <div class="input-group mb-3">
-                              <input name="credito1" id="credito1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="credito1_sub" id="credito1_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
                             </div>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="credito2">Credito 2:</label>
+                            <label for="credito2_sub">Credito 2:</label>
                             <div class="input-group mb-3">
-                              <input name="credito2" id="credito2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="credito2_sub" id="credito2_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
@@ -287,21 +289,14 @@ if (!empty($_POST))
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-lg-3"></div>
                         <div class="form-group col-lg-3">
-                            <label for="preriodo1">Preriodo:</label>
-                            <input name="preriodo1" id="preriodo1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            <label for="mesespagosub">Meses de pago:</label>
+                            <input name="mesespagosub" id="mesespagosub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label for="preriodo2">Preriodo 2:</label>
-                            <input name="preriodo2" id="preriodo2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="eng_qum">ENG-QUM:</label>
-                            <input name="eng_qum" id="eng_qum" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="garantia">Garantía:</label>
-                            <input name="garantia" id="garantia" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            <label for="garantia_sub">Meses garantía:</label>
+                            <input name="garantia_sub" id="garantia_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                     </div>
                     <input value="cat" name="bandera" id="bandera" hidden>
@@ -398,7 +393,6 @@ if (!empty($_POST))
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-2"></div>
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="atr1">Atributo 4: </label>
@@ -413,16 +407,19 @@ if (!empty($_POST))
                                 <input type="text" class="form-control" name="atr5_producto" id="atr5_producto" disabled>
                             </div>  
                         </div>
+                        <div class="col-lg-2">
+                            <label for="atr1">Stock Min: </label>
+                            <input type="text" class="form-control" name="stockmin" id="stockmin" disabled>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="atr1">Stock Max: </label>
+                            <input type="text" class="form-control" name="stockmax" id="stockmax" disabled>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-2">
-                            <label for="ettp">ETT.-PB:</label>
-                            <div class="input-group mb-3">
-                              <div class="input-group-append">
-                                <span class="input-group-text">$</span>
-                              </div>
+                            <label for="ettp">EXT.-P:</label>
                               <input name="ettp" id="ettp" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                            </div>
                         </div>
                         <div class="form-group col-lg-2">
                             <label for="costo">COSTO:</label>
@@ -435,12 +432,13 @@ if (!empty($_POST))
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="costoiva">COSTO+IVA:</label>
+                            <!-- calcular el costo mas iva con el costo anterior -->
                             <div class="input-group mb-3">
                                 <div class="input-group-append">
                                 <span class="input-group-text">$</span>
                               </div>
-                              <input name="costoiva" id="costoiva" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                            </div>
+                              <input name="costoiva" id="costoiva" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
+                          </div>
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="contado">Contado:</label>
@@ -448,7 +446,7 @@ if (!empty($_POST))
                                 <div class="input-group-append">
                                 <span class="input-group-text">$</span>
                               </div>
-                              <input name="contado" id="contado" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="contado" id="contado" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                             </div>
                         </div>
                         <div class="form-group col-lg-2">
@@ -457,7 +455,7 @@ if (!empty($_POST))
                                 <div class="input-group-append">
                                 <span class="input-group-text">$</span>
                               </div>
-                              <input name="especial" id="especial" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="especial" id="especial" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                             </div>
                         </div>
                     </div>
@@ -468,7 +466,7 @@ if (!empty($_POST))
                                 <div class="input-group-append">
                                 <span class="input-group-text">$</span>
                               </div>
-                              <input name="cr1" id="cr1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="cr1" id="cr1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                             </div>
                         </div>
                         <div class="form-group col-lg-2">
@@ -477,7 +475,7 @@ if (!empty($_POST))
                                 <div class="input-group-append">
                                 <span class="input-group-text">$</span>
                               </div>
-                              <input name="cr2" id="cr2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="cr2" id="cr2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                             </div>
                         </div>
                         <div class="form-group col-lg-3">
@@ -486,7 +484,7 @@ if (!empty($_POST))
                                 <div class="input-group-append">
                                 <span class="input-group-text">$</span>
                               </div>
-                              <input name="p1" id="p1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="p1" id="p1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                             </div>
                         </div>
                         <div class="form-group col-lg-3">
@@ -495,7 +493,7 @@ if (!empty($_POST))
                                 <div class="input-group-append">
                                 <span class="input-group-text">$</span>
                               </div>
-                              <input name="p2" id="p2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="p2" id="p2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                             </div>
                         </div>
                         <div class="form-group col-lg-2">
@@ -504,7 +502,7 @@ if (!empty($_POST))
                                 <div class="input-group-append">
                                 <span class="input-group-text">$</span>
                               </div>
-                              <input name="e_q" id="e_q" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="e_q" id="e_q" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                             </div>
                         </div>
                     </div>
@@ -627,16 +625,16 @@ if (!empty($_POST))
         <thead class="thead-light">
             <tr>
                 <th>Descripción</th>
-                <th>Costo</th>
+                <th>Nuevo costo</th>
+                <th>Costo actual</th>
                 <th>Costo+IVA</th>
                 <th>Ext.-P</th>
                 <th>Ext-M</th>
                 <th>Contado</th>
+                <th>Especial</th>
                 <th>CR1</th>
                 <th>P1</th>
                 <th>CR2</th>
-                <th>P2</th>
-                <th>E-Q</th>
                 <th>P2</th>
                 <th>E-Q</th>
                 <th>GAR</th>
@@ -646,20 +644,43 @@ if (!empty($_POST))
         <tbody>
             <tr>
                         <td>Lavadora LG con secadora</td>
+                        <td>$4,000</td>
                         <td>$5,000</td>
                         <td>$5,500</td>
-                        <td>$4,000</td>
-                        <td>$4,000</td>
+                        <td>4</td>
+                        <td>4</td>
                         <td>$5,000</td>
                         <td>$4,000</td>
                         <td>$5,000</td>
                         <td>$4,000</td>
-                        <td>$5,000</td>
                         <td>$4,000</td>
                         <td>$5,000</td>
                         <td>$4,000</td>
-                        <td>$5,000</td>
+                        <td>5</td>
                         <td align="center">
+                                <a href="#" class="btn btn-primary btn-sm"><i class='fas fa-camera'></i></a>
+                                <a href="#" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
+                                <button onClick='eliminar_producto()' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td hidden>qwerty</td>
+                        <td>Lavadora LG con secadora</td>
+                        <td><input type="number" name="" id="" class="form-control"></td>
+                        <td>$5,000</td>
+                        <td>$5,500</td>
+                        <td><input type="number" name="" id="" class="form-control"></td>
+                        <td>4</td>
+                        <td>$5,000</td>
+                        <td>$4,000</td>
+                        <td>$5,000</td>
+                        <td>$4,000</td>
+                        <td>$4,000</td>
+                        <td>$5,000</td>
+                        <td>$4,000</td>
+                        <td>5</td>
+                        <td align="center">
+                                <a href="#" class="btn btn-secondary btn-sm"><i class='fas fa-camera'></i></a>
                                 <a href="#" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
                                 <button onClick='eliminar_producto()' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
                         </td>

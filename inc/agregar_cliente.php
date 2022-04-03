@@ -532,13 +532,13 @@ if (!empty($_POST))
                           <label for="rfc">RFC</label>
                           <input onkeyup="mayusculas(this)" minlength="13" maxlength="13" type="text" class="form-control" placeholder="" name="rfc" id="rfc">
                       </div>
-                      <div class="col-lg-2"></div>
-                      <div class="col-lg-3"> 
-                        <br>
-                        <h5 align="left"><strong>Cargar más datos sobre el cliente:</strong></h5>
+                      <div class="col-lg-5"> 
+                        <label>&nbsp; &nbsp; &nbsp; &nbsp; </label>
+
+                        <h4 align="left"><strong>Mostrar más información del cliente:</strong></h4>
                       </div>
                     <div class="col-lg-1">
-                        <br>
+                        <label>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </label>
                             <input id="masinfo" name="masinfo" value="" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="outline-secondary" data-size="xl" data-on="SI" data-off="NO" onchange="mostrar_mas_info()">
                         </div>
                     </div>
@@ -572,27 +572,21 @@ if (!empty($_POST))
                             <input type="text" class="form-control" placeholder="" name="direccion_trabajo_cliente" id="direccion_trabajo_cliente">
                         </div>
 
-                        <div class="col-lg-2"></div>
-
-                        <div class="form-group col-lg-5">
-                            <div>
+                        <div class="form-group col-lg-4">
                                 <label for="antiguedad_trabajo_cliente">Antigüedad</label>
-                            </div>
                             <div class="row">
                                 <div class="col-md-3">
                                     <input type="number" value="0" class="form-control" placeholder="" name="antiguedadA_trabajo_cliente" id="antiguedadA_trabajo_cliente" required> 
                                 </div>
                                 Años
-                                
                                 <div class="col-md-3">
                                     <input type="number" value="0" class="form-control" placeholder="" name="antiguedadM_trabajo_cliente" id="antiguedadM_trabajo_cliente" required> 
                                 </div>
                                 Meses
                             </div>
-                            
                         </div>
                         
-                        <div class="form-group col-lg-4">
+                        <div class="form-group col-lg-2">
                             <label for="ingresos_cliente">Ingresos</label>
 
                             <div class="input-group mb-3">
@@ -604,7 +598,6 @@ if (!empty($_POST))
                                 <span class="input-group-text">.00</span>
                               </div>
                             </div>
-
                         </div>
 
                         <div class="form-group col-lg-1">
@@ -612,7 +605,7 @@ if (!empty($_POST))
                             <div class="form-check">
                               <input class="form-check-input" type="radio" name="tipo_ingreso_cliente" value="Diario" id="flexRadioDefault1">
                               <label class="form-check-label" for="flexRadioDefault1">
-                                Diario
+                                D
                               </label>
                             </div>
                         </div>
@@ -622,7 +615,7 @@ if (!empty($_POST))
                             <div class="form-check">
                               <input class="form-check-input" type="radio" name="tipo_ingreso_cliente" value="Semanal" id="flexRadioDefault2">
                               <label class="form-check-label" for="flexRadioDefault2">
-                                Semanal
+                                S
                               </label>
                             </div>
                         </div>
@@ -632,11 +625,10 @@ if (!empty($_POST))
                             <div class="form-check">
                               <input class="form-check-input" type="radio" name="tipo_ingreso_cliente" value="Quincenal" id="flexRadioDefault3" checked>
                               <label class="form-check-label" for="flexRadioDefault3">
-                                Quincenal
+                                Q
                               </label>
                             </div>
-                        </div>
-                        
+                        </div> 
                     </div>
             </div>
         </div>
@@ -913,8 +905,7 @@ if (!empty($_POST))
 
                         <div class="col-lg-3">
                             <select id="nivel_credito" name="nivel_credito" disabled class="form-control" required>
-                                <option selected hidden value="0">Seleccione un nivel</option>
-                                <option value="0">0</option>
+                                <option selected value="0">0</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
