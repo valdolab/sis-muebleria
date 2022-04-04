@@ -82,6 +82,8 @@ include "accion/conexion.php";
         </thead>
         <tbody>
             <?php
+            //ESTE SERIA EL SCRIO CON INNER JOIN
+            //select idusuario,puesto.puesto from usuario INNER JOIN puesto on usuario.puesto = puesto.idpuesto
             $query = mysqli_query($conexion, "SELECT idusuario,nombre,pass,rol,puesto,estado,superadmin,no_user FROM usuario ORDER BY superadmin DESC, rol ASC");
             $result = mysqli_num_rows($query);
             if ($result > 0) 
@@ -107,6 +109,7 @@ include "accion/conexion.php";
                     #calculamos a que sucursales puede entrar el usuario
                     $idusuario = $data['idusuario'];
                     //CAMBIAR EL SCRIPT DE ABAJO Y HACERLO CON INNER JOIN
+                    //select sucursal_idusuario,sucursales from sucursal_usuario INNER JOIN sucursales on sucursal_usuario.sucursal_idsucursales = sucursales.idsucursales where sucursal_usuario.sucursal_idusuario = "IGERAG";
                     $query4 = mysqli_query($conexion, "SELECT sucursales from sucursales where idsucursales in (select sucursal_idsucursales from sucursal_usuario where sucursal_idusuario='$idusuario')");
                     $cuantas = mysqli_num_rows($query4);
                     if ($cuantas == 1)
