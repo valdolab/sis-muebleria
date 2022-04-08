@@ -60,23 +60,18 @@ include "accion/conexion.php";
                     $sucursal_usuario = mysqli_fetch_array($query4);
                     $sucursales = $sucursal_usuario['sucursales'];
                     
-                    $ceros = "000";
+                    $ceros = "00";
                         if ($id_documento > 9)
-                        {
-                            $ceros = "00";
-                        }
-                        elseif ($id_documento > 99) 
                         {
                             $ceros = "0";
                         }
-                        elseif ($id_documento > 999) 
+                        elseif ($id_documento > 99) 
                         {
                             $ceros = "";
                         }
-                        
                     ?>
                     <tr>
-                        <td><?php echo $ceros.$id_documento; ?></td>
+                        <td><?php echo "DOC-".$ceros.$id_documento; ?></td>
                         <td><?php echo $data['name_documento']; ?></td>
                         <td><?php echo $data['folio']; ?></td>
                         <td><?php echo $data['serie']; ?></td>

@@ -151,7 +151,7 @@ include "accion/conexion.php";
                         }
                     ?>
                     <tr>
-                        <td><?php echo $ceros.$id; ?></td>
+                        <td><?php echo "US-".$ceros.$id; ?></td>
                         <td><?php echo $data['idusuario']; ?></td>
                         <td><?php echo $data['nombre']; ?></td>
                         <td><?php echo $rol; ?></td>

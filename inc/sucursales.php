@@ -83,7 +83,7 @@ include "accion/conexion.php";
                         $name_tipo = mysqli_fetch_assoc($name_tipo)['nombre_tipo'];
                     ?>
                     <tr>
-                        <td><?php echo $ceros.$id_sucursal; ?></td>
+                        <td><?php echo "SUC-".$ceros.$id_sucursal; ?></td>
                         <td><?php echo $arraynames_sucursal[0]; ?></td>
                         <td><?php echo $data['descripcion']; ?></td>
                         <td align="center"><?php echo $num_asignaciones; ?></td>
