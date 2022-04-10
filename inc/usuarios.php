@@ -77,14 +77,13 @@ include "accion/conexion.php";
                 <th>Rol</th>
                 <th>Puesto</th>
                 <th>Sucursal</th>
+                <th>Tipo</th>
                 <th style="text-align: center;">Herramientas</th>
             </tr>
         </thead>
         <tbody>
             <?php
-            //ESTE SERIA EL SCRIO CON INNER JOIN
-            //select idusuario,puesto.puesto from usuario INNER JOIN puesto on usuario.puesto = puesto.idpuesto
-            $query = mysqli_query($conexion, "SELECT idusuario,nombre,pass,rol,puesto,estado,superadmin,no_user FROM usuario ORDER BY superadmin DESC, rol ASC");
+            $query = mysqli_query($conexion, "SELECT idusuario,nombre,pass,rol,puesto.puesto,estado,superadmin,no_user from usuario INNER JOIN puesto on usuario.puesto = puesto.idpuesto ORDER BY superadmin DESC, rol ASC");
             $result = mysqli_num_rows($query);
             if ($result > 0) 
             {
@@ -99,38 +98,34 @@ include "accion/conexion.php";
                     {
                         $estado = '<span class="badge badge-pill badge-danger">Inactivo</span>';
                     }
-                    $rol = $data['rol'];
-                    $idpuesto = $data['puesto'];
-
-                    #esto es para lo del puesto
-                    $query3 = mysqli_query($conexion, "SELECT puesto FROM puesto where idpuesto=$idpuesto");
-                    $puesto_usuario = mysqli_fetch_array($query3);
                     
                     #calculamos a que sucursales puede entrar el usuario
                     $idusuario = $data['idusuario'];
-                    //CAMBIAR EL SCRIPT DE ABAJO Y HACERLO CON INNER JOIN
-                    //select sucursal_idusuario,sucursales from sucursal_usuario INNER JOIN sucursales on sucursal_usuario.sucursal_idsucursales = sucursales.idsucursales where sucursal_usuario.sucursal_idusuario = "IGERAG";
-                    $query4 = mysqli_query($conexion, "SELECT sucursales from sucursales where idsucursales in (select sucursal_idsucursales from sucursal_usuario where sucursal_idusuario='$idusuario')");
+                    $query4 = mysqli_query($conexion, "SELECT sucursales.sucursales,tipo.nombre_tipo from sucursales INNER JOIN sucursal_usuario on sucursal_usuario.sucursal_idsucursales = sucursales.idsucursales INNER JOIN tipo on tipo.idtipo = sucursales.tipo where sucursal_usuario.sucursal_idusuario = '$idusuario'");
                     $cuantas = mysqli_num_rows($query4);
                     if ($cuantas == 1)
                     {
-                        $sucursal_usuario = mysqli_fetch_array($query4);
+                        $sucursal_usuario = mysqli_fetch_assoc($query4);
                         $sucursales = $sucursal_usuario['sucursales'];
+                        $tipos = $sucursal_usuario['nombre_tipo'];
                     }
                     else
                     {
-                        $lista = "";
+                        $lista_suc = "";
+                        $lista_tipo = "";
                         $new_array = [];
                         while ($row = mysqli_fetch_assoc($query4))
                         {
-                            $lista = $lista.'<li>'.$row["sucursales"].'</li>';
+                            $lista_suc = $lista_suc.'<li>'.$row["sucursales"].'</li>';
+                            $lista_tipo = $lista_tipo.'<li>'.$row["nombre_tipo"].'</li>';
                         }
 
-                        $sucursales = "<a data-toggle='modal' data-target='#ver_sucursales' onClick='visualizar(\"$data[idusuario]\",\"$lista\");' href='#'>Ver todas <i class='fas fa-eye'></i></a>";                        
+                        $sucursales = "<a data-toggle='modal' data-target='#ver_sucursales' onClick='visualizar(\"$data[idusuario]\",\"$lista_suc\");' href='#'>Ver todas <i class='fas fa-eye'></i></a>"; 
+                        $tipos = "<a data-toggle='modal' data-target='#ver_sucursales' onClick='visualizar(\"$data[idusuario]\",\"$lista_tipo\");' href='#'>Ver todas <i class='fas fa-eye'></i></a>";                        
                     }
 
                     ##poner que no se puueda borrar a superadmin
-                        if ($rol == "SuperAdmin")
+                        if ($data['rol'] == "SuperAdmin")
                         {
                             $boton_eliminar = "<button disabled class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>";
                             $boton_permisos = "<button disabled class='btn btn-warning btn-sm'><i class='fas fa-key'></i></button>";
@@ -154,9 +149,10 @@ include "accion/conexion.php";
                         <td><?php echo "US-".$ceros.$id; ?></td>
                         <td><?php echo $data['idusuario']; ?></td>
                         <td><?php echo $data['nombre']; ?></td>
-                        <td><?php echo $rol; ?></td>
-                        <td><?php echo $puesto_usuario['puesto']; ?></td>
+                        <td><?php echo $data['rol']; ?></td>
+                        <td><?php echo $data['puesto']; ?></td>
                         <td><?php echo $sucursales; ?></td>
+                        <td><?php echo $tipos; ?></td>
                         <td align="center">
                             <?php if ($data['estado'] == 1) 
                             { 

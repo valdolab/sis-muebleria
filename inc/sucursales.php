@@ -43,8 +43,7 @@ include "accion/conexion.php";
         </thead>
         <tbody>
             <?php
-            //HACERLO CON INNER JOIN
-            $query = mysqli_query($conexion, "SELECT idsucursales,sucursales,descripcion,estado,matriz,tipo FROM sucursales ORDER BY matriz DESC, idsucursales DESC");
+            $query = mysqli_query($conexion, "SELECT idsucursales,sucursales,descripcion,sucursales.estado,matriz,tipo.nombre_tipo FROM sucursales LEFT JOIN tipo on sucursales.tipo = tipo.idtipo ORDER BY sucursales.matriz DESC, sucursales.idsucursales DESC");
             $result = mysqli_num_rows($query);
 
             if ($result > 0) 
@@ -79,8 +78,6 @@ include "accion/conexion.php";
                         //quitar lo de -matriz del nombre de sucursal
                         //ESTO SE VA A QUITAR PORQUE VA A IR EL INNER JOIN
                         $arraynames_sucursal = explode("-", $data['sucursales']);
-                        $name_tipo = mysqli_query($conexion, "SELECT nombre_tipo from tipo where idtipo=$data[tipo]");
-                        $name_tipo = mysqli_fetch_assoc($name_tipo)['nombre_tipo'];
                     ?>
                     <tr>
                         <td><?php echo "SUC-".$ceros.$id_sucursal; ?></td>
@@ -88,15 +85,13 @@ include "accion/conexion.php";
                         <td><?php echo $data['descripcion']; ?></td>
                         <td align="center"><?php echo $num_asignaciones; ?></td>
                         <td align="center"><?php echo $num_asignaciones_docs; ?></td>
-                        <td align="center"><?php echo $name_tipo; ?></td>
+                        <td align="center"><?php echo $data['nombre_tipo'];; ?></td>
                         <td align="center"> <?php echo $estado; ?> </td>
                         
                         <td>
                             <?php 
                             if ($data['estado'] == 1) 
                             { 
-                                $sql = mysqli_query($conexion, "SELECT matriz FROM sucursales WHERE idsucursales = $id_sucursal");
-                                $data = mysqli_fetch_array($sql);
                                 if ($data['matriz'] == 1)
                                 {
                                     #si es matriz no dejar editarlo, ni eliminarlo ni suspenderlo
