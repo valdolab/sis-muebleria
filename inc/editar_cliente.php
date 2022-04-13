@@ -77,6 +77,7 @@ else
         $up_apto_credito = $data['apto_credito'];
         $up_nivel_apto = $data['nivel_apto'];
         $up_estado_cliente = $data['estado_cliente'];
+        $up_masinfo = $data['masinfo'];
 
         $sql2 = mysqli_query($conexion, "SELECT nombre, domicilio, relacion, tel, nota, idcliente from referencias_cliente where idcliente = '$id_cliente'");
 
@@ -239,6 +240,15 @@ if (!empty($_POST))
                 {
                     $apto_credito = 0;
                 }
+                if (isset($_POST['masinfo']))
+                {
+                    $masinfo = 1;
+                }
+                else
+                {
+                    $masinfo = 0;
+                }
+
                 if(isset($_POST['nivel_credito']))
                 {
                   $nivel_apto = $_POST['nivel_credito'];
@@ -264,7 +274,7 @@ if (!empty($_POST))
                     $tel_conyugue = $_POST['tel_conyugue'];
                     $conyugue = 1;
 
-                   $sql_insert = "INSERT INTO cliente(idcliente, nombre_cliente, zona, domicilio_cliente, subzona, tel1_cliente, tel2_cliente, cp_cliente, idestado_civil, curp, rfc, trabajo_cliente, puesto_cliente, direccion_trabajo_cliente, antiguedadA_trabajo_cliente, antiguedadM_trabajo_cliente, ingresos_cliente, tipo_ingresos_cliente, nombre_conyugue_cliente, antiguedadA_vinculo, antiguedadM_vinculo, trabajo_conyugue, puesto_conyugue, ingreso_mensual_conyugue, direccion_trabajo_conyugue, tel_conyugue, tipo_vivienda_cliente, edad_residencia, renta_mensual, ndependientes, nombre_aval, tel_aval, domicilio_aval, trabajo_aval, puesto_aval, ingreso_mensual_aval, nombre_conyugue_aval, apto_credito, nivel_apto, no_cliente) VALUES ('$newidcliente', '$nombre_cliente', $zona, ".(!empty($domicilio_cliente) ? "'$domicilio_cliente'" : "NULL").", $subzona, ".(!empty($tel1_cliente) ? "'$tel1_cliente'" : "NULL").", ".(!empty($tel2_cliente) ? "'$tel2_cliente'" : "NULL").", ".(!empty($cp_cliente) ? "'$cp_cliente'" : "NULL").", $conyugue, ".(!empty($curp) ? "'$curp'" : "NULL").", ".(!empty($rfc) ? "'$rfc'" : "NULL").", ".(!empty($trabajo_cliente) ? "'$trabajo_cliente'" : "NULL").", ".(!empty($puesto_cliente) ? "'$puesto_cliente'" : "NULL").", ".(!empty($direccion_trabajo_cliente) ? "'$direccion_trabajo_cliente'" : "NULL").", $antiguedadA_trabajo_cliente, $antiguedadM_trabajo_cliente, $ingresos_cliente, '$tipo_ingreso_cliente', '$nombre_conyugue_cliente', $antiguedadA_vinculo, $antiguedadM_vinculo, ".(!empty($trabajo_conyugue) ? "'$trabajo_conyugue'" : "NULL").", ".(!empty($puesto_conyugue) ? "'$puesto_conyugue'" : "NULL").", $ingreso_mensual_conyugue, ".(!empty($direccion_trabajo_conyugue) ? "'$direccion_trabajo_conyugue'" : "NULL").", ".(!empty($tel_conyugue) ? "'$tel_conyugue'" : "NULL").", '$tipo_vivienda_cliente', $edad_residencia, $renta_mensual, $ndependientes, ".(!empty($nombre_aval) ? "'$nombre_aval'" : "NULL").", ".(!empty($tel_aval) ? "'$tel_aval'" : "NULL").", ".(!empty($domicilio_aval) ? "'$domicilio_aval'" : "NULL").", ".(!empty($trabajo_aval) ? "'$trabajo_aval'" : "NULL").", ".(!empty($puesto_aval) ? "'$puesto_aval'" : "NULL").", ".(!empty($ingreso_mensual_aval) ? "$ingreso_mensual_aval" : "NULL").", ".(!empty($nombre_conyugue_aval) ? "'$nombre_conyugue_aval'" : "NULL").", $apto_credito, $nivel_apto, $no_cliente)";
+                   $sql_insert = "INSERT INTO cliente(idcliente, nombre_cliente, zona, domicilio_cliente, subzona, tel1_cliente, tel2_cliente, cp_cliente, idestado_civil, curp, rfc, trabajo_cliente, puesto_cliente, direccion_trabajo_cliente, antiguedadA_trabajo_cliente, antiguedadM_trabajo_cliente, ingresos_cliente, tipo_ingresos_cliente, nombre_conyugue_cliente, antiguedadA_vinculo, antiguedadM_vinculo, trabajo_conyugue, puesto_conyugue, ingreso_mensual_conyugue, direccion_trabajo_conyugue, tel_conyugue, tipo_vivienda_cliente, edad_residencia, renta_mensual, ndependientes, nombre_aval, tel_aval, domicilio_aval, trabajo_aval, puesto_aval, ingreso_mensual_aval, nombre_conyugue_aval, apto_credito, nivel_apto, no_cliente, masinfo) VALUES ('$newidcliente', '$nombre_cliente', $zona, ".(!empty($domicilio_cliente) ? "'$domicilio_cliente'" : "NULL").", $subzona, ".(!empty($tel1_cliente) ? "'$tel1_cliente'" : "NULL").", ".(!empty($tel2_cliente) ? "'$tel2_cliente'" : "NULL").", ".(!empty($cp_cliente) ? "'$cp_cliente'" : "NULL").", $conyugue, ".(!empty($curp) ? "'$curp'" : "NULL").", ".(!empty($rfc) ? "'$rfc'" : "NULL").", ".(!empty($trabajo_cliente) ? "'$trabajo_cliente'" : "NULL").", ".(!empty($puesto_cliente) ? "'$puesto_cliente'" : "NULL").", ".(!empty($direccion_trabajo_cliente) ? "'$direccion_trabajo_cliente'" : "NULL").", $antiguedadA_trabajo_cliente, $antiguedadM_trabajo_cliente, $ingresos_cliente, '$tipo_ingreso_cliente', '$nombre_conyugue_cliente', $antiguedadA_vinculo, $antiguedadM_vinculo, ".(!empty($trabajo_conyugue) ? "'$trabajo_conyugue'" : "NULL").", ".(!empty($puesto_conyugue) ? "'$puesto_conyugue'" : "NULL").", $ingreso_mensual_conyugue, ".(!empty($direccion_trabajo_conyugue) ? "'$direccion_trabajo_conyugue'" : "NULL").", ".(!empty($tel_conyugue) ? "'$tel_conyugue'" : "NULL").", '$tipo_vivienda_cliente', $edad_residencia, $renta_mensual, $ndependientes, ".(!empty($nombre_aval) ? "'$nombre_aval'" : "NULL").", ".(!empty($tel_aval) ? "'$tel_aval'" : "NULL").", ".(!empty($domicilio_aval) ? "'$domicilio_aval'" : "NULL").", ".(!empty($trabajo_aval) ? "'$trabajo_aval'" : "NULL").", ".(!empty($puesto_aval) ? "'$puesto_aval'" : "NULL").", ".(!empty($ingreso_mensual_aval) ? "$ingreso_mensual_aval" : "NULL").", ".(!empty($nombre_conyugue_aval) ? "'$nombre_conyugue_aval'" : "NULL").", $apto_credito, $nivel_apto, $no_cliente, $masinfo)";
 
                 $insert_correctly = FALSE;
                 $insert_cliente = mysqli_query($conexion, $sql_insert);
@@ -275,7 +285,7 @@ if (!empty($_POST))
                 else#no tiene conyugue y no guardamos nada, puro null
                 {
                     $conyugue = 0;
-                    $sql_insert = "INSERT INTO cliente(idcliente, nombre_cliente, zona, domicilio_cliente, subzona, tel1_cliente, tel2_cliente, cp_cliente, idestado_civil, curp, rfc, trabajo_cliente, puesto_cliente, direccion_trabajo_cliente, antiguedadA_trabajo_cliente, antiguedadM_trabajo_cliente, ingresos_cliente, tipo_ingresos_cliente, nombre_conyugue_cliente, antiguedadA_vinculo, antiguedadM_vinculo, trabajo_conyugue, puesto_conyugue, ingreso_mensual_conyugue, direccion_trabajo_conyugue, tel_conyugue, tipo_vivienda_cliente, edad_residencia, renta_mensual, ndependientes, nombre_aval, tel_aval, domicilio_aval, trabajo_aval, puesto_aval, ingreso_mensual_aval, nombre_conyugue_aval, apto_credito, nivel_apto, no_cliente) VALUES ('$newidcliente', '$nombre_cliente', $zona, ".(!empty($domicilio_cliente) ? "'$domicilio_cliente'" : "NULL").", $subzona, ".(!empty($tel1_cliente) ? "'$tel1_cliente'" : "NULL").", ".(!empty($tel2_cliente) ? "'$tel2_cliente'" : "NULL").", ".(!empty($cp_cliente) ? "'$cp_cliente'" : "NULL").", $conyugue, ".(!empty($curp) ? "'$curp'" : "NULL").", ".(!empty($rfc) ? "'$rfc'" : "NULL").", ".(!empty($trabajo_cliente) ? "'$trabajo_cliente'" : "NULL").", ".(!empty($puesto_cliente) ? "'$puesto_cliente'" : "NULL").", ".(!empty($direccion_trabajo_cliente) ? "'$direccion_trabajo_cliente'" : "NULL").", $antiguedadA_trabajo_cliente, $antiguedadM_trabajo_cliente, $ingresos_cliente, '$tipo_ingreso_cliente', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$tipo_vivienda_cliente', $edad_residencia, $renta_mensual, $ndependientes, ".(!empty($nombre_aval) ? "'$nombre_aval'" : "NULL").", ".(!empty($tel_aval) ? "'$tel_aval'" : "NULL").", ".(!empty($domicilio_aval) ? "'$domicilio_aval'" : "NULL").", ".(!empty($trabajo_aval) ? "'$trabajo_aval'" : "NULL").", ".(!empty($puesto_aval) ? "'$puesto_aval'" : "NULL").", ".(!empty($ingreso_mensual_aval) ? "$ingreso_mensual_aval" : "NULL").", ".(!empty($nombre_conyugue_aval) ? "'$nombre_conyugue_aval'" : "NULL").", $apto_credito, $nivel_apto, $no_cliente)";
+                    $sql_insert = "INSERT INTO cliente(idcliente, nombre_cliente, zona, domicilio_cliente, subzona, tel1_cliente, tel2_cliente, cp_cliente, idestado_civil, curp, rfc, trabajo_cliente, puesto_cliente, direccion_trabajo_cliente, antiguedadA_trabajo_cliente, antiguedadM_trabajo_cliente, ingresos_cliente, tipo_ingresos_cliente, nombre_conyugue_cliente, antiguedadA_vinculo, antiguedadM_vinculo, trabajo_conyugue, puesto_conyugue, ingreso_mensual_conyugue, direccion_trabajo_conyugue, tel_conyugue, tipo_vivienda_cliente, edad_residencia, renta_mensual, ndependientes, nombre_aval, tel_aval, domicilio_aval, trabajo_aval, puesto_aval, ingreso_mensual_aval, nombre_conyugue_aval, apto_credito, nivel_apto, no_cliente, masinfo) VALUES ('$newidcliente', '$nombre_cliente', $zona, ".(!empty($domicilio_cliente) ? "'$domicilio_cliente'" : "NULL").", $subzona, ".(!empty($tel1_cliente) ? "'$tel1_cliente'" : "NULL").", ".(!empty($tel2_cliente) ? "'$tel2_cliente'" : "NULL").", ".(!empty($cp_cliente) ? "'$cp_cliente'" : "NULL").", $conyugue, ".(!empty($curp) ? "'$curp'" : "NULL").", ".(!empty($rfc) ? "'$rfc'" : "NULL").", ".(!empty($trabajo_cliente) ? "'$trabajo_cliente'" : "NULL").", ".(!empty($puesto_cliente) ? "'$puesto_cliente'" : "NULL").", ".(!empty($direccion_trabajo_cliente) ? "'$direccion_trabajo_cliente'" : "NULL").", $antiguedadA_trabajo_cliente, $antiguedadM_trabajo_cliente, $ingresos_cliente, '$tipo_ingreso_cliente', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$tipo_vivienda_cliente', $edad_residencia, $renta_mensual, $ndependientes, ".(!empty($nombre_aval) ? "'$nombre_aval'" : "NULL").", ".(!empty($tel_aval) ? "'$tel_aval'" : "NULL").", ".(!empty($domicilio_aval) ? "'$domicilio_aval'" : "NULL").", ".(!empty($trabajo_aval) ? "'$trabajo_aval'" : "NULL").", ".(!empty($puesto_aval) ? "'$puesto_aval'" : "NULL").", ".(!empty($ingreso_mensual_aval) ? "$ingreso_mensual_aval" : "NULL").", ".(!empty($nombre_conyugue_aval) ? "'$nombre_conyugue_aval'" : "NULL").", $apto_credito, $nivel_apto, $no_cliente, $masinfo)";
 
                     $insert_correctly = FALSE;
                     $insert_cliente = mysqli_query($conexion, $sql_insert);
@@ -338,17 +348,50 @@ if (!empty($_POST))
                 }
                 else
                 {
-                    $alert = '<div class="alert alert-danger" role="alert">
-                              Pudo haber ocurrido un error al actualizar los datos del cliente, verifique, actualize e intente de nuevo en caso de ser necesario.
-                          </div>';#.mysqli_error($conexion);
+                    $modal = "$('#mensaje_error').modal('show');";
+                    #$alert = '<div class="alert alert-danger" role="alert">Pudo haber ocurrido un error al actualizar los datos del cliente, verifique, actualize e intente de nuevo en caso de ser necesario.</div>';#.mysqli_error($conexion);
                 }
             }            
         }
     }
 }
-
-
 ?>
+
+<div style="posicion: fixed; top: 15%;" id="mensaje_error" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    
+                    <div align="center" >
+                        <br>
+                        <!-- <img src="../img/ok.gif" width="100px" height="100px"> -->
+                        <div class="swal2-header">
+                            <div class="swal2-icon swal2-error swal2-icon-show" style="display: flex;">
+                                <span class="swal2-x-mark">
+                                    <span class="swal2-x-mark-line-left"></span>
+                                    <span class="swal2-x-mark-line-right"></span>
+                                </span>
+                            </div>    
+                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">Oops... Ocurrio un problema!</h2>
+                        </div>
+
+                        <div class="swal2-content">
+                            <div id="swal2-content" class="swal2-html-container" style="display: block;">
+                                El cliente no pudo ser actualizado, intente nuevamente.
+                            </div>
+                        </div>
+                        <div class="swal2-actions">
+                            <a href="sucursales.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 <div style="posicion: fixed; top: 15%;" id="mensaje_success" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog" role="document">
@@ -377,7 +420,7 @@ if (!empty($_POST))
                             </div>
                         </div>
                         <div class="swal2-actions">
-                            <a href="clientes.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
+                            <a href="editar_cliente.php?id=<?php echo $newidcliente; ?>" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
                         </div>
 
                     </div>
@@ -556,7 +599,7 @@ if (!empty($_POST))
                 </div>
                 <div class="col-lg-6" align="right">
                         <input name="bandera" id="bandera" value="newcliente" hidden>
-                        <a href="clientes.php" type="button" class="btn btn-secondary btn-lg">Regresar</a>
+                        <a id="btnregresar" href="clientes.php" type="button" class="btn btn-secondary btn-lg">Regresar</a>
                         <?php 
                             if($editar_cliente_full)
                             {
@@ -701,12 +744,31 @@ if (!empty($_POST))
                           <label for="rfc">RFC</label>
                           <input onkeyup="mayusculas(this)" minlength="13" maxlength="13" type="text" class="form-control" placeholder="" name="rfc" id="rfc" <?php echo $disabled_full; ?> value="<?php echo $up_rfc; ?>">
                       </div>
+                      <div class="col-lg-5"> 
+                        <label>&nbsp; &nbsp; &nbsp; &nbsp; </label>
+
+                        <h4 align="left"><strong>Mostrar más información del cliente:</strong></h4>
+                      </div>
+                    <div class="col-lg-1">
+                        <label>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </label>
+                            <input id="masinfo" name="masinfo" value="" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="outline-secondary" data-size="xl" data-on="SI" data-off="NO" onchange="mostrar_mas_info()" disabled>
+                        </div>
                     </div>
             </div>
         </div>
 
 <br>
-
+<?php 
+    if($up_masinfo == 0)
+    {
+        $hidden_cards = "hidden";
+    }
+    else
+    {
+        $hidden_cards = "";
+    }
+ ?>
+<div id="masdetalles_cliente" <?php echo $hidden_cards; ?>>
         <div class="card">
             <!-- 
             <div class="card-header bg text-dark">
@@ -1143,6 +1205,8 @@ if (!empty($_POST))
                     </div>
             </div>
         </div>
+    </div>
+        </fieldset>
         <br>
 
         <div class="card">
@@ -1162,7 +1226,8 @@ if (!empty($_POST))
                          ?>
 
                         <div class="col-lg-3">
-                            <select id="nivel_credito" name="nivel_credito" <?php echo $disabled_nivel; ?> class="form-control" required <?php echo $disabled_full; ?>>
+                            <fieldset id="nivel_select" disabled>
+                            <select id="nivel_credito" name="nivel_credito" <?php echo $disabled_nivel;?> class="form-control" required>
                                 <option hidden value="">Seleccione un nivel</option>
                                 <?php 
                                     if($up_nivel_apto == 0)
@@ -1221,15 +1286,15 @@ if (!empty($_POST))
                                     }
                                  ?>
                             </select>
+                            </fieldset>
                         </div>
 
                         <div class="col-lg-1" align="right">
-                            <input id="apto_credito" name="apto_credito" value="" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="outline-secondary" data-size="sm" data-on="SI" data-off="NO" onchange="bloquear_campo()" <?php echo $check_apto_credito; ?> <?php echo $disabled_full; ?>>
+                            <input id="apto_credito" name="apto_credito" value="" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="outline-secondary" data-size="sm" data-on="SI" data-off="NO" onchange="bloquear_campo()" <?php echo $check_apto_credito; ?> disabled>
                         </div>
                     </div>
             </div>
         </div>
-    </fieldset>
     <br>
         </form>
     </div>
@@ -1244,6 +1309,18 @@ if (!empty($_POST))
 
 function mayusculas(e) {
     e.value = e.value.toUpperCase();
+}
+
+function mostrar_mas_info()
+{
+  if (document.getElementById('masinfo').checked)
+  {
+    $('#masdetalles_cliente').removeAttr('hidden');
+  }
+  else
+  {
+    $('#masdetalles_cliente').attr('hidden','hidden');
+  }
 }
 
 function bloquear_campo()

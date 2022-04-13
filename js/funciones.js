@@ -166,8 +166,13 @@ $(document).ready(function() {
 $('#btneditar_cliente').click (function(e) {
     e.preventDefault();     //prevenir novos clicks
     $('#all_inputs').removeAttr("disabled");
+    $('#nivel_select').removeAttr("disabled");
+    $('#masinfo').bootstrapToggle('enable');
+    $('#apto_credito').bootstrapToggle('enable');
     $('#update_cliente').removeAttr("disabled");
     $('#btneliminar_refs').removeAttr("style");
+    $('#btnregresar').attr('onClick','preguntar_regresar()');
+    $('#btnregresar').removeAttr("href");
 });
 
 //mostrar conyugue
@@ -530,7 +535,7 @@ function eliminar_sucursal(idsucursal)
 function eliminar_cliente(idcliente)
 {
     Swal.fire({
-            title: 'Esta seguro de eliminar?',
+            title: '¿Esta seguro de eliminar?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -577,6 +582,24 @@ function eliminar_cliente(idcliente)
                   }
                 });      
               }
+        })
+}
+
+function preguntar_regresar()
+{
+    Swal.fire({
+            title: '¿Esta seguro de regresar?',
+            html: 'Verifica que hayas guardado los cambios del cliente',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '¡Regresar!'
+        }).then((result) => {
+            if (result.isConfirmed) 
+            {
+                window.location.href = "clientes.php";
+            }
         })
 }
 

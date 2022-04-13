@@ -16,6 +16,8 @@ if (!empty($_POST))
                               Nuevo Tipo registrado
                           </div>';
                   #header("Location: agregar_usuario.php");
+                          #PAGINA PARA HACER LO DE AJAX CON FORM, para no cargar y preder los datos
+                          #https://es.stackoverflow.com/questions/24583/enviar-post-a-php-por-medio-de-ajax
               } 
               else
               {

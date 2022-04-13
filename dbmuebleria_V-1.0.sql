@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 10-04-2022 a las 16:39:39
+-- Tiempo de generación: 13-04-2022 a las 01:55:14
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   `nivel_apto` tinyint(2) NOT NULL,
   `estado_cliente` tinyint(1) NOT NULL DEFAULT '1',
   `no_cliente` int(11) NOT NULL,
+  `masinfo` tinyint(1) NOT NULL DEFAULT '0',
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idcliente`),
   KEY `tiene una` (`zona`),
@@ -80,14 +81,14 @@ CREATE TABLE IF NOT EXISTS `cliente` (
 -- Volcado de datos para la tabla `cliente`
 --
 
-INSERT INTO `cliente` (`idcliente`, `nombre_cliente`, `zona`, `domicilio_cliente`, `subzona`, `tel1_cliente`, `tel2_cliente`, `cp_cliente`, `idestado_civil`, `curp`, `rfc`, `trabajo_cliente`, `puesto_cliente`, `direccion_trabajo_cliente`, `antiguedadA_trabajo_cliente`, `antiguedadM_trabajo_cliente`, `ingresos_cliente`, `tipo_ingresos_cliente`, `nombre_conyugue_cliente`, `antiguedadA_vinculo`, `antiguedadM_vinculo`, `trabajo_conyugue`, `puesto_conyugue`, `ingreso_mensual_conyugue`, `direccion_trabajo_conyugue`, `tel_conyugue`, `tipo_vivienda_cliente`, `edad_residencia`, `renta_mensual`, `ndependientes`, `nombre_aval`, `tel_aval`, `domicilio_aval`, `trabajo_aval`, `puesto_aval`, `ingreso_mensual_aval`, `nombre_conyugue_aval`, `apto_credito`, `nivel_apto`, `estado_cliente`, `no_cliente`, `creado_en`) VALUES
-('13e792dfb3ce9fc857347744f277b32f', 'Cliente de prueba', 3, 'cambio de domicilio', 8, '9611920000', '9611926030', 29070, 0, 'VEGO971224HCSLNS00', 'VEGO9712245K7', 'asdasd', 'asdasd', 'asdasd', 4, 0, '5000.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 4, 0.0000, 2, 'asdas', '9611926030', 'dsasd', 'asdasd', 'asdasda', 5000.0000, 'asdasd', 1, 4, 1, 2, '2022-04-03 21:48:25'),
-('1679091c5a880faf6fb5e6087eb1b2dc', 'poronga2', 3, NULL, 8, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 1, 6, '2022-04-03 21:48:59'),
-('707381d68fe45ec481d00b455b632fce', 'probando lo de nocliente', 3, NULL, 8, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 4, '2022-04-01 02:06:48'),
-('8f14e45fceea167a5a36dedd4bea2543', 'poronga3', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 7, '2022-04-03 21:52:53'),
-('946622a4f13b86fb515b67f1e798614d', 'probando el nuevo id', 1, 'cambiando el cliente sin cambiar no_cliente', 1, NULL, NULL, NULL, 0, 'VEGO971224HCSLNS00', 'VEGO9712245K7', NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 3, 1, 1, '2022-04-03 21:48:03'),
-('e4da3b7fbbce2345d7772b0674a318d5', 'poronga1', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 1, 5, '2022-04-03 21:47:09'),
-('eccbc87e4b5ce2fe28308fd9f2a7baf3', 'Cliente de prueba 3', 1, 'asdasd', 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 5, 1, 3, '2022-04-03 21:48:34');
+INSERT INTO `cliente` (`idcliente`, `nombre_cliente`, `zona`, `domicilio_cliente`, `subzona`, `tel1_cliente`, `tel2_cliente`, `cp_cliente`, `idestado_civil`, `curp`, `rfc`, `trabajo_cliente`, `puesto_cliente`, `direccion_trabajo_cliente`, `antiguedadA_trabajo_cliente`, `antiguedadM_trabajo_cliente`, `ingresos_cliente`, `tipo_ingresos_cliente`, `nombre_conyugue_cliente`, `antiguedadA_vinculo`, `antiguedadM_vinculo`, `trabajo_conyugue`, `puesto_conyugue`, `ingreso_mensual_conyugue`, `direccion_trabajo_conyugue`, `tel_conyugue`, `tipo_vivienda_cliente`, `edad_residencia`, `renta_mensual`, `ndependientes`, `nombre_aval`, `tel_aval`, `domicilio_aval`, `trabajo_aval`, `puesto_aval`, `ingreso_mensual_aval`, `nombre_conyugue_aval`, `apto_credito`, `nivel_apto`, `estado_cliente`, `no_cliente`, `masinfo`, `creado_en`) VALUES
+('13e792dfb3ce9fc857347744f277b32f', 'Cliente de prueba', 3, 'cambio de domicilio', 8, '9611920000', '9611926030', 29070, 0, 'VEGO971224HCSLNS00', 'VEGO9712245K7', 'asdasd', 'asdasd', 'asdasd', 4, 0, '5000.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 4, 0.0000, 2, 'asdas', '9611926030', 'dsasd', 'asdasd', 'asdasda', 5000.0000, 'asdasd', 1, 4, 1, 2, 1, '2022-04-03 21:48:25'),
+('1679091c5a880faf6fb5e6087eb1b2dc', 'poronga2', 3, NULL, 8, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 1, 6, 0, '2022-04-03 21:48:59'),
+('707381d68fe45ec481d00b455b632fce', 'probando lo de nocliente', 3, NULL, 8, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 4, 0, '2022-04-01 02:06:48'),
+('8f14e45fceea167a5a36dedd4bea2543', 'poronga3', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 7, 0, '2022-04-03 21:52:53'),
+('946622a4f13b86fb515b67f1e798614d', 'probando el nuevo id', 1, 'cambiando el cliente sin cambiar no_cliente', 1, NULL, NULL, NULL, 0, 'VEGO971224HCSLNS00', 'VEGO9712245K7', NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 3, 1, 1, 0, '2022-04-03 21:48:03'),
+('e4da3b7fbbce2345d7772b0674a318d5', 'poronga1', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 1, 5, 0, '2022-04-03 21:47:09'),
+('eccbc87e4b5ce2fe28308fd9f2a7baf3', 'Cliente de prueba 3', 1, 'asdasd', 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 5, 1, 3, 0, '2022-04-03 21:48:34');
 
 -- --------------------------------------------------------
 
@@ -369,7 +370,7 @@ CREATE TABLE IF NOT EXISTS `tipo` (
   `idtipo` int(11) NOT NULL AUTO_INCREMENT,
   `nombre_tipo` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`idtipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `tipo`
@@ -378,7 +379,8 @@ CREATE TABLE IF NOT EXISTS `tipo` (
 INSERT INTO `tipo` (`idtipo`, `nombre_tipo`) VALUES
 (1, 'TIPO1'),
 (2, 'TIPO22'),
-(5, 'asd');
+(5, 'asd'),
+(6, 'nuevo tipo');
 
 -- --------------------------------------------------------
 

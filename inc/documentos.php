@@ -37,12 +37,13 @@ include "accion/conexion.php";
                 <th>Folio</th>
                 <th>Serie</th>
                 <th>Sucursal</th>
+                <th>Tipo</th>
                 <th style="text-align: center;">Herramientas</th>
             </tr>
         </thead>
         <tbody>
             <?php
-            $query = mysqli_query($conexion, "SELECT iddocumento,name_documento,folio,serie,idsucursal,estado FROM documento ORDER BY iddocumento ASC");
+            $query = mysqli_query($conexion, "SELECT iddocumento,name_documento,folio,serie,sucursales.sucursales,documento.estado,tipo.nombre_tipo FROM documento INNER JOIN sucursales on documento.idsucursal = sucursales.idsucursales INNER JOIN tipo on tipo.idtipo = sucursales.tipo ORDER BY iddocumento ASC");
             $result = mysqli_num_rows($query);
 
             if ($result > 0) 
@@ -56,9 +57,7 @@ include "accion/conexion.php";
                     }
                     #calculamos a que sucursales puede entrar el usuario
                     $id_documento = $data['iddocumento'];
-                    $query4 = mysqli_query($conexion, "SELECT sucursales from sucursales where idsucursales = $data[idsucursal]");
-                    $sucursal_usuario = mysqli_fetch_array($query4);
-                    $sucursales = $sucursal_usuario['sucursales'];
+                    $sucursales = $data['sucursales'];
                     
                     $ceros = "00";
                         if ($id_documento > 9)
@@ -76,6 +75,7 @@ include "accion/conexion.php";
                         <td><?php echo $data['folio']; ?></td>
                         <td><?php echo $data['serie']; ?></td>
                         <td><?php echo $sucursales ?></td>
+                        <td><?php echo $data['nombre_tipo'] ?></td>
                         <td align="center">
                             <?php if ($data['estado'] == 1) { ?>
                                 <a href="editar_documento.php?id=<?php echo $id_documento; ?>" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
