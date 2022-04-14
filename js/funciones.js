@@ -134,7 +134,8 @@ $('#listas').on("click",".remover_campo",function(e)
     x--;
 });
 
-$(document).ready(function() {
+$(document).ready(function() 
+{
     $('.js-example-basic-multiple').select2();
 
     //funcion para poner tablas en español
@@ -187,7 +188,23 @@ $('#idestado_civil').change(function() {
         $('#card_conyugue').collapse('hide');
     }
     });
+
 });
+
+function submit_newtipo()
+{
+    var action = 'update_Selecttipos';
+    var datas = $('#formAdd_tipo').serialize();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax.php',                     
+           data: {action,datas},
+           success: function(data)             
+           {
+                $('#prueba').html(data);           
+           }
+       });
+}
 
 //agregar todas las sucursales existentes al select 
 function cargar_todas_sucursales()
@@ -306,7 +323,7 @@ $('#tipo').change(function(e)
 {
     e.preventDefault();
     var idtipo = $(this).val();
-    $('#btn_editartipo').attr('onClick', 'editar_tipo('+idtipo+');');
+    $('#btn_editartipo').attr('onClick', 'editar_tipo("'+idtipo+'");');
     $('#btn_editartipo').removeAttr('disabled');
 
     var action = 'searchTipoUsed';
@@ -318,7 +335,7 @@ $('#tipo').change(function(e)
       success: function(response) {
         if(response == 0)
         {
-            $('#btn_eliminartipo').attr('onClick', 'eliminar_tipo('+idtipo+');');
+            $('#btn_eliminartipo').attr('onClick', 'eliminar_tipo("'+idtipo+'");');
             $('#btn_eliminartipo').removeAttr('disabled');
         }
         else
@@ -844,6 +861,12 @@ function editar_subzona(idsubzona)
    });  
 }
 
+function update_tipos()
+{
+    $('#mensaje_error').modal('hidden');
+    $('#mensaje_success').modal('hidden');
+}
+
 //funcion para eliminar subzona
 function eliminar_tipo(idtipo)
 {
@@ -873,7 +896,8 @@ function eliminar_tipo(idtipo)
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                //window.location.href=window.location.href;
+                                $("#tipo option[value='"+idtipo+"']").remove();
                             }
                         })   
                     }
@@ -886,7 +910,8 @@ function eliminar_tipo(idtipo)
                         ).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                //window.location.href=window.location.href;
+                                $("#tipo option[value='"+idtipo+"']").remove();
                             }
                         })
                     }

@@ -9,39 +9,21 @@ if (!empty($_POST))
     $ban = $_POST['bandera'];
     if ($ban == 'addtipo')
     {
-        $newtipo = $_POST['nuevotipo'];
-          $insert_tipo = mysqli_query($conexion, "INSERT INTO tipo(nombre_tipo) values ('$newtipo')");
-              if ($insert_tipo) {
-                  $alert = '<div class="alert alert-success" role="alert">
-                              Nuevo Tipo registrado
-                          </div>';
-                  #header("Location: agregar_usuario.php");
-                          #PAGINA PARA HACER LO DE AJAX CON FORM, para no cargar y preder los datos
-                          #https://es.stackoverflow.com/questions/24583/enviar-post-a-php-por-medio-de-ajax
-              } 
-              else
-              {
-                  $alert = '<div class="alert alert-danger" role="alert">
-                          Error al registrar un nuevo tipo, intente de nuevo.
-                      </div>';
-              }
+        
     }
     else if($ban == 'edittipo')
     {
           $id_tipo = $_POST['idflag_tipo'];
           $newname_tipo = $_POST['newedit_tipo'];
-          $update_tipo = mysqli_query($conexion, "UPDATE tipo SET nombre_tipo='$newname_tipo' where idtipo=$id_tipo");
+          $update_tipo = mysqli_query($conexion, "UPDATE tipo SET nombre_tipo='$newname_tipo' where idtipo = '$id_tipo'");
               if ($update_tipo) {
-                  $alert = '<div class="alert alert-success" role="alert">
-                              ¡Tipo actualizado!
-                          </div>';
-                  #header("Location: agregar_usuario.php");
+                  #$alert = '<div class="alert alert-success" role="alert">¡Tipo actualizado!</div>';
+                  $modal = "$('#mensaje_success').modal('show');";
               } 
               else
               {
-                  $alert = '<div class="alert alert-danger" role="alert">
-                          Error al actualizar el tipo selecionado, intente de nuevo.
-                      </div>';
+                $modal = "$('#mensaje_error').modal('show');";
+                  #$alert = '<div class="alert alert-danger" role="alert">Error al actualizar el tipo selecionado, intente de nuevo.</div>';
               }
     }
     else if($ban == 'addsucursal')
@@ -53,17 +35,91 @@ if (!empty($_POST))
         if ($insert_sucursal) 
         {
             #$alert = '<div class="alert alert-primary" role="alert"> Sucursal registrado </div>';
-            $modal = "$('#mensaje_success').modal('show');";
+            $modal = "$('#mensaje_successSuc').modal('show');";
         }
         else
         {
             #$alert = '<div class="alert alert-danger" role="alert"> Error al registrar </div>';
-            $modal = "$('#mensaje_error').modal('show');";
+            $modal = "$('#mensaje_errorSuc').modal('show');";
         }
     }
 }
 
 ?>
+
+<div style="posicion: fixed; top: 15%;" id="mensaje_errorSuc" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    
+                    <div align="center" >
+                        <br>
+                        <!-- <img src="../img/ok.gif" width="100px" height="100px"> -->
+                        <div class="swal2-header">
+                            <div class="swal2-icon swal2-error swal2-icon-show" style="display: flex;">
+                                <span class="swal2-x-mark">
+                                    <span class="swal2-x-mark-line-left"></span>
+                                    <span class="swal2-x-mark-line-right"></span>
+                                </span>
+                            </div>    
+                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">Oops... Ocurrio un problema!</h2>
+                        </div>
+
+                        <div class="swal2-content">
+                            <div id="swal2-content" class="swal2-html-container" style="display: block;">
+                                La sucursar no pudo ingresarse, intente nuevamente.
+                            </div>
+                        </div>
+                        <div class="swal2-actions">
+                            <a href="#" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="posicion: fixed; top: 15%;" id="mensaje_successSuc" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    
+                    <div align="center" >
+                        <br>
+                        <!-- <img src="../img/ok.gif" width="100px" height="100px"> -->
+                        <div class="swal2-header">
+                            <div class="swal2-icon swal2-success swal2-icon-show" style="display: flex;">
+                                <div class="swal2-success-circular-line-left" style="background-color: rgb(255, 255, 255);"></div>
+                                <span class="swal2-success-line-tip"></span>
+                                <span class="swal2-success-line-long"></span>
+                                <div class="swal2-success-ring"></div>
+                                <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
+                                <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
+                            </div>    
+                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">¡Sucursal guardada!</h2>
+                        </div>
+
+                        <div class="swal2-content">
+                            <div id="swal2-content" class="swal2-html-container" style="display: block;">
+                                Surcursal registrado exitosamente
+                            </div>
+                        </div>
+                        <div class="swal2-actions">
+                            <a href="sucursales.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 <div style="posicion: fixed; top: 15%;" id="mensaje_error" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog" role="document">
@@ -86,11 +142,11 @@ if (!empty($_POST))
 
                         <div class="swal2-content">
                             <div id="swal2-content" class="swal2-html-container" style="display: block;">
-                                La sucursal no pudo ser registrada, intente nuevamente.
+                                La operación no pudo completarse correctamente, intente nuevamente.
                             </div>
                         </div>
                         <div class="swal2-actions">
-                            <a href="sucursales.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
+                            <a onclick="update_tipos()" class="swal2-confirm swal2-styled close" type="button" style="display: inline-block;">Ok</a>
                         </div>
 
                     </div>
@@ -119,16 +175,16 @@ if (!empty($_POST))
                                 <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
                                 <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
                             </div>    
-                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">Registrada!</h2>
+                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">¡Correcto!</h2>
                         </div>
 
                         <div class="swal2-content">
                             <div id="swal2-content" class="swal2-html-container" style="display: block;">
-                                Sucursal registrada correctamete
+                                Operación ejecutada exitosamente
                             </div>
                         </div>
                         <div class="swal2-actions">
-                            <a href="sucursales.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
+                            <a onclick="update_tipos()" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
                         </div>
 
                     </div>
@@ -149,7 +205,7 @@ if (!empty($_POST))
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" autocomplete="on">
+                <form action="" method="post" id="formAdd_tipo">
                     <div class="row">
                         <div class="col-lg-12">
                           <div class="form-group">
@@ -161,7 +217,7 @@ if (!empty($_POST))
 
                     <input value="addtipo" name="bandera" id="bandera" hidden>
                     <div align="right">
-                        <input type="submit" value="Agregar" class="btn btn-primary">
+                        <button id="btn_addtipo" type="button" class="btn btn-primary" onclick="submit_newtipo()">Agregar</button>
                     </div>
                 </form>
             </div>
@@ -207,6 +263,7 @@ if (!empty($_POST))
     <div class="col-md-8 mx-auto">
         <div class="card">
             <div class="card-header bg text-dark">
+                <div id="prueba"></div>
                 <h5><strong>AGREGAR SUCURSAL</strong></h5>
             </div>
             <div class="card-body">
@@ -218,23 +275,24 @@ if (!empty($_POST))
                         <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newsucursal" id="newsucursal" required>
                     </div>
                     <div class="form-group col-lg-6">
-                        <label for="newsucursal">Tipo</label>
-                        <button data-toggle="modal" data-target="#nuevo_tipo" title="Agregar nuevo Tipo" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
-                        <button disabled data-toggle="modal" data-target="#editar_tipo" onclick="editar_tipo();" title="Editar Tipo" class="btn btn-success btn-xs" type="button" href="#" id="btn_editartipo"><i class="fas fa-edit"></i></button>
-                        <button disabled onclick="eliminar_tipo();" title="Eliminar Tipo" class="btn btn-danger btn-xs" type="button" href="#" id="btn_eliminartipo"><i class="fas fa-trash"></i></button>
-
-                        <select class="form-control" id="tipo" name="tipo">
-                            <option selected hidden>Selecciona un tipo</option>
-                            <?php
-                            #codigo para la lista de sucursales que se extraen de la base de datos
-                            $result_tipo = mysqli_query($conexion,"SELECT idtipo,nombre_tipo FROM tipo");                        
-                            if (mysqli_num_rows($result_tipo) > 0) {  
-                              while($row = mysqli_fetch_assoc($result_tipo)){
-                              echo "<option value='".$row["idtipo"]."'>".$row["nombre_tipo"]."</option>";
-                              }
-                            }
-                            ?>  
-                        </select>   
+                        
+                            <label for="newsucursal">Tipo</label>
+                            <button data-toggle="modal" data-target="#nuevo_tipo" title="Agregar nuevo Tipo" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
+                            <button disabled data-toggle="modal" data-target="#editar_tipo" onclick="editar_tipo();" title="Editar Tipo" class="btn btn-success btn-xs" type="button" href="#" id="btn_editartipo"><i class="fas fa-edit"></i></button>
+                            <button disabled onclick="eliminar_tipo();" title="Eliminar Tipo" class="btn btn-danger btn-xs" type="button" href="#" id="btn_eliminartipo"><i class="fas fa-trash"></i></button>
+                            <select class="form-control" id="tipo" name="tipo">
+                                <option selected hidden>Selecciona un tipo</option>
+                                <?php
+                                #codigo para la lista de sucursales que se extraen de la base de datos
+                                $result_tipo = mysqli_query($conexion,"SELECT idtipo,nombre_tipo FROM tipo order by nombre_tipo asc");                        
+                                if (mysqli_num_rows($result_tipo) > 0) {  
+                                  while($row = mysqli_fetch_assoc($result_tipo)){
+                                  echo "<option value='".$row["idtipo"]."'>".$row["nombre_tipo"]."</option>";
+                                  }
+                                }
+                                ?>  
+                            </select> 
+                     
                     </div>
                 </div>
                     <div class="form-group">

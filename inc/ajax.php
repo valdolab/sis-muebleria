@@ -212,7 +212,7 @@ if ($_POST['action'] == 'eliminarCliente')
   if (!empty($_POST['tipo'])) {
     $id_tipo = $_POST['tipo'];
 
-    $query_tipo = mysqli_query($conexion, "DELETE FROM tipo WHERE idtipo = $id_tipo");
+    $query_tipo = mysqli_query($conexion, "DELETE FROM tipo WHERE idtipo = '$id_tipo'");
 
     mysqli_close($conexion);
     if ($query_tipo) {
@@ -231,7 +231,7 @@ if ($_POST['action'] == 'eliminarCliente')
   if (!empty($_POST['tipo'])) {
     $id_tipo = $_POST['tipo'];
 
-    $select_tipo = mysqli_query($conexion, "SELECT idtipo,nombre_tipo from tipo where idtipo = $id_tipo");
+    $select_tipo = mysqli_query($conexion, "SELECT idtipo,nombre_tipo from tipo where idtipo = '$id_tipo'");
     mysqli_close($conexion);
     $result = mysqli_num_rows($select_tipo);
     $data_tipo = '';
@@ -489,9 +489,39 @@ if ($_POST['action'] == 'searchTipoUsed')
       $idtipo = $_POST['tipo'];
 
       //calculamos si esa zona se esta en uso para no poder borrarlo
-      $queryFindtipo = mysqli_query($conexion, "SELECT idsucursales from sucursales where tipo=$idtipo");
+      $queryFindtipo = mysqli_query($conexion, "SELECT idsucursales from sucursales where tipo='$idtipo'");
       $resultFindtipo = mysqli_num_rows($queryFindtipo);
     echo json_encode($resultFindtipo,JSON_UNESCAPED_UNICODE);
   }
   exit;
+}
+
+//update select tipos
+if ($_POST['action'] == 'update_Selecttipos') 
+{
+  $newtipo = $_POST['nuevotipo'];
+
+  echo "tu usuario es: ".$newtipo; 
+  
+  /*
+    include "accion/conexion.php";
+  if (!empty($_POST['nuevotipo'])) 
+  {
+      $newtipo = $_POST['nuevotipo'];
+      $idnewtipo = md5($newtipo);
+          $insert_tipo = mysqli_query($conexion, "INSERT INTO tipo(idtipo, nombre_tipo) values ('$idnewtipo', '$newtipo')");
+              if ($insert_tipo) 
+              {
+                  $idtipo = array("idtipo" => $idnewtipo);
+                  $tipo = array("nombre_tipo" => $newtipo);
+                  $resultUpdateTipos = $idtipo + $tipo;
+              } 
+              else
+              {
+                $resultUpdateTipos = 0;
+              }
+    echo json_encode($resultUpdateTipos,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+  */
 }

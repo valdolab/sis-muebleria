@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 13-04-2022 a las 01:55:14
+-- Tiempo de generación: 14-04-2022 a las 00:25:59
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -320,7 +320,7 @@ CREATE TABLE IF NOT EXISTS `sucursales` (
   `descripcion` text COLLATE utf8_spanish_ci,
   `estado` tinyint(1) NOT NULL DEFAULT '1',
   `matriz` tinyint(1) NOT NULL DEFAULT '0',
-  `tipo` int(11) NOT NULL,
+  `tipo` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idsucursales`),
   KEY `es de tipo` (`tipo`)
@@ -331,9 +331,9 @@ CREATE TABLE IF NOT EXISTS `sucursales` (
 --
 
 INSERT INTO `sucursales` (`idsucursales`, `sucursales`, `descripcion`, `estado`, `matriz`, `tipo`, `creado_en`) VALUES
-(1, 'Tuxtla-Matriz', 'Sucursal Matrix-Tuxtla Gutiérrez', 1, 1, 1, '2022-03-29 06:16:44'),
-(2, 'Galecio', 'Sucursal de Galecio, Chiapa de Corzo', 1, 0, 2, '2022-03-29 06:16:44'),
-(3, 'sucursal prueba', 'asd', 1, 0, 1, '2022-04-01 19:49:58');
+(1, 'Tuxtla-Matriz', 'Sucursal Matrix-Tuxtla Gutiérrez', 1, 1, 'bffb9e38c39e9935f4ec9c04929444ca', '2022-03-29 06:16:44'),
+(2, 'Galecio', 'Sucursal de Galecio, Chiapa de Corzo', 1, 0, '0fea16a43b60bf0cbf7100b06ec0aba7', '2022-03-29 06:16:44'),
+(3, 'sucursal prueba', 'asd', 1, 0, 'bffb9e38c39e9935f4ec9c04929444ca', '2022-04-01 19:49:58');
 
 -- --------------------------------------------------------
 
@@ -367,20 +367,20 @@ INSERT INTO `sucursal_usuario` (`sucursal_idusuario`, `sucursal_idsucursales`) V
 
 DROP TABLE IF EXISTS `tipo`;
 CREATE TABLE IF NOT EXISTS `tipo` (
-  `idtipo` int(11) NOT NULL AUTO_INCREMENT,
+  `idtipo` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `nombre_tipo` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`idtipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `tipo`
 --
 
 INSERT INTO `tipo` (`idtipo`, `nombre_tipo`) VALUES
-(1, 'TIPO1'),
-(2, 'TIPO22'),
-(5, 'asd'),
-(6, 'nuevo tipo');
+('bffb9e38c39e9935f4ec9c04929444ca', 'TIPO1'),
+('0fea16a43b60bf0cbf7100b06ec0aba7', 'TIPO22'),
+('0fea16a43b60bf0cbf7100b06ec0asda', 'nuevo tipo'),
+('12easda43b60bf0cbf7100b06ec0aba7', 'tipo3');
 
 -- --------------------------------------------------------
 
