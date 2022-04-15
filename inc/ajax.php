@@ -155,7 +155,7 @@ if ($_POST['action'] == 'eliminarCliente')
   if (!empty($_POST['puesto'])) {
     $id_puesto = $_POST['puesto'];
 
-    $query_puesto = mysqli_query($conexion, "DELETE FROM puesto WHERE idpuesto = $id_puesto");
+    $query_puesto = mysqli_query($conexion, "DELETE FROM puesto WHERE idpuesto = '$id_puesto'");
 
     mysqli_close($conexion);
     if ($query_puesto) {
@@ -252,7 +252,7 @@ if ($_POST['action'] == 'eliminarCliente')
   if (!empty($_POST['puesto'])) {
     $id_puesto = $_POST['puesto'];
 
-    $select_puesto = mysqli_query($conexion, "SELECT puesto,descripcion from puesto where idpuesto = $id_puesto");
+    $select_puesto = mysqli_query($conexion, "SELECT puesto,descripcion from puesto where idpuesto = '$id_puesto'");
     mysqli_close($conexion);
     $result = mysqli_num_rows($select_puesto);
     $data_puesto = '';
@@ -474,7 +474,7 @@ if ($_POST['action'] == 'searchPuestoUsed')
       $idpuesto = $_POST['puesto'];
 
       //calculamos si esa zona se esta en uso para no poder borrarlo
-      $queryFindpuesto = mysqli_query($conexion, "SELECT idusuario from usuario where puesto=$idpuesto");
+      $queryFindpuesto = mysqli_query($conexion, "SELECT idusuario from usuario where puesto = '$idpuesto'");
       $resultFindsub = mysqli_num_rows($queryFindpuesto);
     echo json_encode($resultFindsub,JSON_UNESCAPED_UNICODE);
   }
@@ -489,7 +489,7 @@ if ($_POST['action'] == 'searchTipoUsed')
       $idtipo = $_POST['tipo'];
 
       //calculamos si esa zona se esta en uso para no poder borrarlo
-      $queryFindtipo = mysqli_query($conexion, "SELECT idsucursales from sucursales where tipo='$idtipo'");
+      $queryFindtipo = mysqli_query($conexion, "SELECT idsucursales from sucursales where tipo = '$idtipo'");
       $resultFindtipo = mysqli_num_rows($queryFindtipo);
     echo json_encode($resultFindtipo,JSON_UNESCAPED_UNICODE);
   }
@@ -550,5 +550,64 @@ if ($_POST['action'] == 'update_tipo')
     $resultUpdateTipos = 0;
   }
   echo json_encode($resultUpdateTipos,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+//insert puesto
+if ($_POST['action'] == 'insert_puesto') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['newpuesto'])) 
+  {
+    $resultIDpuesto = mysqli_query($conexion, "SELECT UUID() as idpuesto");
+    $uuid = mysqli_fetch_assoc($resultIDpuesto)['idpuesto'];
+    $nompuesto = $_POST['newpuesto'];
+          $descpuesto = $_POST['desc_puesto'];
+          $insert_puesto = mysqli_query($conexion, "INSERT INTO puesto(idpuesto,puesto,descripcion) values ('$uuid','$nompuesto','$descpuesto')");
+              if ($insert_puesto) 
+              {
+                  $idpuesto = array("idpuesto" => $uuid);
+                  $puesto = array("nombre_puesto" => $nompuesto);
+                  $resultInsertPuesto = $idpuesto + $puesto;
+              } 
+              else
+              {
+                  $resultInsertPuesto = 0;
+              }
+  }
+  else
+  {
+    $resultInsertPuesto = 0;
+  }
+  echo json_encode($resultInsertPuesto,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+//update puesto
+if ($_POST['action'] == 'update_puesto') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['newpuesto_edit'])) 
+  {
+    $id_puesto = $_POST['idpuesto_flag'];
+          $nompuesto_e = $_POST['newpuesto_edit'];
+          $desc_puesto_e = $_POST['desc_puesto_edit'];
+          $update_puesto = mysqli_query($conexion, "UPDATE puesto SET puesto='$nompuesto_e', descripcion='$desc_puesto_e' where idpuesto = '$id_puesto'");
+              if ($update_puesto) 
+              {
+                  $idpuesto = array("idpuesto" => $id_puesto);
+                  $puesto = array("nombre_puesto" => $nompuesto_e);
+                  $resultUpdatePuesto = $idpuesto + $puesto;
+              } 
+              else
+              {
+                  $resultUpdatePuesto = 0;
+              }
+  }
+  else
+  {
+    $resultUpdatePuesto = 0;
+  }
+  echo json_encode($resultUpdatePuesto,JSON_UNESCAPED_UNICODE);
   exit;
 }

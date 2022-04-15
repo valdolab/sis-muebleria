@@ -15,44 +15,7 @@ if (!empty($_POST))
     else 
     {
         $ban = $_POST['bandera'];
-        if ($ban == 'puesto')
-        {
-          $nompuesto = $_POST['newpuesto'];
-          $desc_puesto = $_POST['desc_puesto'];
-          $insert_puesto = mysqli_query($conexion, "INSERT INTO puesto(puesto,descripcion) values ('$nompuesto','$desc_puesto')");
-              if ($insert_puesto) {
-                  $alert = '<div class="alert alert-success" role="alert">
-                              Puesto registrado
-                          </div>';
-                  #header("Location: agregar_usuario.php");
-              } 
-              else
-              {
-                  $alert = '<div class="alert alert-danger" role="alert">
-                          Error al registrar un nuevo puesto, intente de nuevo
-                      </div>';
-              }
-        }
-        else if ($ban == 'editpuesto')
-        {
-          $id_puesto = $_POST['idpuesto_flag'];
-          $nompuesto_e = $_POST['newpuesto_edit'];
-          $desc_puesto_e = $_POST['desc_puesto_edit'];
-          $update_puesto = mysqli_query($conexion, "UPDATE puesto SET puesto='$nompuesto_e', descripcion='$desc_puesto_e' where idpuesto=$id_puesto");
-              if ($update_puesto) {
-                  $alert = '<div class="alert alert-success" role="alert">
-                              ¡Puesto actualizado!
-                          </div>';
-                  #header("Location: agregar_usuario.php");
-              } 
-              else
-              {
-                  $alert = '<div class="alert alert-danger" role="alert">
-                          Error al actualizar el puesto, intente de nuevo.
-                      </div>';
-              }
-        }
-        else if($ban == 'newusuario')
+        if($ban == 'newusuario')
         {
           $nombre = $_POST['nombre'];
           $idusuario = $_POST['usuario'];
@@ -83,7 +46,7 @@ if (!empty($_POST))
 
               if (sizeof($sucursal) != 1) #es para insertar con varias sucursales, multisucursal
               {
-                    $query_insert = mysqli_query($conexion, "INSERT INTO usuario(idusuario,nombre,pass,rol,puesto,estado,superadmin) values ('$idusuario', '$nombre', '$pass', '$rol', $puesto, 1, $superadmin)");
+                    $query_insert = mysqli_query($conexion, "INSERT INTO usuario(idusuario,nombre,pass,rol,puesto,estado,superadmin) values ('$idusuario', '$nombre', '$pass', '$rol', '$puesto', 1, $superadmin)");
                     if (!$query_insert)
                     { 
                               $alert = '<div class="alert alert-danger" role="alert">
@@ -121,7 +84,7 @@ if (!empty($_POST))
               else if(sizeof($sucursal) == 1)
               {
                 $sucursal_val = $sucursal[0];
-                $query_insert = mysqli_query($conexion, "INSERT INTO usuario(idusuario,nombre,pass,rol,puesto,estado,superadmin) values ('$idusuario', '$nombre', '$pass', '$rol' ,$puesto, 1, $superadmin)");
+                $query_insert = mysqli_query($conexion, "INSERT INTO usuario(idusuario,nombre,pass,rol,puesto,estado,superadmin) values ('$idusuario', '$nombre', '$pass', '$rol' , '$puesto', 1, $superadmin)");
                     if (!$query_insert)
                     {
                         #$modal = "$('#mensaje_error').modal('show');"; 
@@ -133,18 +96,11 @@ if (!empty($_POST))
                 $query_insert2 = mysqli_query($conexion, "INSERT INTO sucursal_usuario(sucursal_idusuario,sucursal_idsucursales) values ('$idusuario', $sucursal_val)");
                   if ($query_insert2)
                   {
-                      #$alert = '<div class="alert alert-success" role="alert">Usuario registrado correctamente</div>'; #?estado=e0fc59eb3bbaab9dbd70738144fd4d0d
-                      #header("Location: usuarios.php");
                       $modal = "$('#mensaje_success').modal('show');";                      
                   }
                   else
                   {
-                      $alert = '<div class="alert alert-danger" role="alert">
-                              Error al registrar usuario
-                          </div>';
-                          #echo mysqli_error($conexion);
-                        $query_delete3 = mysqli_query($conexion, "DELETE FROM usuario WHERE idusuario = '$idusuario'");
-                        $query_delete4 = mysqli_query($conexion, "DELETE FROM sucursal_usuario WHERE sucursal_idusuario = '$idusuario'");
+                      $modal = "$('#mensaje_error').modal('show');"; 
                   }
               }    
             }
@@ -152,6 +108,42 @@ if (!empty($_POST))
     }
 }
 ?>
+
+<div style="posicion: fixed; top: 15%;" id="mensaje_error" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    
+                    <div align="center" >
+                        <br>
+                        <!-- <img src="../img/ok.gif" width="100px" height="100px"> -->
+                        <div class="swal2-header">
+                            <div class="swal2-icon swal2-error swal2-icon-show" style="display: flex;">
+                                <span class="swal2-x-mark">
+                                    <span class="swal2-x-mark-line-left"></span>
+                                    <span class="swal2-x-mark-line-right"></span>
+                                </span>
+                            </div>    
+                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">Oops... Ocurrio un problema!</h2>
+                        </div>
+
+                        <div class="swal2-content">
+                            <div id="swal2-content" class="swal2-html-container" style="display: block;">
+                                El usuario no pudo registrarse, intente nuevamente más tarde.
+                            </div>
+                        </div>
+                        <div class="swal2-actions">
+                            <a href="sucursales.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 <div style="posicion: fixed; top: 15%;" id="mensaje_success" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog" role="document">
@@ -171,12 +163,12 @@ if (!empty($_POST))
                                 <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
                                 <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
                             </div>    
-                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">Listo!</h2>
+                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">¡Listo!</h2>
                         </div>
 
                         <div class="swal2-content">
                             <div id="swal2-content" class="swal2-html-container" style="display: block;">
-                                Usuario agregado correctamete
+                                Usuario guardado correctamete
                             </div>
                         </div>
                         <div class="swal2-actions">
@@ -191,7 +183,6 @@ if (!empty($_POST))
     </div>
 </div>
 
-
 <div id="nuevo_puesto" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -202,7 +193,7 @@ if (!empty($_POST))
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" autocomplete="off">
+                <form action="" method="post" autocomplete="off" id="formAdd_puesto">
                     <div class="form-group">
                         <label for="correo">Nuevo puesto</label>
                         <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newpuesto" id="newpuesto" required maxlength="99">
@@ -212,10 +203,9 @@ if (!empty($_POST))
                          <textarea class="form-control" name="desc_puesto" title="Ingrese descripción del puesto" id="desc_puesto" placeholder="Indicar una breve descripción sobre el puesto (Opcional)" maxlength="1000"></textarea>
                     </div>
 
-                    <input value="puesto" name="bandera" id="bandera" hidden>
-
+                    <input value="insert_puesto" name="action" id="action" hidden>
                     <div align="right">
-                        <input type="submit" value="Agregar" class="btn btn-primary">
+                        <input type="submit" value="Agregar" class="btn btn-primary" id="btn_addpuesto">
                     </div>
                 </form>
             </div>
@@ -233,7 +223,7 @@ if (!empty($_POST))
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" autocomplete="off">
+                <form action="" method="post" autocomplete="off" id="formEdit_puesto">
                     <div class="form-group">
                         <label for="correo">Puesto</label>
                         <input type="text" class="form-control" placeholder="Ingrese Nombre completo" name="newpuesto_edit" id="newpuesto_edit" required maxlength="99">
@@ -244,10 +234,9 @@ if (!empty($_POST))
                          <textarea class="form-control" name="desc_puesto_edit" title="Ingrese descripción del puesto" id="desc_puesto_edit" placeholder="Indicar una breve descripción sobre el puesto (Opcional)" maxlength="10000"></textarea>
                     </div>
 
-                    <input value="editpuesto" name="bandera" id="bandera" hidden>
-
+                    <input value="update_puesto" name="action" id="action" hidden>
                     <div align="right">
-                        <input type="submit" value="Actualizar" class="btn btn-primary">
+                        <input type="submit" value="Actualizar" class="btn btn-primary" id="btn_editpuesto">
                     </div>
                 </form>
             </div>

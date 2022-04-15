@@ -243,20 +243,20 @@ INSERT INTO `permiso_usuario` (`permiso_idpermiso`, `permiso_idusuario`) VALUES
 
 DROP TABLE IF EXISTS `puesto`;
 CREATE TABLE IF NOT EXISTS `puesto` (
-  `idpuesto` int(11) NOT NULL AUTO_INCREMENT,
+  `idpuesto` char(36) COLLATE utf8_spanish_ci NOT NULL,
   `puesto` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
   `descripcion` text COLLATE utf8_spanish_ci,
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idpuesto`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `puesto`
 --
 
 INSERT INTO `puesto` (`idpuesto`, `puesto`, `descripcion`, `creado_en`) VALUES
-(1, 'Administrativo', 'Este es el puesto de administrador de la mueblaria. Podra acceder a cosas de administración', '2022-03-29 06:17:05'),
-(2, 'Vendedor-Cobrador', 'Este es el puesto de vendedor', '2022-03-29 06:17:05');
+('6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 'Administrativo', 'Este es el puesto de administrador de la mueblaria. Podra acceder a cosas de administración', '2022-03-29 06:17:05'),
+('6e3f32fa-bd10-11ec-a5db-d481d765gtrs', 'Vendedor-Cobrador', 'Este es el puesto de vendedor', '2022-03-29 06:17:05');
 
 -- --------------------------------------------------------
 
@@ -394,7 +394,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `nombre` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
   `pass` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `rol` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `puesto` int(5) NOT NULL,
+  `puesto` char(36) COLLATE utf8_spanish_ci NOT NULL,
   `estado` tinyint(1) DEFAULT '1',
   `superadmin` tinyint(1) NOT NULL,
   `no_user` int(11) NOT NULL AUTO_INCREMENT,
@@ -409,8 +409,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 --
 
 INSERT INTO `usuario` (`idusuario`, `nombre`, `pass`, `rol`, `puesto`, `estado`, `superadmin`, `no_user`, `creado_en`) VALUES
-('IGERAG', 'Ruben Aguilar González', '81df10368e0655e4801b66269fd8b973', 'SuperAdmin', 1, 1, 1, 1, '2022-03-29 05:39:17'),
-('OSV', 'Osvaldo David Velazquez', '0c04e1d2f9dec7007ecc22862711b57a', 'Usurario', 1, 1, 0, 2, '2022-03-29 05:39:17');
+('IGERAG', 'Ruben Aguilar González', '81df10368e0655e4801b66269fd8b973', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 1, '2022-03-29 05:39:17'),
+('OSV', 'Osvaldo David Velazquez', '0c04e1d2f9dec7007ecc22862711b57a', 'Usurario', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 0, 2, '2022-03-29 05:39:17');
 
 -- --------------------------------------------------------
 

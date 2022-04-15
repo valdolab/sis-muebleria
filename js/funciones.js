@@ -254,7 +254,7 @@ $('#idestado_civil').change(function() {
                           text: 'Ocurrio un error, intente de nuevo!',
                         }).then((result) => {
                             if (result.isConfirmed){
-                                window.location.href = "agregar_sucursal.php";
+                                window.location.href = "sucursales.php";
                             }
                         }) 
                 }
@@ -279,6 +279,100 @@ $('#idestado_civil').change(function() {
         return false;   
     });
 
+    //=================
+    //para el form de agregar nuevo tipo
+    $("#formAdd_puesto").submit( function () {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax.php',                     
+           data: $(this).serialize(),
+           success: function(response)             
+           {
+                if(response == 0)
+                {
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "agregar_usuario.php";
+                            }
+                        }) 
+                }
+                else
+                {
+                    $('#nuevo_puesto').modal('hide');
+                    //limpiar el input
+                    $('#newpuesto').val('');
+                    $('#desc_puesto').val('');
+                    var data = $.parseJSON(response);
+                    $('#puesto').append($('<option>',
+                    {
+                        value: data.idpuesto,
+                        text : data.nombre_puesto
+                    }));
+                    Swal.fire(
+                          'Agregado!',
+                          '!Se agrego el nuevo puesto!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed)
+                            {}
+                        })
+                }         
+           }
+       });   
+        return false;   
+    });
+
+    //para el form de editar un tipo
+    $("#formEdit_puesto").submit( function () {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax.php',                     
+           data: $(this).serialize(),
+           success: function(response)             
+           {
+                if(response == 0)
+                {
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "agregar_sucursal.php";
+                            }
+                        }) 
+                }
+                else
+                {
+                    $('#editar_puesto').modal('hide');
+                    //limpiar el input
+                    $('#newpuesto_edit').val('');
+                    $('#desc_puesto_edit').val('');
+                    var data = $.parseJSON(response);
+                    $('#puesto option[value="'+data.idpuesto+'"]').text(data.nombre_puesto);
+                    Swal.fire(
+                          '!Editado!',
+                          '!Se actualizo el puesto selecionado!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed)
+                            {}
+                        })
+                }         
+           }
+       });   
+        return false;   
+    });
+
+//FIN DEL DOCUMENT READY
 });
 
 //agregar todas las sucursales existentes al select 
@@ -365,7 +459,7 @@ $('#puesto').change(function(e)
 {
     e.preventDefault();
     var idpuesto = $(this).val();
-    $('#btn_editarpuesto').attr('onClick', 'editar_puesto('+idpuesto+');');
+    $('#btn_editarpuesto').attr('onClick', 'editar_puesto("'+idpuesto+'");');
     $('#btn_editarpuesto').removeAttr('disabled');
 
     var action = 'searchPuestoUsed';
@@ -377,7 +471,7 @@ $('#puesto').change(function(e)
       success: function(response) {
         if(response == 0)
         {
-            $('#btn_eliminarpuesto').attr('onClick', 'eliminar_puesto('+idpuesto+');');
+            $('#btn_eliminarpuesto').attr('onClick', 'eliminar_puesto("'+idpuesto+'");');
             $('#btn_eliminarpuesto').removeAttr('disabled');
         }
         else
@@ -737,7 +831,7 @@ function eliminar_puesto(idpuesto)
                         ).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                $("#puesto option[value='"+idpuesto+"']").remove();
                             }
                         })
                     }
@@ -971,8 +1065,8 @@ function eliminar_tipo(idtipo)
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                //window.location.href=window.location.href;
-                                $("#tipo option[value='"+idtipo+"']").remove();
+                                window.location.href=window.location.href;
+                                //$("#tipo option[value='"+idtipo+"']").remove();
                             }
                         })   
                     }
