@@ -7,11 +7,7 @@ include "accion/conexion.php";
 if (!empty($_POST)) 
 {
     $ban = $_POST['bandera'];
-    if ($ban == 'addtipo')
-    {
-        
-    }
-    else if($ban == 'edittipo')
+    if($ban == 'edittipo')
     {
           $id_tipo = $_POST['idflag_tipo'];
           $newname_tipo = $_POST['newedit_tipo'];
@@ -215,9 +211,9 @@ if (!empty($_POST))
                         </div>
                     </div>
 
-                    <input value="addtipo" name="bandera" id="bandera" hidden>
+                    <input value="insert_tipo" name="action" id="action" hidden>
                     <div align="right">
-                        <button id="btn_addtipo" type="button" class="btn btn-primary" onclick="submit_newtipo()">Agregar</button>
+                        <input id="btn_addtipo" type="submit" class="btn btn-primary" value="Agregar">
                     </div>
                 </form>
             </div>
@@ -246,7 +242,7 @@ if (!empty($_POST))
                         </div>
                     </div>
 
-                    <input value="edittipo" name="bandera" id="bandera" hidden>
+                    <input value="update_tipo" name="action" id="action" hidden>
                     <div align="right">
                         <input type="submit" value="Agregar" class="btn btn-primary">
                     </div>

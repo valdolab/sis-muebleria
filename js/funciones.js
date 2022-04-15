@@ -189,22 +189,54 @@ $('#idestado_civil').change(function() {
     }
     });
 
-});
-
-function submit_newtipo()
-{
-    var action = 'update_Selecttipos';
-    var datas = $('#formAdd_tipo').serialize();
+    //para el form de agregar nuevo tipo
+    $("#formAdd_tipo").submit( function () {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
         $.ajax({                        
            type: 'POST',                 
            url: 'ajax.php',                     
-           data: {action,datas},
-           success: function(data)             
+           data: $(this).serialize(),
+           success: function(response)             
            {
-                $('#prueba').html(data);           
+                if(response == 0)
+                {
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "agregar_sucursal.php";
+                            }
+                        }) 
+                }
+                else
+                {
+                    $('#nuevo_tipo').modal('hide');
+                    //limpiar el input
+                    $('#nuevotipo').val('');
+                    var data = $.parseJSON(response);
+                    $('#tipo').append($('<option>',
+                    {
+                        value: data.idtipo,
+                        text : data.nombre_tipo
+                    }));
+                    Swal.fire(
+                          'Agregado!',
+                          '!Se agrego el nuevo tipo!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed)
+                            {}
+                        })
+                }         
            }
-       });
-}
+       });   
+        return false;   
+    });
+
+});
 
 //agregar todas las sucursales existentes al select 
 function cargar_todas_sucursales()
@@ -406,7 +438,7 @@ function eliminar_user(idusuario)
                     if (response == 0) 
                     {
                         Swal.fire({
-                          icon: 'Error',
+                          icon: 'error',
                           title: 'Oops...',
                           text: 'Ocurrio un error, intente de nuevo!',
                         }).then((result) => {
@@ -460,7 +492,7 @@ function eliminar_doc(iddocumento)
                     if (response == 0) 
                     {
                         Swal.fire({
-                          icon: 'Error',
+                          icon: 'error',
                           title: 'Oops...',
                           text: 'Ocurrio un error, intente de nuevo!',
                         }).then((result) => {
@@ -515,7 +547,7 @@ function eliminar_sucursal(idsucursal)
                     if (response == 0) 
                     {
                         Swal.fire({
-                          icon: 'Error',
+                          icon: 'error',
                           title: 'Oops...',
                           text: 'Ocurrio un error, intente de nuevo!',
                         }).then((result) => {
@@ -571,7 +603,7 @@ function eliminar_cliente(idcliente)
                     if (response == 0) 
                     {
                         Swal.fire({
-                          icon: 'Error',
+                          icon: 'error',
                           title: 'Oops...',
                           text: 'Ocurrio un error, intente de nuevo!',
                         }).then((result) => {
@@ -643,7 +675,7 @@ function eliminar_puesto(idpuesto)
                     if (response == 0) 
                     {
                         Swal.fire({
-                          icon: 'Error',
+                          icon: 'error',
                           title: 'Oops...',
                           text: 'Ocurrio un error, intente de nuevo!',
                         }).then((result) => {
@@ -724,7 +756,7 @@ function eliminar_zona(idzona)
                     if (response == 0) 
                     {
                         Swal.fire({
-                          icon: 'Error',
+                          icon: 'error',
                           title: 'Oops...',
                           text: 'Ocurrio un error, intente de nuevo!',
                         }).then((result) => {
@@ -803,7 +835,7 @@ function eliminar_subzona(idsubzona)
                     if (response == 0) 
                     {
                         Swal.fire({
-                          icon: 'Error',
+                          icon: 'error',
                           title: 'Oops...',
                           text: 'Ocurrio un error, intente de nuevo!',
                         }).then((result) => {
@@ -890,7 +922,7 @@ function eliminar_tipo(idtipo)
                     if (response == 0) 
                     {
                         Swal.fire({
-                          icon: 'Error',
+                          icon: 'error',
                           title: 'Oops...',
                           text: 'Ocurrio un error, intente de nuevo!',
                         }).then((result) => {
@@ -963,7 +995,7 @@ function suspender_sucursal(idsucursal)
             if (response == 0) 
             {
                 Swal.fire({
-                    icon: 'Error',
+                    icon: 'error',
                     title: 'Oops...',
                     text: 'Ocurrio un error, intente de nuevo!',
                 }).then((result) => {
@@ -1017,7 +1049,7 @@ function suspender_cliente(idcliente)
             if (response == 0) 
             {
                 Swal.fire({
-                    icon: 'Error',
+                    icon: 'error',
                     title: 'Oops...',
                     text: 'Ocurrio un error, intente de nuevo!',
                 }).then((result) => {
@@ -1081,7 +1113,7 @@ function asignar_matriz(idsucursal)
                     if (response == 0) 
                     {
                         Swal.fire({
-                          icon: 'Error',
+                          icon: 'error',
                           title: 'Oops...',
                           text: 'Ocurrio un error, intente de nuevo!',
                         }).then((result) => {

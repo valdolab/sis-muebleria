@@ -496,15 +496,10 @@ if ($_POST['action'] == 'searchTipoUsed')
   exit;
 }
 
-//update select tipos
-if ($_POST['action'] == 'update_Selecttipos') 
-{
-  $newtipo = $_POST['nuevotipo'];
-
-  echo "tu usuario es: ".$newtipo; 
-  
-  /*
-    include "accion/conexion.php";
+//insert tipos
+if ($_POST['action'] == 'insert_tipo') 
+{  
+  include "accion/conexion.php";
   if (!empty($_POST['nuevotipo'])) 
   {
       $newtipo = $_POST['nuevotipo'];
@@ -520,8 +515,41 @@ if ($_POST['action'] == 'update_Selecttipos')
               {
                 $resultUpdateTipos = 0;
               }
-    echo json_encode($resultUpdateTipos,JSON_UNESCAPED_UNICODE);
   }
+  else
+  {
+    $resultUpdateTipos = 0;
+  }
+  echo json_encode($resultUpdateTipos,JSON_UNESCAPED_UNICODE);
   exit;
-  */
+}
+
+//update tipos
+if ($_POST['action'] == 'update_tipo') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['nuevotipo'])) 
+  {
+      $newtipo = $_POST['nuevotipo'];
+      
+      $idnewtipo = md5($newtipo);
+
+          $insert_tipo = mysqli_query($conexion, "INSERT INTO tipo(idtipo, nombre_tipo) values ('$idnewtipo', '$newtipo')");
+              if ($insert_tipo) 
+              {
+                  $idtipo = array("idtipo" => $idnewtipo);
+                  $tipo = array("nombre_tipo" => $newtipo);
+                  $resultUpdateTipos = $idtipo + $tipo;
+              } 
+              else
+              {
+                $resultUpdateTipos = 0;
+              }
+  }
+  else
+  {
+    $resultUpdateTipos = 0;
+  }
+  echo json_encode($resultUpdateTipos,JSON_UNESCAPED_UNICODE);
+  exit;
 }
