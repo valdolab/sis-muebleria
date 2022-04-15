@@ -7,27 +7,12 @@ include "accion/conexion.php";
 if (!empty($_POST)) 
 {
     $ban = $_POST['bandera'];
-    if($ban == 'edittipo')
-    {
-          $id_tipo = $_POST['idflag_tipo'];
-          $newname_tipo = $_POST['newedit_tipo'];
-          $update_tipo = mysqli_query($conexion, "UPDATE tipo SET nombre_tipo='$newname_tipo' where idtipo = '$id_tipo'");
-              if ($update_tipo) {
-                  #$alert = '<div class="alert alert-success" role="alert">¡Tipo actualizado!</div>';
-                  $modal = "$('#mensaje_success').modal('show');";
-              } 
-              else
-              {
-                $modal = "$('#mensaje_error').modal('show');";
-                  #$alert = '<div class="alert alert-danger" role="alert">Error al actualizar el tipo selecionado, intente de nuevo.</div>';
-              }
-    }
-    else if($ban == 'addsucursal')
+    if($ban == 'addsucursal')
     {
         $nomsucursal = $_POST['newsucursal'];
         $idtipo = $_POST['tipo'];
         $desc_sucursal = $_POST['desc_sucursal'];
-        $insert_sucursal= mysqli_query($conexion, "INSERT INTO sucursales(sucursales,descripcion,tipo) values ('$nomsucursal','$desc_sucursal',$idtipo)");
+        $insert_sucursal= mysqli_query($conexion, "INSERT INTO sucursales(sucursales,descripcion,tipo) values ('$nomsucursal','$desc_sucursal','$idtipo')");
         if ($insert_sucursal) 
         {
             #$alert = '<div class="alert alert-primary" role="alert"> Sucursal registrado </div>';
@@ -68,7 +53,7 @@ if (!empty($_POST))
                             </div>
                         </div>
                         <div class="swal2-actions">
-                            <a href="#" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
+                            <a href="sucursales.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
                         </div>
 
                     </div>
@@ -102,85 +87,11 @@ if (!empty($_POST))
 
                         <div class="swal2-content">
                             <div id="swal2-content" class="swal2-html-container" style="display: block;">
-                                Surcursal registrado exitosamente
+                                Surcursal registrada exitosamente
                             </div>
                         </div>
                         <div class="swal2-actions">
                             <a href="sucursales.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<div style="posicion: fixed; top: 15%;" id="mensaje_error" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="form-group">
-                    
-                    <div align="center" >
-                        <br>
-                        <!-- <img src="../img/ok.gif" width="100px" height="100px"> -->
-                        <div class="swal2-header">
-                            <div class="swal2-icon swal2-error swal2-icon-show" style="display: flex;">
-                                <span class="swal2-x-mark">
-                                    <span class="swal2-x-mark-line-left"></span>
-                                    <span class="swal2-x-mark-line-right"></span>
-                                </span>
-                            </div>    
-                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">Oops... Ocurrio un problema!</h2>
-                        </div>
-
-                        <div class="swal2-content">
-                            <div id="swal2-content" class="swal2-html-container" style="display: block;">
-                                La operación no pudo completarse correctamente, intente nuevamente.
-                            </div>
-                        </div>
-                        <div class="swal2-actions">
-                            <a onclick="update_tipos()" class="swal2-confirm swal2-styled close" type="button" style="display: inline-block;">Ok</a>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<div style="posicion: fixed; top: 15%;" id="mensaje_success" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="form-group">
-                    
-                    <div align="center" >
-                        <br>
-                        <!-- <img src="../img/ok.gif" width="100px" height="100px"> -->
-                        <div class="swal2-header">
-                            <div class="swal2-icon swal2-success swal2-icon-show" style="display: flex;">
-                                <div class="swal2-success-circular-line-left" style="background-color: rgb(255, 255, 255);"></div>
-                                <span class="swal2-success-line-tip"></span>
-                                <span class="swal2-success-line-long"></span>
-                                <div class="swal2-success-ring"></div>
-                                <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
-                                <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
-                            </div>    
-                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">¡Correcto!</h2>
-                        </div>
-
-                        <div class="swal2-content">
-                            <div id="swal2-content" class="swal2-html-container" style="display: block;">
-                                Operación ejecutada exitosamente
-                            </div>
-                        </div>
-                        <div class="swal2-actions">
-                            <a onclick="update_tipos()" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
                         </div>
 
                     </div>
@@ -201,7 +112,7 @@ if (!empty($_POST))
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" id="formAdd_tipo">
+                <form action="" method="post" id="formAdd_tipo" autocomplete="on">
                     <div class="row">
                         <div class="col-lg-12">
                           <div class="form-group">
@@ -231,7 +142,7 @@ if (!empty($_POST))
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" autocomplete="on">
+                <form action="" method="post" id="formEdit_tipo" autocomplete="on">
                     <div class="row">
                         <div class="col-lg-12">
                           <div class="form-group">
@@ -244,7 +155,7 @@ if (!empty($_POST))
 
                     <input value="update_tipo" name="action" id="action" hidden>
                     <div align="right">
-                        <input type="submit" value="Agregar" class="btn btn-primary">
+                        <input type="submit" value="Editar" class="btn btn-primary">
                     </div>
                 </form>
             </div>

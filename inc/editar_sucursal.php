@@ -31,42 +31,7 @@ else
 if (!empty($_POST)) 
 {
     $ban = $_POST['bandera'];
-    if ($ban == 'addtipo')
-    {
-        $newtipo = $_POST['nuevotipo'];
-          $insert_tipo = mysqli_query($conexion, "INSERT INTO tipo(nombre_tipo) values ('$newtipo')");
-              if ($insert_tipo) {
-                  $alert = '<div class="alert alert-success" role="alert">
-                              Nuevo Tipo registrado
-                          </div>';
-                  #header("Location: agregar_usuario.php");
-              } 
-              else
-              {
-                  $alert = '<div class="alert alert-danger" role="alert">
-                          Error al registrar un nuevo tipo, intente de nuevo.
-                      </div>';
-              }
-    }
-    else if($ban == 'edittipo')
-    {
-          $id_tipo = $_POST['idflag_tipo'];
-          $newname_tipo = $_POST['newedit_tipo'];
-          $update_tipo = mysqli_query($conexion, "UPDATE tipo SET nombre_tipo='$newname_tipo' where idtipo=$id_tipo");
-              if ($update_tipo) {
-                  $alert = '<div class="alert alert-success" role="alert">
-                              ¡Tipo actualizado!
-                          </div>';
-                  #header("Location: agregar_usuario.php");
-              } 
-              else
-              {
-                  $alert = '<div class="alert alert-danger" role="alert">
-                          Error al actualizar el tipo selecionado, intente de nuevo.
-                      </div>';
-              }
-    }
-    else if($ban == 'addsucursal')
+    if($ban == 'addsucursal')
     {
         $new_sucursales = $_POST['newsucursal'];
         $idtipo = $_POST['tipo'];
@@ -77,22 +42,22 @@ if (!empty($_POST))
             $new_sucursales = $new_sucursales."-Matriz";
         }
 
-        $insert_sucursal= mysqli_query($conexion, "UPDATE sucursales set sucursales = '$new_sucursales', descripcion = '$new_desc', tipo=$idtipo where idsucursales = $id_sucursal");
+        $insert_sucursal= mysqli_query($conexion, "UPDATE sucursales set sucursales = '$new_sucursales', descripcion = '$new_desc', tipo = '$idtipo' where idsucursales = $id_sucursal");
         if ($insert_sucursal) 
         {
             
-            $modal = "$('#mensaje_success').modal('show');";
+            $modal = "$('#mensaje_successSuc').modal('show');";
         }
         else
         {
-            $alert = '<div class="alert alert-danger" role="alert"> Hubo un Error al registrar, intente de nuevo.</div>';
+            $modal = "$('#mensaje_errorSuc').modal('show');";
         }
     }
 }
 
 ?>
 
-<div style="posicion: fixed; top: 15%;" id="mensaje_success" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+<div style="posicion: fixed; top: 15%;" id="mensaje_successSuc" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">
@@ -130,6 +95,42 @@ if (!empty($_POST))
     </div>
 </div>
 
+<div style="posicion: fixed; top: 15%;" id="mensaje_errorSuc" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    
+                    <div align="center" >
+                        <br>
+                        <!-- <img src="../img/ok.gif" width="100px" height="100px"> -->
+                        <div class="swal2-header">
+                            <div class="swal2-icon swal2-error swal2-icon-show" style="display: flex;">
+                                <span class="swal2-x-mark">
+                                    <span class="swal2-x-mark-line-left"></span>
+                                    <span class="swal2-x-mark-line-right"></span>
+                                </span>
+                            </div>    
+                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">Oops... Ocurrio un problema!</h2>
+                        </div>
+
+                        <div class="swal2-content">
+                            <div id="swal2-content" class="swal2-html-container" style="display: block;">
+                                La sucursar no pudo actualizarse, intente nuevamente.
+                            </div>
+                        </div>
+                        <div class="swal2-actions">
+                            <a href="#" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="nuevo_tipo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -140,7 +141,7 @@ if (!empty($_POST))
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" autocomplete="on">
+                <form action="" method="post" autocomplete="on" id="formAdd_tipo">
                     <div class="row">
                         <div class="col-lg-12">
                           <div class="form-group">
@@ -150,7 +151,7 @@ if (!empty($_POST))
                         </div>
                     </div>
 
-                    <input value="addtipo" name="bandera" id="bandera" hidden>
+                    <input value="insert_tipo" name="action" id="action" hidden>
                     <div align="right">
                         <input type="submit" value="Agregar" class="btn btn-primary">
                     </div>
@@ -170,7 +171,7 @@ if (!empty($_POST))
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" autocomplete="on">
+                <form action="" method="post" autocomplete="on" id="formEdit_tipo">
                     <div class="row">
                         <div class="col-lg-12">
                           <div class="form-group">
@@ -181,7 +182,7 @@ if (!empty($_POST))
                         </div>
                     </div>
 
-                    <input value="edittipo" name="bandera" id="bandera" hidden>
+                    <input value="update_tipo" name="action" id="action" hidden>
                     <div align="right">
                         <input type="submit" value="Agregar" class="btn btn-primary">
                     </div>

@@ -236,6 +236,49 @@ $('#idestado_civil').change(function() {
         return false;   
     });
 
+    //para el form de editar un tipo
+    $("#formEdit_tipo").submit( function () {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax.php',                     
+           data: $(this).serialize(),
+           success: function(response)             
+           {
+                if(response == 0)
+                {
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "agregar_sucursal.php";
+                            }
+                        }) 
+                }
+                else
+                {
+                    $('#editar_tipo').modal('hide');
+                    //limpiar el input
+                    $('#newedit_tipo').val('');
+                    var data = $.parseJSON(response);
+                    $('#tipo option[value="'+data.idtipo+'"]').text(data.nombre_tipo);
+                    Swal.fire(
+                          '!Editado!',
+                          '!Se actualizo el tipo selecionado!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed)
+                            {}
+                        })
+                }         
+           }
+       });   
+        return false;   
+    });
+
 });
 
 //agregar todas las sucursales existentes al select 

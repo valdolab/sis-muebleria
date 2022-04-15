@@ -503,24 +503,25 @@ if ($_POST['action'] == 'insert_tipo')
   if (!empty($_POST['nuevotipo'])) 
   {
       $newtipo = $_POST['nuevotipo'];
-      $idnewtipo = md5($newtipo);
-          $insert_tipo = mysqli_query($conexion, "INSERT INTO tipo(idtipo, nombre_tipo) values ('$idnewtipo', '$newtipo')");
+      $resultIDtipo = mysqli_query($conexion, "SELECT UUID() as idtipo");
+      $uuid = mysqli_fetch_assoc($resultIDtipo)['idtipo'];
+          $insert_tipo = mysqli_query($conexion, "INSERT INTO tipo(idtipo, nombre_tipo) values ('$uuid', '$newtipo')");
               if ($insert_tipo) 
               {
-                  $idtipo = array("idtipo" => $idnewtipo);
+                  $idtipo = array("idtipo" => $uuid);
                   $tipo = array("nombre_tipo" => $newtipo);
-                  $resultUpdateTipos = $idtipo + $tipo;
+                  $resultInsertTipos = $idtipo + $tipo;
               } 
               else
               {
-                $resultUpdateTipos = 0;
+                $resultInsertTipos = 0;
               }
   }
   else
   {
-    $resultUpdateTipos = 0;
+    $resultInsertTipos = 0;
   }
-  echo json_encode($resultUpdateTipos,JSON_UNESCAPED_UNICODE);
+  echo json_encode($resultInsertTipos,JSON_UNESCAPED_UNICODE);
   exit;
 }
 
@@ -528,17 +529,15 @@ if ($_POST['action'] == 'insert_tipo')
 if ($_POST['action'] == 'update_tipo') 
 {  
   include "accion/conexion.php";
-  if (!empty($_POST['nuevotipo'])) 
+  if (!empty($_POST['newedit_tipo'])) 
   {
-      $newtipo = $_POST['nuevotipo'];
-      
-      $idnewtipo = md5($newtipo);
-
-          $insert_tipo = mysqli_query($conexion, "INSERT INTO tipo(idtipo, nombre_tipo) values ('$idnewtipo', '$newtipo')");
-              if ($insert_tipo) 
+          $id_tipo = $_POST['idflag_tipo'];
+          $newname_tipo = $_POST['newedit_tipo'];
+          $update_tipo = mysqli_query($conexion, "UPDATE tipo SET nombre_tipo='$newname_tipo' where idtipo = '$id_tipo'");
+              if ($update_tipo) 
               {
-                  $idtipo = array("idtipo" => $idnewtipo);
-                  $tipo = array("nombre_tipo" => $newtipo);
+                  $idtipo = array("idtipo" => $id_tipo);
+                  $tipo = array("nombre_tipo" => $newname_tipo);
                   $resultUpdateTipos = $idtipo + $tipo;
               } 
               else
