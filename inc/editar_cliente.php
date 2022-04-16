@@ -112,77 +112,7 @@ if (!empty($_POST))
     else 
     {
         $ban = $_POST['bandera'];
-        if ($ban == 'zona')
-        {
-            $nueva_zona = $_POST['nuevazona'];
-          $insert_zona = mysqli_query($conexion, "INSERT INTO zonas(zona) values ('$nueva_zona')");
-              if ($insert_zona) {
-                  $alert = '<div class="alert alert-primary" role="alert">
-                              Zona registrada correctamete.
-                          </div>';
-              } 
-              else
-              {
-                  $alert = '<div class="alert alert-danger" role="alert">
-                          Error al registrar una nueva zona, actualize e intente de nuevo.
-                      </div>';
-              }
-        }
-        else if($ban == 'subzona')
-        {
-            $nueva_subzona = $_POST['nuevasubzona'];
-            $idzona_subzona = $_POST['zona_subzona'];
-          $insert_subzona = mysqli_query($conexion, "INSERT INTO subzonas(subzona,idzona) values ('$nueva_subzona', $idzona_subzona)");
-              if ($insert_subzona) {
-                  $alert = '<div class="alert alert-primary" role="alert">
-                              Subzona registrada correctamete.
-                          </div>';
-              } 
-              else
-              {
-                  $alert = '<div class="alert alert-danger" role="alert">
-                          Error al registrar una nueva Subzona, actualize e intente de nuevo.
-                      </div>';
-              } 
-        }
-        else if($ban == 'editzona')
-        {
-          $id_zona = $_POST['idnewzona_edit'];
-          $nomzona_edit = $_POST['newzona_edit'];
-          $update_zona = mysqli_query($conexion, "UPDATE zonas SET zona='$nomzona_edit' where idzona=$id_zona");
-              if ($update_zona) {
-                  $alert = '<div class="alert alert-success" role="alert">
-                              ¡Zona actualizada!
-                          </div>';
-                  #header("Location: agregar_usuario.php");
-              } 
-              else
-              {
-                  $alert = '<div class="alert alert-danger" role="alert">
-                          Error al actualizar la zona, intente de nuevo.
-                      </div>';
-              }
-        }
-        else if($ban == 'editsubzona')
-        {
-          $id_subzona = $_POST['idnewsubzona_edit'];
-          $nomsubzona_edit = $_POST['newsubzona_edit'];
-          $newid_zona_edit = $_POST['zona_subzona_edit'];
-          $update_subzona = mysqli_query($conexion, "UPDATE subzonas SET subzona='$nomsubzona_edit', idzona=$newid_zona_edit where idsubzona=$id_subzona");
-              if ($update_subzona) {
-                  $alert = '<div class="alert alert-success" role="alert">
-                              ¡Subzona actualizada!
-                          </div>';
-                  #header("Location: agregar_usuario.php");
-              } 
-              else
-              {
-                  $alert = '<div class="alert alert-danger" role="alert">
-                          Error al actualizar la subzona, intente de nuevo.
-                      </div>';//.mysqli_error($conexion).'/'.$id_subzona;
-              }
-        }
-        else if($ban == 'newcliente')
+        if($ban == 'newcliente')
         {
             #vemos si tiene permisos full o lim
             if($editar_cliente_full)
@@ -274,7 +204,7 @@ if (!empty($_POST))
                     $tel_conyugue = $_POST['tel_conyugue'];
                     $conyugue = 1;
 
-                   $sql_insert = "INSERT INTO cliente(idcliente, nombre_cliente, zona, domicilio_cliente, subzona, tel1_cliente, tel2_cliente, cp_cliente, idestado_civil, curp, rfc, trabajo_cliente, puesto_cliente, direccion_trabajo_cliente, antiguedadA_trabajo_cliente, antiguedadM_trabajo_cliente, ingresos_cliente, tipo_ingresos_cliente, nombre_conyugue_cliente, antiguedadA_vinculo, antiguedadM_vinculo, trabajo_conyugue, puesto_conyugue, ingreso_mensual_conyugue, direccion_trabajo_conyugue, tel_conyugue, tipo_vivienda_cliente, edad_residencia, renta_mensual, ndependientes, nombre_aval, tel_aval, domicilio_aval, trabajo_aval, puesto_aval, ingreso_mensual_aval, nombre_conyugue_aval, apto_credito, nivel_apto, no_cliente, masinfo) VALUES ('$newidcliente', '$nombre_cliente', $zona, ".(!empty($domicilio_cliente) ? "'$domicilio_cliente'" : "NULL").", $subzona, ".(!empty($tel1_cliente) ? "'$tel1_cliente'" : "NULL").", ".(!empty($tel2_cliente) ? "'$tel2_cliente'" : "NULL").", ".(!empty($cp_cliente) ? "'$cp_cliente'" : "NULL").", $conyugue, ".(!empty($curp) ? "'$curp'" : "NULL").", ".(!empty($rfc) ? "'$rfc'" : "NULL").", ".(!empty($trabajo_cliente) ? "'$trabajo_cliente'" : "NULL").", ".(!empty($puesto_cliente) ? "'$puesto_cliente'" : "NULL").", ".(!empty($direccion_trabajo_cliente) ? "'$direccion_trabajo_cliente'" : "NULL").", $antiguedadA_trabajo_cliente, $antiguedadM_trabajo_cliente, $ingresos_cliente, '$tipo_ingreso_cliente', '$nombre_conyugue_cliente', $antiguedadA_vinculo, $antiguedadM_vinculo, ".(!empty($trabajo_conyugue) ? "'$trabajo_conyugue'" : "NULL").", ".(!empty($puesto_conyugue) ? "'$puesto_conyugue'" : "NULL").", $ingreso_mensual_conyugue, ".(!empty($direccion_trabajo_conyugue) ? "'$direccion_trabajo_conyugue'" : "NULL").", ".(!empty($tel_conyugue) ? "'$tel_conyugue'" : "NULL").", '$tipo_vivienda_cliente', $edad_residencia, $renta_mensual, $ndependientes, ".(!empty($nombre_aval) ? "'$nombre_aval'" : "NULL").", ".(!empty($tel_aval) ? "'$tel_aval'" : "NULL").", ".(!empty($domicilio_aval) ? "'$domicilio_aval'" : "NULL").", ".(!empty($trabajo_aval) ? "'$trabajo_aval'" : "NULL").", ".(!empty($puesto_aval) ? "'$puesto_aval'" : "NULL").", ".(!empty($ingreso_mensual_aval) ? "$ingreso_mensual_aval" : "NULL").", ".(!empty($nombre_conyugue_aval) ? "'$nombre_conyugue_aval'" : "NULL").", $apto_credito, $nivel_apto, $no_cliente, $masinfo)";
+                   $sql_insert = "INSERT INTO cliente(idcliente, nombre_cliente, zona, domicilio_cliente, subzona, tel1_cliente, tel2_cliente, cp_cliente, idestado_civil, curp, rfc, trabajo_cliente, puesto_cliente, direccion_trabajo_cliente, antiguedadA_trabajo_cliente, antiguedadM_trabajo_cliente, ingresos_cliente, tipo_ingresos_cliente, nombre_conyugue_cliente, antiguedadA_vinculo, antiguedadM_vinculo, trabajo_conyugue, puesto_conyugue, ingreso_mensual_conyugue, direccion_trabajo_conyugue, tel_conyugue, tipo_vivienda_cliente, edad_residencia, renta_mensual, ndependientes, nombre_aval, tel_aval, domicilio_aval, trabajo_aval, puesto_aval, ingreso_mensual_aval, nombre_conyugue_aval, apto_credito, nivel_apto, no_cliente, masinfo) VALUES ('$newidcliente', '$nombre_cliente', '$zona', ".(!empty($domicilio_cliente) ? "'$domicilio_cliente'" : "NULL").", '$subzona', ".(!empty($tel1_cliente) ? "'$tel1_cliente'" : "NULL").", ".(!empty($tel2_cliente) ? "'$tel2_cliente'" : "NULL").", ".(!empty($cp_cliente) ? "'$cp_cliente'" : "NULL").", $conyugue, ".(!empty($curp) ? "'$curp'" : "NULL").", ".(!empty($rfc) ? "'$rfc'" : "NULL").", ".(!empty($trabajo_cliente) ? "'$trabajo_cliente'" : "NULL").", ".(!empty($puesto_cliente) ? "'$puesto_cliente'" : "NULL").", ".(!empty($direccion_trabajo_cliente) ? "'$direccion_trabajo_cliente'" : "NULL").", $antiguedadA_trabajo_cliente, $antiguedadM_trabajo_cliente, $ingresos_cliente, '$tipo_ingreso_cliente', '$nombre_conyugue_cliente', $antiguedadA_vinculo, $antiguedadM_vinculo, ".(!empty($trabajo_conyugue) ? "'$trabajo_conyugue'" : "NULL").", ".(!empty($puesto_conyugue) ? "'$puesto_conyugue'" : "NULL").", $ingreso_mensual_conyugue, ".(!empty($direccion_trabajo_conyugue) ? "'$direccion_trabajo_conyugue'" : "NULL").", ".(!empty($tel_conyugue) ? "'$tel_conyugue'" : "NULL").", '$tipo_vivienda_cliente', $edad_residencia, $renta_mensual, $ndependientes, ".(!empty($nombre_aval) ? "'$nombre_aval'" : "NULL").", ".(!empty($tel_aval) ? "'$tel_aval'" : "NULL").", ".(!empty($domicilio_aval) ? "'$domicilio_aval'" : "NULL").", ".(!empty($trabajo_aval) ? "'$trabajo_aval'" : "NULL").", ".(!empty($puesto_aval) ? "'$puesto_aval'" : "NULL").", ".(!empty($ingreso_mensual_aval) ? "$ingreso_mensual_aval" : "NULL").", ".(!empty($nombre_conyugue_aval) ? "'$nombre_conyugue_aval'" : "NULL").", $apto_credito, $nivel_apto, $no_cliente, $masinfo)";
 
                 $insert_correctly = FALSE;
                 $insert_cliente = mysqli_query($conexion, $sql_insert);
@@ -285,7 +215,7 @@ if (!empty($_POST))
                 else#no tiene conyugue y no guardamos nada, puro null
                 {
                     $conyugue = 0;
-                    $sql_insert = "INSERT INTO cliente(idcliente, nombre_cliente, zona, domicilio_cliente, subzona, tel1_cliente, tel2_cliente, cp_cliente, idestado_civil, curp, rfc, trabajo_cliente, puesto_cliente, direccion_trabajo_cliente, antiguedadA_trabajo_cliente, antiguedadM_trabajo_cliente, ingresos_cliente, tipo_ingresos_cliente, nombre_conyugue_cliente, antiguedadA_vinculo, antiguedadM_vinculo, trabajo_conyugue, puesto_conyugue, ingreso_mensual_conyugue, direccion_trabajo_conyugue, tel_conyugue, tipo_vivienda_cliente, edad_residencia, renta_mensual, ndependientes, nombre_aval, tel_aval, domicilio_aval, trabajo_aval, puesto_aval, ingreso_mensual_aval, nombre_conyugue_aval, apto_credito, nivel_apto, no_cliente, masinfo) VALUES ('$newidcliente', '$nombre_cliente', $zona, ".(!empty($domicilio_cliente) ? "'$domicilio_cliente'" : "NULL").", $subzona, ".(!empty($tel1_cliente) ? "'$tel1_cliente'" : "NULL").", ".(!empty($tel2_cliente) ? "'$tel2_cliente'" : "NULL").", ".(!empty($cp_cliente) ? "'$cp_cliente'" : "NULL").", $conyugue, ".(!empty($curp) ? "'$curp'" : "NULL").", ".(!empty($rfc) ? "'$rfc'" : "NULL").", ".(!empty($trabajo_cliente) ? "'$trabajo_cliente'" : "NULL").", ".(!empty($puesto_cliente) ? "'$puesto_cliente'" : "NULL").", ".(!empty($direccion_trabajo_cliente) ? "'$direccion_trabajo_cliente'" : "NULL").", $antiguedadA_trabajo_cliente, $antiguedadM_trabajo_cliente, $ingresos_cliente, '$tipo_ingreso_cliente', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$tipo_vivienda_cliente', $edad_residencia, $renta_mensual, $ndependientes, ".(!empty($nombre_aval) ? "'$nombre_aval'" : "NULL").", ".(!empty($tel_aval) ? "'$tel_aval'" : "NULL").", ".(!empty($domicilio_aval) ? "'$domicilio_aval'" : "NULL").", ".(!empty($trabajo_aval) ? "'$trabajo_aval'" : "NULL").", ".(!empty($puesto_aval) ? "'$puesto_aval'" : "NULL").", ".(!empty($ingreso_mensual_aval) ? "$ingreso_mensual_aval" : "NULL").", ".(!empty($nombre_conyugue_aval) ? "'$nombre_conyugue_aval'" : "NULL").", $apto_credito, $nivel_apto, $no_cliente, $masinfo)";
+                    $sql_insert = "INSERT INTO cliente(idcliente, nombre_cliente, zona, domicilio_cliente, subzona, tel1_cliente, tel2_cliente, cp_cliente, idestado_civil, curp, rfc, trabajo_cliente, puesto_cliente, direccion_trabajo_cliente, antiguedadA_trabajo_cliente, antiguedadM_trabajo_cliente, ingresos_cliente, tipo_ingresos_cliente, nombre_conyugue_cliente, antiguedadA_vinculo, antiguedadM_vinculo, trabajo_conyugue, puesto_conyugue, ingreso_mensual_conyugue, direccion_trabajo_conyugue, tel_conyugue, tipo_vivienda_cliente, edad_residencia, renta_mensual, ndependientes, nombre_aval, tel_aval, domicilio_aval, trabajo_aval, puesto_aval, ingreso_mensual_aval, nombre_conyugue_aval, apto_credito, nivel_apto, no_cliente, masinfo) VALUES ('$newidcliente', '$nombre_cliente', '$zona', ".(!empty($domicilio_cliente) ? "'$domicilio_cliente'" : "NULL").", '$subzona', ".(!empty($tel1_cliente) ? "'$tel1_cliente'" : "NULL").", ".(!empty($tel2_cliente) ? "'$tel2_cliente'" : "NULL").", ".(!empty($cp_cliente) ? "'$cp_cliente'" : "NULL").", $conyugue, ".(!empty($curp) ? "'$curp'" : "NULL").", ".(!empty($rfc) ? "'$rfc'" : "NULL").", ".(!empty($trabajo_cliente) ? "'$trabajo_cliente'" : "NULL").", ".(!empty($puesto_cliente) ? "'$puesto_cliente'" : "NULL").", ".(!empty($direccion_trabajo_cliente) ? "'$direccion_trabajo_cliente'" : "NULL").", $antiguedadA_trabajo_cliente, $antiguedadM_trabajo_cliente, $ingresos_cliente, '$tipo_ingreso_cliente', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$tipo_vivienda_cliente', $edad_residencia, $renta_mensual, $ndependientes, ".(!empty($nombre_aval) ? "'$nombre_aval'" : "NULL").", ".(!empty($tel_aval) ? "'$tel_aval'" : "NULL").", ".(!empty($domicilio_aval) ? "'$domicilio_aval'" : "NULL").", ".(!empty($trabajo_aval) ? "'$trabajo_aval'" : "NULL").", ".(!empty($puesto_aval) ? "'$puesto_aval'" : "NULL").", ".(!empty($ingreso_mensual_aval) ? "$ingreso_mensual_aval" : "NULL").", ".(!empty($nombre_conyugue_aval) ? "'$nombre_conyugue_aval'" : "NULL").", $apto_credito, $nivel_apto, $no_cliente, $masinfo)";
 
                     $insert_correctly = FALSE;
                     $insert_cliente = mysqli_query($conexion, $sql_insert);
@@ -441,7 +371,7 @@ if (!empty($_POST))
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" autocomplete="off">
+                <form action="" method="post" autocomplete="on"  id="formAdd_zona">
                     <div class="row">
                         <div class="col-lg-12">
                           <div class="form-group">
@@ -451,7 +381,7 @@ if (!empty($_POST))
                         </div>
                     </div>
 
-                    <input value="zona" name="bandera" id="bandera" hidden>
+                    <input value="insert_zona" name="action" id="action" hidden>
                     <div align="right">
                         <input type="submit" value="Agregar" class="btn btn-primary">
                     </div>
@@ -471,7 +401,7 @@ if (!empty($_POST))
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" autocomplete="off">
+                <form action="" method="post" autocomplete="on" id="formAdd_subzona">
                     <div class="row">
                         <div class="col-lg-6">
                           <div class="form-group">
@@ -499,7 +429,7 @@ if (!empty($_POST))
                         </div>
                     </div>
 
-                    <input value="subzona" name="bandera" id="bandera" hidden>
+                    <input value="insert_subzona" name="action" id="action" hidden>
                     <div align="right">
                         <input type="submit" value="Agregar" class="btn btn-primary">
                     </div>
@@ -519,7 +449,7 @@ if (!empty($_POST))
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" autocomplete="off">
+                <form action="" method="post" autocomplete="on"  id="formEdit_zona">
                     <div class="row">
                         <div class="col-lg-12">
                           <div class="form-group">
@@ -530,7 +460,7 @@ if (!empty($_POST))
                         </div>
                     </div>
 
-                    <input value="editzona" name="bandera" id="bandera" hidden>
+                    <input value="edit_zona" name="action" id="action" hidden>
                     <div align="right">
                         <input type="submit" value="Actualizar" class="btn btn-primary">
                     </div>
@@ -550,7 +480,7 @@ if (!empty($_POST))
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" autocomplete="off">
+                <form action="" method="post" autocomplete="on" id="formEdit_subzona">
                     <div class="row">
                         <div class="col-lg-6">
                           <div class="form-group">
@@ -578,7 +508,7 @@ if (!empty($_POST))
                         </div>
                     </div>
 
-                    <input value="editsubzona" name="bandera" id="bandera" hidden>
+                    <input value="edit_subzona" name="action" id="action" hidden>
                     <div align="right">
                         <input type="submit" value="Agregar" class="btn btn-primary">
                     </div>
@@ -687,7 +617,7 @@ if (!empty($_POST))
                           </fieldset>
                                     <select id='subzona' name='subzona' class='form-control' required <?php echo $disabled_lim; ?>>
                                         <?php 
-                                            $result = mysqli_query($conexion,"SELECT idsubzona,subzona FROM subzonas where idzona=$up_zona");                         
+                                            $result = mysqli_query($conexion,"SELECT idsubzona,subzona FROM subzonas where idzona = '$up_zona'");                         
                                             if (mysqli_num_rows($result) > 0) {  
                                               while($row = mysqli_fetch_assoc($result))
                                               {

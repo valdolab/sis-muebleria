@@ -123,9 +123,9 @@ include "accion/conexion.php";
                     $idsubzona = $data['subzona'];
 
                     #esto es para lo del rol y puesto
-                    $query2 = mysqli_query($conexion, "SELECT zona FROM zonas where idzona=$idzona");
+                    $query2 = mysqli_query($conexion, "SELECT zona FROM zonas where idzona = '$idzona'");
                     $zona_cliente = mysqli_fetch_array($query2)['zona'];
-                    $query3 = mysqli_query($conexion, "SELECT subzona FROM subzonas where idsubzona=$idsubzona");
+                    $query3 = mysqli_query($conexion, "SELECT subzona FROM subzonas where idsubzona = '$idsubzona'");
                     $subzona_cliente = mysqli_fetch_array($query3)['subzona'];
 
                     $ceros = "000";

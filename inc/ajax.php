@@ -174,7 +174,7 @@ if ($_POST['action'] == 'eliminarCliente')
   if (!empty($_POST['zona'])) {
     $id_zona = $_POST['zona'];
 
-    $query_zona = mysqli_query($conexion, "DELETE FROM zonas WHERE idzona = $id_zona");
+    $query_zona = mysqli_query($conexion, "DELETE FROM zonas WHERE idzona = '$id_zona'");
 
     mysqli_close($conexion);
     if ($query_zona) {
@@ -193,7 +193,7 @@ if ($_POST['action'] == 'eliminarCliente')
   if (!empty($_POST['subzona'])) {
     $id_subzona = $_POST['subzona'];
 
-    $query_subzona = mysqli_query($conexion, "DELETE FROM subzonas WHERE idsubzona = $id_subzona");
+    $query_subzona = mysqli_query($conexion, "DELETE FROM subzonas WHERE idsubzona = '$id_subzona'");
 
     mysqli_close($conexion);
     if ($query_subzona) {
@@ -267,32 +267,12 @@ if ($_POST['action'] == 'eliminarCliente')
 }
 
 ##buscar datos sobre de la zona para poder editar zona
-  if ($_POST['action'] == 'SelectZona') {
-  include "accion/conexion.php";
-  if (!empty($_POST['zona'])) {
-    $id_zona = $_POST['zona'];
-
-    $select_zona = mysqli_query($conexion, "SELECT zona from zonas where idzona = $id_zona");
-    mysqli_close($conexion);
-    $result_zona = mysqli_num_rows($select_zona);
-    $data_zona = '';
-    if ($result_zona > 0) {
-      $data_zona = mysqli_fetch_assoc($select_zona);
-    }else {
-      $data_zona = 0;
-    }
-    echo json_encode($data_zona,JSON_UNESCAPED_UNICODE);
-  }
-  exit;
-}
-
-##buscar datos sobre de la zona para poder editar zona
   if ($_POST['action'] == 'SelectSubzona') {
   include "accion/conexion.php";
   if (!empty($_POST['subzona'])) {
     $id_subzona = $_POST['subzona'];
 
-    $select_subzona = mysqli_query($conexion, "SELECT subzona,idzona from subzonas where idsubzona = $id_subzona");
+    $select_subzona = mysqli_query($conexion, "SELECT subzona,idzona from subzonas where idsubzona = '$id_subzona'");
     mysqli_close($conexion);
     $result_subzona = mysqli_num_rows($select_subzona);
     $data_subzona = '';
@@ -426,7 +406,7 @@ if ($_POST['action'] == 'searchSubzonas')
   if (!empty($_POST['zona'])) {
     $idzona = $_POST['zona'];
 
-      $query = mysqli_query($conexion, "SELECT idsubzona,subzona from subzonas where idzona=$idzona");
+      $query = mysqli_query($conexion, "SELECT idsubzona,subzona from subzonas where idzona = '$idzona'");
       if (mysqli_num_rows($query) > 0) 
       { 
         $cadena = "<option selected hidden value=''>Seleccione una colonia (subzona)</option>";
@@ -440,7 +420,7 @@ if ($_POST['action'] == 'searchSubzonas')
         $cadena = 0;
       }
       //calculamos si esa zona se esta en uso para no poder borrarlo
-      $queryFind = mysqli_query($conexion, "SELECT idcliente from cliente where zona=$idzona");
+      $queryFind = mysqli_query($conexion, "SELECT idcliente from cliente where zona = '$idzona'");
       $resultFind = mysqli_num_rows($queryFind);
       $array = array("allow_delete" => $resultFind);
       $array_cadena = array("options" => $cadena);
@@ -458,7 +438,7 @@ if ($_POST['action'] == 'searchSubzonaUsed')
       $idsubzona = $_POST['subzona'];
 
       //calculamos si esa zona se esta en uso para no poder borrarlo
-      $queryFindsub = mysqli_query($conexion, "SELECT idcliente from cliente where subzona=$idsubzona");
+      $queryFindsub = mysqli_query($conexion, "SELECT idcliente from cliente where subzona = '$idsubzona'");
       $resultFindsub = mysqli_num_rows($queryFindsub);
       #$array_sub = array("allow_delete" => $resultFindsub);
     echo json_encode($resultFindsub,JSON_UNESCAPED_UNICODE);
@@ -611,3 +591,133 @@ if ($_POST['action'] == 'update_puesto')
   echo json_encode($resultUpdatePuesto,JSON_UNESCAPED_UNICODE);
   exit;
 }
+
+//insert zona
+if ($_POST['action'] == 'insert_zona') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['nuevazona'])) 
+  {
+    $resultIDzona = mysqli_query($conexion, "SELECT UUID() as idzona");
+    $uuid = mysqli_fetch_assoc($resultIDzona)['idzona'];
+    $nueva_zona = $_POST['nuevazona'];
+            $insert_zona = mysqli_query($conexion, "INSERT INTO zonas(idzona, zona) values ('$uuid','$nueva_zona')");
+              if ($insert_zona) 
+              {
+                  $idzona = array("idzona" => $uuid);
+                  $zona = array("zona" => $nueva_zona);
+                  $resultInsertZona = $idzona + $zona;
+              } 
+              else
+              {
+                  $resultInsertZona = 0;
+              }
+  }
+  else
+  {
+    $resultInsertZona = 0;
+  }
+  echo json_encode($resultInsertZona,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+//update zona
+if ($_POST['action'] == 'edit_zona') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['newzona_edit'])) 
+  {
+          $id_zona = $_POST['idnewzona_edit'];
+          $nomzona_edit = $_POST['newzona_edit'];
+          $update_zona = mysqli_query($conexion, "UPDATE zonas SET zona='$nomzona_edit' where idzona = '$id_zona'");
+              if ($update_zona) 
+              {
+                  $idzona = array("idzona" => $id_zona);
+                  $zona = array("zona" => $nomzona_edit);
+                  $resultUpdateZona = $idzona + $zona;
+              } 
+              else
+              {
+                  $resultUpdateZona = 0;
+              }
+  }
+  else
+  {
+    $resultUpdateZona = 0;
+  }
+  echo json_encode($resultUpdateZona,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+//insert subzona
+if ($_POST['action'] == 'insert_subzona') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['nuevasubzona'])) 
+  {
+            $resultIDsubzona = mysqli_query($conexion, "SELECT UUID() as idsubzona");
+            $uuid = mysqli_fetch_assoc($resultIDsubzona)['idsubzona'];
+            $nueva_subzona = $_POST['nuevasubzona'];
+            $idzona_subzona = $_POST['zona_subzona'];
+            $insert_subzona = mysqli_query($conexion, "INSERT INTO subzonas(idsubzona,subzona,idzona) values ('$uuid','$nueva_subzona', '$idzona_subzona')");
+              if ($insert_subzona) 
+              {
+                  $idsubzona = array("idsubzona" => $uuid);
+                  $subzona = array("subzona" => $nueva_subzona);
+                  $resultInsertSubzona = $idsubzona + $subzona;
+              } 
+              else
+              {
+                  $resultInsertSubzona = 0;
+              }
+  }
+  else
+  {
+    $resultInsertSubzona = 0;
+  }
+  echo json_encode($resultInsertSubzona,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+//update subzona
+if ($_POST['action'] == 'edit_subzona') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['newsubzona_edit'])) 
+  {
+          $id_subzona = $_POST['idnewsubzona_edit'];
+          $nomsubzona_edit = $_POST['newsubzona_edit'];
+
+          $newid_zona_edit = $_POST['zona_subzona_edit'];
+          $update_subzona = mysqli_query($conexion, "UPDATE subzonas SET subzona='$nomsubzona_edit', idzona = '$newid_zona_edit' where idsubzona = '$id_subzona'");
+              if ($update_subzona) 
+              {
+                  $idsubzona = array("idsubzona" => $id_subzona);
+                  $subzona = array("subzona" => $nomsubzona_edit);
+                  $newzona = array("idzona_subzona" => $newid_zona_edit);
+                  $varcambiozona = 0;
+                  //checar si se cambio de zona la subzona editada
+                  $select_zona_subzona = mysqli_query($conexion, "SELECT idzona from subzonas where idsubzona = '$id_subzona'");
+                  $zona_deSubzona = mysqli_fetch_assoc($select_zona_subzona)['idzona'];
+                  if(strcmp($zona_deSubzona, $newid_zona_edit) !== 0)
+                  {
+                    //son diferentes, por lo tanto se cambio
+                    $varcambiozona = 1;
+                  }
+                  $cambiozona = array("cambiozona" => $varcambiozona);
+                  $resultUpdateSubzona = $idsubzona + $subzona + $cambiozona + $newzona;
+              } 
+              else
+              {
+                  $resultUpdateSubzona = 0;
+              }
+  }
+  else
+  {
+    $resultUpdateSubzona = 0;
+  }
+  echo json_encode($resultUpdateSubzona,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+

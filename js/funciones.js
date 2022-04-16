@@ -346,7 +346,7 @@ $('#idestado_civil').change(function() {
                           text: 'Ocurrio un error, intente de nuevo!',
                         }).then((result) => {
                             if (result.isConfirmed){
-                                window.location.href = "agregar_sucursal.php";
+                                window.location.href = "usuarios.php";
                             }
                         }) 
                 }
@@ -372,6 +372,212 @@ $('#idestado_civil').change(function() {
         return false;   
     });
 
+    //para el form de insertar una zona
+    $("#formAdd_zona").submit( function () {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax.php',                     
+           data: $(this).serialize(),
+           success: function(response)             
+           {
+                if(response == 0)
+                {
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "agregar_cliente.php";
+                            }
+                        }) 
+                }
+                else
+                {
+                    $('#nueva_zona').modal('hide');
+                    //limpiar el input
+                    $('#nuevazona').val('');
+                    var data = $.parseJSON(response);
+                    $('#zona').append($('<option>',
+                    {
+                        value: data.idzona,
+                        text : data.zona
+                    }));
+                    $('#zona').val(data.idzona).change();
+                    $('#zona_subzona').append($('<option>',
+                    {
+                        value: data.idzona,
+                        text : data.zona
+                    }));
+                    $('#zona_subzona_edit').append($('<option>',
+                    {
+                        value: data.idzona,
+                        text : data.zona
+                    }));
+                    Swal.fire(
+                          '!Agregado!',
+                          '!Se guardo la nueva zona!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed)
+                            {}
+                        })
+                }         
+           }
+       });   
+        return false;   
+    });
+
+    //para el form de editar una zona
+    $("#formEdit_zona").submit( function () {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax.php',                     
+           data: $(this).serialize(),
+           success: function(response)             
+           {
+                if(response == 0)
+                {
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "clientes.php";
+                            }
+                        }) 
+                }
+                else
+                {
+                    $('#editar_zona').modal('hide');
+                    //limpiar el input
+                    $('#newzona_edit').val('');
+                    var data = $.parseJSON(response);
+                    $('#zona option[value="'+data.idzona+'"]').text(data.zona);
+                    $('#zona_subzona option[value="'+data.idzona+'"]').text(data.zona);
+                    $('#zona_subzona_edit option[value="'+data.idzona+'"]').text(data.zona);
+                    Swal.fire(
+                          '!Editado!',
+                          '!Se actualizo la zona selecionada!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed)
+                            {}
+                        })
+                }         
+           }
+       });   
+        return false;   
+    });
+
+    //para el form de insertar una subzona
+    $("#formAdd_subzona").submit( function () {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax.php',                     
+           data: $(this).serialize(),
+           success: function(response)             
+           {
+                if(response == 0)
+                {
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "agregar_cliente.php";
+                            }
+                        }) 
+                }
+                else
+                {
+                    $('#nueva_subzona').modal('hide');
+                    //limpiar el input
+                    $('#nuevasubzona').val('');
+                    var data = $.parseJSON(response);
+                    $('#subzona').append($('<option>',
+                    {
+                        value: data.idsubzona,
+                        text : data.subzona
+                    }));
+                    $('#subzona').val(data.idsubzona).change();
+                    Swal.fire(
+                          '!Agregado!',
+                          '!Se guardo la nueva subzona!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed)
+                            {}
+                        })
+                }         
+           }
+       });   
+        return false;   
+    });
+
+    //para el form de editar una zona
+    $("#formEdit_subzona").submit( function () {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax.php',                     
+           data: $(this).serialize(),
+           success: function(response)             
+           {
+                if(response == 0)
+                {
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "clientes.php";
+                            }
+                        }) 
+                }
+                else
+                {
+                    $('#editar_subzona').modal('hide');
+                    //limpiar el input
+                    $('#newsubzona_edit').val('');
+                    var data = $.parseJSON(response);
+                    //$('#prueba12').html(data.cambiozona);
+                    if(data.cambiozona == 1)
+                    {
+                        //quitar la subzona del selec y seleccionar las nuevas zonas y subzona
+                        $("#subzona option[value='"+data.idsubzona+"']").remove();
+                        $('#zona').val(data.idzona_subzona).change();
+                        $('#subzona').val(data.idsubzona).change();
+                        $('#subzona option[value="'+data.idsubzona+'"]').text(data.subzona);
+                    }
+                    else
+                    {
+                        $('#subzona option[value="'+data.idsubzona+'"]').text(data.subzona);
+                    }
+                    Swal.fire(
+                          '!Editado!',
+                          '!Se actualizo la subzona selecionada!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed)
+                            {}
+                        })
+                }         
+           }
+       });   
+        return false;   
+    });
+
 //FIN DEL DOCUMENT READY
 });
 
@@ -386,8 +592,14 @@ $('#zona').change(function(e)
 {
     e.preventDefault();
     var idzona = $(this).val();
-    $('#btnedit_zona').attr('onClick', 'editar_zona('+idzona+');');
+    var zona = $('option[value='+idzona+']',this).text();
+    $('#btnedit_zona').attr('onClick', 'editar_zona("'+idzona+'","'+zona+'");');
     $('#btnedit_zona').removeAttr('disabled');
+    //y reiniciar el select de subzona
+    $('#btnedit_subzona').attr('onClick', 'editar_subzona();');
+    $('#btnedit_subzona').attr('disabled','disabled');
+    $('#btneliminar_subzona').attr('onClick', 'eliminar_subzona();');
+    $('#btneliminar_subzona').attr('disabled','disabled');
     
     var action = 'searchSubzonas';
     $.ajax({
@@ -404,7 +616,7 @@ $('#zona').change(function(e)
           $('#subzona').append(data.options);
           if(data.allow_delete == 0)
           {
-            $('#btneliminar_zona').attr('onClick', 'eliminar_zona('+idzona+');');
+            $('#btneliminar_zona').attr('onClick', 'eliminar_zona("'+idzona+'");');
             $('#btneliminar_zona').removeAttr('disabled');
           }
           else
@@ -425,7 +637,7 @@ $('#subzona').change(function(e)
 {
     e.preventDefault();
     var idsubzona = $(this).val();
-    $('#btnedit_subzona').attr('onClick', 'editar_subzona('+idsubzona+');');
+    $('#btnedit_subzona').attr('onClick', 'editar_subzona("'+idsubzona+'");');
     $('#btnedit_subzona').removeAttr('disabled');
 
     var action = 'searchSubzonaUsed';
@@ -438,7 +650,7 @@ $('#subzona').change(function(e)
         //var data = $.parseJSON(response);
         if(response == 0)
         {
-            $('#btneliminar_subzona').attr('onClick', 'eliminar_subzona('+idsubzona+');');
+            $('#btneliminar_subzona').attr('onClick', 'eliminar_subzona("'+idsubzona+'");');
             $('#btneliminar_subzona').removeAttr('disabled');
         }
         else
@@ -912,7 +1124,14 @@ function eliminar_zona(idzona)
                         ).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                $("#zona option[value='"+idzona+"']").remove();
+                                $("#zona_subzona option[value='"+idzona+"']").remove();
+                                $("#zona_subzona_edit option[value='"+idzona+"']").remove();
+                                $("#subzona").empty();
+                                $('#btnedit_zona').attr('onClick', 'editar_subzona();');
+                                $('#btnedit_zona').attr('disabled','disabled');
+                                $('#btneliminar_zona').attr('onClick', 'eliminar_subzona();');
+                                $('#btneliminar_zona').attr('disabled','disabled');
                             }
                         })
                     }
@@ -926,27 +1145,10 @@ function eliminar_zona(idzona)
 }
 
 //para editar puesto
-function editar_zona(idzona)
+function editar_zona(idzona,zona)
 {
-    var action = 'SelectZona';
-    $.ajax({
-        url: 'ajax.php',
-        type: "POST",
-        async: true,
-        data: {action:action,zona:idzona},
-        success: function(response) {
-            //$('#prueba').val(response);
-            if (response != 0) 
-            {
-              var data = $.parseJSON(response);
-                $('#newzona_edit').val(data.zona);
-                $('#idnewzona_edit').val(idzona);
-            }
-        },
-        error: function(error) {
-            //$('#prueba').val('error');
-        }
-   });  
+    $('#newzona_edit').val(zona);
+    $('#idnewzona_edit').val(idzona);
 }
 
 //funcion para eliminar subzona
@@ -991,7 +1193,11 @@ function eliminar_subzona(idsubzona)
                         ).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                $("#subzona option[value='"+idsubzona+"']").remove();
+                                $('#btnedit_subzona').attr('onClick', 'editar_subzona();');
+                                $('#btnedit_subzona').attr('disabled','disabled');
+                                $('#btneliminar_subzona').attr('onClick', 'eliminar_subzona();');
+                                $('#btneliminar_subzona').attr('disabled','disabled');
                             }
                         })
                     }
@@ -1020,6 +1226,7 @@ function editar_subzona(idsubzona)
               var data = $.parseJSON(response);
                 $('#newsubzona_edit').val(data.subzona);
                 $('#zona_subzona_edit').val(data.idzona).change();
+                $('#zona_subzona_edit_flag').val(data.idzona).change();
                 $('#idnewsubzona_edit').val(idsubzona);
                 //$('#idpuesto_flag').val(idpuesto);
             }
