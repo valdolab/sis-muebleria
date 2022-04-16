@@ -695,14 +695,14 @@ if ($_POST['action'] == 'edit_subzona')
                   $idsubzona = array("idsubzona" => $id_subzona);
                   $subzona = array("subzona" => $nomsubzona_edit);
                   $newzona = array("idzona_subzona" => $newid_zona_edit);
-                  $varcambiozona = 0;
+                  $varcambiozona = '0';
                   //checar si se cambio de zona la subzona editada
                   $select_zona_subzona = mysqli_query($conexion, "SELECT idzona from subzonas where idsubzona = '$id_subzona'");
                   $zona_deSubzona = mysqli_fetch_assoc($select_zona_subzona)['idzona'];
-                  if(strcmp($zona_deSubzona, $newid_zona_edit) !== 0)
+                  if(strcmp($zona_deSubzona, $newid_zona_edit) !== 1)
                   {
                     //son diferentes, por lo tanto se cambio
-                    $varcambiozona = 1;
+                    $varcambiozona = '1';
                   }
                   $cambiozona = array("cambiozona" => $varcambiozona);
                   $resultUpdateSubzona = $idsubzona + $subzona + $cambiozona + $newzona;

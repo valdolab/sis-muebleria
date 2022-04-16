@@ -552,13 +552,13 @@ $('#idestado_civil').change(function() {
                     $('#newsubzona_edit').val('');
                     var data = $.parseJSON(response);
                     //$('#prueba12').html(data.cambiozona);
-                    if(data.cambiozona == 1)
+                    if(data.cambiozona == '1')
                     {
                         //quitar la subzona del selec y seleccionar las nuevas zonas y subzona
                         $("#subzona option[value='"+data.idsubzona+"']").remove();
                         $('#zona').val(data.idzona_subzona).change();
-                        $('#subzona').val(data.idsubzona).change();
                         $('#subzona option[value="'+data.idsubzona+'"]').text(data.subzona);
+                        $('#subzona option[value="'+data.idsubzona+'"]').attr("selected", "selected");
                     }
                     else
                     {
