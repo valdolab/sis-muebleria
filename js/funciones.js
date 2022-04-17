@@ -581,6 +581,31 @@ $('#idestado_civil').change(function() {
 //FIN DEL DOCUMENT READY
 });
 
+//funciones y cosas para el modulo productos
+$('#tiene_subcat').change(function()
+{
+  if (document.getElementById('tiene_subcat').checked)
+  {
+    $("#formAdd_cat :input:not(#nombre_cat,#tiene_subcat,#btn_guardarcat,#btn_cancerlarcat)").attr("disabled","disabled");
+  }
+  else
+  {
+    $("#formAdd_cat :input:not(#nombre_cat,#tiene_subcat,#btn_guardarcat,#btn_cancerlarcat)").removeAttr("disabled");
+  }
+});
+
+function bloquear_campos_cat()
+{
+  if (document.getElementById('apto_credito').checked)
+  {
+    $('#nivel_credito').removeAttr('disabled');
+  }
+  else
+  {
+    $('#nivel_credito').attr('disabled','disabled');
+  }
+}
+
 //agregar todas las sucursales existentes al select 
 function cargar_todas_sucursales()
 {
@@ -1492,14 +1517,6 @@ function asignar_matriz(idsucursal)
 
 
 //FIN DE FUNCIONES USADAS
-
-
-//para hacer el input phone
-/*function phoneMask() { 
-    var num = $(this).val().replace(/\D/g,''); 
-    $(this).val('(' + num.substring(0,3) + ')' + num.substring(3,6) + '-' + num.substring(6,10)); 
-}
-$('[type="tel"]').keyup(phoneMask);*/
 
 //Para hacer un input currency
 // Jquery Dependency

@@ -58,17 +58,17 @@ if (!empty($_POST))
 <div id="nueva_cat" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
-        <form action="" method="post" autocomplete="on">
+        <form action="" method="post" autocomplete="on" id="formAdd_cat">
             <div class="modal-header">
                 <h3 class="modal-title">Detalle Categoría</h3>
                 <div class="row">
                     <div class="col-lg-6">
-                        <button type="submit" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close">
+                        <button type="submit" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close" id="btn_cancerlarcat">
                             Cancelar
                         </button>
                     </div>
                     <div class="col-lg-6">
-                        <input type="submit" value="Guardar" class="btn btn-lg btn-success">
+                        <input type="submit" value="Guardar" class="btn btn-lg btn-success" id="btn_guardarcat">
                     </div>
                 </div>
             </div>
@@ -80,7 +80,7 @@ if (!empty($_POST))
                                 <div class="input-group">
                                   <input type="text" class="form-control" name="nombre_cat" id="nombre_cat" required>
                                   &nbsp;
-                                  <input onchange="" id="sino_cat" name="sino_cat" value="si_cat" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="m" data-on="SI" data-off="NO">
+                                  <input onchange="" id="tiene_subcat" name="tiene_subcat" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="m" data-on="SI" data-off="NO">
                                 </div>
                             </div>  
                         </div>
@@ -307,7 +307,7 @@ if (!empty($_POST))
 </div>
 
 <div id="nuevo_producto" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
+    <div class="modal-dialog  modal-xl" role="document">
         <div class="modal-content">
         <form action="" method="post" autocomplete="on">
             <div class="modal-header">
@@ -359,7 +359,7 @@ if (!empty($_POST))
                         </div>
                         <div class="col-lg-1">
                             <label for="serializado">Serializado</label>
-                            <input onchange="" id="serializado" name="serializado" value="si_serializado" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="sm" data-on="SI" data-off="NO">
+                            <input onchange="" id="serializado" name="serializado" value="si_serializado" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="m" data-on="SI" data-off="NO">
                         </div>
                     </div>
                     <div class="row">
@@ -417,11 +417,11 @@ if (!empty($_POST))
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col-lg-3">
                             <label for="ettp">EXT.-P:</label>
                               <input name="ettp" id="ettp" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col-lg-3">
                             <label for="costo">COSTO:</label>
                             <div class="input-group mb-3">
                                 <div class="input-group-append">
@@ -430,7 +430,7 @@ if (!empty($_POST))
                               <input name="costo" id="costo" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
                             </div>
                         </div>
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg-2">
                             <label for="costoiva">COSTO+IVA:</label>
                             <!-- calcular el costo mas iva con el costo anterior -->
                             <div class="input-group mb-3">
@@ -440,7 +440,7 @@ if (!empty($_POST))
                               <input name="costoiva" id="costoiva" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                           </div>
                         </div>
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg-2">
                             <label for="contado">Contado:</label>
                             <div class="input-group mb-3">
                                 <div class="input-group-append">
@@ -460,6 +460,7 @@ if (!empty($_POST))
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-lg-1"></div>
                         <div class="form-group col-lg-2">
                             <label for="cr1">CR1:</label>
                             <div class="input-group mb-3">
@@ -478,7 +479,7 @@ if (!empty($_POST))
                               <input name="cr2" id="cr2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                             </div>
                         </div>
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg-2">
                             <label for="p1">P1:</label>
                             <div class="input-group mb-3">
                                 <div class="input-group-append">
@@ -487,7 +488,7 @@ if (!empty($_POST))
                               <input name="p1" id="p1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                             </div>
                         </div>
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg-2">
                             <label for="p2">P2:</label>
                             <div class="input-group mb-3">
                                 <div class="input-group-append">
