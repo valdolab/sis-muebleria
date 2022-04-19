@@ -661,18 +661,6 @@ $('#tiene_subcat').change(function()
   }
 });
 
-function bloquear_campos_cat()
-{
-  if (document.getElementById('apto_credito').checked)
-  {
-    $('#nivel_credito').removeAttr('disabled');
-  }
-  else
-  {
-    $('#nivel_credito').attr('disabled','disabled');
-  }
-}
-
 //agregar todas las sucursales existentes al select 
 function cargar_todas_sucursales()
 {
@@ -1528,7 +1516,28 @@ function editar_categoria(idcategoria)
             {
               var data = $.parseJSON(response);
               $('#flagidcategoria').val(idcategoria);
-
+              $('#nombre_cat').val(data.nombre);
+              if(data.tiene_subcat == '1')
+              {
+                $('#tiene_subcat').attr('checked','checked');
+                $('#tiene_subcat').bootstrapToggle('on');
+              }
+              else
+              {
+                $('#atr1').val(data.atr1);
+                $('#atr2').val(data.atr2);
+                $('#atr3').val(data.atr3);
+                $('#atr4').val(data.atr4);
+                $('#atr5').val(data.atr5);
+                $('#contado').val(data.contado);
+                $('#especial').val(data.especial);
+                $('#credito1').val(data.credito1);
+                $('#credito2').val(data.credito2);
+                $('#mesespago').val(data.meses_pago);
+                $('#garantia').val(data.meses_garantia);
+                $('#tiene_subcat').removeAttr('checked');
+                $('#tiene_subcat').bootstrapToggle('off');
+              }
             }
         },
         error: function(error) {
@@ -1540,6 +1549,16 @@ function editar_categoria(idcategoria)
 function nueva_categoria()
 {
     $('#flagidcategoria').val('nuevacat');
+    $("#formAdd_cat :input:not(#btn_guardarcat,#btn_cancerlarcat,#atr1,#tiene_subcat,#action,#flagidcategoria)").val('');
+    $('#tiene_subcat').bootstrapToggle('off');
+    $('#tiene_subcat').removeAttr('checked');
+}
+
+//funciones para subcategoria
+function nueva_subcategoria()
+{
+    $('#flagidsubcategoria').val('nuevasubcat');
+    $("#formAdd_subcat :input:not(#btn_guardarsubcat,#btn_cancerlarsubcat,#atr1,#action,#flagidsubcategoria)").val('');
 }
 
 //ESTAS SON FUNCIONES PARA OTRAS COSAS

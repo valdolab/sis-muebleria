@@ -80,9 +80,9 @@ if (!empty($_POST))
                           <div class="form-group">
                                 <label for="nombre_cat">Nombre</label>
                                 <div class="input-group">
-                                  <input type="text" class="form-control" name="nombre_cat" id="nombre_cat" required>
+                                  <input type="text" class="form-control" name="nombre_cat" id="nombre_cat" required onkeyup="mayusculas(this)">
                                   &nbsp;
-                                  <input onchange="" id="tiene_subcat" name="tiene_subcat" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="m" data-on="SI" data-off="NO">
+                                  <input id="tiene_subcat" name="tiene_subcat" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="m" data-on="SI" data-off="NO">
                                 </div>
                             </div>  
                         </div>
@@ -174,7 +174,7 @@ if (!empty($_POST))
                         </div>
                     </div>
                     <input value="insert_categoria" name="action" id="action" hidden>
-                    <input type="text" value="" id="flagidcategoria" name="flagidcategoria">
+                    <input type="text" value="" id="flagidcategoria" name="flagidcategoria" hidden>
             </div>
         </form>
         </div>
@@ -310,7 +310,8 @@ if (!empty($_POST))
                             <input name="garantia_sub" id="garantia_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                     </div>
-                    <input value="cat" name="bandera" id="bandera" hidden>
+                    <input value="insert_subcategoria" name="action" id="action" hidden>
+                    <input type="text" value="" id="flagidsubcategoria" name="flagidsubcategoria">
             </div>
         </form>
         </div>
@@ -584,7 +585,7 @@ if (!empty($_POST))
         </div>
         <div class="col-lg-2">
             <label>Subcategoría:</label>
-            <button data-toggle="modal" data-target="#nueva_subcat" title="Agregar nueva subcategoría" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
+            <button data-toggle="modal" data-target="#nueva_subcat" title="Agregar nueva subcategoría" class="btn btn-primary btn-xs" type="button" onclick="nueva_subcategoria();" ><i class="fas fa-plus"></i></button>
             <button disabled data-toggle="modal" data-target="#editar_subcategoria" onclick="editar_subcat();" title="editar subcategoria" class="btn btn-success btn-xs" type="button" href="#" id="btnedit_subcategoria"><i class="fas fa-edit"></i></button>
             <button disabled onclick="eliminar_subcat();" title="Eliminar subcategoria" class="btn btn-danger btn-xs" type="button" href="#" id="btneliminar_subcategoria"><i class="fas fa-trash"></i></button>
 

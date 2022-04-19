@@ -661,6 +661,14 @@ if (!empty($_POST))
                                         echo '<option value="si" >Sí</option>';
                                         echo '<option selected value="no" >No</option>';
                                     }
+                                    if($up_masinfo == 1)
+                                    {
+                                        $checked_masinfo = "checked";
+                                    }
+                                    else
+                                    {
+                                        $checked_masinfo = "";
+                                    }
                                 ?>
                               </select>
                         </div>
@@ -681,7 +689,7 @@ if (!empty($_POST))
                       </div>
                     <div class="col-lg-1">
                         <label>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </label>
-                            <input id="masinfo" name="masinfo" value="" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="outline-secondary" data-size="xl" data-on="SI" data-off="NO" onchange="mostrar_mas_info()" disabled>
+                            <input id="masinfo" name="masinfo" value="" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="outline-secondary" data-size="xl" data-on="SI" data-off="NO" onchange="mostrar_mas_info()" <?php echo $checked_masinfo; ?> disabled>
                         </div>
                     </div>
             </div>
