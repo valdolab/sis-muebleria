@@ -267,7 +267,7 @@ if ($_POST['action'] == 'insert_categoria')
                 {
                     $idcat = array("idcategoria" => $uuid);
                     $categoria = array("categoria" => $nombre_cat);
-                    $flag_insert = array("flag_insert") => 1);
+                    $flag_insert = array("flag_insert" => 1);
                     $resultInsertCategoria = $idcat + $categoria + $flag_insert;
                 } 
                 else
@@ -298,7 +298,7 @@ if ($_POST['action'] == 'insert_categoria')
         {
           $idcat = array("idcategoria" => $uuid);
           $categoria = array("categoria" => $nombre_cat);
-          $flag_insert = array("flag_insert") => 1);
+          $flag_insert = array("flag_insert" => 1);
           $resultInsertCategoria = $idcat + $categoria + $flag_insert;
         } 
         else
@@ -314,7 +314,7 @@ if ($_POST['action'] == 'insert_categoria')
         if (isset($_POST['tiene_subcat']))
         {
           $tiene_subcat = 1;
-          $atr1 = '';
+          $atr1 = 0;
         }
         else
         {
@@ -332,15 +332,12 @@ if ($_POST['action'] == 'insert_categoria')
         $mesespago = $_POST['mesespago'];
         $garantia = $_POST['garantia'];
         //idcat -> $idcategoria
-        $update_cat = mysqli_query($conexion, "UPDATE categoria set nombre = '$nombre_cat', tiene_subcat = $tiene_subcat, atr1 = '$atr1', art2 = ".(!empty($atr2) ? "'$atr2'" : "NULL").", atr3 = ".(!empty($atr3) ? "'$atr3'" : "NULL").", atr4 = ".(!empty($atr4) ? "'$atr4'" : "NULL").", atr5 = ".(!empty($atr5) ? "'$atr5'" : "NULL").", contado = ".(!empty($contado) ? "'$contado'" : "NULL").", especial = ".(!empty($especial) ? "'$especial'" : "NULL").", credito1 = ".(!empty($credito1) ? "'$credito1'" : "NULL").", credito2 = ".(!empty($credito2) ? "'$credito2'" : "NULL").", meses_pago = ".(!empty($mesespago) ? "'$mesespago'" : "NULL").", meses_garantia = ".(!empty($garantia) ? "'$garantia'" : "NULL")." WHERE idcategoria = '$idcategoria'");
-        //FALTA CHECAR EN FUNSIONES QUE CUANDO SEA UPDATE SOLO ACTUALICE LA OPCION DEL SELECT Y CUANDO SEA INSERT AÑADIA LA OPCION AL SELECT,
-        //PARA ESO HAY QUE usamos la BANDERA flag_insert
-        
+        $update_cat = mysqli_query($conexion, "UPDATE categoria set nombre = '$nombre_cat', tiene_subcat = $tiene_subcat, atr1 = '$atr1', atr2 = ".(!empty($atr2) ? "'$atr2'" : "NULL").", atr3 = ".(!empty($atr3) ? "'$atr3'" : "NULL").", atr4 = ".(!empty($atr4) ? "'$atr4'" : "NULL").", atr5 = ".(!empty($atr5) ? "'$atr5'" : "NULL").", contado = ".(!empty($contado) ? "$contado" : "NULL").", especial = ".(!empty($especial) ? "$especial" : "NULL").", credito1 = ".(!empty($credito1) ? "$credito1" : "NULL").", credito2 = ".(!empty($credito2) ? "$credito2" : "NULL").", meses_pago = ".(!empty($mesespago) ? "$mesespago" : "NULL").", meses_garantia = ".(!empty($garantia) ? "$garantia" : "NULL")." WHERE idcategoria = '$idcategoria'");
         if ($update_cat) 
         {
           $idcat = array("idcategoria" => $idcategoria);
           $categoria = array("categoria" => $nombre_cat);
-          $flag_insert = array("flag_insert") => 0);
+          $flag_insert = array("flag_insert" => 0);
           $resultInsertCategoria = $idcat + $categoria + $flag_insert;
         } 
         else

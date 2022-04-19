@@ -608,22 +608,34 @@ $('#idestado_civil').change(function() {
                     //$('#prueba').html(response);
                     $('#nombre_cat,#atr1,#atr2,#atr3,#atr4,#atr5,#contado,#especial,#credito1,#credito2,#mesespago,#garantia').val('');
                     var data = $.parseJSON(response);
-                    $('#categoria').append($('<option>',
+                    if(data.flag_insert == 1)
                     {
-                        value: data.idcategoria,
-                        text : data.categoria
-                    }));
-                    $('#categoria').val(data.idcategoria).change();
-                    $('#categoria_subcategoria').append($('<option>',
+                        //insertamos la nueva option en los selects
+                        $('#categoria').append($('<option>',
+                        {
+                            value: data.idcategoria,
+                            text : data.categoria
+                        }));
+                        $('#categoria').val(data.idcategoria).change();
+                        $('#categoria_subcategoria').append($('<option>',
+                        {
+                            value: data.idcategoria,
+                            text : data.categoria
+                        }));
+                        $('#categoria_producto').append($('<option>',
+                        {
+                            value: data.idcategoria,
+                            text : data.categoria
+                        }));
+                    }
+                    else
                     {
-                        value: data.idcategoria,
-                        text : data.categoria
-                    }));
-                    $('#categoria_producto').append($('<option>',
-                    {
-                        value: data.idcategoria,
-                        text : data.categoria
-                    }));
+                        //actualizamos el texto de la opcion modificada
+                        $('#categoria option[value="'+data.idcategoria+'"]').text(data.categoria);
+                        $('#categoria_subcategoria option[value="'+data.idcategoria+'"]').text(data.categoria);
+                        $('#categoria_producto option[value="'+data.idcategoria+'"]').text(data.categoria);
+                        //$('#prueba').html(data.sentencia);
+                    }
                     Swal.fire(
                           '!Agregado!',
                           '!Se guardo la nueva categoría!',

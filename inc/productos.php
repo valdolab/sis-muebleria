@@ -644,16 +644,12 @@ if (!empty($_POST))
             </select>
         </div>
         <div class="col-lg-3">
-            <input value="modificarLista" name="bandera" id="bandera" hidden>
             <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 65px !important;">Ver Costos</button>
 
-            <input value="modificarLista" name="bandera" id="bandera" hidden>
-            <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 70px !important;">Editar Listas</button>
+            <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 70px !important; height: 54% !important; position: relative; top: -24%; font-size: 10px; vertical-align: top;">Editar Listas</button>
+            
 
-            <input value="modificarLista" name="bandera" id="bandera" hidden>
             <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Catalogo</button>
-
-            <input value="modificarLista" name="bandera" id="bandera" hidden>
             <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Lista</button>
         </div>
     </div>
