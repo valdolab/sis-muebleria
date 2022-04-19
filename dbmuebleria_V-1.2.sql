@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 17-04-2022 a las 07:58:51
--- Versión del servidor: 5.7.36
--- Versión de PHP: 7.4.26
+-- Tiempo de generación: 19-04-2022 a las 19:41:32
+-- Versión del servidor: 5.7.31
+-- Versión de PHP: 7.3.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `categoria` (
   `nombre` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `tiene_subcat` tinyint(1) NOT NULL,
   `atr1` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `art2` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr2` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `atr3` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `atr4` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `atr5` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
@@ -45,6 +45,14 @@ CREATE TABLE IF NOT EXISTS `categoria` (
   `meses_garantia` int(11) DEFAULT NULL,
   PRIMARY KEY (`idcategoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `categoria`
+--
+
+INSERT INTO `categoria` (`idcategoria`, `nombre`, `tiene_subcat`, `atr1`, `atr2`, `atr3`, `atr4`, `atr5`, `contado`, `especial`, `credito1`, `credito2`, `meses_pago`, `meses_garantia`) VALUES
+('5a0be372-c010-11ec-a813-d481d7c3a9ad', 'BICICLETA', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('6b149c84-c010-11ec-a813-d481d7c3a9ad', 'SECADORA', 0, 'MARCA', 'GENERO', 'KG', 'TAMAÑO', NULL, 10, 20, 15, 20, 12, 6);
 
 -- --------------------------------------------------------
 
@@ -458,10 +466,11 @@ CREATE TABLE IF NOT EXISTS `tipo` (
 --
 
 INSERT INTO `tipo` (`idtipo`, `nombre_tipo`) VALUES
+('81956ef4-bf77-11ec-a5db-d481d7c3a9ad', 'TIPO4'),
+('829f9d7e-bf5b-11ec-a5db-d481d7c3a9ad', 'tipo de prueba'),
 ('a8791f44-bc7e-11ec-bf6e-d481d7c3a9ad', 'TIPO1'),
 ('asd91f44-bc7e-11ec-bf6e-d481d7c3a9ad', 'TIPO22'),
-('pii91f44-bc7e-11ec-bf6e-d481d7c3a9qw', 'tipo3'),
-('zxc91f44-bc7e-11ec-bf6e-d481d7c3a9zx', 'nuevo tipo');
+('pii91f44-bc7e-11ec-bf6e-d481d7c3a9qw', 'tipo3');
 
 -- --------------------------------------------------------
 
