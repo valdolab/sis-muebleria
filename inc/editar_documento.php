@@ -181,15 +181,5 @@ if (!empty($_POST))
 <!-- End of Main Content -->
 
 
-
-<script type="text/javascript">
-
-// Funcion JavaScript para la conversion a mayusculas
-function mayusculas(e) {
-    e.value = e.value.toUpperCase();
-}
-
-</script>
-
 <?php ob_end_flush(); ?>
 <?php include_once "footer.php"; ?>

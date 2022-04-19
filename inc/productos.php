@@ -55,6 +55,8 @@ if (!empty($_POST))
     </div>
 </div>
 
+<div id="prueba"></div>
+
 <div id="nueva_cat" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
@@ -63,7 +65,7 @@ if (!empty($_POST))
                 <h3 class="modal-title">Detalle Categoría</h3>
                 <div class="row">
                     <div class="col-lg-6">
-                        <button type="submit" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close" id="btn_cancerlarcat">
+                        <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close" id="btn_cancerlarcat">
                             Cancelar
                         </button>
                     </div>
@@ -88,14 +90,14 @@ if (!empty($_POST))
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="atr1">Atributo 1</label>
-                                <input type="text" class="form-control" name="atr1" id="atr1" disabled value="MARCA">
+                                <input type="text" class="form-control" name="atr1" id="atr1" disabled value="MARCA" onkeyup="mayusculas(this)">
                             </div>  
                         </div>
 
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="atr2">Atributo 2</label>
-                                <input type="text" class="form-control" name="atr2" id="atr2">
+                                <input type="text" class="form-control" name="atr2" id="atr2" onkeyup="mayusculas(this)">
                             </div>  
                         </div>
                     </div>
@@ -103,21 +105,21 @@ if (!empty($_POST))
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="atr3">Atributo 3</label>
-                                <input type="text" class="form-control" name="atr3" id="atr3">
+                                <input type="text" class="form-control" name="atr3" id="atr3" onkeyup="mayusculas(this)">
                             </div>  
                         </div>
 
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="atr4">Atributo 4</label>
-                                <input type="text" class="form-control" name="atr4" id="atr4">
+                                <input type="text" class="form-control" name="atr4" id="atr4" onkeyup="mayusculas(this)">
                             </div>  
                         </div>
 
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="atr5">Atributo 5</label>
-                                <input type="text" class="form-control" name="atr5" id="atr5">
+                                <input type="text" class="form-control" name="atr5" id="atr5" onkeyup="mayusculas(this)">
                             </div>  
                         </div>
                     </div>
@@ -126,7 +128,7 @@ if (!empty($_POST))
                         <div class="form-group col-lg-3">
                             <label for="contado">Contado:</label>
                             <div class="input-group mb-3">
-                              <input name="contado" id="contado" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
+                              <input name="contado" id="contado" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
@@ -171,7 +173,8 @@ if (!empty($_POST))
                             <input name="garantia" id="garantia" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                     </div>
-                    <input value="cat" name="bandera" id="bandera" hidden>
+                    <input value="insert_categoria" name="action" id="action" hidden>
+                    <input type="text" value="" id="flagidcategoria" name="flagidcategoria">
             </div>
         </form>
         </div>
@@ -187,15 +190,23 @@ if (!empty($_POST))
                 <div class="row">
                     <div class="col-lg-6">
                         <!-- agrandar SELECT -->
-                        <select class="form-control" id="categoria_subcate" name="categoria_subcate">
+                        <select class="form-control" id="categoria_subcategoria" name="categoria_subcategoria">
                                 <option selected hidden>Selecciona categoría</option>
-                                <option value="Lavadora">Lavadora</option>
-                                <option value="Televición">Televición</option>
-                                <option value="Refrigerador">Refrigerador</option>
+                                <?php
+                                    #codigo para la lista de sucursales que se extraen de la base de datos
+                                    $result_cat = mysqli_query($conexion,"SELECT idcategoria,nombre FROM categoria order by nombre asc");
+                                    if (mysqli_num_rows($result_cat) > 0) 
+                                    {  
+                                      while($row = mysqli_fetch_assoc($result_cat))
+                                      {
+                                        echo "<option value='".$row["idcategoria"]."'>".$row["nombre"]."</option>";
+                                      }
+                                    }
+                                ?>  
                             </select>
                     </div>
                     <div class="col-lg-3">
-                        <button type="submit" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close">
                             Cancelar
                         </button>
                     </div>
@@ -314,7 +325,7 @@ if (!empty($_POST))
                 <h3 class="modal-title">Detalle del Producto</h3>
                 <div class="row">
                     <div class="col-lg-6">
-                        <button type="submit" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close">
                             Cancelar
                         </button>
                     </div>
@@ -340,21 +351,37 @@ if (!empty($_POST))
                         </div>
 
                         <div class="col-lg-2">
-                            <label>Categorias:</label>
+                            <label>Categoría:</label>
                             <select class="form-control" id="categoria_producto" name="categoria_producto">
                                 <option selected hidden>Selecciona categoría</option>
-                                <option value="Lavadora">Lavadora</option>
-                                <option value="Televición">Televición</option>
-                                <option value="Refrigerador">Refrigerador</option>
+                                <?php
+                                    #codigo para la lista de sucursales que se extraen de la base de datos
+                                    $result_cat = mysqli_query($conexion,"SELECT idcategoria,nombre FROM categoria order by nombre asc");
+                                    if (mysqli_num_rows($result_cat) > 0) 
+                                    {  
+                                      while($row = mysqli_fetch_assoc($result_cat))
+                                      {
+                                        echo "<option value='".$row["idcategoria"]."'>".$row["nombre"]."</option>";
+                                      }
+                                    }
+                                ?>  
                             </select>
                         </div>
                         <div class="col-lg-2">
-                            <label>Subcategorias:</label>
+                            <label>Subcategoriía:</label>
                             <select class="form-control" id="subcategoria_producto" name="subcategoria_producto">
                                 <option selected hidden>Selecciona subcategoría</option>
-                                <option value="Lavadora">Lavadora</option>
-                                <option value="Televición">Televición</option>
-                                <option value="Refrigerador">Refrigerador</option>
+                                <?php
+                                    #codigo para la lista de sucursales que se extraen de la base de datos
+                                    $result_subcat = mysqli_query($conexion,"SELECT idsubcategoria,nombre FROM subcategoria order by nombre asc");
+                                    if (mysqli_num_rows($result_subcat) > 0) 
+                                    {  
+                                      while($row = mysqli_fetch_assoc($result_subcat))
+                                      {
+                                        echo "<option value='".$row["idsubcategoria"]."'>".$row["nombre"]."</option>";
+                                      }
+                                    }
+                                ?>  
                             </select>
                         </div>
                         <div class="col-lg-1">
@@ -535,29 +562,45 @@ if (!empty($_POST))
 <form action="" method="post" autocomplete="off">
     <div class="row">
         <div class="col-lg-2">
-            <label>Categoria:</label>
-            <button data-toggle="modal" data-target="#nueva_cat" title="Agregar nuevo puesto" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
-            <button data-toggle="modal" data-target="#editar_puesto" onclick="editar_puesto();" title="editar puesto" class="btn btn-success btn-xs" type="button" href="#" id="btn_editarpuesto"><i class="fas fa-edit"></i></button>
-            <button onclick="eliminar_puesto();" title="Eliminar puesto" class="btn btn-danger btn-xs" type="button" href="#" id="btn_eliminarpuesto"><i class="fas fa-trash"></i></button>
+            <label>Categoría:</label>
+            <button data-toggle="modal" data-target="#nueva_cat" title="Agregar nueva categoría" class="btn btn-primary btn-xs" type="button" onclick="nueva_categoria();"><i class="fas fa-plus"></i></button>
+            <button disabled data-toggle="modal" data-target="#nueva_cat" onclick="editar_categoria();" title="editar categoría" class="btn btn-success btn-xs" type="button" href="#" id="btnedit_categoria"><i class="fas fa-edit"></i></button>
+            <button disabled onclick="eliminar_categoria();" title="Eliminar categoría" class="btn btn-danger btn-xs" type="button" href="#" id="btneliminar_categoria"><i class="fas fa-trash"></i></button>
 
-            <select class="form-control" id="filtro1" name="filtro1">
+            <select class="form-control" id="categoria" name="categoria">
                 <option selected hidden>Selecciona categoría</option>
-                <option value="Lavadora">Lavadora</option>
-                <option value="Televición">Televición</option>
-                <option value="Refrigerador">Refrigerador</option>
+                <?php
+                    #codigo para la lista de sucursales que se extraen de la base de datos
+                    $result_cat = mysqli_query($conexion,"SELECT idcategoria,nombre FROM categoria order by nombre asc");
+                    if (mysqli_num_rows($result_cat) > 0) 
+                    {  
+                      while($row = mysqli_fetch_assoc($result_cat))
+                      {
+                        echo "<option value='".$row["idcategoria"]."'>".$row["nombre"]."</option>";
+                      }
+                    }
+                ?>  
             </select>
         </div>
         <div class="col-lg-2">
-            <label>Subcategoria:</label>
-            <button data-toggle="modal" data-target="#nueva_subcat" title="Agregar nuevo puesto" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
-            <button data-toggle="modal" data-target="#editar_puesto" onclick="editar_puesto();" title="editar puesto" class="btn btn-success btn-xs" type="button" href="#" id="btn_editarpuesto"><i class="fas fa-edit"></i></button>
-            <button onclick="eliminar_puesto();" title="Eliminar puesto" class="btn btn-danger btn-xs" type="button" href="#" id="btn_eliminarpuesto"><i class="fas fa-trash"></i></button>
+            <label>Subcategoría:</label>
+            <button data-toggle="modal" data-target="#nueva_subcat" title="Agregar nueva subcategoría" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
+            <button disabled data-toggle="modal" data-target="#editar_subcategoria" onclick="editar_subcat();" title="editar subcategoria" class="btn btn-success btn-xs" type="button" href="#" id="btnedit_subcategoria"><i class="fas fa-edit"></i></button>
+            <button disabled onclick="eliminar_subcat();" title="Eliminar subcategoria" class="btn btn-danger btn-xs" type="button" href="#" id="btneliminar_subcategoria"><i class="fas fa-trash"></i></button>
 
-            <select class="form-control" id="filtro1" name="filtro1">
-                <option selected hidden>Selecciona categoría</option>
-                <option value="Lavadora">Lavadora</option>
-                <option value="Televición">Televición</option>
-                <option value="Refrigerador">Refrigerador</option>
+            <select class="form-control" id="subcategoria" name="subcategoria">
+                <option selected hidden>Selecciona subcategoría</option>
+                <?php
+                    #codigo para la lista de sucursales que se extraen de la base de datos
+                    $result_subcat = mysqli_query($conexion,"SELECT idsubcategoria,nombre FROM subcategoria order by nombre asc");
+                    if (mysqli_num_rows($result_subcat) > 0) 
+                    {  
+                      while($row = mysqli_fetch_assoc($result_subcat))
+                      {
+                        echo "<option value='".$row["idsubcategoria"]."'>".$row["nombre"]."</option>";
+                      }
+                    }
+                ?> 
             </select>
         </div>
         <div align="left" class="col-lg-1">

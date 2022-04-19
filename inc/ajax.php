@@ -225,6 +225,26 @@ if ($_POST['action'] == 'eliminarCliente')
   exit;
 }
 
+#eliminar cat
+  if ($_POST['action'] == 'eliminarCategoria') {
+  include "accion/conexion.php";
+  if (!empty($_POST['categoria'])) 
+  {
+    $id_cat = $_POST['categoria'];
+
+    $query_cat = mysqli_query($conexion, "DELETE FROM categoria WHERE idcategoria = '$id_cat'");
+
+    mysqli_close($conexion);
+    if ($query_cat) {
+      $elimino_cat= 1;
+    }else {
+      $elimino_cat = 0;
+    }
+    echo json_encode($elimino_cat,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
 ##buscar datos sobre el tipo para poder editar tipo
   if ($_POST['action'] == 'SelectTipo') {
   include "accion/conexion.php";
@@ -282,6 +302,31 @@ if ($_POST['action'] == 'eliminarCliente')
       $data_subzona = 0;
     }
     echo json_encode($data_subzona,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+##buscar datos sobre de la categoria para poder editar categoria
+  if ($_POST['action'] == 'SelectCategoria') 
+  {
+  include "accion/conexion.php";
+  if (!empty($_POST['categoria'])) 
+  {
+    $id_cat = $_POST['categoria'];
+
+    $select_cat = mysqli_query($conexion, "SELECT * from categoria where idcategoria = '$id_cat'");
+    mysqli_close($conexion);
+    $result_cat = mysqli_num_rows($select_cat);
+    $data_cat = '';
+    if ($result_cat > 0) 
+    {
+      $data_cat = mysqli_fetch_assoc($select_cat);
+    }
+    else 
+    {
+      $data_cat = 0;
+    }
+    echo json_encode($data_cat,JSON_UNESCAPED_UNICODE);
   }
   exit;
 }
@@ -420,8 +465,9 @@ if ($_POST['action'] == 'searchSubzonas')
         $cadena = 0;
       }
       //calculamos si esa zona se esta en uso para no poder borrarlo
-      $queryFind = mysqli_query($conexion, "SELECT idcliente from cliente where zona = '$idzona'");
-      $resultFind = mysqli_num_rows($queryFind);
+      $queryFind = mysqli_query($conexion, "SELECT count(idcliente) as num from cliente where zona = '$idzona'");
+      $resultFind = (int) mysqli_fetch_assoc($queryFind)['num'];
+
       $array = array("allow_delete" => $resultFind);
       $array_cadena = array("options" => $cadena);
       $array = $array + $array_cadena;
@@ -438,8 +484,8 @@ if ($_POST['action'] == 'searchSubzonaUsed')
       $idsubzona = $_POST['subzona'];
 
       //calculamos si esa zona se esta en uso para no poder borrarlo
-      $queryFindsub = mysqli_query($conexion, "SELECT idcliente from cliente where subzona = '$idsubzona'");
-      $resultFindsub = mysqli_num_rows($queryFindsub);
+      $queryFindsub = mysqli_query($conexion, "SELECT count(idcliente) as num from cliente where subzona = '$idsubzona'");
+      $resultFindsub = (int) mysqli_fetch_assoc($queryFindsub)['num'];
       #$array_sub = array("allow_delete" => $resultFindsub);
     echo json_encode($resultFindsub,JSON_UNESCAPED_UNICODE);
   }
@@ -454,9 +500,9 @@ if ($_POST['action'] == 'searchPuestoUsed')
       $idpuesto = $_POST['puesto'];
 
       //calculamos si esa zona se esta en uso para no poder borrarlo
-      $queryFindpuesto = mysqli_query($conexion, "SELECT idusuario from usuario where puesto = '$idpuesto'");
-      $resultFindsub = mysqli_num_rows($queryFindpuesto);
-    echo json_encode($resultFindsub,JSON_UNESCAPED_UNICODE);
+      $queryFindpuesto = mysqli_query($conexion, "SELECT count(idusuario) as num from usuario where puesto = '$idpuesto'");
+      $resultFindpuesto = (int) mysqli_fetch_assoc($queryFindpuesto)['num'];
+    echo json_encode($resultFindpuesto,JSON_UNESCAPED_UNICODE);
   }
   exit;
 }
@@ -469,254 +515,25 @@ if ($_POST['action'] == 'searchTipoUsed')
       $idtipo = $_POST['tipo'];
 
       //calculamos si esa zona se esta en uso para no poder borrarlo
-      $queryFindtipo = mysqli_query($conexion, "SELECT idsucursales from sucursales where tipo = '$idtipo'");
-      $resultFindtipo = mysqli_num_rows($queryFindtipo);
+      $queryFindtipo = mysqli_query($conexion, "SELECT count(idsucursales) as num from sucursales where tipo = '$idtipo'");
+      $resultFindtipo = (int) mysqli_fetch_assoc($queryFindtipo)['num'];
     echo json_encode($resultFindtipo,JSON_UNESCAPED_UNICODE);
   }
   exit;
 }
 
-//insert tipos
-if ($_POST['action'] == 'insert_tipo') 
-{  
+//buscar si la categoria esta siendo usada por algun producto
+if ($_POST['action'] == 'searchCatUsed') 
+{
   include "accion/conexion.php";
-  if (!empty($_POST['nuevotipo'])) 
-  {
-      $newtipo = $_POST['nuevotipo'];
-      $resultIDtipo = mysqli_query($conexion, "SELECT UUID() as idtipo");
-      $uuid = mysqli_fetch_assoc($resultIDtipo)['idtipo'];
-          $insert_tipo = mysqli_query($conexion, "INSERT INTO tipo(idtipo, nombre_tipo) values ('$uuid', '$newtipo')");
-              if ($insert_tipo) 
-              {
-                  $idtipo = array("idtipo" => $uuid);
-                  $tipo = array("nombre_tipo" => $newtipo);
-                  $resultInsertTipos = $idtipo + $tipo;
-              } 
-              else
-              {
-                $resultInsertTipos = 0;
-              }
-  }
-  else
-  {
-    $resultInsertTipos = 0;
-  }
-  echo json_encode($resultInsertTipos,JSON_UNESCAPED_UNICODE);
-  exit;
-}
+  if (!empty($_POST['categoria'])) {
+      $idcategoria = $_POST['categoria'];
 
-//update tipos
-if ($_POST['action'] == 'update_tipo') 
-{  
-  include "accion/conexion.php";
-  if (!empty($_POST['newedit_tipo'])) 
-  {
-          $id_tipo = $_POST['idflag_tipo'];
-          $newname_tipo = $_POST['newedit_tipo'];
-          $update_tipo = mysqli_query($conexion, "UPDATE tipo SET nombre_tipo='$newname_tipo' where idtipo = '$id_tipo'");
-              if ($update_tipo) 
-              {
-                  $idtipo = array("idtipo" => $id_tipo);
-                  $tipo = array("nombre_tipo" => $newname_tipo);
-                  $resultUpdateTipos = $idtipo + $tipo;
-              } 
-              else
-              {
-                $resultUpdateTipos = 0;
-              }
+      //calculamos si esa zona se esta en uso para no poder borrarlo
+      $queryFindcat = mysqli_query($conexion, "SELECT count(idproducto) as num from producto where categoria = '$idcategoria'");
+      $resultFindcat = (int) mysqli_fetch_assoc($queryFindcat)['num'];
+    echo json_encode($resultFindcat,JSON_UNESCAPED_UNICODE);
   }
-  else
-  {
-    $resultUpdateTipos = 0;
-  }
-  echo json_encode($resultUpdateTipos,JSON_UNESCAPED_UNICODE);
-  exit;
-}
-
-//insert puesto
-if ($_POST['action'] == 'insert_puesto') 
-{  
-  include "accion/conexion.php";
-  if (!empty($_POST['newpuesto'])) 
-  {
-    $resultIDpuesto = mysqli_query($conexion, "SELECT UUID() as idpuesto");
-    $uuid = mysqli_fetch_assoc($resultIDpuesto)['idpuesto'];
-    $nompuesto = $_POST['newpuesto'];
-          $descpuesto = $_POST['desc_puesto'];
-          $insert_puesto = mysqli_query($conexion, "INSERT INTO puesto(idpuesto,puesto,descripcion) values ('$uuid','$nompuesto','$descpuesto')");
-              if ($insert_puesto) 
-              {
-                  $idpuesto = array("idpuesto" => $uuid);
-                  $puesto = array("nombre_puesto" => $nompuesto);
-                  $resultInsertPuesto = $idpuesto + $puesto;
-              } 
-              else
-              {
-                  $resultInsertPuesto = 0;
-              }
-  }
-  else
-  {
-    $resultInsertPuesto = 0;
-  }
-  echo json_encode($resultInsertPuesto,JSON_UNESCAPED_UNICODE);
-  exit;
-}
-
-//update puesto
-if ($_POST['action'] == 'update_puesto') 
-{  
-  include "accion/conexion.php";
-  if (!empty($_POST['newpuesto_edit'])) 
-  {
-    $id_puesto = $_POST['idpuesto_flag'];
-          $nompuesto_e = $_POST['newpuesto_edit'];
-          $desc_puesto_e = $_POST['desc_puesto_edit'];
-          $update_puesto = mysqli_query($conexion, "UPDATE puesto SET puesto='$nompuesto_e', descripcion='$desc_puesto_e' where idpuesto = '$id_puesto'");
-              if ($update_puesto) 
-              {
-                  $idpuesto = array("idpuesto" => $id_puesto);
-                  $puesto = array("nombre_puesto" => $nompuesto_e);
-                  $resultUpdatePuesto = $idpuesto + $puesto;
-              } 
-              else
-              {
-                  $resultUpdatePuesto = 0;
-              }
-  }
-  else
-  {
-    $resultUpdatePuesto = 0;
-  }
-  echo json_encode($resultUpdatePuesto,JSON_UNESCAPED_UNICODE);
-  exit;
-}
-
-//insert zona
-if ($_POST['action'] == 'insert_zona') 
-{  
-  include "accion/conexion.php";
-  if (!empty($_POST['nuevazona'])) 
-  {
-    $resultIDzona = mysqli_query($conexion, "SELECT UUID() as idzona");
-    $uuid = mysqli_fetch_assoc($resultIDzona)['idzona'];
-    $nueva_zona = $_POST['nuevazona'];
-            $insert_zona = mysqli_query($conexion, "INSERT INTO zonas(idzona, zona) values ('$uuid','$nueva_zona')");
-              if ($insert_zona) 
-              {
-                  $idzona = array("idzona" => $uuid);
-                  $zona = array("zona" => $nueva_zona);
-                  $resultInsertZona = $idzona + $zona;
-              } 
-              else
-              {
-                  $resultInsertZona = 0;
-              }
-  }
-  else
-  {
-    $resultInsertZona = 0;
-  }
-  echo json_encode($resultInsertZona,JSON_UNESCAPED_UNICODE);
-  exit;
-}
-
-//update zona
-if ($_POST['action'] == 'edit_zona') 
-{  
-  include "accion/conexion.php";
-  if (!empty($_POST['newzona_edit'])) 
-  {
-          $id_zona = $_POST['idnewzona_edit'];
-          $nomzona_edit = $_POST['newzona_edit'];
-          $update_zona = mysqli_query($conexion, "UPDATE zonas SET zona='$nomzona_edit' where idzona = '$id_zona'");
-              if ($update_zona) 
-              {
-                  $idzona = array("idzona" => $id_zona);
-                  $zona = array("zona" => $nomzona_edit);
-                  $resultUpdateZona = $idzona + $zona;
-              } 
-              else
-              {
-                  $resultUpdateZona = 0;
-              }
-  }
-  else
-  {
-    $resultUpdateZona = 0;
-  }
-  echo json_encode($resultUpdateZona,JSON_UNESCAPED_UNICODE);
-  exit;
-}
-
-//insert subzona
-if ($_POST['action'] == 'insert_subzona') 
-{  
-  include "accion/conexion.php";
-  if (!empty($_POST['nuevasubzona'])) 
-  {
-            $resultIDsubzona = mysqli_query($conexion, "SELECT UUID() as idsubzona");
-            $uuid = mysqli_fetch_assoc($resultIDsubzona)['idsubzona'];
-            $nueva_subzona = $_POST['nuevasubzona'];
-            $idzona_subzona = $_POST['zona_subzona'];
-            $insert_subzona = mysqli_query($conexion, "INSERT INTO subzonas(idsubzona,subzona,idzona) values ('$uuid','$nueva_subzona', '$idzona_subzona')");
-              if ($insert_subzona) 
-              {
-                  $idsubzona = array("idsubzona" => $uuid);
-                  $subzona = array("subzona" => $nueva_subzona);
-                  $resultInsertSubzona = $idsubzona + $subzona;
-              } 
-              else
-              {
-                  $resultInsertSubzona = 0;
-              }
-  }
-  else
-  {
-    $resultInsertSubzona = 0;
-  }
-  echo json_encode($resultInsertSubzona,JSON_UNESCAPED_UNICODE);
-  exit;
-}
-
-//update subzona
-if ($_POST['action'] == 'edit_subzona') 
-{  
-  include "accion/conexion.php";
-  if (!empty($_POST['newsubzona_edit'])) 
-  {
-          $id_subzona = $_POST['idnewsubzona_edit'];
-          $nomsubzona_edit = $_POST['newsubzona_edit'];
-
-          $newid_zona_edit = $_POST['zona_subzona_edit'];
-          $update_subzona = mysqli_query($conexion, "UPDATE subzonas SET subzona='$nomsubzona_edit', idzona = '$newid_zona_edit' where idsubzona = '$id_subzona'");
-              if ($update_subzona) 
-              {
-                  $idsubzona = array("idsubzona" => $id_subzona);
-                  $subzona = array("subzona" => $nomsubzona_edit);
-                  $newzona = array("idzona_subzona" => $newid_zona_edit);
-                  $varcambiozona = '0';
-                  //checar si se cambio de zona la subzona editada
-                  $select_zona_subzona = mysqli_query($conexion, "SELECT idzona from subzonas where idsubzona = '$id_subzona'");
-                  $zona_deSubzona = mysqli_fetch_assoc($select_zona_subzona)['idzona'];
-                  if(strcmp($zona_deSubzona, $newid_zona_edit) !== 1)
-                  {
-                    //son diferentes, por lo tanto se cambio
-                    $varcambiozona = '1';
-                  }
-                  $cambiozona = array("cambiozona" => $varcambiozona);
-                  $resultUpdateSubzona = $idsubzona + $subzona + $cambiozona + $newzona;
-              } 
-              else
-              {
-                  $resultUpdateSubzona = 0;
-              }
-  }
-  else
-  {
-    $resultUpdateSubzona = 0;
-  }
-  echo json_encode($resultUpdateSubzona,JSON_UNESCAPED_UNICODE);
   exit;
 }
 

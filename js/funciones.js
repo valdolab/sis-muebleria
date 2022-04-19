@@ -195,7 +195,7 @@ $('#idestado_civil').change(function() {
         event.preventDefault();
         $.ajax({                        
            type: 'POST',                 
-           url: 'ajax.php',                     
+           url: 'ajax_forms.php',                     
            data: $(this).serialize(),
            success: function(response)             
            {
@@ -242,7 +242,7 @@ $('#idestado_civil').change(function() {
         event.preventDefault();
         $.ajax({                        
            type: 'POST',                 
-           url: 'ajax.php',                     
+           url: 'ajax_forms.php',                     
            data: $(this).serialize(),
            success: function(response)             
            {
@@ -286,7 +286,7 @@ $('#idestado_civil').change(function() {
         event.preventDefault();
         $.ajax({                        
            type: 'POST',                 
-           url: 'ajax.php',                     
+           url: 'ajax_forms.php',                     
            data: $(this).serialize(),
            success: function(response)             
            {
@@ -334,7 +334,7 @@ $('#idestado_civil').change(function() {
         event.preventDefault();
         $.ajax({                        
            type: 'POST',                 
-           url: 'ajax.php',                     
+           url: 'ajax_forms.php',                     
            data: $(this).serialize(),
            success: function(response)             
            {
@@ -378,7 +378,7 @@ $('#idestado_civil').change(function() {
         event.preventDefault();
         $.ajax({                        
            type: 'POST',                 
-           url: 'ajax.php',                     
+           url: 'ajax_forms.php',                     
            data: $(this).serialize(),
            success: function(response)             
            {
@@ -436,7 +436,7 @@ $('#idestado_civil').change(function() {
         event.preventDefault();
         $.ajax({                        
            type: 'POST',                 
-           url: 'ajax.php',                     
+           url: 'ajax_forms.php',                     
            data: $(this).serialize(),
            success: function(response)             
            {
@@ -481,7 +481,7 @@ $('#idestado_civil').change(function() {
         event.preventDefault();
         $.ajax({                        
            type: 'POST',                 
-           url: 'ajax.php',                     
+           url: 'ajax_forms.php',                     
            data: $(this).serialize(),
            success: function(response)             
            {
@@ -529,7 +529,7 @@ $('#idestado_civil').change(function() {
         event.preventDefault();
         $.ajax({                        
            type: 'POST',                 
-           url: 'ajax.php',                     
+           url: 'ajax_forms.php',                     
            data: $(this).serialize(),
            success: function(response)             
            {
@@ -578,19 +578,86 @@ $('#idestado_civil').change(function() {
         return false;   
     });
 
+    //AQUI van los forms para insertar, y editar de categoria, subcategoria y producto
+    //form de insertar categoria
+    $("#formAdd_cat").submit( function () {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           success: function(response)             
+           {
+                if(response == 0)
+                {
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "productos.php";
+                            }
+                        }) 
+                }
+                else
+                {
+                    $('#nueva_cat').modal('hide');
+                    //limpiar el input
+                    //$('#prueba').html(response);
+                    $('#nombre_cat,#atr1,#atr2,#atr3,#atr4,#atr5,#contado,#especial,#credito1,#credito2,#mesespago,#garantia').val('');
+                    var data = $.parseJSON(response);
+                    $('#categoria').append($('<option>',
+                    {
+                        value: data.idcategoria,
+                        text : data.categoria
+                    }));
+                    $('#categoria').val(data.idcategoria).change();
+                    $('#categoria_subcategoria').append($('<option>',
+                    {
+                        value: data.idcategoria,
+                        text : data.categoria
+                    }));
+                    $('#categoria_producto').append($('<option>',
+                    {
+                        value: data.idcategoria,
+                        text : data.categoria
+                    }));
+                    Swal.fire(
+                          '!Agregado!',
+                          '!Se guardo la nueva categoría!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed)
+                            {}
+                        })
+                }         
+           }
+       });   
+        return false;   
+    });
+
 //FIN DEL DOCUMENT READY
 });
+
+//para hacer mayusculas
+function mayusculas(e) {
+    e.value = e.value.toUpperCase();
+}
 
 //funciones y cosas para el modulo productos
 $('#tiene_subcat').change(function()
 {
   if (document.getElementById('tiene_subcat').checked)
   {
-    $("#formAdd_cat :input:not(#nombre_cat,#tiene_subcat,#btn_guardarcat,#btn_cancerlarcat)").attr("disabled","disabled");
+    $("#formAdd_cat :input:not(#nombre_cat,#tiene_subcat,#btn_guardarcat,#btn_cancerlarcat,#atr1,#action,#flagidcategoria)").attr("disabled","disabled");
+    $('#atr1,#atr2,#atr3,#atr4,#atr5,#contado,#especial,#credito1,#credito2,#mesespago,#garantia').val('');
   }
   else
   {
-    $("#formAdd_cat :input:not(#nombre_cat,#tiene_subcat,#btn_guardarcat,#btn_cancerlarcat)").removeAttr("disabled");
+    $("#formAdd_cat :input:not(#nombre_cat,#tiene_subcat,#btn_guardarcat,#btn_cancerlarcat,#atr1,#action,#flagidcategoria)").removeAttr("disabled");
+    $('#atr1').val('MARCA');
   }
 });
 
@@ -673,6 +740,7 @@ $('#subzona').change(function(e)
       data: {action:action,subzona:idsubzona},
       success: function(response) {
         //var data = $.parseJSON(response);
+        //$('#prueba12').html(response);
         if(response == 0)
         {
             $('#btneliminar_subzona').attr('onClick', 'eliminar_subzona("'+idsubzona+'");');
@@ -748,6 +816,39 @@ $('#tipo').change(function(e)
         {
             $('#btn_eliminartipo').attr('onClick', 'eliminar_tipo();');
             $('#btn_eliminartipo').attr('disabled','disabled');
+        }
+        //$('#prueba').html(data); 
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
+});
+
+//==== para los select de categoria
+$('#categoria').change(function(e) 
+{
+    e.preventDefault();
+    var idcategoria = $(this).val();
+    $('#btnedit_categoria').attr('onClick', 'editar_categoria("'+idcategoria+'");');
+    $('#btnedit_categoria').removeAttr('disabled');
+
+    var action = 'searchCatUsed';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,categoria:idcategoria},
+      success: function(response) {
+        if(response == 0)
+        {
+            $('#btneliminar_categoria').attr('onClick', 'eliminar_categoria("'+idcategoria+'");');
+            $('#btneliminar_categoria').removeAttr('disabled');
+        }
+        else
+        {
+            $('#btneliminar_categoria').attr('onClick', 'eliminar_categoria();');
+            $('#btneliminar_categoria').attr('disabled','disabled');
         }
         //$('#prueba').html(data); 
       },
@@ -1235,7 +1336,7 @@ function eliminar_subzona(idsubzona)
         })
 }
 
-//para editar puesto
+//para editar subzona
 function editar_subzona(idsubzona)
 {
     var action = 'SelectSubzona';
@@ -1350,6 +1451,98 @@ function editar_tipo(idtipo)
    });  
 }
 
+//para eliminar categoria y subcategoria
+function eliminar_categoria(idcategoria)
+{
+    Swal.fire({
+            title: '¿Esta seguro de eliminar?',
+            text: 'Todas las subcategorias pertenecientes a esta categoria serán eliminadas',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'SI, Eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'eliminarCategoria';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action,categoria:idcategoria},
+                  success: function(response) {
+                    //$('#prueba').val(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                window.location.href=window.location.href;
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Eliminado!',
+                          'Se elimino correctamente!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto actualizamos todos los select de la pagina
+                                $("#categoria option[value='"+idcategoria+"']").remove();
+                                $("#categoria_subcategoria option[value='"+idcategoria+"']").remove();
+                                $("#categoria_producto option[value='"+idcategoria+"']").remove();
+                                $('#btnedit_categoria').attr('onClick', 'editar_categoria();');
+                                $('#btnedit_categoria').attr('disabled','disabled');
+                                $('#btneliminar_categoria').attr('onClick', 'eliminar_categoria);');
+                                $('#btneliminar_categoria').attr('disabled','disabled');
+                            }
+                        })
+                    }
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });      
+              }
+        })
+}
+
+//para editar puesto
+function editar_categoria(idcategoria)
+{
+    var action = 'SelectCategoria';
+    $.ajax({
+        url: 'ajax.php',
+        type: "POST",
+        async: true,
+        data: {action:action,categoria:idcategoria},
+        success: function(response) {
+            //$('#prueba').val(response);
+            if (response != 0) 
+            {
+              var data = $.parseJSON(response);
+              $('#flagidcategoria').val(idcategoria);
+
+            }
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+   });  
+}
+
+function nueva_categoria()
+{
+    $('#flagidcategoria').val('nuevacat');
+}
+
+//ESTAS SON FUNCIONES PARA OTRAS COSAS
 //para suspender sucursales
 function suspender_sucursal(idsucursal)
 {

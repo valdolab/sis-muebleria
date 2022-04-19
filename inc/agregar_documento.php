@@ -134,12 +134,5 @@ if (!empty($_GET['msgdoc']))
 <br><br><br><br>
 <!-- End of Main Content -->
 
-<script type="text/javascript">
-    //funcion para poner mayusculas los inputs
-function mayusculas(e) {
-    e.value = e.value.toUpperCase();
-}
-</script>
-
 <?php ob_end_flush(); ?>
 <?php include_once "footer.php"; ?>
