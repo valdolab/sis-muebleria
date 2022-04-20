@@ -184,7 +184,7 @@ if (!empty($_POST))
 <div id="nueva_subcat" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
-        <form action="" method="post" autocomplete="on">
+        <form action="" method="post" autocomplete="on" id="formAdd_subcat">
             <div class="modal-header">
                 <h3 class="modal-title">Detalle Subcategoría</h3>
                 <div class="row">
@@ -644,13 +644,36 @@ if (!empty($_POST))
             </select>
         </div>
         <div class="col-lg-3">
-            <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 65px !important;">Ver Costos</button>
-
-            <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 70px !important; height: 54% !important; position: relative; top: -24%; font-size: 10px; vertical-align: top;">Editar Listas</button>
             
+            <div class="row">
+              <div class="col-12 col-sm-2">
+                  <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 65px !important;">Ver Costos</button>
+              </div>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <div class="col-12 col-sm-3">
+                <div class="row">
+                    <div class="col-12 col-sm-12" align="center">
+                        <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 80px !important; height: 45px !important; padding: 0px;">Editar Lista</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6" align="center" style="padding-right: 0px;">
+                        <button onClick='pausar_lista();' class='btn btn-warning btn-sm btn-block' type='submit'><i style='color: white;' class='fas fa-pause'></i></button>
+                    </div>
+                    <div class="col-12 col-sm-6" align="center" style="padding-left: 0px; padding-right: 5px;">
+                        <button onClick='guardar_lista();' class='btn btn-success btn-sm btn-block' type='submit'><i style='color: white;' class='fas fa-save'></i></button>
+                    </div>
+                </div>
+              </div>
 
-            <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Catalogo</button>
-            <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Lista</button>
+              <div class="col-12 col-sm-3">
+                <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Catalogo</button>
+              </div>
+              <div class="col-12 col-sm-3">
+                  <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Lista</button>
+              </div>
+            </div>
+
         </div>
     </div>
 </form>

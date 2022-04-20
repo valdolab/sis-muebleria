@@ -650,6 +650,77 @@ $('#idestado_civil').change(function() {
         return false;   
     });
 
+    //form para insertar e editar una subcategoria
+    $("#formAdd_subcat").submit( function () {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           success: function(response)             
+           {
+                if(response == 0)
+                {
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "productos.php";
+                            }
+                        }) 
+                }
+                else
+                {
+                    $('#nueva_cat').modal('hide');
+                    //limpiar el input
+                    //$('#prueba').html(response);
+                    $('#nombre_cat,#atr1,#atr2,#atr3,#atr4,#atr5,#contado,#especial,#credito1,#credito2,#mesespago,#garantia').val('');
+                    var data = $.parseJSON(response);
+                    if(data.flag_insert == 1)
+                    {
+                        //insertamos la nueva option en los selects
+                        $('#categoria').append($('<option>',
+                        {
+                            value: data.idcategoria,
+                            text : data.categoria
+                        }));
+                        $('#categoria').val(data.idcategoria).change();
+                        $('#categoria_subcategoria').append($('<option>',
+                        {
+                            value: data.idcategoria,
+                            text : data.categoria
+                        }));
+                        $('#categoria_producto').append($('<option>',
+                        {
+                            value: data.idcategoria,
+                            text : data.categoria
+                        }));
+                    }
+                    else
+                    {
+                        //actualizamos el texto de la opcion modificada
+                        $('#categoria option[value="'+data.idcategoria+'"]').text(data.categoria);
+                        $('#categoria_subcategoria option[value="'+data.idcategoria+'"]').text(data.categoria);
+                        $('#categoria_producto option[value="'+data.idcategoria+'"]').text(data.categoria);
+                        //$('#prueba').html(data.sentencia);
+                    }
+                    Swal.fire(
+                          '!Agregado!',
+                          '!Se guardo la nueva categoría!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed)
+                            {}
+                        })
+                }         
+           }
+       });   
+        return false;   
+    });
+
 //FIN DEL DOCUMENT READY
 });
 
