@@ -245,6 +245,26 @@ if ($_POST['action'] == 'eliminarCliente')
   exit;
 }
 
+#eliminar subcat
+  if ($_POST['action'] == 'eliminarSubCat') {
+  include "accion/conexion.php";
+  if (!empty($_POST['subcategoria'])) 
+  {
+    $id_subcat = $_POST['subcategoria'];
+
+    $query_subcat = mysqli_query($conexion, "DELETE FROM subcategoria WHERE idsubcategoria = '$id_subcat'");
+
+    mysqli_close($conexion);
+    if ($query_subcat) {
+      $elimino_subcat= 1;
+    }else {
+      $elimino_subcat = 0;
+    }
+    echo json_encode($elimino_subcat,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
 ##buscar datos sobre el tipo para poder editar tipo
   if ($_POST['action'] == 'SelectTipo') {
   include "accion/conexion.php";
@@ -327,6 +347,31 @@ if ($_POST['action'] == 'eliminarCliente')
       $data_cat = 0;
     }
     echo json_encode($data_cat,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+##buscar datos sobre de la subcategoria para poder editarlos
+  if ($_POST['action'] == 'SelectSubCat') 
+  {
+  include "accion/conexion.php";
+  if (!empty($_POST['subcategoria'])) 
+  {
+    $id_subcat = $_POST['subcategoria'];
+
+    $select_subcat = mysqli_query($conexion, "SELECT * from subcategoria where idsubcategoria = '$id_subcat'");
+    mysqli_close($conexion);
+    $result_subcat = mysqli_num_rows($select_subcat);
+    $data_subcat = '';
+    if ($result_subcat > 0) 
+    {
+      $data_subcat = mysqli_fetch_assoc($select_subcat);
+    }
+    else 
+    {
+      $data_subcat = 0;
+    }
+    echo json_encode($data_subcat,JSON_UNESCAPED_UNICODE);
   }
   exit;
 }
@@ -537,4 +582,17 @@ if ($_POST['action'] == 'searchCatUsed')
   exit;
 }
 
+//buscar si la subcategoria esta siendo usada por algun producto
+if ($_POST['action'] == 'searchSubCatUsed') 
+{
+  include "accion/conexion.php";
+  if (!empty($_POST['subcategoria'])) {
+      $idsubcategoria = $_POST['subcategoria'];
 
+      //calculamos si esa zona se esta en uso para no poder borrarlo
+      $queryFindsubcat = mysqli_query($conexion, "SELECT count(idproducto) as num from producto where subcategoria = '$idsubcategoria'");
+      $resultFindsubcat = (int) mysqli_fetch_assoc($queryFindsubcat)['num'];
+    echo json_encode($resultFindsubcat,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}

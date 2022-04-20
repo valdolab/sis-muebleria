@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 19-04-2022 a las 19:41:32
--- Versión del servidor: 5.7.31
--- Versión de PHP: 7.3.21
+-- Tiempo de generación: 20-04-2022 a las 07:31:14
+-- Versión del servidor: 5.7.36
+-- Versión de PHP: 7.4.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -51,8 +51,9 @@ CREATE TABLE IF NOT EXISTS `categoria` (
 --
 
 INSERT INTO `categoria` (`idcategoria`, `nombre`, `tiene_subcat`, `atr1`, `atr2`, `atr3`, `atr4`, `atr5`, `contado`, `especial`, `credito1`, `credito2`, `meses_pago`, `meses_garantia`) VALUES
+('00095e94-c070-11ec-8edf-18c04dae039e', 'ASD', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 ('5a0be372-c010-11ec-a813-d481d7c3a9ad', 'BICICLETA', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('6b149c84-c010-11ec-a813-d481d7c3a9ad', 'SECADORA', 0, 'MARCA', 'GENERO', 'KG', 'TAMAÑO', NULL, 10, 20, 15, 20, 12, 6);
+('6b149c84-c010-11ec-a813-d481d7c3a9ad', 'LINEA BLANCA', 0, 'MARCA', 'GENERO', 'KG', 'TAMAÑO', NULL, 10, 20, 15, 20, 12, 6);
 
 -- --------------------------------------------------------
 
@@ -357,7 +358,7 @@ CREATE TABLE IF NOT EXISTS `subcategoria` (
   `nombre` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `categoria` char(36) COLLATE utf8_spanish_ci NOT NULL,
   `atr1` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `art2` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr2` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `atr3` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `atr4` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `atr5` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
@@ -370,6 +371,14 @@ CREATE TABLE IF NOT EXISTS `subcategoria` (
   PRIMARY KEY (`idsubcategoria`),
   KEY `pertenece_a_la_categoria` (`categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `subcategoria`
+--
+
+INSERT INTO `subcategoria` (`idsubcategoria`, `nombre`, `categoria`, `atr1`, `atr2`, `atr3`, `atr4`, `atr5`, `contado`, `especial`, `credito1`, `credito2`, `meses_pago`, `meses_garantia`) VALUES
+('9aded115-c07a-11ec-8edf-18c04dae039e', 'LAVADORA', '6b149c84-c010-11ec-a813-d481d7c3a9ad', 'MARCA', 'KG', 'TAMAÑO', 'PESO', 'PRUEBA', 11, 1, 11, 10, 12, 6),
+('ae064f03-c07b-11ec-8edf-18c04dae039e', 'ASD', '00095e94-c070-11ec-8edf-18c04dae039e', 'MARCA', 'ASD', 'ASD', 'ASD', 'ASD', 12, 12, 12, 12, 12, 12);
 
 -- --------------------------------------------------------
 

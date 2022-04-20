@@ -244,7 +244,7 @@ if ($_POST['action'] == 'edit_subzona')
   exit;
 }
 
-//insert categoria
+//insert y update categoria
 if ($_POST['action'] == 'insert_categoria') 
 {  
   include "accion/conexion.php";
@@ -314,7 +314,7 @@ if ($_POST['action'] == 'insert_categoria')
         if (isset($_POST['tiene_subcat']))
         {
           $tiene_subcat = 1;
-          $atr1 = 0;
+          $atr1 = '';
         }
         else
         {
@@ -351,6 +351,85 @@ if ($_POST['action'] == 'insert_categoria')
     $resultInsertCategoria = 0;
   }
   echo json_encode($resultInsertCategoria,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+//INSERTAR Y UPDATED subcategoria
+if ($_POST['action'] == 'insert_subcategoria') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['flagidsubcategoria'])) 
+  {
+    $idsubcategoria = $_POST['flagidsubcategoria'];
+    if($idsubcategoria == "nuevasubcat")
+    {
+        //code for insert new categoria
+        $nombre_subcat = $_POST['nombre_subcat'];
+        //no tiene subcat, insertamos todo
+        $categoria_subcategoria = $_POST['categoria_subcategoria'];
+        $atr1 = 'MARCA';
+        $atr2 = $_POST['atr2_sub'];
+        $atr3 = $_POST['atr3_sub'];
+        $atr4 = $_POST['atr4_sub'];
+        $atr5 = $_POST['atr5_sub'];
+        $contado = $_POST['contado_sub'];
+        $especial = $_POST['especial_sub'];
+        $credito1 = $_POST['credito1_sub'];
+        $credito2 = $_POST['credito2_sub'];
+        $mesespago = $_POST['mesespago_sub'];
+        $garantia = $_POST['garantia_sub'];
+        $resultIDsubcat = mysqli_query($conexion, "SELECT UUID() as idsubcategoria");
+        $uuid = mysqli_fetch_assoc($resultIDsubcat)['idsubcategoria'];
+
+        $insert_subcat = mysqli_query($conexion, "INSERT INTO subcategoria(idsubcategoria, nombre, categoria, atr1, atr2, atr3, atr4, atr5, contado, especial, credito1, credito2, meses_pago, meses_garantia) VALUES ('$uuid','$nombre_subcat', '$categoria_subcategoria', '$atr1', ".(!empty($atr2) ? "'$atr2'" : "NULL").", ".(!empty($atr3) ? "'$atr3'" : "NULL").", ".(!empty($atr4) ? "'$atr4'" : "NULL").", ".(!empty($atr5) ? "'$atr5'" : "NULL").", $contado, $especial, $credito1, '$credito2', '$mesespago', '$garantia')");
+        if ($insert_subcat) 
+        {
+          $idsubcat = array("idsubcategoria" => $uuid);
+          $subcategoria = array("subcategoria" => $nombre_subcat);
+          $flag_insert = array("flag_insert" => 1);
+          $resultInsertSubcat = $idsubcat + $subcategoria + $flag_insert;
+        } 
+        else
+        {
+          $resultInsertSubcat = 0;
+        }
+    }
+    else
+    {
+        //code for update a selected categoria
+        $nombre_subcat = $_POST['nombre_subcat'];
+        $categoria_subcategoria = $_POST['categoria_subcategoria'];
+        $atr1 = 'MARCA';
+        $atr2 = $_POST['atr2_sub'];
+        $atr3 = $_POST['atr3_sub'];
+        $atr4 = $_POST['atr4_sub'];
+        $atr5 = $_POST['atr5_sub'];
+        $contado = $_POST['contado_sub'];
+        $especial = $_POST['especial_sub'];
+        $credito1 = $_POST['credito1_sub'];
+        $credito2 = $_POST['credito2_sub'];
+        $mesespago = $_POST['mesespago_sub'];
+        $garantia = $_POST['garantia_sub'];
+        //idcat -> $idcategoria
+        $update_subcat = mysqli_query($conexion, "UPDATE subcategoria set nombre = '$nombre_subcat', categoria = '$categoria_subcategoria', atr1 = '$atr1', atr2 = ".(!empty($atr2) ? "'$atr2'" : "NULL").", atr3 = ".(!empty($atr3) ? "'$atr3'" : "NULL").", atr4 = ".(!empty($atr4) ? "'$atr4'" : "NULL").", atr5 = ".(!empty($atr5) ? "'$atr5'" : "NULL").", contado = ".(!empty($contado) ? "$contado" : "NULL").", especial = ".(!empty($especial) ? "$especial" : "NULL").", credito1 = ".(!empty($credito1) ? "$credito1" : "NULL").", credito2 = ".(!empty($credito2) ? "$credito2" : "NULL").", meses_pago = ".(!empty($mesespago) ? "$mesespago" : "NULL").", meses_garantia = ".(!empty($garantia) ? "$garantia" : "NULL")." WHERE idsubcategoria  = '$idsubcategoria'");
+        if ($update_subcat) 
+        {
+          $idsubcat = array("idsubcategoria" => $idsubcategoria);
+          $subcategoria = array("subcategoria" => $nombre_subcat);
+          $flag_insert = array("flag_insert" => 0);
+          $resultInsertSubcat = $idsubcat + $subcategoria + $flag_insert;
+        } 
+        else
+        {
+          $resultInsertSubcat = 0;
+        }
+    }
+  }
+  else
+  {
+    $resultInsertSubcat = 0;
+  }
+  echo json_encode($resultInsertSubcat,JSON_UNESCAPED_UNICODE);
   exit;
 }
 

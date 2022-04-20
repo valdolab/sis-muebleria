@@ -662,6 +662,7 @@ $('#idestado_civil').change(function() {
            {
                 if(response == 0)
                 {
+                    //$('#prueba').html(response);
                     Swal.fire({
                           icon: 'error',
                           title: 'Oops...',
@@ -674,42 +675,36 @@ $('#idestado_civil').change(function() {
                 }
                 else
                 {
-                    $('#nueva_cat').modal('hide');
+                    $('#nueva_subcat').modal('hide');
                     //limpiar el input
                     //$('#prueba').html(response);
-                    $('#nombre_cat,#atr1,#atr2,#atr3,#atr4,#atr5,#contado,#especial,#credito1,#credito2,#mesespago,#garantia').val('');
+                    $('#nombre_subcat,#atr1_sub,#atr2_sub,#atr3_sub,#atr4_sub,#atr5_sub,#contado_sub,#especial_sub,#credito1_sub,#credito2_sub,#mesespago_sub,#garantia_sub').val('');
                     var data = $.parseJSON(response);
                     if(data.flag_insert == 1)
                     {
                         //insertamos la nueva option en los selects
-                        $('#categoria').append($('<option>',
+                        $('#subcategoria').append($('<option>',
                         {
-                            value: data.idcategoria,
-                            text : data.categoria
+                            value: data.idsubcategoria,
+                            text : data.subcategoria
                         }));
-                        $('#categoria').val(data.idcategoria).change();
-                        $('#categoria_subcategoria').append($('<option>',
+                        $('#subcategoria').val(data.idsubcategoria).change();
+                        $('#subcategoria_producto').append($('<option>',
                         {
-                            value: data.idcategoria,
-                            text : data.categoria
-                        }));
-                        $('#categoria_producto').append($('<option>',
-                        {
-                            value: data.idcategoria,
-                            text : data.categoria
+                            value: data.idsubcategoria,
+                            text : data.subcategoria
                         }));
                     }
                     else
                     {
                         //actualizamos el texto de la opcion modificada
-                        $('#categoria option[value="'+data.idcategoria+'"]').text(data.categoria);
-                        $('#categoria_subcategoria option[value="'+data.idcategoria+'"]').text(data.categoria);
-                        $('#categoria_producto option[value="'+data.idcategoria+'"]').text(data.categoria);
+                        $('#subcategoria option[value="'+data.idsubcategoria+'"]').text(data.subcategoria);
+                        $('#subcategoria_producto option[value="'+data.idsubcategoria+'"]').text(data.subcategoria);
                         //$('#prueba').html(data.sentencia);
                     }
                     Swal.fire(
                           '!Agregado!',
-                          '!Se guardo la nueva categoría!',
+                          '!Se guardo la nueva subcategoría!',
                           'success'
                         ).then((result) => {
                             if (result.isConfirmed)
@@ -920,6 +915,39 @@ $('#categoria').change(function(e)
         {
             $('#btneliminar_categoria').attr('onClick', 'eliminar_categoria();');
             $('#btneliminar_categoria').attr('disabled','disabled');
+        }
+        //$('#prueba').html(data); 
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
+});
+
+//==== para los select de subcategoria
+$('#subcategoria').change(function(e) 
+{
+    e.preventDefault();
+    var idsubcategoria = $(this).val();
+    $('#btnedit_subcategoria').attr('onClick', 'editar_subcategoria("'+idsubcategoria+'");');
+    $('#btnedit_subcategoria').removeAttr('disabled');
+
+    var action = 'searchSubCatUsed';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,subcategoria:idsubcategoria},
+      success: function(response) {
+        if(response == 0)
+        {
+            $('#btneliminar_subcategoria').attr('onClick', 'eliminar_subcategoria("'+idsubcategoria+'");');
+            $('#btneliminar_subcategoria').removeAttr('disabled');
+        }
+        else
+        {
+            $('#btneliminar_subcategoria').attr('onClick', 'eliminar_subcategoria();');
+            $('#btneliminar_subcategoria').attr('disabled','disabled');
         }
         //$('#prueba').html(data); 
       },
@@ -1423,7 +1451,7 @@ function editar_subzona(idsubzona)
               var data = $.parseJSON(response);
                 $('#newsubzona_edit').val(data.subzona);
                 $('#zona_subzona_edit').val(data.idzona).change();
-                $('#zona_subzona_edit_flag').val(data.idzona).change();
+                //$('#zona_subzona_edit_flag').val(data.idzona).change();
                 $('#idnewsubzona_edit').val(idsubzona);
                 //$('#idpuesto_flag').val(idpuesto);
             }
@@ -1629,6 +1657,103 @@ function editar_categoria(idcategoria)
    });  
 }
 
+//funciones de eliminar y editar de SUBCATEGORIA
+function eliminar_subcategoria(idsubcategoria)
+{
+    Swal.fire({
+            title: '¿Esta seguro de eliminar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'SI, Eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'eliminarSubCat';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action,subcategoria:idsubcategoria},
+                  success: function(response) {
+                    //$('#prueba').val(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                window.location.href=window.location.href;
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Eliminado!',
+                          'Se elimino correctamente!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto actualizamos todos los select de la pagina
+                                $("#subcategoria option[value='"+idsubcategoria+"']").remove();
+                                $("#subcategoria_producto option[value='"+idsubcategoria+"']").remove();
+                                $('#btnedit_subcategoria').attr('onClick', 'editar_subcategoria();');
+                                $('#btnedit_subcategoria').attr('disabled','disabled');
+                                $('#btneliminar_subcategoria').attr('onClick', 'eliminar_subcategoria);');
+                                $('#btneliminar_subcategoria').attr('disabled','disabled');
+                            }
+                        })
+                    }
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });      
+              }
+        })
+}
+
+//para editar puesto
+function editar_subcategoria(idsubcategoria)
+{
+    var action = 'SelectSubCat';
+    $.ajax({
+        url: 'ajax.php',
+        type: "POST",
+        async: true,
+        data: {action:action,subcategoria:idsubcategoria},
+        success: function(response) {
+            //$('#prueba').val(response);
+            if (response != 0) 
+            {
+              //$('#prueba').val(response);
+              var data = $.parseJSON(response);
+              $('#categoria_subcategoria').val(data.categoria).change();
+              $('#flagidsubcategoria').val(idsubcategoria);
+              $('#nombre_subcat').val(data.nombre);
+                $('#atr1_sub').val(data.atr1);
+                $('#atr2_sub').val(data.atr2);
+                $('#atr3_sub').val(data.atr3);
+                $('#atr4_sub').val(data.atr4);
+                $('#atr5_sub').val(data.atr5);
+                $('#contado_sub').val(data.contado);
+                $('#especial_sub').val(data.especial);
+                $('#credito1_sub').val(data.credito1);
+                $('#credito2_sub').val(data.credito2);
+                $('#mesespago_sub').val(data.meses_pago);
+                $('#garantia_sub').val(data.meses_garantia);
+            }
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+   });  
+}
+
 function nueva_categoria()
 {
     $('#flagidcategoria').val('nuevacat');
@@ -1641,7 +1766,7 @@ function nueva_categoria()
 function nueva_subcategoria()
 {
     $('#flagidsubcategoria').val('nuevasubcat');
-    $("#formAdd_subcat :input:not(#btn_guardarsubcat,#btn_cancerlarsubcat,#atr1,#action,#flagidsubcategoria)").val('');
+    $("#formAdd_subcat :input:not(#btn_guardarsubcat,#btn_cancerlarsubcat,#categoria_subcategoria,#atr1_sub,#action,#flagidsubcategoria)").val('');
 }
 
 //ESTAS SON FUNCIONES PARA OTRAS COSAS

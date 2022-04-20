@@ -191,7 +191,7 @@ if (!empty($_POST))
                     <div class="col-lg-6">
                         <!-- agrandar SELECT -->
                         <select class="form-control" id="categoria_subcategoria" name="categoria_subcategoria">
-                                <option selected hidden>Selecciona categoría</option>
+                                <option hidden selected>Selecciona categoría</option>
                                 <?php
                                     #codigo para la lista de sucursales que se extraen de la base de datos
                                     $result_cat = mysqli_query($conexion,"SELECT idcategoria,nombre FROM categoria order by nombre asc");
@@ -206,12 +206,12 @@ if (!empty($_POST))
                             </select>
                     </div>
                     <div class="col-lg-3">
-                        <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close" id="btn_cancerlarsubcat">
                             Cancelar
                         </button>
                     </div>
                     <div class="col-lg-3">
-                        <input type="submit" value="Guardar" class="btn btn-lg btn-success">
+                        <input type="submit" class="btn btn-lg btn-success" value="Guardar" id="btn_guardarsubcat">
                     </div>
                 </div>
             </div>
@@ -220,7 +220,7 @@ if (!empty($_POST))
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="nombre_subcat">Nombre</label>
-                                <input type="text" class="form-control" name="nombre_subcat" id="nombre_subcat" required>
+                                <input type="text" class="form-control" name="nombre_subcat" id="nombre_subcat" required onkeyup="mayusculas(this);">
                             </div>  
                         </div>
 
@@ -234,7 +234,7 @@ if (!empty($_POST))
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="atr2_sub">Atributo 2</label>
-                                <input type="text" class="form-control" name="atr2_sub" id="atr2_sub">
+                                <input type="text" class="form-control" name="atr2_sub" id="atr2_sub" onkeyup="mayusculas(this);">
                             </div>  
                         </div>
                     </div>
@@ -242,21 +242,21 @@ if (!empty($_POST))
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="atr3_sub">Atributo 3</label>
-                                <input type="text" class="form-control" name="atr3_sub" id="atr3_sub">
+                                <input type="text" class="form-control" name="atr3_sub" id="atr3_sub" onkeyup="mayusculas(this);">
                             </div>  
                         </div>
 
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="atr4_sub">Atributo 4</label>
-                                <input type="text" class="form-control" name="atr4_sub" id="atr4_sub">
+                                <input type="text" class="form-control" name="atr4_sub" id="atr4_sub" onkeyup="mayusculas(this);">
                             </div>  
                         </div>
 
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="atr5_sub">Atributo 5</label>
-                                <input type="text" class="form-control" name="atr5_sub" id="atr5_sub">
+                                <input type="text" class="form-control" name="atr5_sub" id="atr5_sub" onkeyup="mayusculas(this);">
                             </div>  
                         </div>
                     </div>
@@ -303,7 +303,7 @@ if (!empty($_POST))
                         <div class="col-lg-3"></div>
                         <div class="form-group col-lg-3">
                             <label for="mesespagosub">Meses de pago:</label>
-                            <input name="mesespagosub" id="mesespagosub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            <input name="mesespago_sub" id="mesespago_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="garantia_sub">Meses garantía:</label>
@@ -311,7 +311,7 @@ if (!empty($_POST))
                         </div>
                     </div>
                     <input value="insert_subcategoria" name="action" id="action" hidden>
-                    <input type="text" value="" id="flagidsubcategoria" name="flagidsubcategoria">
+                    <input type="text" value="" id="flagidsubcategoria" name="flagidsubcategoria" hidden>
             </div>
         </form>
         </div>
@@ -586,7 +586,7 @@ if (!empty($_POST))
         <div class="col-lg-2">
             <label>Subcategoría:</label>
             <button data-toggle="modal" data-target="#nueva_subcat" title="Agregar nueva subcategoría" class="btn btn-primary btn-xs" type="button" onclick="nueva_subcategoria();" ><i class="fas fa-plus"></i></button>
-            <button disabled data-toggle="modal" data-target="#editar_subcategoria" onclick="editar_subcat();" title="editar subcategoria" class="btn btn-success btn-xs" type="button" href="#" id="btnedit_subcategoria"><i class="fas fa-edit"></i></button>
+            <button disabled data-toggle="modal" data-target="#nueva_subcat" onclick="editar_subcat();" title="editar subcategoria" class="btn btn-success btn-xs" type="button" href="#" id="btnedit_subcategoria"><i class="fas fa-edit"></i></button>
             <button disabled onclick="eliminar_subcat();" title="Eliminar subcategoria" class="btn btn-danger btn-xs" type="button" href="#" id="btneliminar_subcategoria"><i class="fas fa-trash"></i></button>
 
             <select class="form-control" id="subcategoria" name="subcategoria">
@@ -647,9 +647,9 @@ if (!empty($_POST))
             
             <div class="row">
               <div class="col-12 col-sm-2">
-                  <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 65px !important;">Ver Costos</button>
+                  <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 75px !important;">Ver Costos</button>
               </div>
-              &nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;
               <div class="col-12 col-sm-3">
                 <div class="row">
                     <div class="col-12 col-sm-12" align="center">
@@ -657,10 +657,10 @@ if (!empty($_POST))
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-sm-6" align="center" style="padding-right: 0px;">
+                    <div class="col-12 col-sm-6" align="center" style="padding-right: 0px; padding-left: 22px;">
                         <button onClick='pausar_lista();' class='btn btn-warning btn-sm btn-block' type='submit'><i style='color: white;' class='fas fa-pause'></i></button>
                     </div>
-                    <div class="col-12 col-sm-6" align="center" style="padding-left: 0px; padding-right: 5px;">
+                    <div class="col-12 col-sm-6" align="center" style="padding-left: 0px; padding-right: 22px;">
                         <button onClick='guardar_lista();' class='btn btn-success btn-sm btn-block' type='submit'><i style='color: white;' class='fas fa-save'></i></button>
                     </div>
                 </div>
