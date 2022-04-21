@@ -353,7 +353,7 @@ if (!empty($_POST))
 
                         <div class="col-lg-2">
                             <label>Categoría:</label>
-                            <select class="form-control" id="categoria_producto" name="categoria_producto">
+                            <select class="form-control" id="categoria_producto" name="categoria_producto" required>
                                 <option selected hidden>Selecciona categoría</option>
                                 <?php
                                     #codigo para la lista de sucursales que se extraen de la base de datos
@@ -370,19 +370,8 @@ if (!empty($_POST))
                         </div>
                         <div class="col-lg-2">
                             <label>Subcategoriía:</label>
-                            <select class="form-control" id="subcategoria_producto" name="subcategoria_producto">
+                            <select class="form-control" id="subcategoria_producto" name="subcategoria_producto" required>
                                 <option selected hidden>Selecciona subcategoría</option>
-                                <?php
-                                    #codigo para la lista de sucursales que se extraen de la base de datos
-                                    $result_subcat = mysqli_query($conexion,"SELECT idsubcategoria,nombre FROM subcategoria order by nombre asc");
-                                    if (mysqli_num_rows($result_subcat) > 0) 
-                                    {  
-                                      while($row = mysqli_fetch_assoc($result_subcat))
-                                      {
-                                        echo "<option value='".$row["idsubcategoria"]."'>".$row["nombre"]."</option>";
-                                      }
-                                    }
-                                ?>  
                             </select>
                         </div>
                         <div class="col-lg-1">
@@ -437,17 +426,17 @@ if (!empty($_POST))
                         </div>
                         <div class="col-lg-2">
                             <label for="atr1">Stock Min: </label>
-                            <input type="text" class="form-control" name="stockmin" id="stockmin" disabled>
+                            <input type="text" class="form-control" name="stockmin" id="stockmin">
                         </div>
                         <div class="col-lg-2">
                             <label for="atr1">Stock Max: </label>
-                            <input type="text" class="form-control" name="stockmax" id="stockmax" disabled>
+                            <input type="text" class="form-control" name="stockmax" id="stockmax">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg-2">
                             <label for="ettp">EXT.-P:</label>
-                              <input name="ettp" id="ettp" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="ettp" id="ettp" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="costo">COSTO:</label>
@@ -455,87 +444,52 @@ if (!empty($_POST))
                                 <div class="input-group-append">
                                 <span class="input-group-text">$</span>
                               </div>
-                              <input name="costo" id="costo" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
+                              <input name="costo" id="costo" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required min="0" onkeypress="return event.charCode != 45">
                             </div>
                         </div>
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col-lg-3">
                             <label for="costoiva">COSTO+IVA:</label>
                             <!-- calcular el costo mas iva con el costo anterior -->
-                            <div class="input-group mb-3">
-                                <div class="input-group-append">
-                                <span class="input-group-text">$</span>
-                              </div>
-                              <input name="costoiva" id="costoiva" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
-                          </div>
+                              <input name="costoiva" id="costoiva" type="text" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                         </div>
                         <div class="form-group col-lg-2">
                             <label for="contado">Contado:</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-append">
-                                <span class="input-group-text">$</span>
-                              </div>
-                              <input name="contado" id="contado" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
-                            </div>
+                              <input name="contado_producto" id="contado_producto" type="text" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                         </div>
                         <div class="form-group col-lg-2">
                             <label for="especial">Especial:</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-append">
-                                <span class="input-group-text">$</span>
-                              </div>
-                              <input name="especial" id="especial" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
-                            </div>
+                              <input name="especial_producto" id="especial_producto" type="text" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-1"></div>
                         <div class="form-group col-lg-2">
                             <label for="cr1">CR1:</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-append">
-                                <span class="input-group-text">$</span>
-                              </div>
-                              <input name="cr1" id="cr1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
-                            </div>
+                              <input name="cr1_producto" id="cr1_producto" type="text" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                         </div>
                         <div class="form-group col-lg-2">
                             <label for="cr2">CR2:</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-append">
-                                <span class="input-group-text">$</span>
-                              </div>
-                              <input name="cr2" id="cr2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
-                            </div>
+                              <input name="cr2_producto" id="cr2_producto" type="text" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                         </div>
                         <div class="form-group col-lg-2">
                             <label for="p1">P1:</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-append">
-                                <span class="input-group-text">$</span>
-                              </div>
-                              <input name="p1" id="p1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
-                            </div>
+                              <input name="p1_producto" id="p1_producto" type="text" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                         </div>
                         <div class="form-group col-lg-2">
                             <label for="p2">P2:</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-append">
-                                <span class="input-group-text">$</span>
-                              </div>
-                              <input name="p2" id="p2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
-                            </div>
+                              <input name="p2_producto" id="p2_producto" type="text" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                         </div>
                         <div class="form-group col-lg-2">
                             <label for="e_q">E-Q:</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-append">
-                                <span class="input-group-text">$</span>
-                              </div>
-                              <input name="e_q" id="e_q" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
-                            </div>
+                              <input name="e_q_producto" id="e_q_producto" type="text" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
                         </div>
+                        <input type="number" name="flag_contado_producto" id="flag_contado_producto" hidden readonly>
+                        <input type="number" name="flag_especial_producto" id="flag_especial_producto" hidden readonly>
+                        <input type="number" name="flag_cr1_producto" id="flag_cr1_producto" hidden readonly>
+                        <input type="number" name="flag_cr2_producto" id="flag_cr2_producto" hidden readonly>
+                        <input type="number" name="flag_mesespago_producto" id="flag_mesespago_producto" hidden readonly>
                     </div>
-                    <input value="producto" name="bandera" id="bandera" hidden>
+                    <input value="insert_producto" name="action" id="action" hidden>
             </div>
         </form>
         </div>

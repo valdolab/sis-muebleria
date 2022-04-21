@@ -957,36 +957,170 @@ $('#subcategoria').change(function(e)
     });
 });
 
-//interfaz de producto, mostrar los atributos de categorias
-//funcion para crear el boton de elimnar y editar de los puestos
+//interfaz de producto, mostrar los atributos de categorias o subcategorias
 $('#categoria_producto').change(function(e) 
 {
     e.preventDefault();
-    var idcat = $(this).val();
-    if(idcat == "Lavadora")
+    var idcategoria = $(this).val();
+    var action = 'FindAtrsCat';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,categoria:idcategoria},
+      success: function(response) 
+      {
+        //$('#prueba').html(response);
+        var data = $.parseJSON(response);
+        if(data.tiene_subcat == 0)
+        {
+            //entonces bloqueamos el select de subcategoria y mostramos los datos de los atributos en los labels de los inputs
+            $("#subcategoria_producto").empty();
+            $('#subcategoria_producto').attr('disabled','disabled');
+            if(data.atr1 != null)
+            {
+                $('#atr1_producto').removeAttr('disabled');
+                $('#label_atr1').html(data.atr1);
+            }
+            if(data.atr2 != null)
+            {
+                $('#atr2_producto').removeAttr('disabled');
+                $('#label_atr2').html(data.atr2);
+            }
+            if(data.atr3 != null)
+            {
+                $('#atr3_producto').removeAttr('disabled');
+                $('#label_atr3').html(data.atr3);
+            }
+            if(data.atr4 != null)
+            {
+                $('#atr4_producto').removeAttr('disabled');
+                $('#label_atr4').html(data.atr4);
+            }
+            if(data.atr5 != null)
+            {
+                $('#atr5_producto').removeAttr('disabled');
+                $('#label_atr5').html(data.atr5);
+            }
+            //aqui poner los porcentajes de contado, especial, cr1, cr2 en inputs ocultos para despues usarlos para calcular el valor cuando se ponga costos
+            $('#flag_contado_producto').val(data.contado);
+            $('#flag_especial_producto').val(data.especial);
+            $('#flag_cr1_producto').val(data.credito1);
+            $('#flag_cr2_producto').val(data.credito2);
+            $('#flag_mesespago_producto').val(data.meses_pago);
+        }
+        else
+        {
+            //cargamos las subcategorias que tenga esa categoria seleccionada en el select subcategoria_producto
+            $("#subcategoria_producto").empty();
+            $('#subcategoria_producto').append(data.options);
+            //podemos los detalles vacios a la espera de que eligan una subcategoria
+            $('#label_atr1,#label_atr2,#label_atr3,#label_atr4,#label_atr5').html("---");
+            $('#atr1_producto,#atr2_producto,#atr3_producto,#atr4_producto,#atr5_producto').attr('disabled','disabled');
+            $('#subcategoria_producto').removeAttr('disabled');
+        }
+        //$('#prueba').html(data); 
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });    
+});
+$('#subcategoria_producto').change(function(e) 
+{
+    e.preventDefault();
+    var idsubcategoria = $(this).val();
+    var action = 'FindAtrsSubCat';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,subcategoria:idsubcategoria},
+      success: function(response) 
+      {
+        //$('#prueba').html(response);
+        var data = $.parseJSON(response);
+        
+            //entonces bloqueamos el select de subcategoria y mostramos los datos de los atributos en los labels de los inputs
+            if(data.atr1 != null)
+            {
+                $('#atr1_producto').removeAttr('disabled');
+                $('#label_atr1').html(data.atr1);
+            }
+            if(data.atr2 != null)
+            {
+                $('#atr2_producto').removeAttr('disabled');
+                $('#label_atr2').html(data.atr2);
+            }
+            if(data.atr3 != null)
+            {
+                $('#atr3_producto').removeAttr('disabled');
+                $('#label_atr3').html(data.atr3);
+            }
+            if(data.atr4 != null)
+            {
+                $('#atr4_producto').removeAttr('disabled');
+                $('#label_atr4').html(data.atr4);
+            }
+            if(data.atr5 != null)
+            {
+                $('#atr5_producto').removeAttr('disabled');
+                $('#label_atr5').html(data.atr5);
+            }
+            //aqui poner los porcentajes de contado, especial, cr1, cr2 en inputs ocultos para despues usarlos para calcular el valor cuando se ponga costos
+            $('#flag_contado_producto').val(data.contado);
+            $('#flag_especial_producto').val(data.especial);
+            $('#flag_cr1_producto').val(data.credito1);
+            $('#flag_cr2_producto').val(data.credito2);
+            $('#flag_mesespago_producto').val(data.meses_pago);
+        //$('#prueba').html(data); 
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });    
+});
+$('#costo').keyup(function(e) 
+{
+    var costo = parseFloat($(this).val());
+    var costo_iva = costo + (costo*0.16);
+    $('#costoiva').val('$' + costo_iva.toFixed(2));
+
+    //REVISAR QUE SI NO LOS VALORES SON NAN PONER 0
+    //contado
+    var contado = parseFloat($('#flag_contado_producto').val());
+    var costo_contado = costo + (costo*(contado)/100);
+    $('#contado_producto').val('$' + costo_contado.toFixed(2));
+    //especial
+    var especial = parseFloat($('#flag_especial_producto').val());
+    var costo_especial = costo + (costo*(especial)/100);
+    $('#especial_producto').val('$' + costo_especial.toFixed(2));
+    //credito1
+    var cr1 = parseFloat($('#flag_cr1_producto').val());
+    var costo_cr1 = costo + (costo*(cr1)/100);
+    $('#cr1_producto').val('$' + costo_cr1.toFixed(2));
+    //credito2
+    var cr2 = parseFloat($('#flag_cr2_producto').val());
+    var costo_cr2 = costo + (costo*(cr2)/100);
+    $('#cr2_producto').val('$' + costo_cr2.toFixed(2));
+    //E-Q
+    var meses_pago = parseFloat($('#flag_mesespago_producto').val());
+    var e_q = (costo/meses_pago)/2;
+    if(e_q < 400)
     {
-      $('#atr1_producto').removeAttr('disabled');
-      $('#atr2_producto').removeAttr('disabled');
-      $('#atr3_producto').removeAttr('disabled');
-      $('#atr4_producto').removeAttr('disabled');
-
-      $('#stockmin').removeAttr('disabled');
-      $('#stockmax').removeAttr('disabled');
-
-      $('#label_atr1').html("MARCA");
-      $('#label_atr2').html("KG"); 
-      $('#label_atr3').html("Tipo"); 
-      $('#label_atr4').html("Secadora"); 
-      $('#label_atr5').html("Sin atributo"); 
+        $('#e_q_producto').val('$400');
     }
     else
     {
-      $('#label_atr1').html("---");
-      $('#label_atr2').html("---"); 
-      $('#label_atr3').html("---");
-      $('#label_atr4').html("---"); 
-      $('#label_atr5').html("---");
+        $('#e_q_producto').val('$' + e_q.toFixed(2));
     }
+    //p1
+    var p1 = (costo_cr1/e_q)/2;
+    $('#p1_producto').val(p1.toFixed(2));
+    //p2
+    var p2 = (costo_cr2/e_q)/2;
+    $('#p2_producto').val(p2.toFixed(2));
+
 });
 
 //eliminar usuario

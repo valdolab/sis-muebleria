@@ -596,3 +596,63 @@ if ($_POST['action'] == 'searchSubCatUsed')
   }
   exit;
 }
+
+//buscar si tiene subcategoria la categoria
+if ($_POST['action'] == 'FindAtrsCat') 
+{
+  include "accion/conexion.php";
+  if (!empty($_POST['categoria'])) 
+  {
+      $idcategoria = $_POST['categoria'];
+
+      //calculamos si esa zona se esta en uso para no poder borrarlo
+      $queryFindDatacat = mysqli_query($conexion, "SELECT * FROM categoria where idcategoria = '$idcategoria'");
+      $resultQueryFindDataCat = mysqli_fetch_assoc($queryFindDatacat);
+      $tiene_subcat = $resultQueryFindDataCat['tiene_subcat'];
+      if($tiene_subcat == 1)
+      {
+        //buscamos que subtegorias tiene esa categoria
+        $FindSubcats = mysqli_query($conexion, "SELECT idsubcategoria,nombre FROM subcategoria WHERE categoria = '$idcategoria' order by nombre asc");
+        if (mysqli_num_rows($FindSubcats) > 0) 
+        { 
+          $cadena = "<option selected hidden value=''>Seleccione subcategoría</option>";
+          while($row = mysqli_fetch_assoc($FindSubcats))
+          {
+            $cadena = $cadena."<option value='".$row['idsubcategoria']."'>".$row['nombre']."</option>";
+          }
+        }
+        $options = array("options" => $cadena);
+        $tiene_subcat = array("tiene_subcat" => $tiene_subcat);
+        $resultFindAtrscat = $tiene_subcat + $options;
+      }
+      else
+      {
+        //cargamos todo el array
+        $resultFindAtrscat = $resultQueryFindDataCat;
+      }
+
+    echo json_encode($resultFindAtrscat,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+//buscar si tiene subcategoria la categoria
+if ($_POST['action'] == 'FindAtrsSubCat') 
+{
+  include "accion/conexion.php";
+  if (!empty($_POST['subcategoria'])) 
+  {
+      $idsubcategoria = $_POST['subcategoria'];
+
+      //calculamos si esa zona se esta en uso para no poder borrarlo
+      $queryFindDataSubcat = mysqli_query($conexion, "SELECT * FROM subcategoria where idsubcategoria = '$idsubcategoria'");
+      $resultQueryFindDataSubCat = mysqli_fetch_assoc($queryFindDataSubcat);
+      //cargamos todo el array
+      $resultFindAtrsSubcat = $resultQueryFindDataSubCat;
+      
+    echo json_encode($resultFindAtrsSubcat,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+
