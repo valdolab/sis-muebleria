@@ -54,9 +54,7 @@ if (!empty($_POST))
         echo "/";
         echo $subcategoria_producto;*/
         
-        $resultIDproducto = mysqli_query($conexion, "SELECT UUID() as idproducto");
-        $uuid = mysqli_fetch_assoc($resultIDproducto)['idproducto'];
-        $insert_producto = mysqli_query($conexion, "INSERT INTO producto(idproducto, identificador, codigo_barras, categoria, subcategoria, descripcion, serializado, atr1_producto, atr2_producto, atr3_producto, atr4_producto, atr5_producto, stock_min, stock_max, ext_p, costo, costo_iva, costo_contado, costo_especial, costo_cr1, costo_cr2, costo_p1, costo_p2, costo_eq) VALUES ('$uuid',".(!empty($identificador) ? "'$identificador'" : "NULL").", ".(!empty($codigo_barras) ? "'$codigo_barras'" : "NULL").", '$categoria_producto', ".($subcategoria_producto!=0 ? "'$subcategoria_producto'" : "NULL").", ".(!empty($descripcion) ? "'$descripcion'" : "NULL").", $serializado, '$atr1_producto', ".(!empty($atr2_producto) ? "'$atr2_producto'" : "NULL").", ".(!empty($atr3_producto) ? "'$atr3_producto'" : "NULL").", ".(!empty($atr4_producto) ? "'$atr4_producto'" : "NULL").", ".(!empty($atr5_producto) ? "'$atr5_producto'" : "NULL").", ".(!empty($stock_min) ? "'$stock_min'" : "NULL").", ".(!empty($stock_max) ? "'$stock_max'" : "NULL").", ".(!empty($ext_p) ? "'$ext_p'" : "NULL").", $costo, $costo_iva, $costo_contado, $costo_especial, $costo_cr1, $costo_cr2, $costo_p1, $costo_p2, $costo_eq)");
+        $insert_producto = mysqli_query($conexion, "INSERT INTO producto(idproducto, identificador, codigo_barras, categoria, subcategoria, descripcion, serializado, atr1_producto, atr2_producto, atr3_producto, atr4_producto, atr5_producto, stock_min, stock_max, ext_p, costo, costo_iva, costo_contado, costo_especial, costo_cr1, costo_cr2, costo_p1, costo_p2, costo_eq) VALUES (UUID(),".(!empty($identificador) ? "'$identificador'" : "NULL").", ".(!empty($codigo_barras) ? "'$codigo_barras'" : "NULL").", '$categoria_producto', ".($subcategoria_producto!=0 ? "'$subcategoria_producto'" : "NULL").", ".(!empty($descripcion) ? "'$descripcion'" : "NULL").", $serializado, '$atr1_producto', ".(!empty($atr2_producto) ? "'$atr2_producto'" : "NULL").", ".(!empty($atr3_producto) ? "'$atr3_producto'" : "NULL").", ".(!empty($atr4_producto) ? "'$atr4_producto'" : "NULL").", ".(!empty($atr5_producto) ? "'$atr5_producto'" : "NULL").", ".(!empty($stock_min) ? "'$stock_min'" : "NULL").", ".(!empty($stock_max) ? "'$stock_max'" : "NULL").", ".(!empty($ext_p) ? "'$ext_p'" : "NULL").", $costo, $costo_iva, $costo_contado, $costo_especial, $costo_cr1, $costo_cr2, $costo_p1, $costo_p2, $costo_eq)");
         if ($insert_producto) 
         {
             $modal = "$('#mensaje_success').modal('show');";
@@ -146,6 +144,51 @@ if (!empty($_POST))
 
 <div id="prueba">
     <!-- <input type="text" name="pruebai" id="pruebai">-->
+</div>
+
+<div id="img_producto" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+        <form action="" method="post" autocomplete="on" id="formAdd_img">
+            <div class="modal-header">
+                <h3 class="modal-title">Imagén del producto</h3>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close" id="btn_cancerlarimg">
+                            Cancelar
+                        </button>
+                    </div>
+                    <div class="col-lg-6">
+                        <input type="submit" value="Subir" class="btn btn-lg btn-success" id="btn_subirimg">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-10">
+                          <div class="form-group">
+                                <label for="nombre_cat">Cargar la imágen del producto que se desee subir en <strong>jpg</strong> o <strong>png</strong></label>
+                                  <div class="custom-file">
+                                      <input type="file" class="custom-file-input" id="customFileLang" lang="es">
+                                      <label class="custom-file-label" for="customFileLang" data-browse="Seleccionar imágen">Ninguna imágen selecionada</label>
+                                    </div>
+                            </div>  
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <h4><strong>Imágen actual del producto:</strong></h4>
+                            <br>
+                            <img src="../img/compra_facil.png" height="300" width="300">
+                        </div>
+                    </div>
+                    <input value="load_img" name="action" id="action" hidden>
+            </div>
+        </form>
+        </div>
+    </div>
 </div>
 
 <div id="nueva_cat" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
@@ -629,7 +672,7 @@ if (!empty($_POST))
 
 <div class="card">
 <div class="card-body">
-<form action="" method="post" autocomplete="on">
+<!-- <form action="" method="post" autocomplete="on"> -->
     <div class="row">
         <div class="col-lg-2">
             <label>Categoría:</label>
@@ -695,40 +738,38 @@ if (!empty($_POST))
             
             <div class="row">
               <div class="col-12 col-sm-2">
-                  <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 75px !important;">Ver Costos</button>
+                  <button onclick="mostrar_costoiva();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 75px !important;">Ver Costos</button>
               </div>
               &nbsp;&nbsp;&nbsp;
               <div class="col-12 col-sm-3">
                 <div class="row">
                     <div class="col-12 col-sm-12" align="center">
-                        <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 88px !important; height: 45px !important; padding: 0px;">Editar Lista</button>
+                        <button type="button" class="btn btn-primary py-3 btn-sm" style="width: 88px !important; height: 45px !important; padding: 0px;">Editar Lista</button>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 col-sm-6" align="center" style="padding-right: 0px; padding-left: 12px;">
-                        <button onClick='pausar_lista();' class='btn btn-warning btn-sm btn-block' type='submit'><i style='color: white;' class='fas fa-pause'></i></button>
+                        <button onClick='pausar_lista();' class='btn btn-warning btn-sm btn-block' type='button'><i style='color: white;' class='fas fa-pause'></i></button>
                     </div>
                     <div class="col-12 col-sm-6" align="center" style="padding-left: 0px; padding-right: 0px;">
-                        <button onClick='guardar_lista();' class='btn btn-success btn-sm btn-block' type='submit'><i style='color: white;' class='fas fa-save'></i></button>
+                        <button onClick='guardar_lista();' class='btn btn-success btn-sm btn-block' type='button'><i style='color: white;' class='fas fa-save'></i></button>
                     </div>
                 </div>
               </div>
 
               <div class="col-12 col-sm-3">
-                <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Catalogo</button>
+                <button type="button" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Catalogo</button>
               </div>
               <div class="col-12 col-sm-3">
-                  <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Lista</button>
+                  <button type="button" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Lista</button>
               </div>
             </div>
 
         </div>
     </div>
-</form>
+<!-- </form> -->
 </div>
 </div>
-
-
 
 <div class="card">
 <div class="card-body">
@@ -761,35 +802,40 @@ if (!empty($_POST))
             {
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
+                    $id_producto = $data['idproducto'];
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
                     if($data['categoria'] == null)
                     {
-                        
+                        $idsubcategoria = $data['subcategoria'];
+                        $query_meses = mysqli_query($conexion, "SELECT meses_pago from subcategoria where idsubcategoria = '$idsubcategoria'");
+                        $garantia = mysqli_fetch_assoc($query_meses)['meses_pago'];
                     }
                     else
                     {
-
+                        $idcategoria = $data['categoria'];
+                        $query_meses = mysqli_query($conexion, "SELECT meses_pago from categoria where idcategoria = '$idcategoria'");
+                        $garantia = mysqli_fetch_assoc($query_meses)['meses_pago'];
                     }
              ?>
                 <tr>
                         <td><?php echo $data['descripcion']; ?></td>
                         <td>Aqui nuevo costo</td>
-                        <td><?php echo $data['costo']; ?></td>
-                        <td><?php echo $data['costo_iva']; ?></td>
+                        <td><?php echo "$".number_format($data['costo'],2, '.', ','); ?></td>
+                        <td><?php echo "$".number_format($data['costo_iva'],2, '.', ','); ?></td>
                         <td><?php echo $data['ext_p']; ?></td>
                         <td>asd</td>
-                        <td><?php echo $data['costo_contado']; ?></td>
-                        <td><?php echo $data['costo_especial']; ?></td>
-                        <td><?php echo $data['costo_cr1']; ?></td>
+                        <td><?php echo "$".number_format($data['costo_contado'],2, '.', ','); ?></td>
+                        <td><?php echo "$".number_format($data['costo_especial'],2, '.', ','); ?></td>
+                        <td><?php echo "$".number_format($data['costo_cr1'],2, '.', ','); ?></td>
                         <td><?php echo $data['costo_p1']; ?></td>
-                        <td><?php echo $data['costo_cr2']; ?></td>
+                        <td><?php echo "$".number_format($data['costo_cr2'],2, '.', ','); ?></td>
                         <td><?php echo $data['costo_p2']; ?></td>
-                        <td><?php echo $data['costo_eq']; ?></td>
-                        <td>6</td>
+                        <td><?php echo "$".number_format($data['costo_eq'],2, '.', ','); ?></td>
+                        <td><?php echo $garantia." Meses" ?></td>
                         <td align="center">
-                                <a href="#" class="btn btn-secondary btn-sm"><i class='fas fa-camera'></i></a>
-                                <a href="#" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
-                                <button onClick='eliminar_producto()' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
+                                <button data-toggle="modal" data-target="#img_producto" class="btn btn-secondary btn-sm"><i class='fas fa-camera'></i></button>
+                                <button class="btn btn-success btn-sm"><i class='fas fa-edit'></i></button>
+                                <button onClick='eliminar_producto("<?php echo $id_producto; ?>");' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
                         </td>
                     </tr>
             <?php 
@@ -818,12 +864,11 @@ if (!empty($_POST))
                         </td>
                     </tr>
                     <tr>
-                        <td hidden>qwerty</td>
                         <td>Lavadora LG con secadora</td>
                         <td><input type="number" name="" id="" class="form-control"></td>
                         <td>$5,000</td>
                         <td>$5,500</td>
-                        <td><input type="number" name="" id="" class="form-control"></td>
+                        <td>7</td>
                         <td>4</td>
                         <td>$5,000</td>
                         <td>$4,000</td>

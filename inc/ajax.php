@@ -265,6 +265,26 @@ if ($_POST['action'] == 'eliminarCliente')
   exit;
 }
 
+#eliminar PRODUCTO
+  if ($_POST['action'] == 'eliminarProducto') {
+  include "accion/conexion.php";
+  if (!empty($_POST['producto'])) 
+  {
+    $id_producto = $_POST['producto'];
+
+    $query_producto = mysqli_query($conexion, "DELETE FROM producto WHERE idproducto = '$id_producto'");
+
+    mysqli_close($conexion);
+    if ($query_producto) {
+      $elimino_producto= 1;
+    }else {
+      $elimino_producto = 0;
+    }
+    echo json_encode($elimino_producto,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
 ##buscar datos sobre el tipo para poder editar tipo
   if ($_POST['action'] == 'SelectTipo') {
   include "accion/conexion.php";

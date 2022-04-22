@@ -136,8 +136,13 @@ $('#listas').on("click",".remover_campo",function(e)
 
 $(document).ready(function() 
 {
-    $('.js-example-basic-multiple').select2();
+    $(".custom-file-input").on("change", function() {
+  var fileName = $(this).val().split("\\").pop();
+  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
 
+ //para el select2 multiple
+ $('.js-example-basic-multiple').select2();
     //funcion para poner tablas en español
  $('#tbl').DataTable({
   "columnDefs": [{
@@ -716,6 +721,13 @@ $('#idestado_civil').change(function() {
         return false;   
     });
 
+    //oculta las columnas de costos de la tabla productos
+    $('td:nth-child(2)').hide();
+    $('th:nth-child(2)').hide();
+    $('td:nth-child(3)').hide();
+    $('th:nth-child(3)').hide();
+    $('td:nth-child(4)').hide();
+    $('th:nth-child(4)').hide();
 
 //FIN DEL DOCUMENT READY
 });
@@ -1255,6 +1267,17 @@ $('#costo').keyup(function(e)
     }
     
 });
+
+//funcion para ocultar las columnas de la tabla costos
+function mostrar_costoiva()
+{
+    $('td:nth-child(2)').toggle();
+    $('th:nth-child(2)').toggle();
+    $('td:nth-child(3)').toggle();
+    $('th:nth-child(3)').toggle();
+    $('td:nth-child(4)').toggle();
+    $('th:nth-child(4)').toggle();
+}
 
 //eliminar usuario
 function eliminar_user(idusuario)
@@ -2019,6 +2042,63 @@ function editar_subcategoria(idsubcategoria)
             //$('#prueba').val('error');
         }
    });  
+}
+
+//=== PRODUCTO
+//funcion para eliminar producto
+//funciones de eliminar y editar de SUBCATEGORIA
+function eliminar_producto(idproducto)
+{
+    Swal.fire({
+            title: '¿Esta seguro de eliminar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'SI, Eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'eliminarProducto';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action,producto:idproducto},
+                  success: function(response) {
+                    //$('#prueba').val(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                window.location.href=window.location.href;
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Eliminado!',
+                          'Se elimino correctamente',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto actualizamos todos los select de la pagina
+                                window.location.href=window.location.href;
+                            }
+                        })
+                    }
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });      
+              }
+        })
 }
 
 function nueva_categoria()
