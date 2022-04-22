@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 20-04-2022 a las 07:31:14
--- Versión del servidor: 5.7.36
--- Versión de PHP: 7.4.26
+-- Tiempo de generación: 22-04-2022 a las 02:46:34
+-- Versión del servidor: 5.7.31
+-- Versión de PHP: 7.3.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `categoria` (
   `credito2` double DEFAULT NULL,
   `meses_pago` int(11) DEFAULT NULL,
   `meses_garantia` int(11) DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idcategoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
@@ -50,10 +51,10 @@ CREATE TABLE IF NOT EXISTS `categoria` (
 -- Volcado de datos para la tabla `categoria`
 --
 
-INSERT INTO `categoria` (`idcategoria`, `nombre`, `tiene_subcat`, `atr1`, `atr2`, `atr3`, `atr4`, `atr5`, `contado`, `especial`, `credito1`, `credito2`, `meses_pago`, `meses_garantia`) VALUES
-('00095e94-c070-11ec-8edf-18c04dae039e', 'ASD', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('5a0be372-c010-11ec-a813-d481d7c3a9ad', 'BICICLETA', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('6b149c84-c010-11ec-a813-d481d7c3a9ad', 'LINEA BLANCA', 0, 'MARCA', 'GENERO', 'KG', 'TAMAÑO', NULL, 10, 20, 15, 20, 12, 6);
+INSERT INTO `categoria` (`idcategoria`, `nombre`, `tiene_subcat`, `atr1`, `atr2`, `atr3`, `atr4`, `atr5`, `contado`, `especial`, `credito1`, `credito2`, `meses_pago`, `meses_garantia`, `creado_en`) VALUES
+('00095e94-c070-11ec-8edf-18c04dae039e', 'ASD', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-04-22 00:13:47'),
+('5a0be372-c010-11ec-a813-d481d7c3a9ad', 'BICICLETA', 0, 'RODADA', 'TAMAÑO', 'LLANTAS', 'TIPO', NULL, 12, 22, 11, 22, 3, 3, '2022-04-22 00:13:47'),
+('6b149c84-c010-11ec-a813-d481d7c3a9ad', 'LINEA BLANCA', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-04-22 00:13:47');
 
 -- --------------------------------------------------------
 
@@ -281,14 +282,14 @@ CREATE TABLE IF NOT EXISTS `producto` (
   `identificador` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `codigo_barras` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
   `categoria` char(36) COLLATE utf8_spanish_ci NOT NULL,
-  `subcategoria` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `subcategoria` char(36) COLLATE utf8_spanish_ci DEFAULT NULL,
   `descripcion` text COLLATE utf8_spanish_ci,
   `serializado` tinyint(1) NOT NULL,
-  `detalle_atr1` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `detalle_atr2` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `detalle_atr3` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `detalle_atr4` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `detalle_atr5` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr1_producto` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr2_producto` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr3_producto` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr4_producto` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr5_producto` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `stock_min` int(11) DEFAULT NULL,
   `stock_max` int(11) DEFAULT NULL,
   `ext_p` int(11) DEFAULT NULL,
@@ -301,8 +302,18 @@ CREATE TABLE IF NOT EXISTS `producto` (
   `costo_p1` double NOT NULL,
   `costo_p2` double NOT NULL,
   `costo_eq` double NOT NULL,
-  PRIMARY KEY (`idproducto`)
+  `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idproducto`),
+  KEY `es_categoria` (`categoria`),
+  KEY `es_subcategoria` (`subcategoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `producto`
+--
+
+INSERT INTO `producto` (`idproducto`, `identificador`, `codigo_barras`, `categoria`, `subcategoria`, `descripcion`, `serializado`, `atr1_producto`, `atr2_producto`, `atr3_producto`, `atr4_producto`, `atr5_producto`, `stock_min`, `stock_max`, `ext_p`, `costo`, `costo_iva`, `costo_contado`, `costo_especial`, `costo_cr1`, `costo_cr2`, `costo_p1`, `costo_p2`, `costo_eq`, `creado_en`) VALUES
+('66bfc35f-c1d7-11ec-91b0-d481d7c3a9ad', 'asd', NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'Aqui va la descricion mas detalla del producto', 0, 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, NULL, 4000, 4640, 4480, 4880, 4440, 4880, 3.33, 3.66, 666.67, '2022-04-22 00:59:04');
 
 -- --------------------------------------------------------
 
@@ -368,6 +379,7 @@ CREATE TABLE IF NOT EXISTS `subcategoria` (
   `credito2` double DEFAULT NULL,
   `meses_pago` int(11) DEFAULT NULL,
   `meses_garantia` int(11) DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idsubcategoria`),
   KEY `pertenece_a_la_categoria` (`categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
@@ -376,9 +388,10 @@ CREATE TABLE IF NOT EXISTS `subcategoria` (
 -- Volcado de datos para la tabla `subcategoria`
 --
 
-INSERT INTO `subcategoria` (`idsubcategoria`, `nombre`, `categoria`, `atr1`, `atr2`, `atr3`, `atr4`, `atr5`, `contado`, `especial`, `credito1`, `credito2`, `meses_pago`, `meses_garantia`) VALUES
-('9aded115-c07a-11ec-8edf-18c04dae039e', 'LAVADORA', '6b149c84-c010-11ec-a813-d481d7c3a9ad', 'MARCA', 'KG', 'TAMAÑO', 'PESO', 'PRUEBA', 11, 1, 11, 10, 12, 6),
-('ae064f03-c07b-11ec-8edf-18c04dae039e', 'ASD', '00095e94-c070-11ec-8edf-18c04dae039e', 'MARCA', 'ASD', 'ASD', 'ASD', 'ASD', 12, 12, 12, 12, 12, 12);
+INSERT INTO `subcategoria` (`idsubcategoria`, `nombre`, `categoria`, `atr1`, `atr2`, `atr3`, `atr4`, `atr5`, `contado`, `especial`, `credito1`, `credito2`, `meses_pago`, `meses_garantia`, `creado_en`) VALUES
+('9aded115-c07a-11ec-8edf-18c04dae039e', 'LAVADORA', '6b149c84-c010-11ec-a813-d481d7c3a9ad', 'MARCA', 'KG', 'TAMAÑO', 'PESO', 'PRUEBA', 11, 1, 11, 10, 12, 6, '2022-04-22 00:14:19'),
+('9e77b6b3-c1a7-11ec-91b0-d481d7c3a9ad', 'LICUADORA', '6b149c84-c010-11ec-a813-d481d7c3a9ad', 'MARCA', 'ASPAS', 'MATERIAL', 'TAMAÑO', NULL, 2, 12, 11, 22, 4, 4, '2022-04-22 00:14:19'),
+('ae064f03-c07b-11ec-8edf-18c04dae039e', 'ASD', '00095e94-c070-11ec-8edf-18c04dae039e', 'MARCA', 'ASD', 'ASD', 'ASD', 'ASD', 12, 12, 12, 12, 12, 12, '2022-04-22 00:14:19');
 
 -- --------------------------------------------------------
 
@@ -558,6 +571,13 @@ ALTER TABLE `documento`
 ALTER TABLE `permiso_usuario`
   ADD CONSTRAINT `asignado al` FOREIGN KEY (`permiso_idusuario`) REFERENCES `usuario` (`idusuario`),
   ADD CONSTRAINT `es el` FOREIGN KEY (`permiso_idpermiso`) REFERENCES `permiso` (`idpermiso`);
+
+--
+-- Filtros para la tabla `producto`
+--
+ALTER TABLE `producto`
+  ADD CONSTRAINT `es_categoria` FOREIGN KEY (`categoria`) REFERENCES `categoria` (`idcategoria`),
+  ADD CONSTRAINT `es_subcategoria` FOREIGN KEY (`subcategoria`) REFERENCES `subcategoria` (`idsubcategoria`);
 
 --
 -- Filtros para la tabla `referencias_cliente`

@@ -716,6 +716,7 @@ $('#idestado_civil').change(function() {
         return false;   
     });
 
+
 //FIN DEL DOCUMENT READY
 });
 
@@ -905,8 +906,11 @@ $('#categoria').change(function(e)
       type: "POST",
       async: true,
       data: {action:action,categoria:idcategoria},
-      success: function(response) {
-        if(response == 0)
+      success: function(response) 
+      {
+        //$('#prueba').html(data);
+        var data = $.parseJSON(response);
+        if(data.catUsed == 0)
         {
             $('#btneliminar_categoria').attr('onClick', 'eliminar_categoria("'+idcategoria+'");');
             $('#btneliminar_categoria').removeAttr('disabled');
@@ -916,7 +920,26 @@ $('#categoria').change(function(e)
             $('#btneliminar_categoria').attr('onClick', 'eliminar_categoria();');
             $('#btneliminar_categoria').attr('disabled','disabled');
         }
-        //$('#prueba').html(data); 
+        //ponelos las opciones de las subcategorias que pertenecen a esta categoria seleccionada
+        //$('#pruebai').val(data.options);
+        if(data.options == 0)
+        {
+            //no tiene subcategorias
+            $("#subcategoria").empty();
+            $('#subcategoria').append('<option selected hidden>No tiene subcategoría</option>');
+            $('#subcategoria').attr('disabled','disabled');
+            $('#btnedit_subcategoria').attr('onClick', 'editar_subcategoria();');
+            $('#btnedit_subcategoria').attr('disabled','disabled');
+            $('#btneliminar_subcategoria').attr('onClick', 'eliminar_subcategoria();');
+            $('#btneliminar_subcategoria').attr('disabled','disabled');
+        }
+        else
+        {
+            //si tiene, mostrarlas
+            $('#subcategoria').removeAttr('disabled');
+            $("#subcategoria").empty();
+            $('#subcategoria').append(data.options);
+        }
       },
       error: function(error) {
         //$('#sucursal').val('error');
@@ -957,6 +980,11 @@ $('#subcategoria').change(function(e)
     });
 });
 
+var contado = 0;
+var especial = 0;
+var cr1 = 0;
+var cr2 = 0;
+var meses_pago = 0;
 //interfaz de producto, mostrar los atributos de categorias o subcategorias
 $('#categoria_producto').change(function(e) 
 {
@@ -976,38 +1004,63 @@ $('#categoria_producto').change(function(e)
         {
             //entonces bloqueamos el select de subcategoria y mostramos los datos de los atributos en los labels de los inputs
             $("#subcategoria_producto").empty();
-            $('#subcategoria_producto').attr('disabled','disabled');
+            $('#subcategoria_producto').attr('readonly','readonly');
             if(data.atr1 != null)
             {
-                $('#atr1_producto').removeAttr('disabled');
+                $('#atr1_producto').removeAttr('readonly');
                 $('#label_atr1').html(data.atr1);
+            }
+            else
+            {
+                $('#atr1_producto').attr('readonly','readonly');
+                $('#label_atr1').html('---');
             }
             if(data.atr2 != null)
             {
-                $('#atr2_producto').removeAttr('disabled');
+                $('#atr2_producto').removeAttr('readonly');
                 $('#label_atr2').html(data.atr2);
+            }
+            else
+            {
+                $('#atr2_producto').attr('readonly','readonly');
+                $('#label_atr2').html('---');
             }
             if(data.atr3 != null)
             {
-                $('#atr3_producto').removeAttr('disabled');
+                $('#atr3_producto').removeAttr('readonly');
                 $('#label_atr3').html(data.atr3);
+            }
+            else
+            {
+                $('#atr3_producto').attr('readonly','readonly');
+                $('#label_atr3').html('---');
             }
             if(data.atr4 != null)
             {
-                $('#atr4_producto').removeAttr('disabled');
+                $('#atr4_producto').removeAttr('readonly');
                 $('#label_atr4').html(data.atr4);
+            }
+            else
+            {
+                $('#atr4_producto').attr('readonly','readonly');
+                $('#label_atr4').html('---');
             }
             if(data.atr5 != null)
             {
-                $('#atr5_producto').removeAttr('disabled');
+                $('#atr5_producto').removeAttr('readonly');
                 $('#label_atr5').html(data.atr5);
             }
+            else
+            {
+                $('#atr5_producto').attr('readonly','readonly');
+                $('#label_atr5').html('---');
+            }
             //aqui poner los porcentajes de contado, especial, cr1, cr2 en inputs ocultos para despues usarlos para calcular el valor cuando se ponga costos
-            $('#flag_contado_producto').val(data.contado);
-            $('#flag_especial_producto').val(data.especial);
-            $('#flag_cr1_producto').val(data.credito1);
-            $('#flag_cr2_producto').val(data.credito2);
-            $('#flag_mesespago_producto').val(data.meses_pago);
+            contado = data.contado;
+            especial = data.especial;
+            cr1 = data.credito1;
+            cr2 = data.credito2;
+            meses_pago = data.meses_pago;
         }
         else
         {
@@ -1016,8 +1069,13 @@ $('#categoria_producto').change(function(e)
             $('#subcategoria_producto').append(data.options);
             //podemos los detalles vacios a la espera de que eligan una subcategoria
             $('#label_atr1,#label_atr2,#label_atr3,#label_atr4,#label_atr5').html("---");
-            $('#atr1_producto,#atr2_producto,#atr3_producto,#atr4_producto,#atr5_producto').attr('disabled','disabled');
-            $('#subcategoria_producto').removeAttr('disabled');
+            $('#atr1_producto,#atr2_producto,#atr3_producto,#atr4_producto,#atr5_producto').attr('readonly','readonly');
+            $('#subcategoria_producto').removeAttr('readonly');
+            contado = 0;
+            especial = 0;
+            cr1 = 0;
+            cr2 = 0;
+            meses_pago = 0;
         }
         //$('#prueba').html(data); 
       },
@@ -1044,35 +1102,61 @@ $('#subcategoria_producto').change(function(e)
             //entonces bloqueamos el select de subcategoria y mostramos los datos de los atributos en los labels de los inputs
             if(data.atr1 != null)
             {
-                $('#atr1_producto').removeAttr('disabled');
+                $('#atr1_producto').removeAttr('readonly');
                 $('#label_atr1').html(data.atr1);
+            }
+            else
+            {
+                $('#atr1_producto').attr('readonly','readonly');
+                $('#label_atr1').html('---');
             }
             if(data.atr2 != null)
             {
-                $('#atr2_producto').removeAttr('disabled');
+                $('#atr2_producto').removeAttr('readonly');
                 $('#label_atr2').html(data.atr2);
+            }
+            else
+            {
+                $('#atr2_producto').attr('readonly','readonly');
+                $('#label_atr2').html('---');
             }
             if(data.atr3 != null)
             {
-                $('#atr3_producto').removeAttr('disabled');
+                $('#atr3_producto').removeAttr('readonly');
                 $('#label_atr3').html(data.atr3);
+            }
+            else
+            {
+                $('#atr3_producto').attr('readonly','readonly');
+                $('#label_atr3').html('---');
             }
             if(data.atr4 != null)
             {
-                $('#atr4_producto').removeAttr('disabled');
+                $('#atr4_producto').removeAttr('readonly');
                 $('#label_atr4').html(data.atr4);
+            }
+            else
+            {
+                $('#atr4_producto').attr('readonly','readonly');
+                $('#label_atr4').html('---');
             }
             if(data.atr5 != null)
             {
-                $('#atr5_producto').removeAttr('disabled');
+                $('#atr5_producto').removeAttr('readonly');
                 $('#label_atr5').html(data.atr5);
             }
+            else
+            {
+                $('#atr5_producto').attr('readonly','readonly');
+                $('#label_atr5').html('---');
+            }
             //aqui poner los porcentajes de contado, especial, cr1, cr2 en inputs ocultos para despues usarlos para calcular el valor cuando se ponga costos
-            $('#flag_contado_producto').val(data.contado);
-            $('#flag_especial_producto').val(data.especial);
-            $('#flag_cr1_producto').val(data.credito1);
-            $('#flag_cr2_producto').val(data.credito2);
-            $('#flag_mesespago_producto').val(data.meses_pago);
+            contado = data.contado;
+            especial = data.especial;
+            cr1 = data.credito1;
+            cr2 = data.credito2;
+            meses_pago = data.meses_pago;
+
         //$('#prueba').html(data); 
       },
       error: function(error) {
@@ -1083,44 +1167,93 @@ $('#subcategoria_producto').change(function(e)
 $('#costo').keyup(function(e) 
 {
     var costo = parseFloat($(this).val());
-    var costo_iva = costo + (costo*0.16);
-    $('#costoiva').val('$' + costo_iva.toFixed(2));
-
-    //REVISAR QUE SI NO LOS VALORES SON NAN PONER 0
-    //contado
-    var contado = parseFloat($('#flag_contado_producto').val());
-    var costo_contado = costo + (costo*(contado)/100);
-    $('#contado_producto').val('$' + costo_contado.toFixed(2));
-    //especial
-    var especial = parseFloat($('#flag_especial_producto').val());
-    var costo_especial = costo + (costo*(especial)/100);
-    $('#especial_producto').val('$' + costo_especial.toFixed(2));
-    //credito1
-    var cr1 = parseFloat($('#flag_cr1_producto').val());
-    var costo_cr1 = costo + (costo*(cr1)/100);
-    $('#cr1_producto').val('$' + costo_cr1.toFixed(2));
-    //credito2
-    var cr2 = parseFloat($('#flag_cr2_producto').val());
-    var costo_cr2 = costo + (costo*(cr2)/100);
-    $('#cr2_producto').val('$' + costo_cr2.toFixed(2));
-    //E-Q
-    var meses_pago = parseFloat($('#flag_mesespago_producto').val());
-    var e_q = (costo/meses_pago)/2;
-    if(e_q < 400)
+    if(!isNaN(costo))
     {
-        $('#e_q_producto').val('$400');
+        var costo_iva = costo + (costo*0.16);
+        $('#costo_iva').val(costo_iva.toFixed(2));
+        //contado
+        if(contado == 0)
+        {
+            $('#costo_contado').val(0);
+        }
+        else
+        {
+            var costo_contado = costo + (costo*(contado/100));
+            $('#costo_contado').val(costo_contado.toFixed(2));
+        }
+        //especial
+        if(especial == 0)
+        {
+            $('#costo_especial').val(0);
+        }
+        else
+        {
+            var costo_especial = costo + (costo*(especial/100));
+            $('#costo_especial').val(costo_especial.toFixed(2));
+        }
+        //credito1
+        if(cr1 == 0)
+        {
+            $('#costo_cr1').val(0);
+        }
+        else
+        {
+            var costo_cr1 = costo + (costo*(cr1/100));
+            $('#costo_cr1').val(costo_cr1.toFixed(2));
+        }
+        //credito2
+        if(cr2 == 0)
+        {
+            $('#costo_cr2').val(0);
+        }
+        else
+        {
+            var costo_cr2 = costo + (costo*(cr2/100));
+            $('#costo_cr2').val(costo_cr2.toFixed(2));
+        }
+        //E-Q
+        if(meses_pago == 0)
+        {
+            $('#costo_eq').val(0);
+        }
+        else
+        {
+            var e_q = (costo/meses_pago)/2;
+            if(e_q < 400)
+            {
+                $('#costo_eq').val(400);
+            }
+            else
+            {
+                $('#costo_eq').val(e_q.toFixed(2));
+            }
+        }
+        //p1
+        var p1 = (costo_cr1/e_q)/2;
+        if(isNaN(p1))
+        {
+            $('#costo_p1').val(0);
+        }
+        else
+        {
+            $('#costo_p1').val(p1.toFixed(2));
+        }
+        //p2
+        var p2 = (costo_cr2/e_q)/2;
+        if(isNaN(p2))
+        {
+            $('#costo_p2').val(0);
+        }
+        else
+        {
+            $('#costo_p2').val(p2.toFixed(2));
+        }
     }
     else
     {
-        $('#e_q_producto').val('$' + e_q.toFixed(2));
+        $('#costo_iva,#costo_contado,#costo_especial,#costo_cr1,#costo_cr2,#costo_eq,#costo_p1,#costo_p2').val(0);
     }
-    //p1
-    var p1 = (costo_cr1/e_q)/2;
-    $('#p1_producto').val(p1.toFixed(2));
-    //p2
-    var p2 = (costo_cr2/e_q)/2;
-    $('#p2_producto').val(p2.toFixed(2));
-
+    
 });
 
 //eliminar usuario

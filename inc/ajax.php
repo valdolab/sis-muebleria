@@ -567,16 +567,36 @@ if ($_POST['action'] == 'searchTipoUsed')
   exit;
 }
 
-//buscar si la categoria esta siendo usada por algun producto
+//buscar si la categoria esta siendo usada por algun producto y las subcategorias que tengan esa categoria
 if ($_POST['action'] == 'searchCatUsed') 
 {
   include "accion/conexion.php";
-  if (!empty($_POST['categoria'])) {
+  if (!empty($_POST['categoria'])) 
+  {
       $idcategoria = $_POST['categoria'];
 
       //calculamos si esa zona se esta en uso para no poder borrarlo
       $queryFindcat = mysqli_query($conexion, "SELECT count(idproducto) as num from producto where categoria = '$idcategoria'");
-      $resultFindcat = (int) mysqli_fetch_assoc($queryFindcat)['num'];
+      $Findcat = (int) mysqli_fetch_assoc($queryFindcat)['num'];
+
+      //buscamos que subtegorias tiene esa categoria
+        $FindSubcats = mysqli_query($conexion, "SELECT idsubcategoria,nombre FROM subcategoria WHERE categoria = '$idcategoria' order by nombre asc");
+        if (mysqli_num_rows($FindSubcats) > 0) 
+        { 
+          $cadena = "<option selected hidden value=''>Selecciona subcategoría</option>";
+          while($row = mysqli_fetch_assoc($FindSubcats))
+          {
+            $cadena = $cadena."<option value='".$row['idsubcategoria']."'>".$row['nombre']."</option>";
+          }
+        }
+        else
+        {
+          $cadena = 0;
+        }
+        $options = array("options" => $cadena);
+        $catUsed = array("catUsed" => $Findcat);
+        $resultFindcat = $catUsed + $options;
+
     echo json_encode($resultFindcat,JSON_UNESCAPED_UNICODE);
   }
   exit;

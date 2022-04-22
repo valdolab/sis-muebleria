@@ -5,14 +5,67 @@ include "accion/conexion.php";
 
 if (!empty($_POST)) 
 {
-    $ban = $_POST['bandera'];
-    if($ban == "cat")
+    $ban = $_POST['action'];
+    if($ban == "insert_producto")
     {
-        $modal = "$('#mensaje_success').modal('show');";
-    }
-    else if($ban == "producto")
-    {
-        $modal = "$('#mensaje_success').modal('show');";
+        //insertamos el nuevo producto
+        $identificador = $_POST['identificador'];
+        $codigo_barras = $_POST['codigo_barras'];
+        $categoria_producto = $_POST['categoria_producto'];
+        if(isset($_POST['subcategoria_producto']))
+        {
+            $subcategoria_producto = $_POST['subcategoria_producto'];
+        }
+        else
+        {
+            $subcategoria_producto = 0;
+        }
+        //$subcategoria_producto = $_POST['subcategoria_producto'];
+        $descripcion = $_POST['descripcion'];
+        if (isset($_POST['serializado']))
+            {
+                $serializado = 1;
+            }
+            else
+            {
+                $serializado = 0;
+            }
+        $atr1_producto = $_POST['atr1_producto'];
+        $atr2_producto = $_POST['atr2_producto'];
+        $atr3_producto = $_POST['atr3_producto'];
+        $atr4_producto = $_POST['atr4_producto'];
+        $atr5_producto = $_POST['atr5_producto'];
+        $stock_min = $_POST['stock_min'];
+        $stock_max = $_POST['stock_max'];
+        $ext_p = $_POST['ext_p'];
+        $costo = $_POST['costo'];
+        $costo_iva = $_POST['costo_iva'];
+        $costo_contado = $_POST['costo_contado'];
+        $costo_especial = $_POST['costo_especial'];
+        $costo_cr1 = $_POST['costo_cr1'];
+        $costo_cr2 = $_POST['costo_cr2'];
+        $costo_p1 = $_POST['costo_p1'];
+        $costo_p2 = $_POST['costo_p2'];
+        $costo_eq = $_POST['costo_eq'];
+
+        /*echo $costo;
+        echo "/";
+        echo $costo_contado;
+        echo "/";
+        echo $subcategoria_producto;*/
+        
+        $resultIDproducto = mysqli_query($conexion, "SELECT UUID() as idproducto");
+        $uuid = mysqli_fetch_assoc($resultIDproducto)['idproducto'];
+        $insert_producto = mysqli_query($conexion, "INSERT INTO producto(idproducto, identificador, codigo_barras, categoria, subcategoria, descripcion, serializado, atr1_producto, atr2_producto, atr3_producto, atr4_producto, atr5_producto, stock_min, stock_max, ext_p, costo, costo_iva, costo_contado, costo_especial, costo_cr1, costo_cr2, costo_p1, costo_p2, costo_eq) VALUES ('$uuid',".(!empty($identificador) ? "'$identificador'" : "NULL").", ".(!empty($codigo_barras) ? "'$codigo_barras'" : "NULL").", '$categoria_producto', ".($subcategoria_producto!=0 ? "'$subcategoria_producto'" : "NULL").", ".(!empty($descripcion) ? "'$descripcion'" : "NULL").", $serializado, '$atr1_producto', ".(!empty($atr2_producto) ? "'$atr2_producto'" : "NULL").", ".(!empty($atr3_producto) ? "'$atr3_producto'" : "NULL").", ".(!empty($atr4_producto) ? "'$atr4_producto'" : "NULL").", ".(!empty($atr5_producto) ? "'$atr5_producto'" : "NULL").", ".(!empty($stock_min) ? "'$stock_min'" : "NULL").", ".(!empty($stock_max) ? "'$stock_max'" : "NULL").", ".(!empty($ext_p) ? "'$ext_p'" : "NULL").", $costo, $costo_iva, $costo_contado, $costo_especial, $costo_cr1, $costo_cr2, $costo_p1, $costo_p2, $costo_eq)");
+        if ($insert_producto) 
+        {
+            $modal = "$('#mensaje_success').modal('show');";
+        }
+        else
+        {
+            $modal = "$('#mensaje_error').modal('show');";
+            //echo mysqli_error($conexion);
+        }
     }
 }
 ?>
@@ -35,12 +88,12 @@ if (!empty($_POST))
                                 <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
                                 <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
                             </div>    
-                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">Listo!</h2>
+                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">¡Listo!</h2>
                         </div>
 
                         <div class="swal2-content">
                             <div id="swal2-content" class="swal2-html-container" style="display: block;">
-                                Categoría registrada correctamete
+                                Producto registrado correctamete
                             </div>
                         </div>
                         <div class="swal2-actions">
@@ -55,7 +108,45 @@ if (!empty($_POST))
     </div>
 </div>
 
-<div id="prueba"></div>
+<div style="posicion: fixed; top: 15%;" id="mensaje_error" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    
+                    <div align="center" >
+                        <br>
+                        <!-- <img src="../img/ok.gif" width="100px" height="100px"> -->
+                        <div class="swal2-header">
+                            <div class="swal2-icon swal2-error swal2-icon-show" style="display: flex;">
+                                <span class="swal2-x-mark">
+                                    <span class="swal2-x-mark-line-left"></span>
+                                    <span class="swal2-x-mark-line-right"></span>
+                                </span>
+                            </div>    
+                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">Oops... Ocurrio un problema!</h2>
+                        </div>
+
+                        <div class="swal2-content">
+                            <div id="swal2-content" class="swal2-html-container" style="display: block;">
+                                El nuevo producto no se guardo correctamente, intente nuevamente.
+                            </div>
+                        </div>
+                        <div class="swal2-actions">
+                            <a href="productos.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="prueba">
+    <!-- <input type="text" name="pruebai" id="pruebai">-->
+</div>
 
 <div id="nueva_cat" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
@@ -321,7 +412,7 @@ if (!empty($_POST))
 <div id="nuevo_producto" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog  modal-xl" role="document">
         <div class="modal-content">
-        <form action="" method="post" autocomplete="on">
+        <form action="" method="post" autocomplete="on" id="formAdd_producto">
             <div class="modal-header">
                 <h3 class="modal-title">Detalle del Producto</h3>
                 <div class="row">
@@ -340,21 +431,21 @@ if (!empty($_POST))
                         <div class="col-lg-3">
                           <div class="form-group">
                                 <label for="nombre_cat">Identificador</label>
-                                <input type="text" class="form-control" name="identificador" id="identificador" required>
+                                <input type="text" class="form-control" name="identificador" id="identificador">
                             </div>  
                         </div>
 
                         <div class="col-lg-3">
                           <div class="form-group">
                                 <label for="atr1">Código de Barras</label>
-                                <input type="text" class="form-control" name="codebarras" id="codebarras">
+                                <input type="text" class="form-control" name="codigo_barras" id="codigo_barras">
                             </div>  
                         </div>
 
                         <div class="col-lg-2">
                             <label>Categoría:</label>
                             <select class="form-control" id="categoria_producto" name="categoria_producto" required>
-                                <option selected hidden>Selecciona categoría</option>
+                                <option selected hidden value="">Selecciona categoría</option>
                                 <?php
                                     #codigo para la lista de sucursales que se extraen de la base de datos
                                     $result_cat = mysqli_query($conexion,"SELECT idcategoria,nombre FROM categoria order by nombre asc");
@@ -371,7 +462,7 @@ if (!empty($_POST))
                         <div class="col-lg-2">
                             <label>Subcategoriía:</label>
                             <select class="form-control" id="subcategoria_producto" name="subcategoria_producto" required>
-                                <option selected hidden>Selecciona subcategoría</option>
+                                <option selected hidden value="">Selecciona subcategoría</option>
                             </select>
                         </div>
                         <div class="col-lg-1">
@@ -382,7 +473,7 @@ if (!empty($_POST))
                     <div class="row">
                         <div class="col-lg-12">
                             <label>Descripción</label>
-                            <textarea  class="form-control" name="desc" title="Ingrese la descripción del producto" id="desc" placeholder="Ingrese la descripción detallada del producto" maxlength="50000"></textarea>
+                            <textarea  class="form-control" name="descripcion" title="Ingrese la descripción del producto" id="descripcion" placeholder="Ingrese la descripción detallada del producto" maxlength="50000"></textarea>
                         </div>
                     </div>
                     <br>
@@ -391,21 +482,21 @@ if (!empty($_POST))
                           <div class="form-group">
                                 <label for="atr1">Atributo 1: </label>
                                 <label id="label_atr1" style="font-weight: bold;"></label>
-                                <input type="text" class="form-control" name="atr1_producto" id="atr1_producto" disabled>
+                                <input type="text" class="form-control" name="atr1_producto" id="atr1_producto" readonly required>
                             </div>  
                         </div>
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="atr1">Atributo 2: </label>
                                 <label id="label_atr2" style="font-weight: bold;"></label>
-                                <input type="text" class="form-control" name="atr2_producto" id="atr2_producto" disabled>
+                                <input type="text" class="form-control" name="atr2_producto" id="atr2_producto" readonly required>
                             </div>  
                         </div>
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="atr1">Atributo 3: </label>
                                 <label id="label_atr3" style="font-weight: bold;"></label>
-                                <input type="text" class="form-control" name="atr3_producto" id="atr3_producto" disabled>
+                                <input type="text" class="form-control" name="atr3_producto" id="atr3_producto" readonly required>
                             </div>  
                         </div>
                     </div>
@@ -414,31 +505,31 @@ if (!empty($_POST))
                           <div class="form-group">
                                 <label for="atr1">Atributo 4: </label>
                                 <label id="label_atr4" style="font-weight: bold;"></label>
-                                <input type="text" class="form-control" name="atr4_producto" id="atr4_producto" disabled>
+                                <input type="text" class="form-control" name="atr4_producto" id="atr4_producto" readonly required>
                             </div>  
                         </div>
                         <div class="col-lg-4">
                           <div class="form-group">
                                 <label for="atr1">Atributo 5: </label>
                                 <label id="label_atr5" style="font-weight: bold;"></label>
-                                <input type="text" class="form-control" name="atr5_producto" id="atr5_producto" disabled>
+                                <input type="text" class="form-control" name="atr5_producto" id="atr5_producto" readonly required>
                             </div>  
                         </div>
                         <div class="col-lg-2">
-                            <label for="atr1">Stock Min: </label>
-                            <input type="text" class="form-control" name="stockmin" id="stockmin">
+                            <label for="stock_min">Stock Min: </label>
+                            <input type="text" class="form-control" name="stock_min" id="stock_min">
                         </div>
                         <div class="col-lg-2">
-                            <label for="atr1">Stock Max: </label>
-                            <input type="text" class="form-control" name="stockmax" id="stockmax">
+                            <label for="stock_max">Stock Max: </label>
+                            <input type="text" class="form-control" name="stock_max" id="stock_max">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-lg-2">
-                            <label for="ettp">EXT.-P:</label>
-                              <input name="ettp" id="ettp" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
+                        <div class="form-group col">
+                            <label for="ext_p">EXT.-P:</label>
+                              <input name="ext_p" id="ext_p" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
                         </div>
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col">
                             <label for="costo">COSTO:</label>
                             <div class="input-group mb-3">
                                 <div class="input-group-append">
@@ -447,47 +538,71 @@ if (!empty($_POST))
                               <input name="costo" id="costo" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required min="0" onkeypress="return event.charCode != 45">
                             </div>
                         </div>
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col">
                             <label for="costoiva">COSTO+IVA:</label>
                             <!-- calcular el costo mas iva con el costo anterior -->
-                              <input name="costoiva" id="costoiva" type="text" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
+                            <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="costo_iva" id="costo_iva" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required readonly>
+                              </div>
                         </div>
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col">
                             <label for="contado">Contado:</label>
-                              <input name="contado_producto" id="contado_producto" type="text" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
+                            <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="costo_contado" id="costo_contado" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required readonly>
+                            </div>
                         </div>
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col">
                             <label for="especial">Especial:</label>
-                              <input name="especial_producto" id="especial_producto" type="text" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
+                            <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="costo_especial" id="costo_especial" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required readonly>
+                          </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-1"></div>
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col">
                             <label for="cr1">CR1:</label>
-                              <input name="cr1_producto" id="cr1_producto" type="text" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
+                            <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="costo_cr1" id="costo_cr1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required readonly>
+                          </div>
                         </div>
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col">
                             <label for="cr2">CR2:</label>
-                              <input name="cr2_producto" id="cr2_producto" type="text" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
+                            <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="costo_cr2" id="costo_cr2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required readonly>
+                          </div>
                         </div>
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col">
                             <label for="p1">P1:</label>
-                              <input name="p1_producto" id="p1_producto" type="text" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
+                              <input name="costo_p1" id="costo_p1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required readonly>
                         </div>
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col">
                             <label for="p2">P2:</label>
-                              <input name="p2_producto" id="p2_producto" type="text" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
+                              <input name="costo_p2" id="costo_p2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required readonly>
                         </div>
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col">
                             <label for="e_q">E-Q:</label>
-                              <input name="e_q_producto" id="e_q_producto" type="text" class="form-control" aria-label="Monto en pesos mexicanos" required disabled>
+                            <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="costo_eq" id="costo_eq" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required readonly>
+                          </div>
                         </div>
-                        <input type="number" name="flag_contado_producto" id="flag_contado_producto" hidden readonly>
-                        <input type="number" name="flag_especial_producto" id="flag_especial_producto" hidden readonly>
-                        <input type="number" name="flag_cr1_producto" id="flag_cr1_producto" hidden readonly>
-                        <input type="number" name="flag_cr2_producto" id="flag_cr2_producto" hidden readonly>
-                        <input type="number" name="flag_mesespago_producto" id="flag_mesespago_producto" hidden readonly>
                     </div>
                     <input value="insert_producto" name="action" id="action" hidden>
             </div>
@@ -514,7 +629,7 @@ if (!empty($_POST))
 
 <div class="card">
 <div class="card-body">
-<form action="" method="post" autocomplete="off">
+<form action="" method="post" autocomplete="on">
     <div class="row">
         <div class="col-lg-2">
             <label>Categoría:</label>
@@ -540,60 +655,39 @@ if (!empty($_POST))
         <div class="col-lg-2">
             <label>Subcategoría:</label>
             <button data-toggle="modal" data-target="#nueva_subcat" title="Agregar nueva subcategoría" class="btn btn-primary btn-xs" type="button" onclick="nueva_subcategoria();" ><i class="fas fa-plus"></i></button>
-            <button disabled data-toggle="modal" data-target="#nueva_subcat" onclick="editar_subcat();" title="editar subcategoria" class="btn btn-success btn-xs" type="button" href="#" id="btnedit_subcategoria"><i class="fas fa-edit"></i></button>
-            <button disabled onclick="eliminar_subcat();" title="Eliminar subcategoria" class="btn btn-danger btn-xs" type="button" href="#" id="btneliminar_subcategoria"><i class="fas fa-trash"></i></button>
+            <button disabled data-toggle="modal" data-target="#nueva_subcat" onclick="editar_subcategoria();" title="editar subcategoria" class="btn btn-success btn-xs" type="button" href="#" id="btnedit_subcategoria"><i class="fas fa-edit"></i></button>
+            <button disabled onclick="eliminar_subcategoria();" title="Eliminar subcategoria" class="btn btn-danger btn-xs" type="button" href="#" id="btneliminar_subcategoria"><i class="fas fa-trash"></i></button>
 
-            <select class="form-control" id="subcategoria" name="subcategoria">
-                <option selected hidden>Selecciona subcategoría</option>
-                <?php
-                    #codigo para la lista de sucursales que se extraen de la base de datos
-                    $result_subcat = mysqli_query($conexion,"SELECT idsubcategoria,nombre FROM subcategoria order by nombre asc");
-                    if (mysqli_num_rows($result_subcat) > 0) 
-                    {  
-                      while($row = mysqli_fetch_assoc($result_subcat))
-                      {
-                        echo "<option value='".$row["idsubcategoria"]."'>".$row["nombre"]."</option>";
-                      }
-                    }
-                ?> 
+           <select class="form-control" id="subcategoria" name="subcategoria">
             </select>
         </div>
         <div align="left" class="col-lg-1">
             <label>Atributo 1:</label>
-            <select class="form-control" id="filtro1" name="filtro1">
-                <option selected hidden>Tinas</option>
-                <option value="1">1</option>
-                <option value="1">2</option>
-                <option value="1">3</option>
+            <select class="form-control" id="filtro_atr1" name="filtro_atr1">
+                <option selected hidden>---</option>
             </select>
         </div>
         <div align="left" class="col-lg-1">
             <label>Atributo 2:</label>
-            <select class="form-control" id="filtro1" name="filtro1">
-                <option selected hidden>KG</option>
-                <option value="1">9</option>
-                <option value="1">12</option>
+            <select class="form-control" id="filtro_atr2" name="filtro_atr2">
+                <option selected hidden>---</option>
             </select>
         </div>
         <div align="left" class="col-lg-1">
             <label>Atributo 3:</label>
-            <select class="form-control" id="filtro1" name="filtro1">
-                <option selected hidden>Tipo</option>
-                <option value="1">A</option>
-                <option value="1">B</option>
+            <select class="form-control" id="filtro_atr3" name="filtro_atr3">
+                <option selected hidden>---</option>
             </select>
         </div>
         <div align="left" class="col-lg-1">
             <label>Atributo 4:</label>
-            <select class="form-control" id="filtro1" name="filtro1">
-                <option selected hidden>Secadora</option>
-                <option value="1">Sí</option>
-                <option value="1">No</option>
+            <select class="form-control" id="filtro_atr4" name="filtro_atr4">
+                <option selected hidden>---</option>
             </select>
         </div>
         <div align="left" class="col-lg-1">
             <label>Atributo 5:</label>
-            <select class="form-control" id="filtro1" name="filtro1">
+            <select class="form-control" id="filtro_atr5" name="filtro_atr5">
                 <option selected hidden>---</option>
             </select>
         </div>
@@ -603,18 +697,18 @@ if (!empty($_POST))
               <div class="col-12 col-sm-2">
                   <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 75px !important;">Ver Costos</button>
               </div>
-              &nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;
               <div class="col-12 col-sm-3">
                 <div class="row">
                     <div class="col-12 col-sm-12" align="center">
-                        <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 80px !important; height: 45px !important; padding: 0px;">Editar Lista</button>
+                        <button type="submit" class="btn btn-primary py-3 btn-sm" style="width: 88px !important; height: 45px !important; padding: 0px;">Editar Lista</button>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-sm-6" align="center" style="padding-right: 0px; padding-left: 22px;">
+                    <div class="col-12 col-sm-6" align="center" style="padding-right: 0px; padding-left: 12px;">
                         <button onClick='pausar_lista();' class='btn btn-warning btn-sm btn-block' type='submit'><i style='color: white;' class='fas fa-pause'></i></button>
                     </div>
-                    <div class="col-12 col-sm-6" align="center" style="padding-left: 0px; padding-right: 22px;">
+                    <div class="col-12 col-sm-6" align="center" style="padding-left: 0px; padding-right: 0px;">
                         <button onClick='guardar_lista();' class='btn btn-success btn-sm btn-block' type='submit'><i style='color: white;' class='fas fa-save'></i></button>
                     </div>
                 </div>
@@ -660,6 +754,48 @@ if (!empty($_POST))
             </tr>
         </thead>
         <tbody>
+            <?php 
+            $query = mysqli_query($conexion, "SELECT * from producto");
+            $result = mysqli_num_rows($query);
+            if ($result > 0) 
+            {
+                while ($data = mysqli_fetch_assoc($query)) 
+                {
+                    //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
+                    if($data['categoria'] == null)
+                    {
+                        
+                    }
+                    else
+                    {
+
+                    }
+             ?>
+                <tr>
+                        <td><?php echo $data['descripcion']; ?></td>
+                        <td>Aqui nuevo costo</td>
+                        <td><?php echo $data['costo']; ?></td>
+                        <td><?php echo $data['costo_iva']; ?></td>
+                        <td><?php echo $data['ext_p']; ?></td>
+                        <td>asd</td>
+                        <td><?php echo $data['costo_contado']; ?></td>
+                        <td><?php echo $data['costo_especial']; ?></td>
+                        <td><?php echo $data['costo_cr1']; ?></td>
+                        <td><?php echo $data['costo_p1']; ?></td>
+                        <td><?php echo $data['costo_cr2']; ?></td>
+                        <td><?php echo $data['costo_p2']; ?></td>
+                        <td><?php echo $data['costo_eq']; ?></td>
+                        <td>6</td>
+                        <td align="center">
+                                <a href="#" class="btn btn-secondary btn-sm"><i class='fas fa-camera'></i></a>
+                                <a href="#" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
+                                <button onClick='eliminar_producto()' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
+                        </td>
+                    </tr>
+            <?php 
+                }
+            } 
+            ?>
             <tr>
                         <td>Lavadora LG con secadora</td>
                         <td>$4,000</td>
