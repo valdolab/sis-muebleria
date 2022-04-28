@@ -396,6 +396,30 @@ if ($_POST['action'] == 'eliminarCliente')
   exit;
 }
 
+##buscar datos sobre de la producto para poder editarlo
+  if ($_POST['action'] == 'SelectProducto') 
+  {
+  include "accion/conexion.php";
+  if (!empty($_POST['producto'])) 
+  {
+    $id_producto = $_POST['producto'];
+
+    $select_producto = mysqli_query($conexion, "SELECT * from producto where idproducto = '$id_producto'");
+    mysqli_close($conexion);
+    $result_producto = mysqli_num_rows($select_producto);
+    if ($result_producto > 0) 
+    {
+      $data_producto = mysqli_fetch_assoc($select_producto);
+    }
+    else 
+    {
+      $data_producto = 0;
+    }
+    echo json_encode($data_producto,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
   #suspender sucursal
   if ($_POST['action'] == 'suspenderSucursal') {
   include "accion/conexion.php";

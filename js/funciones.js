@@ -1079,6 +1079,12 @@ $('#categoria_producto').change(function(e)
             //cargamos las subcategorias que tenga esa categoria seleccionada en el select subcategoria_producto
             $("#subcategoria_producto").empty();
             $('#subcategoria_producto').append(data.options);
+            //vemos si viene de un humano o si se puso cuando se quiere editar producto
+            var selectsubcat = $('#flag_selectsubcat').val();
+            if(selectsubcat != "nosubcat")
+            {
+                $('#subcategoria_producto').val(selectsubcat).change();
+            }
             //podemos los detalles vacios a la espera de que eligan una subcategoria
             $('#label_atr1,#label_atr2,#label_atr3,#label_atr4,#label_atr5').html("---");
             $('#atr1_producto,#atr2_producto,#atr3_producto,#atr4_producto,#atr5_producto').attr('readonly','readonly');
@@ -1096,6 +1102,7 @@ $('#categoria_producto').change(function(e)
       }
     });    
 });
+
 $('#subcategoria_producto').change(function(e) 
 {
     e.preventDefault();
@@ -1111,7 +1118,6 @@ $('#subcategoria_producto').change(function(e)
         //$('#prueba').html(response);
         var data = $.parseJSON(response);
         
-            //entonces bloqueamos el select de subcategoria y mostramos los datos de los atributos en los labels de los inputs
             if(data.atr1 != null)
             {
                 $('#atr1_producto').removeAttr('readonly');
@@ -1176,6 +1182,7 @@ $('#subcategoria_producto').change(function(e)
       }
     });    
 });
+
 $('#costo').keyup(function(e) 
 {
     var costo = parseFloat($(this).val());
@@ -2045,6 +2052,70 @@ function editar_subcategoria(idsubcategoria)
 }
 
 //=== PRODUCTO
+//funcion para mostrar los datos de producto y poner editarlo
+function editar_producto(idproducto)
+{
+    var action = 'SelectProducto';
+    $.ajax({
+        url: 'ajax.php',
+        type: "POST",
+        async: true,
+        data: {action:action,producto:idproducto},
+        success: function(response) {
+            //$('#prueba').val(response);
+            if (response != 0) 
+            {
+              //$('#prueba').val(response);
+              var data = $.parseJSON(response);
+              $('#flagid_producto').val(idproducto);
+              $('#identificador').val(data.identificador);
+              $('#categoria_producto').val(data.categoria).change();
+              if(data.subcategoria !== null)
+              {
+                //$('#subcategoria_producto').val(data.subcategoria).change();
+                $('#flag_selectsubcat').val(data.subcategoria);
+              }
+              else
+              {
+                $('#flag_selectsubcat').val("nosubcat");
+              }
+
+              $('#descripcion').val(data.descripcion);
+              if(data.serializado == 0)
+              {
+                $('#serializado').bootstrapToggle('off');
+              }
+              else
+              {
+                $('#serializado').bootstrapToggle('on');
+              }
+              $('#atr1_producto').val(data.atr1_producto);
+              $('#atr2_producto').val(data.atr2_producto);
+              $('#atr3_producto').val(data.atr3_producto);
+              $('#atr4_producto').val(data.atr4_producto);
+              $('#atr5_producto').val(data.atr5_producto);
+              $('#stock_min').val(data.stock_min);
+              $('#stock_max').val(data.stock_max);
+              $('#ext_p').val(data.ext_p);
+              $('#costo').val(data.costo);
+              $('#costo_iva').val(data.costo_iva);
+              $('#costo_contado').val(data.costo_contado);
+              $('#costo_especial').val(data.costo_especial);
+              $('#costo_cr1').val(data.costo_cr1);
+              $('#costo_cr2').val(data.costo_cr2);
+              $('#costo_p1').val(data.costo_p1);
+              $('#costo_p2').val(data.costo_p2);
+              $('#costo_eq').val(data.costo_eq);
+              //quitamos bloqueo
+              $('#atr1_producto,#atr2_producto,#atr3_producto,#atr4_producto,#atr5_producto').removeAttr('readonly');
+            }
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+   });  
+}
+
 //funcion para eliminar producto
 //funciones de eliminar y editar de SUBCATEGORIA
 function eliminar_producto(idproducto)
@@ -2099,6 +2170,15 @@ function eliminar_producto(idproducto)
                 });      
               }
         })
+}
+
+function nuevo_producto()
+{
+    $('#flagid_producto').val('nuevoproducto');
+    $("#formAdd_producto :input:not(#btn_guardar_producto,#btn_cancerlar_producto,#flagid_producto)").val('');
+    $('#flag_selectsubcat').val('nosubcat');
+    $('#serializado').bootstrapToggle('off');
+    $('#atr1_producto,#atr2_producto,#atr3_producto,#atr4_producto,#atr5_producto').attr('readonly','readonly');
 }
 
 function nueva_categoria()

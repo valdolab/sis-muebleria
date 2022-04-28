@@ -5,8 +5,8 @@ include "accion/conexion.php";
 
 if (!empty($_POST)) 
 {
-    $ban = $_POST['action'];
-    if($ban == "insert_producto")
+    $ban = $_POST['flagid_producto'];
+    if($ban == "nuevoproducto")
     {
         //insertamos el nuevo producto
         $identificador = $_POST['identificador'];
@@ -65,6 +65,61 @@ if (!empty($_POST))
             //echo mysqli_error($conexion);
         }
     }
+    else
+    {
+        //entonces editamos el producto
+        //insertamos el nuevo producto
+        $id_producto = $_POST['flagid_producto'];
+        $identificador = $_POST['identificador'];
+        $codigo_barras = $_POST['codigo_barras'];
+        $categoria_producto = $_POST['categoria_producto'];
+        if(isset($_POST['subcategoria_producto']))
+        {
+            $subcategoria_producto = $_POST['subcategoria_producto'];
+        }
+        else
+        {
+            $subcategoria_producto = 0;
+        }
+        //$subcategoria_producto = $_POST['subcategoria_producto'];
+        $descripcion = $_POST['descripcion'];
+        if (isset($_POST['serializado']))
+            {
+                $serializado = 1;
+            }
+            else
+            {
+                $serializado = 0;
+            }
+        $atr1_producto = $_POST['atr1_producto'];
+        $atr2_producto = $_POST['atr2_producto'];
+        $atr3_producto = $_POST['atr3_producto'];
+        $atr4_producto = $_POST['atr4_producto'];
+        $atr5_producto = $_POST['atr5_producto'];
+        $stock_min = $_POST['stock_min'];
+        $stock_max = $_POST['stock_max'];
+        $ext_p = $_POST['ext_p'];
+        $costo = $_POST['costo'];
+        $costo_iva = $_POST['costo_iva'];
+        $costo_contado = $_POST['costo_contado'];
+        $costo_especial = $_POST['costo_especial'];
+        $costo_cr1 = $_POST['costo_cr1'];
+        $costo_cr2 = $_POST['costo_cr2'];
+        $costo_p1 = $_POST['costo_p1'];
+        $costo_p2 = $_POST['costo_p2'];
+        $costo_eq = $_POST['costo_eq'];
+
+        $update_producto = mysqli_query($conexion, "UPDATE producto set identificador = ".(!empty($identificador) ? "'$identificador'" : "NULL").", codigo_barras = ".(!empty($codigo_barras) ? "'$codigo_barras'" : "NULL").", categoria = '$categoria_producto', subcategoria = ".($subcategoria_producto!=0 ? "'$subcategoria_producto'" : "NULL").", descripcion = ".(!empty($descripcion) ? "'$descripcion'" : "NULL").", serializado = $serializado, atr1_producto = '$atr1_producto', atr2_producto = ".(!empty($atr2_producto) ? "'$atr2_producto'" : "NULL").", atr3_producto = ".(!empty($atr3_producto) ? "'$atr3_producto'" : "NULL").", atr4_producto = ".(!empty($atr4_producto) ? "'$atr4_producto'" : "NULL").", atr5_producto = ".(!empty($atr5_producto) ? "'$atr5_producto'" : "NULL").", stock_min = ".(!empty($stock_min) ? "'$stock_min'" : "NULL").", stock_max = ".(!empty($stock_max) ? "'$stock_max'" : "NULL").", ext_p = ".(!empty($ext_p) ? "'$ext_p'" : "NULL").", costo = $costo, costo_iva = $costo_iva, costo_contado = $costo_contado, costo_especial = $costo_especial, costo_cr1 = $costo_cr1, costo_cr2 = $costo_cr2, costo_p1 = $costo_p1, costo_p2 = $costo_p2, costo_eq = $costo_eq WHERE idproducto = '$id_producto'");
+        if ($update_producto) 
+        {
+            $modal = "$('#mensaje_success').modal('show');";
+        }
+        else
+        {
+            $modal = "$('#mensaje_error').modal('show');";
+            //echo mysqli_error($conexion);
+        }
+    }
 }
 ?>
 
@@ -91,7 +146,7 @@ if (!empty($_POST))
 
                         <div class="swal2-content">
                             <div id="swal2-content" class="swal2-html-container" style="display: block;">
-                                Producto registrado correctamete
+                                Producto guardado correctamete
                             </div>
                         </div>
                         <div class="swal2-actions">
@@ -328,7 +383,7 @@ if (!empty($_POST))
                                 <option hidden selected>Selecciona categoría</option>
                                 <?php
                                     #codigo para la lista de sucursales que se extraen de la base de datos
-                                    $result_cat = mysqli_query($conexion,"SELECT idcategoria,nombre FROM categoria order by nombre asc");
+                                    $result_cat = mysqli_query($conexion,"SELECT idcategoria,nombre FROM categoria where tiene_subcat = 1 order by nombre asc");
                                     if (mysqli_num_rows($result_cat) > 0) 
                                     {  
                                       while($row = mysqli_fetch_assoc($result_cat))
@@ -460,12 +515,12 @@ if (!empty($_POST))
                 <h3 class="modal-title">Detalle del Producto</h3>
                 <div class="row">
                     <div class="col-lg-6">
-                        <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close" id="btn_cancerlar_producto">
                             Cancelar
                         </button>
                     </div>
                     <div class="col-lg-6">
-                        <input type="submit" value="Guardar" class="btn btn-lg btn-success">
+                        <input type="submit" value="Guardar" class="btn btn-lg btn-success" id="btn_guardar_producto">
                     </div>
                 </div>
             </div>
@@ -647,7 +702,8 @@ if (!empty($_POST))
                           </div>
                         </div>
                     </div>
-                    <input value="insert_producto" name="action" id="action" hidden>
+                    <input type="" name="flagid_producto" id="flagid_producto" readonly>
+                    <input type="" name="flag_selectsubcat" id="flag_selectsubcat" readonly>
             </div>
         </form>
         </div>
@@ -664,7 +720,7 @@ if (!empty($_POST))
         </div>
 
         <div align="right" class="col-lg-4">
-            <button data-toggle="modal" data-target="#nuevo_producto" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nuevo producto</button> 
+            <button data-toggle="modal" data-target="#nuevo_producto" class="btn btn-primary" type="button" onclick="nuevo_producto()"><i class="fas fa-plus"></i> Nuevo producto</button> 
         </div>
     </div>
 </div>
@@ -796,7 +852,7 @@ if (!empty($_POST))
         </thead>
         <tbody>
             <?php 
-            $query = mysqli_query($conexion, "SELECT * from producto");
+            $query = mysqli_query($conexion, "SELECT * from producto order by creado_en desc");
             $result = mysqli_num_rows($query);
             if ($result > 0) 
             {
@@ -804,16 +860,16 @@ if (!empty($_POST))
                 {
                     $id_producto = $data['idproducto'];
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    if($data['categoria'] == null)
+                    if($data['subcategoria'] == null)
                     {
-                        $idsubcategoria = $data['subcategoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_pago from subcategoria where idsubcategoria = '$idsubcategoria'");
+                        $idcategoria = $data['categoria'];
+                        $query_meses = mysqli_query($conexion, "SELECT meses_pago from categoria where idcategoria = '$idcategoria'");
                         $garantia = mysqli_fetch_assoc($query_meses)['meses_pago'];
                     }
                     else
                     {
-                        $idcategoria = $data['categoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_pago from categoria where idcategoria = '$idcategoria'");
+                        $idsubcategoria = $data['subcategoria'];
+                        $query_meses = mysqli_query($conexion, "SELECT meses_pago from subcategoria where idsubcategoria = '$idsubcategoria'");
                         $garantia = mysqli_fetch_assoc($query_meses)['meses_pago'];
                     }
              ?>
@@ -834,7 +890,7 @@ if (!empty($_POST))
                         <td><?php echo $garantia." Meses" ?></td>
                         <td align="center">
                                 <button data-toggle="modal" data-target="#img_producto" class="btn btn-secondary btn-sm"><i class='fas fa-camera'></i></button>
-                                <button class="btn btn-success btn-sm"><i class='fas fa-edit'></i></button>
+                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick='editar_producto("<?php echo $id_producto; ?>");'><i class='fas fa-edit'></i></button>
                                 <button onClick='eliminar_producto("<?php echo $id_producto; ?>");' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
                         </td>
                     </tr>
