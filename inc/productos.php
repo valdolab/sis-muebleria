@@ -225,7 +225,7 @@ if (!empty($_POST))
                           <div class="form-group">
                                 <label for="nombre_cat">Cargar la imágen del producto que se desee subir en <strong>jpg</strong> o <strong>png</strong></label>
                                   <div class="custom-file">
-                                      <input type="file" class="custom-file-input" id="customFileLang" lang="es">
+                                      <input type="file" accept=".jpg, .jpeg, .png" class="custom-file-input" id="customFileLang" lang="es">
                                       <label class="custom-file-label" for="customFileLang" data-browse="Seleccionar imágen">Ninguna imágen selecionada</label>
                                     </div>
                             </div>  
@@ -889,7 +889,7 @@ if (!empty($_POST))
                         <td><?php echo "$".number_format($data['costo_eq'],2, '.', ','); ?></td>
                         <td><?php echo $garantia." Meses" ?></td>
                         <td align="center">
-                                <button data-toggle="modal" data-target="#img_producto" class="btn btn-secondary btn-sm"><i class='fas fa-camera'></i></button>
+                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img();" class="btn btn-secondary btn-sm"><i class='fas fa-camera'></i></button>
                                 <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick='editar_producto("<?php echo $id_producto; ?>");'><i class='fas fa-edit'></i></button>
                                 <button onClick='eliminar_producto("<?php echo $id_producto; ?>");' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
                         </td>
