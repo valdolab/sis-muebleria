@@ -12,14 +12,17 @@ if (!empty($_POST))
         $identificador = $_POST['identificador'];
         $codigo_barras = $_POST['codigo_barras'];
         $categoria_producto = $_POST['categoria_producto'];
+        echo $_POST['subcategoria_producto'];
         if(isset($_POST['subcategoria_producto']))
         {
             $subcategoria_producto = $_POST['subcategoria_producto'];
         }
         else
         {
-            $subcategoria_producto = 0;
+            $subcategoria_producto = "no";
         }
+        echo "/";
+        echo $subcategoria_producto;
         //$subcategoria_producto = $_POST['subcategoria_producto'];
         $descripcion = $_POST['descripcion'];
         if (isset($_POST['serializado']))
@@ -54,7 +57,7 @@ if (!empty($_POST))
         echo "/";
         echo $subcategoria_producto;*/
         
-        $insert_producto = mysqli_query($conexion, "INSERT INTO producto(idproducto, identificador, codigo_barras, categoria, subcategoria, descripcion, serializado, atr1_producto, atr2_producto, atr3_producto, atr4_producto, atr5_producto, stock_min, stock_max, ext_p, costo, costo_iva, costo_contado, costo_especial, costo_cr1, costo_cr2, costo_p1, costo_p2, costo_eq) VALUES (UUID(),".(!empty($identificador) ? "'$identificador'" : "NULL").", ".(!empty($codigo_barras) ? "'$codigo_barras'" : "NULL").", '$categoria_producto', ".($subcategoria_producto!=0 ? "'$subcategoria_producto'" : "NULL").", ".(!empty($descripcion) ? "'$descripcion'" : "NULL").", $serializado, '$atr1_producto', ".(!empty($atr2_producto) ? "'$atr2_producto'" : "NULL").", ".(!empty($atr3_producto) ? "'$atr3_producto'" : "NULL").", ".(!empty($atr4_producto) ? "'$atr4_producto'" : "NULL").", ".(!empty($atr5_producto) ? "'$atr5_producto'" : "NULL").", ".(!empty($stock_min) ? "'$stock_min'" : "NULL").", ".(!empty($stock_max) ? "'$stock_max'" : "NULL").", ".(!empty($ext_p) ? "'$ext_p'" : "NULL").", $costo, $costo_iva, $costo_contado, $costo_especial, $costo_cr1, $costo_cr2, $costo_p1, $costo_p2, $costo_eq)");
+        $insert_producto = mysqli_query($conexion, "INSERT INTO producto(idproducto, identificador, codigo_barras, categoria, subcategoria, descripcion, serializado, atr1_producto, atr2_producto, atr3_producto, atr4_producto, atr5_producto, stock_min, stock_max, ext_p, costo, costo_iva, costo_contado, costo_especial, costo_cr1, costo_cr2, costo_p1, costo_p2, costo_eq) VALUES (UUID(),".(!empty($identificador) ? "'$identificador'" : "NULL").", ".(!empty($codigo_barras) ? "'$codigo_barras'" : "NULL").", '$categoria_producto', ".($subcategoria_producto=="no" ? "NULL" : "'$subcategoria_producto'").", ".(!empty($descripcion) ? "'$descripcion'" : "NULL").", $serializado, '$atr1_producto', ".(!empty($atr2_producto) ? "'$atr2_producto'" : "NULL").", ".(!empty($atr3_producto) ? "'$atr3_producto'" : "NULL").", ".(!empty($atr4_producto) ? "'$atr4_producto'" : "NULL").", ".(!empty($atr5_producto) ? "'$atr5_producto'" : "NULL").", ".(!empty($stock_min) ? "'$stock_min'" : "NULL").", ".(!empty($stock_max) ? "'$stock_max'" : "NULL").", ".(!empty($ext_p) ? "'$ext_p'" : "NULL").", $costo, $costo_iva, $costo_contado, $costo_especial, $costo_cr1, $costo_cr2, $costo_p1, $costo_p2, $costo_eq)");
         if ($insert_producto) 
         {
             $modal = "$('#mensaje_success').modal('show');";
@@ -64,6 +67,78 @@ if (!empty($_POST))
             $modal = "$('#mensaje_error').modal('show');";
             //echo mysqli_error($conexion);
         }
+    }
+    else if($ban == "load_img")
+    {
+        //subimos la imagen del prodcuto
+        //buscamos la info del producto
+        $id_producto = $_POST['flagid_producto_img'];
+        $select_producto = mysqli_query($conexion, "SELECT subcategoria from producto WHERE idproducto = '$id_producto'");
+        //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
+        $datap = mysqli_fetch_assoc($select_producto);
+        if($datap['subcategoria'] == null)
+        {
+            //no tiene sub
+            $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
+            $catproducto = mysqli_fetch_assoc($select_producto_nosub)['catproducto'];
+            //creamos la ubicacion
+            $estructura = "../img/catalogo_productos/".$catproducto;
+        }
+        else
+        {
+            //si tiene sub
+            $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
+            $data_producto = mysqli_fetch_assoc($select_producto_full);
+            $catproducto = $data_producto['catproducto'];
+            $subcat_producto = $data_producto['subcat_producto'];
+             //creamos la ubicacion
+            $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto;
+        }
+
+        $flag_control_dirimg = 1;
+        if (!is_dir($estructura)) 
+        {
+            if(!mkdir($estructura, 0777, true))
+            {
+                //error al crear la direccion
+                $flag_control_dirimg = 0;
+            }
+        }
+        //echo $flag_control_dirimg;
+
+        $nombre_archivo = $id_producto;
+        $nombre_archivo_real = $_FILES['imgProducto']['name'];
+        $extencion = explode(".",$nombre_archivo_real)[1];
+        $allow_files = array("png","jpg","jpge");
+        if(in_array($extencion, $allow_files))
+        {
+            $tamano_archivo = $_FILES['imgProducto']['size'];
+            if($tamano_archivo > 500000)
+            {
+                //imagen muy grande
+                $modal = "$('#mensaje_imggrande').modal('show');";
+            }
+            else
+            {
+                //procedemos con guardarlo 
+                $tmp_archivo = $_FILES['imgProducto']['tmp_name'];
+                $archivador = $estructura."/".$nombre_archivo.".jpg";//.$extencion;
+                @move_uploaded_file($tmp_archivo, $archivador);
+                if(is_file($archivador))
+                {
+                    $modal = "$('#mensaje_imgsuccess').modal('show');";
+                }
+                else
+                {
+                    $modal = "$('#mensaje_imgerror').modal('show');";
+                }
+            }
+        }
+        else
+        {
+            //decir que no es un archivo permitido
+            $modal = "$('#mensaje_imgnoallow').modal('show');";
+        }   
     }
     else
     {
@@ -201,10 +276,156 @@ if (!empty($_POST))
     <!-- <input type="text" name="pruebai" id="pruebai">-->
 </div>
 
+<div style="posicion: fixed; top: 15%;" id="mensaje_imgsuccess" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    
+                    <div align="center" >
+                        <br>
+                        <!-- <img src="../img/ok.gif" width="100px" height="100px"> -->
+                        <div class="swal2-header">
+                            <div class="swal2-icon swal2-success swal2-icon-show" style="display: flex;">
+                                <div class="swal2-success-circular-line-left" style="background-color: rgb(255, 255, 255);"></div>
+                                <span class="swal2-success-line-tip"></span>
+                                <span class="swal2-success-line-long"></span>
+                                <div class="swal2-success-ring"></div>
+                                <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
+                                <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
+                            </div>    
+                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">¡Listo!</h2>
+                        </div>
+
+                        <div class="swal2-content">
+                            <div id="swal2-content" class="swal2-html-container" style="display: block;">
+                                La imágen del producto se guardado correctamete
+                            </div>
+                        </div>
+                        <div class="swal2-actions">
+                            <a href="productos.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="posicion: fixed; top: 15%;" id="mensaje_imgerror" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    
+                    <div align="center" >
+                        <br>
+                        <!-- <img src="../img/ok.gif" width="100px" height="100px"> -->
+                        <div class="swal2-header">
+                            <div class="swal2-icon swal2-error swal2-icon-show" style="display: flex;">
+                                <span class="swal2-x-mark">
+                                    <span class="swal2-x-mark-line-left"></span>
+                                    <span class="swal2-x-mark-line-right"></span>
+                                </span>
+                            </div>    
+                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">Oops... Ocurrio un problema!</h2>
+                        </div>
+
+                        <div class="swal2-content">
+                            <div id="swal2-content" class="swal2-html-container" style="display: block;">
+                                La imágen no se guardo correctamente, intente nuevamente.
+                            </div>
+                        </div>
+                        <div class="swal2-actions">
+                            <a href="productos.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="posicion: fixed; top: 15%;" id="mensaje_imgnoallow" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    
+                    <div align="center" >
+                        <br>
+                        <!-- <img src="../img/ok.gif" width="100px" height="100px"> -->
+                        <div class="swal2-header">
+                            <div class="swal2-icon swal2-error swal2-icon-show" style="display: flex;">
+                                <span class="swal2-x-mark">
+                                    <span class="swal2-x-mark-line-left"></span>
+                                    <span class="swal2-x-mark-line-right"></span>
+                                </span>
+                            </div>    
+                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">¡Imágen invalida!</h2>
+                        </div>
+
+                        <div class="swal2-content">
+                            <div id="swal2-content" class="swal2-html-container" style="display: block;">
+                                La imágen no esta dentro de las extenciones permitidas (png, jpg, jpge).
+                            </div>
+                        </div>
+                        <div class="swal2-actions">
+                            <a href="productos.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="posicion: fixed; top: 15%;" id="mensaje_imggrande" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    
+                    <div align="center" >
+                        <br>
+                        <!-- <img src="../img/ok.gif" width="100px" height="100px"> -->
+                        <div class="swal2-header">
+                            <div class="swal2-icon swal2-error swal2-icon-show" style="display: flex;">
+                                <span class="swal2-x-mark">
+                                    <span class="swal2-x-mark-line-left"></span>
+                                    <span class="swal2-x-mark-line-right"></span>
+                                </span>
+                            </div>    
+                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">¡Imágen muy grande!</h2>
+                        </div>
+
+                        <div class="swal2-content">
+                            <div id="swal2-content" class="swal2-html-container" style="display: block;">
+                                Tamaño maximo soportado: 0.5 MB.
+                            </div>
+                        </div>
+                        <div class="swal2-actions">
+                            <a href="productos.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="img_producto" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
-        <form action="" method="post" autocomplete="on" id="formAdd_img">
+        <form action="" method="post" autocomplete="on" id="formAdd_img" enctype="multipart/form-data">
             <div class="modal-header">
                 <h3 class="modal-title">Imagén del producto</h3>
                 <div class="row">
@@ -225,7 +446,7 @@ if (!empty($_POST))
                           <div class="form-group">
                                 <label for="nombre_cat">Cargar la imágen del producto que se desee subir en <strong>jpg</strong> o <strong>png</strong></label>
                                   <div class="custom-file">
-                                      <input type="file" accept=".jpg, .jpeg, .png" class="custom-file-input" id="customFileLang" lang="es">
+                                      <input name="imgProducto" type="file" accept=".jpg, .jpeg, .png" class="custom-file-input" id="imgProducto" lang="es">
                                       <label class="custom-file-label" for="customFileLang" data-browse="Seleccionar imágen">Ninguna imágen selecionada</label>
                                     </div>
                             </div>  
@@ -236,10 +457,13 @@ if (!empty($_POST))
                         <div class="col-lg-8">
                             <h4><strong>Imágen actual del producto:</strong></h4>
                             <br>
-                            <img src="../img/compra_facil.png" height="300" width="300">
+                            <div id="productoImg">
+                                
+                            </div>
                         </div>
                     </div>
-                    <input value="load_img" name="action" id="action" hidden>
+                    <input value="load_img" name="flagid_producto" id="imgflagid_producto" hidden readonly>
+                    <input type="text" name="flagid_producto_img" id="flagid_producto_img" readonly hidden>
             </div>
         </form>
         </div>
@@ -702,8 +926,8 @@ if (!empty($_POST))
                           </div>
                         </div>
                     </div>
-                    <input type="" name="flagid_producto" id="flagid_producto" readonly>
-                    <input type="" name="flag_selectsubcat" id="flag_selectsubcat" readonly>
+                    <input type="" name="flagid_producto" id="flagid_producto" readonly hidden>
+                    <input type="" name="flag_selectsubcat" id="flag_selectsubcat" readonly hidden>
             </div>
         </form>
         </div>
@@ -814,7 +1038,8 @@ if (!empty($_POST))
               </div>
 
               <div class="col-12 col-sm-3">
-                <button type="button" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Catalogo</button>
+                <button onclick="descargar_zip();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Catalogo</button>
+                <a href="../img/catalogo.zip" id="dale" hidden></a>
               </div>
               <div class="col-12 col-sm-3">
                   <button type="button" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Lista</button>
@@ -865,13 +1090,39 @@ if (!empty($_POST))
                         $idcategoria = $data['categoria'];
                         $query_meses = mysqli_query($conexion, "SELECT meses_pago from categoria where idcategoria = '$idcategoria'");
                         $garantia = mysqli_fetch_assoc($query_meses)['meses_pago'];
+
+                        //no tiene sub
+                        $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
+                        $catproducto = mysqli_fetch_assoc($select_producto_nosub)['catproducto'];
+                        //creamos la ubicacion
+                        $estructura = "../img/catalogo_productos/".$catproducto;
                     }
                     else
                     {
                         $idsubcategoria = $data['subcategoria'];
                         $query_meses = mysqli_query($conexion, "SELECT meses_pago from subcategoria where idsubcategoria = '$idsubcategoria'");
                         $garantia = mysqli_fetch_assoc($query_meses)['meses_pago'];
+
+                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
+                        $data_producto = mysqli_fetch_assoc($select_producto_full);
+                        $catproducto = $data_producto['catproducto'];
+                        $subcat_producto = $data_producto['subcat_producto'];
+                        //creamos la ubicacion
+                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto;
                     }
+                    //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
+                    $archivador = $estructura."/".$id_producto.".jpg";
+                    if(is_file($archivador))
+                    {
+                        $boton_img = "btn btn-primary btn-sm";
+                        $siimagen = 1;
+                    }
+                    else
+                    {
+                        $boton_img = "btn btn-secondary btn-sm";
+                        $siimagen = 0;
+                    }
+
              ?>
                 <tr>
                         <td><?php echo $data['descripcion']; ?></td>
@@ -879,7 +1130,7 @@ if (!empty($_POST))
                         <td><?php echo "$".number_format($data['costo'],2, '.', ','); ?></td>
                         <td><?php echo "$".number_format($data['costo_iva'],2, '.', ','); ?></td>
                         <td><?php echo $data['ext_p']; ?></td>
-                        <td>asd</td>
+                        <td>---</td>
                         <td><?php echo "$".number_format($data['costo_contado'],2, '.', ','); ?></td>
                         <td><?php echo "$".number_format($data['costo_especial'],2, '.', ','); ?></td>
                         <td><?php echo "$".number_format($data['costo_cr1'],2, '.', ','); ?></td>
@@ -889,7 +1140,7 @@ if (!empty($_POST))
                         <td><?php echo "$".number_format($data['costo_eq'],2, '.', ','); ?></td>
                         <td><?php echo $garantia." Meses" ?></td>
                         <td align="center">
-                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img();" class="btn btn-secondary btn-sm"><i class='fas fa-camera'></i></button>
+                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img('<?php echo $id_producto; ?>','<?php echo $archivador; ?>',<?php echo $siimagen; ?>);" class="<?php echo $boton_img; ?>"><i class="fas fa-camera"></i></button>
                                 <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick='editar_producto("<?php echo $id_producto; ?>");'><i class='fas fa-edit'></i></button>
                                 <button onClick='eliminar_producto("<?php echo $id_producto; ?>");' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
                         </td>
@@ -898,48 +1149,6 @@ if (!empty($_POST))
                 }
             } 
             ?>
-            <tr>
-                        <td>Lavadora LG con secadora</td>
-                        <td>$4,000</td>
-                        <td>$5,000</td>
-                        <td>$5,500</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>$5,000</td>
-                        <td>$4,000</td>
-                        <td>$5,000</td>
-                        <td>$4,000</td>
-                        <td>$4,000</td>
-                        <td>$5,000</td>
-                        <td>$4,000</td>
-                        <td>5</td>
-                        <td align="center">
-                                <a href="#" class="btn btn-primary btn-sm"><i class='fas fa-camera'></i></a>
-                                <a href="#" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
-                                <button onClick='eliminar_producto()' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Lavadora LG con secadora</td>
-                        <td><input type="number" name="" id="" class="form-control"></td>
-                        <td>$5,000</td>
-                        <td>$5,500</td>
-                        <td>7</td>
-                        <td>4</td>
-                        <td>$5,000</td>
-                        <td>$4,000</td>
-                        <td>$5,000</td>
-                        <td>$4,000</td>
-                        <td>$4,000</td>
-                        <td>$5,000</td>
-                        <td>$4,000</td>
-                        <td>5</td>
-                        <td align="center">
-                                <a href="#" class="btn btn-secondary btn-sm"><i class='fas fa-camera'></i></a>
-                                <a href="#" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
-                                <button onClick='eliminar_producto()' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
-                        </td>
-                    </tr>
         </tbody>
     </table>
 </div>

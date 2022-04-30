@@ -2196,6 +2196,28 @@ function nueva_subcategoria()
     $("#formAdd_subcat :input:not(#btn_guardarsubcat,#btn_cancerlarsubcat,#categoria_subcategoria,#atr1_sub,#action,#flagidsubcategoria)").val('');
 }
 
+function mostrar_img(idproducto,url_img,si_img)
+{
+    $('#flagid_producto_img').val(idproducto);
+    if(si_img == 1)
+    {
+        $('#productoImg').html('<img height="300" width="350" id="productoImg" src="'+url_img+'">');
+    }
+    else
+    {
+        $('#productoImg').html('<div class="alert alert-warning" role="alert"><h4>El producto seleccionado No tiene imágen</h4></div>');
+    }
+}
+
+function descargar_zip()
+{
+    $.ajax({url:"accion/download_zip.php", success:function(result)
+    {
+        //$("#prueba").html(result);
+        $('#dale')[0].click();
+    }})
+}
+
 //ESTAS SON FUNCIONES PARA OTRAS COSAS
 //para suspender sucursales
 function suspender_sucursal(idsucursal)

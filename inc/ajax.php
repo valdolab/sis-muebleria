@@ -225,6 +225,16 @@ if ($_POST['action'] == 'eliminarCliente')
   exit;
 }
 
+function deleteAll($dir) {
+    foreach(glob($dir . '/*') as $file) {
+        if(is_dir($file))
+            deleteAll($file);
+        else
+            unlink($file);
+    }
+    rmdir($dir);
+}
+
 #eliminar cat
   if ($_POST['action'] == 'eliminarCategoria') {
   include "accion/conexion.php";
@@ -232,7 +242,13 @@ if ($_POST['action'] == 'eliminarCliente')
   {
     $id_cat = $_POST['categoria'];
 
+    $select_cat = mysqli_query($conexion, "SELECT nombre from categoria where idcategoria = '$id_cat'");
+    $nom_cat = mysqli_fetch_assoc($select_cat)['nombre'];
+    $estructura = "../img/catalogo_productos/".$nom_cat;
+    deleteAll($estructura);
+
     $query_cat = mysqli_query($conexion, "DELETE FROM categoria WHERE idcategoria = '$id_cat'");
+    //$elimino_cat = 1;
 
     mysqli_close($conexion);
     if ($query_cat) {
@@ -252,7 +268,16 @@ if ($_POST['action'] == 'eliminarCliente')
   {
     $id_subcat = $_POST['subcategoria'];
 
+    $select_subcat = mysqli_query($conexion, "SELECT subcategoria.nombre as subcat, categoria.nombre as cat from subcategoria inner join categoria on categoria.idcategoria = subcategoria.categoria where idsubcategoria = '$id_subcat'");
+    $data_subcat = mysqli_fetch_assoc($select_subcat);
+    $cat = $data_subcat['cat'];
+    $subcat = $data_subcat['subcat'];
+    //creamos la ubicacion
+    $estructura = "../img/catalogo_productos/".$cat."/".$subcat;
+    deleteAll($estructura);
+
     $query_subcat = mysqli_query($conexion, "DELETE FROM subcategoria WHERE idsubcategoria = '$id_subcat'");
+    //$elimino_subcat = 1;
 
     mysqli_close($conexion);
     if ($query_subcat) {
@@ -272,7 +297,36 @@ if ($_POST['action'] == 'eliminarCliente')
   {
     $id_producto = $_POST['producto'];
 
+    $select_producto = mysqli_query($conexion, "SELECT subcategoria from producto WHERE idproducto = '$id_producto'");
+        //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
+        $datap = mysqli_fetch_assoc($select_producto);
+        if($datap['subcategoria'] == null)
+        {
+            //no tiene sub
+            $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
+            $catproducto = mysqli_fetch_assoc($select_producto_nosub)['catproducto'];
+            //creamos la ubicacion
+            $estructura = "../img/catalogo_productos/".$catproducto;
+        }
+        else
+        {
+            //si tiene sub
+            $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
+            $data_producto = mysqli_fetch_assoc($select_producto_full);
+            $catproducto = $data_producto['catproducto'];
+            $subcat_producto = $data_producto['subcat_producto'];
+             //creamos la ubicacion
+            $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto;
+        }
+        $archivador = $estructura."/".$id_producto.".jpg";//.$extencion;
+
+    if (!is_dir($archivador)) 
+    {
+      unlink($archivador);
+    }
+    
     $query_producto = mysqli_query($conexion, "DELETE FROM producto WHERE idproducto = '$id_producto'");
+
 
     mysqli_close($conexion);
     if ($query_producto) {
