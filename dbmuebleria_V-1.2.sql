@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 22-04-2022 a las 02:46:34
+-- Tiempo de generación: 30-04-2022 a las 00:13:27
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -313,7 +313,11 @@ CREATE TABLE IF NOT EXISTS `producto` (
 --
 
 INSERT INTO `producto` (`idproducto`, `identificador`, `codigo_barras`, `categoria`, `subcategoria`, `descripcion`, `serializado`, `atr1_producto`, `atr2_producto`, `atr3_producto`, `atr4_producto`, `atr5_producto`, `stock_min`, `stock_max`, `ext_p`, `costo`, `costo_iva`, `costo_contado`, `costo_especial`, `costo_cr1`, `costo_cr2`, `costo_p1`, `costo_p2`, `costo_eq`, `creado_en`) VALUES
-('66bfc35f-c1d7-11ec-91b0-d481d7c3a9ad', 'asd', NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'Aqui va la descricion mas detalla del producto', 0, 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, NULL, 4000, 4640, 4480, 4880, 4440, 4880, 3.33, 3.66, 666.67, '2022-04-22 00:59:04');
+('082b0355-c68c-11ec-abb6-d481d7c3a9ad', NULL, NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9e77b6b3-c1a7-11ec-91b0-d481d7c3a9ad', 'es una licuadora LG BLABLBL', 0, 'LG', '3', 'plastico', 'grande', NULL, NULL, NULL, NULL, 3600, 4176, 3672, 4032, 3996, 4392, 4.44, 4.88, 450, '2022-04-28 00:42:07'),
+('0def99df-c681-11ec-abb6-d481d7c3a9ad', NULL, NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora SAMSUNG', 0, 'SAMSUNG', '3', '1', '10', '1', NULL, NULL, NULL, 7000, 8120, 7770, 7070, 7770, 7700, 13.32, 13.2, 400, '2022-04-27 23:23:32'),
+('23bba124-c681-11ec-abb6-d481d7c3a9ad', NULL, NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora patito', 0, 'PATITO', '6', '2', '10', '2', NULL, NULL, NULL, 9000, 10440, 9990, 9090, 9990, 9900, 13.32, 13.2, 400, '2022-04-27 23:24:09'),
+('66bfc35f-c1d7-11ec-91b0-d481d7c3a9ad', 'asd', NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'Aqui va la descricion mas detalla del producto', 1, 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, NULL, 4000, 4640, 4480, 4880, 4440, 4880, 3.33, 3.66, 666.67, '2022-04-22 00:59:04'),
+('ecf8fb02-c680-11ec-abb6-d481d7c3a9ad', NULL, NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora LG', 0, 'LG', '6', '2', '12', '1', NULL, NULL, NULL, 5000, 5800, 5550, 5050, 5550, 5500, 13.32, 13.2, 400, '2022-04-27 23:22:37');
 
 -- --------------------------------------------------------
 
