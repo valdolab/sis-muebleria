@@ -2555,7 +2555,7 @@ function mostrar_img(idproducto,url_img,si_img)
     $('#flagid_producto_img').val(idproducto);
     if(si_img == 1)
     {
-        $('#productoImg').html('<img height="300" width="350" id="productoImg" src="'+url_img+'">');
+        $('#productoImg').html('<a href="'+url_img+'" target="_blank" rel="noopener noreferrer" ><img height="750" width="750" id="productoImg" src="'+url_img+'"></a>');
         $('#btn_borrar_img').attr('onClick','borrar_img("'+url_img+'")');
         $('#btn_borrar_img').removeAttr('disabled');
     }

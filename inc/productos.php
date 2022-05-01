@@ -423,46 +423,37 @@ if (!empty($_POST))
 </div>
 
 <div id="img_producto" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
+    <div class="modal-dialog  modal-xl" role="document">
         <div class="modal-content">
         <form action="" method="post" autocomplete="on" id="formAdd_img" enctype="multipart/form-data">
             <div class="modal-header">
-                <h3 class="modal-title">Imagén del producto</h3>
+                    <h2 class="modal-title">Imagén del producto</h2>
                 <div class="row">
                     <div class="col-lg-6">
-                        <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close" id="btn_cancerlarimg">
-                            Cancelar
-                        </button>
-                    </div>
-                    <div class="col-lg-6">
-                        <input type="submit" value="Subir" class="btn btn-lg btn-success" id="btn_subirimg">
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-10">
                           <div class="form-group">
-                                <label for="nombre_cat">Cargar la imágen del producto que se desee subir en <strong>jpg</strong> o <strong>png</strong></label>
                                   <div class="custom-file">
                                       <input name="imgProducto" type="file" accept=".jpg, .jpeg, .png" class="custom-file-input" id="imgProducto" lang="es">
-                                      <label class="custom-file-label" for="customFileLang" data-browse="Seleccionar imágen">Ninguna imágen selecionada</label>
+                                      <label class="custom-file-label" for="customFileLang" data-browse="Seleccionar">Subir imágen png</label>
                                     </div>
                             </div>  
                         </div>
-                    </div>
-                    <hr>
+                        <div class="col-lg-6">
+                            <button id="btn_borrar_img" type="button" class="btn btn-lg btn-danger"><i class="fas fa-trash-alt"></i> Borrar</button>
+
+                            <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close" id="btn_cancerlarimg">
+                            Cancelar
+                            </button>
+
+                            <input type="submit" value="Subir" class="btn btn-lg btn-success" id="btn_subirimg">
+                        </div>
+                </div>
+            </div>
+            <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-8">
-                            <h4><strong>Imágen actual del producto:</strong></h4>
-                            <br>
-                            <div id="productoImg">
+                        <div class="col-lg-12">
+                            <div id="productoImg" align="center">
                                 
                             </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <button id="btn_borrar_img" type="button" class="btn btn-lg btn-danger"><i class="fas fa-trash-alt"></i> Borrar imagén</button>
                         </div>
                     </div>
                     <input value="load_img" name="flagid_producto" id="imgflagid_producto" hidden readonly>
