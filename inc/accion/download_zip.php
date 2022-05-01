@@ -1,4 +1,5 @@
 <?php
+ob_start();
 //   ../../img/catalogo_productos/
 // Get real path for our folder
 $rootPath = realpath('../../img/catalogo_productos/');
@@ -29,5 +30,17 @@ foreach ($files as $name => $file)
 }
 // Zip archive will be created only after closing object
 $zip->close();
+$file = "../../img/catalogo.zip";
+$nombreR="catalogo.zip";
+header('Content-Type: application/zip');
+header("Content-Disposition: attachment; filename=$nombreR");
+//header('Content-Length: ' . filesize($file));
+header('Cache-Control: max-age=0');
+header('Cache-Control: max-age=1');
+
+ob_end_clean();
+readfile($file);
+exit;
+ob_end_flush();
 
 ?>

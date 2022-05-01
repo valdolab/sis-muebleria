@@ -12,7 +12,7 @@ if (!empty($_POST))
         $identificador = $_POST['identificador'];
         $codigo_barras = $_POST['codigo_barras'];
         $categoria_producto = $_POST['categoria_producto'];
-        echo $_POST['subcategoria_producto'];
+        //echo $_POST['subcategoria_producto'];
         if(isset($_POST['subcategoria_producto']))
         {
             $subcategoria_producto = $_POST['subcategoria_producto'];
@@ -21,8 +21,8 @@ if (!empty($_POST))
         {
             $subcategoria_producto = "no";
         }
-        echo "/";
-        echo $subcategoria_producto;
+        //echo "/";
+        //echo $subcategoria_producto;
         //$subcategoria_producto = $_POST['subcategoria_producto'];
         $descripcion = $_POST['descripcion'];
         if (isset($_POST['serializado']))
@@ -460,6 +460,9 @@ if (!empty($_POST))
                             <div id="productoImg">
                                 
                             </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <button id="btn_borrar_img" type="button" class="btn btn-lg btn-danger"><i class="fas fa-trash-alt"></i> Borrar imagén</button>
                         </div>
                     </div>
                     <input value="load_img" name="flagid_producto" id="imgflagid_producto" hidden readonly>
@@ -1018,31 +1021,30 @@ if (!empty($_POST))
             
             <div class="row">
               <div class="col-12 col-sm-2">
-                  <button onclick="mostrar_costoiva();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 75px !important;">Ver Costos</button>
+                  <button onclick="show_costoiva();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 75px !important;">Ver Costos</button>
               </div>
               &nbsp;&nbsp;&nbsp;
               <div class="col-12 col-sm-3">
                 <div class="row">
                     <div class="col-12 col-sm-12" align="center">
-                        <button type="button" class="btn btn-primary py-3 btn-sm" style="width: 88px !important; height: 45px !important; padding: 0px;">Editar Lista</button>
+                        <button onclick="show_new_costo();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 88px !important; height: 45px !important; padding: 0px;">Editar Lista</button>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 col-sm-6" align="center" style="padding-right: 0px; padding-left: 12px;">
-                        <button onClick='pausar_lista();' class='btn btn-warning btn-sm btn-block' type='button'><i style='color: white;' class='fas fa-pause'></i></button>
+                        <button id="btn_pause_lista" onClick='pausar_lista();' class='btn btn-warning btn-sm btn-block' type='button'><i style='color: white;' class='fas fa-pause' id="btn_icon_pause_lista"></i></button>
                     </div>
                     <div class="col-12 col-sm-6" align="center" style="padding-left: 0px; padding-right: 0px;">
-                        <button onClick='guardar_lista();' class='btn btn-success btn-sm btn-block' type='button'><i style='color: white;' class='fas fa-save'></i></button>
+                        <button id="btn_save_lista" disabled onClick='guardar_lista();' class='btn btn-success btn-sm btn-block' type='button'><i style='color: white;' class='fas fa-save'></i></button>
                     </div>
                 </div>
               </div>
 
               <div class="col-12 col-sm-3">
-                <button onclick="descargar_zip();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Catalogo</button>
-                <a href="../img/catalogo.zip" id="dale" hidden></a>
+                <a href="accion/download_zip.php" type="button" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Catalogo</a>
               </div>
               <div class="col-12 col-sm-3">
-                  <button type="button" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Lista</button>
+                  <a href="accion/download_excel_lista.php" type="button" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Lista</a>
               </div>
             </div>
 
@@ -1054,8 +1056,8 @@ if (!empty($_POST))
 
 <div class="card">
 <div class="card-body">
-<div class="table-responsive">
-    <table class="table" id="tbl">
+<div class="table-responsive" id="tablaproductos">
+    <table class="table" id="tbl_productos">
         <thead class="thead-light">
             <tr>
                 <th>Descripción</th>
@@ -1088,8 +1090,8 @@ if (!empty($_POST))
                     if($data['subcategoria'] == null)
                     {
                         $idcategoria = $data['categoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_pago from categoria where idcategoria = '$idcategoria'");
-                        $garantia = mysqli_fetch_assoc($query_meses)['meses_pago'];
+                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
+                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
                         //no tiene sub
                         $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
@@ -1100,8 +1102,8 @@ if (!empty($_POST))
                     else
                     {
                         $idsubcategoria = $data['subcategoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_pago from subcategoria where idsubcategoria = '$idsubcategoria'");
-                        $garantia = mysqli_fetch_assoc($query_meses)['meses_pago'];
+                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
+                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
                         $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
                         $data_producto = mysqli_fetch_assoc($select_producto_full);
@@ -1126,7 +1128,7 @@ if (!empty($_POST))
              ?>
                 <tr>
                         <td><?php echo $data['descripcion']; ?></td>
-                        <td>Aqui nuevo costo</td>
+                        <td><input type="number" name="nuevo_costo" id="nuevo_costo" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td><?php echo "$".number_format($data['costo'],2, '.', ','); ?></td>
                         <td><?php echo "$".number_format($data['costo_iva'],2, '.', ','); ?></td>
                         <td><?php echo $data['ext_p']; ?></td>

@@ -134,17 +134,9 @@ $('#listas').on("click",".remover_campo",function(e)
     x--;
 });
 
-$(document).ready(function() 
+function show_search_box()
 {
-    $(".custom-file-input").on("change", function() {
-  var fileName = $(this).val().split("\\").pop();
-  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-});
-
- //para el select2 multiple
- $('.js-example-basic-multiple').select2();
-    //funcion para poner tablas en español
- $('#tbl').DataTable({
+    $('#tbl_productos').DataTable({
   "columnDefs": [{
    "targets": 0
   }],
@@ -166,6 +158,19 @@ $(document).ready(function()
    },
   }
  });
+}
+
+$(document).ready(function() 
+{
+    $(".custom-file-input").on("change", function() {
+  var fileName = $(this).val().split("\\").pop();
+  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
+
+ //para el select2 multiple
+ $('.js-example-basic-multiple').select2();
+    //funcion para poner tablas en español
+show_search_box();
 //fin tablas en español
 
 //para habilitar la edicion en cliente
@@ -721,16 +726,45 @@ $('#idestado_civil').change(function() {
         return false;   
     });
 
+    //para las tablas que no son de productos
+    $('#tbl').DataTable({
+  "columnDefs": [{
+   "targets": 0
+  }],
+  language: {
+   "sProcessing": "Procesando...",
+   "sLengthMenu": "Mostrar _MENU_ resultados",
+   "sZeroRecords": "No se encontraron resultados",
+   "sEmptyTable": "Ningún dato disponible en esta tabla",
+   "sInfo": "Mostrando resultados _START_-_END_ de  _TOTAL_",
+   "sInfoEmpty": "Mostrando resultados del 0 al 0 de un total de 0 registros",
+   "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+   "sSearch": "Buscar:",
+   "sLoadingRecords": "Cargando...",
+   "oPaginate": {
+    "sFirst": "Primero",
+    "sLast": "Último",
+    "sNext": "Siguiente",
+    "sPrevious": "Anterior"
+   },
+  }
+ });
+
     //oculta las columnas de costos de la tabla productos
-    $('td:nth-child(2)').hide();
-    $('th:nth-child(2)').hide();
-    $('td:nth-child(3)').hide();
-    $('th:nth-child(3)').hide();
-    $('td:nth-child(4)').hide();
-    $('th:nth-child(4)').hide();
+    hide_costos();
 
 //FIN DEL DOCUMENT READY
 });
+
+function hide_costos()
+{
+    $('#tbl_productos td:nth-child(2)').hide();
+    $('#tbl_productos th:nth-child(2)').hide();
+    $('#tbl_productos td:nth-child(3)').hide();
+    $('#tbl_productos th:nth-child(3)').hide();
+    $('#tbl_productos td:nth-child(4)').hide();
+    $('#tbl_productos th:nth-child(4)').hide();
+}
 
 //para hacer mayusculas
 function mayusculas(e) {
@@ -920,7 +954,7 @@ $('#categoria').change(function(e)
       data: {action:action,categoria:idcategoria},
       success: function(response) 
       {
-        //$('#prueba').html(data);
+        //$('#prueba').text(response);
         var data = $.parseJSON(response);
         if(data.catUsed == 0)
         {
@@ -938,12 +972,85 @@ $('#categoria').change(function(e)
         {
             //no tiene subcategorias
             $("#subcategoria").empty();
-            $('#subcategoria').append('<option selected hidden>No tiene subcategoría</option>');
+            $('#subcategoria').append('<option value="NoSubcat" selected hidden>No tiene subcategoría</option>');
             $('#subcategoria').attr('disabled','disabled');
             $('#btnedit_subcategoria').attr('onClick', 'editar_subcategoria();');
             $('#btnedit_subcategoria').attr('disabled','disabled');
             $('#btneliminar_subcategoria').attr('onClick', 'eliminar_subcategoria();');
             $('#btneliminar_subcategoria').attr('disabled','disabled');
+
+            //ponemos los labels de los atributos
+            $("#filtro_atr1").empty();
+            if(data.atr_labels.atr1 != null)
+            {
+                $('#filtro_atr1').append('<option selected hidden>'+data.atr_labels.atr1+'</option>');    
+            }
+            else
+            {
+                $('#filtro_atr1').append('<option selected hidden>---</option>');
+            }
+            $("#filtro_atr2").empty();
+            if(data.atr_labels.atr2 != null)
+            {
+                $('#filtro_atr2').append('<option selected hidden>'+data.atr_labels.atr2+'</option>');
+            }
+            else
+            {
+                $('#filtro_atr2').append('<option selected hidden>---</option>');
+            }
+            $("#filtro_atr3").empty();
+            if(data.atr_labels.atr3 != null)
+            {
+                $('#filtro_atr3').append('<option selected hidden>'+data.atr_labels.atr3+'</option>');
+            }
+            else
+            {
+                $('#filtro_atr3').append('<option selected hidden>---</option>');
+            }
+            $("#filtro_atr4").empty();
+            if(data.atr_labels.atr4 != null)
+            {
+                $('#filtro_atr4').append('<option selected hidden>'+data.atr_labels.atr4+'</option>');
+            }
+            else
+            {
+                $('#filtro_atr4').append('<option selected hidden>---</option>');
+            }
+            $("#filtro_atr5").empty();
+            if(data.atr_labels.atr5 != null)
+            {
+                $('#filtro_atr5').append('<option selected hidden>'+data.atr_labels.atr5+'</option>');
+            }
+            else
+            {
+                $('#filtro_atr5').append('<option selected hidden>---</option>');
+            }
+
+            var size_atrs = data.atrs_productos.length;
+            for (var i=0;i<size_atrs;i++) 
+            {
+                if(data.atrs_productos[i].atr1_producto != null)
+                {
+                    $('#filtro_atr1').append('<option>'+data.atrs_productos[i].atr1_producto+'</option>');
+                }
+                if(data.atrs_productos[i].atr2_producto != null)
+                {
+                    $('#filtro_atr2').append('<option>'+data.atrs_productos[i].atr2_producto+'</option>');
+                }
+                if(data.atrs_productos[i].atr3_producto != null)
+                {
+                    $('#filtro_atr3').append('<option>'+data.atrs_productos[i].atr3_producto+'</option>');
+                }
+                if(data.atrs_productos[i].atr4_producto != null)
+                {
+                    $('#filtro_atr4').append('<option>'+data.atrs_productos[i].atr4_producto+'</option>');
+                }
+                if(data.atrs_productos[i].atr5_producto != null)
+                {
+                    $('#filtro_atr5').append('<option>'+data.atrs_productos[i].atr5_producto+'</option>');
+                }
+            }
+            //fin de poner los atributos
         }
         else
         {
@@ -951,7 +1058,25 @@ $('#categoria').change(function(e)
             $('#subcategoria').removeAttr('disabled');
             $("#subcategoria").empty();
             $('#subcategoria').append(data.options);
+            //limpiamos los selects de atributos
+            //ponemos los labels de los atributos
+            $("#filtro_atr1").empty();
+            $('#filtro_atr1').append('<option selected hidden>---</option>');
+            $("#filtro_atr2").empty();
+            $('#filtro_atr2').append('<option selected hidden>---</option>');
+            $("#filtro_atr3").empty();
+            $('#filtro_atr3').append('<option selected hidden>---</option>');
+            $("#filtro_atr4").empty();
+            $('#filtro_atr4').append('<option selected hidden>---</option>');
+            $("#filtro_atr5").empty();
+            $('#filtro_atr5').append('<option selected hidden>---</option>');
         }
+        //modifcar la tabla 
+        $('#tablaproductos').html(data.cadenaTabla);
+        show_search_box();
+        //ocultamos los costos
+        hide_costos();
+        //$('#prueba').html(data.atr_labels.atr1);
       },
       error: function(error) {
         //$('#sucursal').val('error');
@@ -974,7 +1099,9 @@ $('#subcategoria').change(function(e)
       async: true,
       data: {action:action,subcategoria:idsubcategoria},
       success: function(response) {
-        if(response == 0)
+        //$('#prueba').html(data); 
+        var data = $.parseJSON(response);
+        if(data.subcatused == 0)
         {
             $('#btneliminar_subcategoria').attr('onClick', 'eliminar_subcategoria("'+idsubcategoria+'");');
             $('#btneliminar_subcategoria').removeAttr('disabled');
@@ -984,7 +1111,83 @@ $('#subcategoria').change(function(e)
             $('#btneliminar_subcategoria').attr('onClick', 'eliminar_subcategoria();');
             $('#btneliminar_subcategoria').attr('disabled','disabled');
         }
-        //$('#prueba').html(data); 
+        //modifcar la tabla 
+        $('#tablaproductos').html(data.cadenaTabla);
+        show_search_box();
+        //ocultamos los costos
+        hide_costos();
+        //ponemos los labels de los atributos
+            $("#filtro_atr1").empty();
+            if(data.atr_labels.atr1 != null)
+            {
+                $('#filtro_atr1').append('<option selected hidden>'+data.atr_labels.atr1+'</option>');    
+            }
+            else
+            {
+                $('#filtro_atr1').append('<option selected hidden>---</option>');
+            }
+            $("#filtro_atr2").empty();
+            if(data.atr_labels.atr2 != null)
+            {
+                $('#filtro_atr2').append('<option selected hidden>'+data.atr_labels.atr2+'</option>');
+            }
+            else
+            {
+                $('#filtro_atr2').append('<option selected hidden>---</option>');
+            }
+            $("#filtro_atr3").empty();
+            if(data.atr_labels.atr3 != null)
+            {
+                $('#filtro_atr3').append('<option selected hidden>'+data.atr_labels.atr3+'</option>');
+            }
+            else
+            {
+                $('#filtro_atr3').append('<option selected hidden>---</option>');
+            }
+            $("#filtro_atr4").empty();
+            if(data.atr_labels.atr4 != null)
+            {
+                $('#filtro_atr4').append('<option selected hidden>'+data.atr_labels.atr4+'</option>');
+            }
+            else
+            {
+                $('#filtro_atr4').append('<option selected hidden>---</option>');
+            }
+            $("#filtro_atr5").empty();
+            if(data.atr_labels.atr5 != null)
+            {
+                $('#filtro_atr5').append('<option selected hidden>'+data.atr_labels.atr5+'</option>');
+            }
+            else
+            {
+                $('#filtro_atr5').append('<option selected hidden>---</option>');
+            }
+
+            var size_atrs = data.atrs_productos.length;
+            for (var i=0;i<size_atrs;i++) 
+            {
+                if(data.atrs_productos[i].atr1_producto != null)
+                {
+                    $('#filtro_atr1').append('<option>'+data.atrs_productos[i].atr1_producto+'</option>');
+                }
+                if(data.atrs_productos[i].atr2_producto != null)
+                {
+                    $('#filtro_atr2').append('<option>'+data.atrs_productos[i].atr2_producto+'</option>');
+                }
+                if(data.atrs_productos[i].atr3_producto != null)
+                {
+                    $('#filtro_atr3').append('<option>'+data.atrs_productos[i].atr3_producto+'</option>');
+                }
+                if(data.atrs_productos[i].atr4_producto != null)
+                {
+                    $('#filtro_atr4').append('<option>'+data.atrs_productos[i].atr4_producto+'</option>');
+                }
+                if(data.atrs_productos[i].atr5_producto != null)
+                {
+                    $('#filtro_atr5').append('<option>'+data.atrs_productos[i].atr5_producto+'</option>');
+                }
+            }
+        //fin de poner los atributos
       },
       error: function(error) {
         //$('#sucursal').val('error');
@@ -992,6 +1195,150 @@ $('#subcategoria').change(function(e)
     });
 });
 
+//=========================== los select para los filtros por atributos
+//FILTRO 1
+$('#filtro_atr1').change(function(e) 
+{
+    e.preventDefault();
+    var atr1 = $(this).val();   
+    var idcat = $('#categoria').val();
+    var idsubcat = $('#subcategoria').val();
+
+    var action = 'searchForAtr1';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,atr1:atr1,idcat:idcat,idsubcat,idsubcat},
+      success: function(response) {
+        //$('#prueba').text(idsubcat); 
+        var data = $.parseJSON(response);
+        $('#tablaproductos').html(data.cadenaTabla);
+        show_search_box();
+        //ocultamos los costos
+        hide_costos();
+
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
+});
+//FILTRO 2
+$('#filtro_atr2').change(function(e) 
+{
+    e.preventDefault();
+    var atr2 = $(this).val();
+    var idcat = $('#categoria').val();
+    var idsubcat = $('#subcategoria').val();
+
+    var action = 'searchForAtr2';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,atr2:atr2,idcat:idcat,idsubcat,idsubcat},
+      success: function(response) {
+        //$('#prueba').text(idsubcat); 
+        var data = $.parseJSON(response);
+        $('#tablaproductos').html(data.cadenaTabla);
+        show_search_box();
+        //ocultamos los costos
+        hide_costos();
+
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
+});
+//FILTRO 3
+$('#filtro_atr3').change(function(e) 
+{
+    e.preventDefault();
+    var atr3 = $(this).val();
+    var idcat = $('#categoria').val();
+    var idsubcat = $('#subcategoria').val();
+
+    var action = 'searchForAtr3';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,atr3:atr3,idcat:idcat,idsubcat,idsubcat},
+      success: function(response) {
+        //$('#prueba').text(idsubcat); 
+        var data = $.parseJSON(response);
+        $('#tablaproductos').html(data.cadenaTabla);
+        show_search_box();
+        //ocultamos los costos
+        hide_costos();
+
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
+});
+//FILTRO 4
+$('#filtro_atr4').change(function(e) 
+{
+    e.preventDefault();
+    var atr4 = $(this).val();
+    var idcat = $('#categoria').val();
+    var idsubcat = $('#subcategoria').val();
+
+    var action = 'searchForAtr4';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,atr4:atr4,idcat:idcat,idsubcat,idsubcat},
+      success: function(response) {
+        //$('#prueba').text(idsubcat); 
+        var data = $.parseJSON(response);
+        $('#tablaproductos').html(data.cadenaTabla);
+        show_search_box();
+        //ocultamos los costos
+        hide_costos();
+
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
+});
+//FILTRO 5
+$('#filtro_atr5').change(function(e) 
+{
+    e.preventDefault();
+    var atr5 = $(this).val();
+    var idcat = $('#categoria').val();
+    var idsubcat = $('#subcategoria').val();
+
+    var action = 'searchForAtr5';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,atr5:atr5,idcat:idcat,idsubcat,idsubcat},
+      success: function(response) {
+        //$('#prueba').text(idsubcat); 
+        var data = $.parseJSON(response);
+        $('#tablaproductos').html(data.cadenaTabla);
+        show_search_box();
+        //ocultamos los costos
+        hide_costos();
+
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
+});
+//============ FIN DE LOS FILTROS
+
+//empezamos con lo de producto
 var contado = 0;
 var especial = 0;
 var cr1 = 0;
@@ -1276,14 +1623,21 @@ $('#costo').keyup(function(e)
 });
 
 //funcion para ocultar las columnas de la tabla costos
-function mostrar_costoiva()
+function show_costoiva()
 {
-    $('td:nth-child(2)').toggle();
-    $('th:nth-child(2)').toggle();
-    $('td:nth-child(3)').toggle();
-    $('th:nth-child(3)').toggle();
-    $('td:nth-child(4)').toggle();
-    $('th:nth-child(4)').toggle();
+    //$('td:nth-child(2)').toggle();
+    //$('th:nth-child(2)').toggle();
+    $('#tbl_productos td:nth-child(3)').toggle();
+    $('#tbl_productos th:nth-child(3)').toggle();
+    $('#tbl_productos td:nth-child(4)').toggle();
+    $('#tbl_productos th:nth-child(4)').toggle();
+}
+
+function show_new_costo()
+{
+    $('#tbl_productos td:nth-child(2)').toggle();
+    $('#tbl_productos th:nth-child(2)').toggle();
+    $('#btn_save_lista').removeAttr('disabled');
 }
 
 //eliminar usuario
@@ -2202,20 +2556,57 @@ function mostrar_img(idproducto,url_img,si_img)
     if(si_img == 1)
     {
         $('#productoImg').html('<img height="300" width="350" id="productoImg" src="'+url_img+'">');
+        $('#btn_borrar_img').attr('onClick','borrar_img("'+url_img+'")');
+        $('#btn_borrar_img').removeAttr('disabled');
     }
     else
     {
         $('#productoImg').html('<div class="alert alert-warning" role="alert"><h4>El producto seleccionado No tiene imágen</h4></div>');
+        $('#btn_borrar_img').attr('onClick','borrar_img()');
+        $('#btn_borrar_img').attr('disabled','disabled');
     }
 }
-
-function descargar_zip()
+function borrar_img(url_img)
 {
-    $.ajax({url:"accion/download_zip.php", success:function(result)
-    {
-        //$("#prueba").html(result);
-        $('#dale')[0].click();
-    }})
+    var action = 'BorrarImg';
+    $.ajax({
+        url: 'ajax.php',
+        type: "POST",
+        async: true,
+        data: {action:action,imgproducto:url_img},
+        success: function(response) {
+            //$('#prueba').val(response);
+            if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                window.location.href=window.location.href;
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Eliminado!',
+                          'Se borro correctamente la imagén',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto actualizamos todos los select de la pagina
+                                window.location.href=window.location.href;
+                            }
+                        })
+                    }
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+   }); 
 }
 
 //ESTAS SON FUNCIONES PARA OTRAS COSAS
