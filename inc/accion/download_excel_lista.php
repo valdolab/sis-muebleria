@@ -141,6 +141,8 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(10);//Garantí
 					$m="M".$cel;
 					// Agregar datos
 					//'=SI((B'.$cel.'/'.$meses_pago.')/2<400,400,(B'.$cel.'/'.$meses_pago.')/2)'
+                    //poner la lista con formulas: iva, contado, especial, credito1 y credito2
+                    //poner texto plano a los que no son admins
 					$objPHPExcel->setActiveSheetIndex(0)
 			           ->setCellValue($a, $descripcion)
 			           ->setCellValue($b, $costo)

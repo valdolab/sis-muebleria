@@ -708,7 +708,7 @@ if ($_POST['action'] == 'searchCatUsed')
 
         //calculamos la tabla a mostrar que sean solo de esa categoria
           $cadenaTabla = '
-<table class="table" id="tbl">
+<table class="table" id="tbl_productos">
         <thead class="thead-light">
             <tr>
                 <th>Descripción</th>
@@ -839,7 +839,7 @@ if ($_POST['action'] == 'searchSubCatUsed')
 
       //calculamos la tabla a mostrar que sean solo de esa categoria
           $cadenaTabla = '
-<table class="table" id="tbl">
+<table class="table" id="tbl_productos">
         <thead class="thead-light">
             <tr>
                 <th>Descripción</th>
@@ -1001,7 +1001,7 @@ if ($_POST['action'] == 'searchForAtr1')
       $idsubcategoria = $_POST['idsubcat'];
       
       $cadenaTabla = '
-<table class="table" id="tbl">
+<table class="table" id="tbl_productos">
         <thead class="thead-light">
             <tr>
                 <th>Descripción</th>
@@ -1108,7 +1108,7 @@ if ($_POST['action'] == 'searchForAtr2')
       $idsubcategoria = $_POST['idsubcat'];
       
       $cadenaTabla = '
-<table class="table" id="tbl">
+<table class="table" id="tbl_productos">
         <thead class="thead-light">
             <tr>
                 <th>Descripción</th>
@@ -1215,7 +1215,7 @@ if ($_POST['action'] == 'searchForAtr3')
       $idsubcategoria = $_POST['idsubcat'];
       
       $cadenaTabla = '
-<table class="table" id="tbl">
+<table class="table" id="tbl_productos">
         <thead class="thead-light">
             <tr>
                 <th>Descripción</th>
@@ -1322,7 +1322,7 @@ if ($_POST['action'] == 'searchForAtr4')
       $idsubcategoria = $_POST['idsubcat'];
       
       $cadenaTabla = '
-<table class="table" id="tbl">
+<table class="table" id="tbl_productos">
         <thead class="thead-light">
             <tr>
                 <th>Descripción</th>
@@ -1429,7 +1429,7 @@ if ($_POST['action'] == 'searchForAtr5')
       $idsubcategoria = $_POST['idsubcat'];
       
       $cadenaTabla = '
-<table class="table" id="tbl">
+<table class="table" id="tbl_productos">
         <thead class="thead-light">
             <tr>
                 <th>Descripción</th>
