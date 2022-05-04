@@ -983,47 +983,47 @@ $('#categoria').change(function(e)
             $("#filtro_atr1").empty();
             if(data.atr_labels.atr1 != null)
             {
-                $('#filtro_atr1').append('<option selected hidden>'+data.atr_labels.atr1+'</option>');    
+                $('#filtro_atr1').append('<option selected hidden value="LABEL">'+data.atr_labels.atr1+'</option>');    
             }
             else
             {
-                $('#filtro_atr1').append('<option selected hidden>---</option>');
+                $('#filtro_atr1').append('<option selected hidden value="LABEL">---</option>');
             }
             $("#filtro_atr2").empty();
             if(data.atr_labels.atr2 != null)
             {
-                $('#filtro_atr2').append('<option selected hidden>'+data.atr_labels.atr2+'</option>');
+                $('#filtro_atr2').append('<option selected hidden value="LABEL">'+data.atr_labels.atr2+'</option>');
             }
             else
             {
-                $('#filtro_atr2').append('<option selected hidden>---</option>');
+                $('#filtro_atr2').append('<option selected hidden value="LABEL">---</option>');
             }
             $("#filtro_atr3").empty();
             if(data.atr_labels.atr3 != null)
             {
-                $('#filtro_atr3').append('<option selected hidden>'+data.atr_labels.atr3+'</option>');
+                $('#filtro_atr3').append('<option selected hidden value="LABEL">'+data.atr_labels.atr3+'</option>');
             }
             else
             {
-                $('#filtro_atr3').append('<option selected hidden>---</option>');
+                $('#filtro_atr3').append('<option selected hidden value="LABEL">---</option>');
             }
             $("#filtro_atr4").empty();
             if(data.atr_labels.atr4 != null)
             {
-                $('#filtro_atr4').append('<option selected hidden>'+data.atr_labels.atr4+'</option>');
+                $('#filtro_atr4').append('<option selected hidden value="LABEL">'+data.atr_labels.atr4+'</option>');
             }
             else
             {
-                $('#filtro_atr4').append('<option selected hidden>---</option>');
+                $('#filtro_atr4').append('<option selected hidden value="LABEL">---</option>');
             }
             $("#filtro_atr5").empty();
             if(data.atr_labels.atr5 != null)
             {
-                $('#filtro_atr5').append('<option selected hidden>'+data.atr_labels.atr5+'</option>');
+                $('#filtro_atr5').append('<option selected hidden value="LABEL">'+data.atr_labels.atr5+'</option>');
             }
             else
             {
-                $('#filtro_atr5').append('<option selected hidden>---</option>');
+                $('#filtro_atr5').append('<option selected hidden value="LABEL">---</option>');
             }
 
             var size_atrs = data.atrs_productos.length;
@@ -1061,15 +1061,15 @@ $('#categoria').change(function(e)
             //limpiamos los selects de atributos
             //ponemos los labels de los atributos
             $("#filtro_atr1").empty();
-            $('#filtro_atr1').append('<option selected hidden>---</option>');
+            $('#filtro_atr1').append('<option selected hidden value="LABEL">---</option>');
             $("#filtro_atr2").empty();
-            $('#filtro_atr2').append('<option selected hidden>---</option>');
+            $('#filtro_atr2').append('<option selected hidden value="LABEL">---</option>');
             $("#filtro_atr3").empty();
-            $('#filtro_atr3').append('<option selected hidden>---</option>');
+            $('#filtro_atr3').append('<option selected hidden value="LABEL">---</option>');
             $("#filtro_atr4").empty();
-            $('#filtro_atr4').append('<option selected hidden>---</option>');
+            $('#filtro_atr4').append('<option selected hidden value="LABEL">---</option>');
             $("#filtro_atr5").empty();
-            $('#filtro_atr5').append('<option selected hidden>---</option>');
+            $('#filtro_atr5').append('<option selected hidden value="LABEL">---</option>');
         }
         //modifcar la tabla 
         $('#tablaproductos').html(data.cadenaTabla);
@@ -1099,7 +1099,7 @@ $('#subcategoria').change(function(e)
       async: true,
       data: {action:action,subcategoria:idsubcategoria},
       success: function(response) {
-        //$('#prueba').html(data); 
+        //$('#prueba').html(response); 
         var data = $.parseJSON(response);
         if(data.subcatused == 0)
         {
@@ -1120,47 +1120,47 @@ $('#subcategoria').change(function(e)
             $("#filtro_atr1").empty();
             if(data.atr_labels.atr1 != null)
             {
-                $('#filtro_atr1').append('<option selected hidden>'+data.atr_labels.atr1+'</option>');    
+                $('#filtro_atr1').append('<option selected hidden value="LABEL">'+data.atr_labels.atr1+'</option>');    
             }
             else
             {
-                $('#filtro_atr1').append('<option selected hidden>---</option>');
+                $('#filtro_atr1').append('<option selected hidden value="LABEL">---</option>');
             }
             $("#filtro_atr2").empty();
             if(data.atr_labels.atr2 != null)
             {
-                $('#filtro_atr2').append('<option selected hidden>'+data.atr_labels.atr2+'</option>');
+                $('#filtro_atr2').append('<option selected hidden value="LABEL">'+data.atr_labels.atr2+'</option>');
             }
             else
             {
-                $('#filtro_atr2').append('<option selected hidden>---</option>');
+                $('#filtro_atr2').append('<option selected hidden value="LABEL">---</option>');
             }
             $("#filtro_atr3").empty();
             if(data.atr_labels.atr3 != null)
             {
-                $('#filtro_atr3').append('<option selected hidden>'+data.atr_labels.atr3+'</option>');
+                $('#filtro_atr3').append('<option selected hidden value="LABEL">'+data.atr_labels.atr3+'</option>');
             }
             else
             {
-                $('#filtro_atr3').append('<option selected hidden>---</option>');
+                $('#filtro_atr3').append('<option selected hidden value="LABEL">---</option>');
             }
             $("#filtro_atr4").empty();
             if(data.atr_labels.atr4 != null)
             {
-                $('#filtro_atr4').append('<option selected hidden>'+data.atr_labels.atr4+'</option>');
+                $('#filtro_atr4').append('<option selected hidden value="LABEL">'+data.atr_labels.atr4+'</option>');
             }
             else
             {
-                $('#filtro_atr4').append('<option selected hidden>---</option>');
+                $('#filtro_atr4').append('<option selected hidden value="LABEL">---</option>');
             }
             $("#filtro_atr5").empty();
             if(data.atr_labels.atr5 != null)
             {
-                $('#filtro_atr5').append('<option selected hidden>'+data.atr_labels.atr5+'</option>');
+                $('#filtro_atr5').append('<option selected hidden value="LABEL">'+data.atr_labels.atr5+'</option>');
             }
             else
             {
-                $('#filtro_atr5').append('<option selected hidden>---</option>');
+                $('#filtro_atr5').append('<option selected hidden value="LABEL">---</option>');
             }
 
             var size_atrs = data.atrs_productos.length;
@@ -1200,7 +1200,15 @@ $('#subcategoria').change(function(e)
 $('#filtro_atr1').change(function(e) 
 {
     e.preventDefault();
-    var atr1 = $(this).val();   
+    //variables para los filtros
+    var atr1 = $(this).val();  
+    var atr2 = $('#filtro_atr2').val();
+    var atr3 = $('#filtro_atr3').val();
+    var atr4 = $('#filtro_atr4').val();
+    var atr5 = $('#filtro_atr5').val();
+    //si es LABEL entonces no han seleccionado nada o seleccionaron TODAS
+    
+    //otras variables
     var idcat = $('#categoria').val();
     var idsubcat = $('#subcategoria').val();
 
@@ -1209,9 +1217,9 @@ $('#filtro_atr1').change(function(e)
       url: 'ajax.php',
       type: "POST",
       async: true,
-      data: {action:action,atr1:atr1,idcat:idcat,idsubcat,idsubcat},
+      data: {action:action,atr1:atr1,atr2:atr2,atr3:atr3,atr4:atr4,atr5:atr5,idcat:idcat,idsubcat,idsubcat},
       success: function(response) {
-        //$('#prueba').text(idsubcat); 
+        //$('#prueba').html(response); 
         var data = $.parseJSON(response);
         $('#tablaproductos').html(data.cadenaTabla);
         show_search_box();
@@ -1229,6 +1237,10 @@ $('#filtro_atr2').change(function(e)
 {
     e.preventDefault();
     var atr2 = $(this).val();
+    var atr1 = $('#filtro_atr1').val();
+    var atr3 = $('#filtro_atr3').val();
+    var atr4 = $('#filtro_atr4').val();
+    var atr5 = $('#filtro_atr5').val();
     var idcat = $('#categoria').val();
     var idsubcat = $('#subcategoria').val();
 
@@ -1237,7 +1249,7 @@ $('#filtro_atr2').change(function(e)
       url: 'ajax.php',
       type: "POST",
       async: true,
-      data: {action:action,atr2:atr2,idcat:idcat,idsubcat,idsubcat},
+      data: {action:action,atr1:atr1,atr2:atr2,atr3:atr3,atr4:atr4,atr5:atr5,idcat:idcat,idsubcat,idsubcat},
       success: function(response) {
         //$('#prueba').text(idsubcat); 
         var data = $.parseJSON(response);
@@ -1257,6 +1269,10 @@ $('#filtro_atr3').change(function(e)
 {
     e.preventDefault();
     var atr3 = $(this).val();
+    var atr2 = $('#filtro_atr2').val();
+    var atr1 = $('#filtro_atr1').val();
+    var atr4 = $('#filtro_atr4').val();
+    var atr5 = $('#filtro_atr5').val();
     var idcat = $('#categoria').val();
     var idsubcat = $('#subcategoria').val();
 
@@ -1265,7 +1281,7 @@ $('#filtro_atr3').change(function(e)
       url: 'ajax.php',
       type: "POST",
       async: true,
-      data: {action:action,atr3:atr3,idcat:idcat,idsubcat,idsubcat},
+      data: {action:action,atr1:atr1,atr2:atr2,atr3:atr3,atr4:atr4,atr5:atr5,idcat:idcat,idsubcat,idsubcat},
       success: function(response) {
         //$('#prueba').text(idsubcat); 
         var data = $.parseJSON(response);
@@ -1285,6 +1301,10 @@ $('#filtro_atr4').change(function(e)
 {
     e.preventDefault();
     var atr4 = $(this).val();
+    var atr2 = $('#filtro_atr2').val();
+    var atr3 = $('#filtro_atr3').val();
+    var atr1 = $('#filtro_atr1').val();
+    var atr5 = $('#filtro_atr5').val();
     var idcat = $('#categoria').val();
     var idsubcat = $('#subcategoria').val();
 
@@ -1293,7 +1313,7 @@ $('#filtro_atr4').change(function(e)
       url: 'ajax.php',
       type: "POST",
       async: true,
-      data: {action:action,atr4:atr4,idcat:idcat,idsubcat,idsubcat},
+      data: {action:action,atr1:atr1,atr2:atr2,atr3:atr3,atr4:atr4,atr5:atr5,idcat:idcat,idsubcat,idsubcat},
       success: function(response) {
         //$('#prueba').text(idsubcat); 
         var data = $.parseJSON(response);
@@ -1313,6 +1333,10 @@ $('#filtro_atr5').change(function(e)
 {
     e.preventDefault();
     var atr5 = $(this).val();
+    var atr2 = $('#filtro_atr2').val();
+    var atr3 = $('#filtro_atr3').val();
+    var atr4 = $('#filtro_atr4').val();
+    var atr1 = $('#filtro_atr1').val();
     var idcat = $('#categoria').val();
     var idsubcat = $('#subcategoria').val();
 
@@ -1321,7 +1345,7 @@ $('#filtro_atr5').change(function(e)
       url: 'ajax.php',
       type: "POST",
       async: true,
-      data: {action:action,atr5:atr5,idcat:idcat,idsubcat,idsubcat},
+      data: {action:action,atr1:atr1,atr2:atr2,atr3:atr3,atr4:atr4,atr5:atr5,idcat:idcat,idsubcat,idsubcat},
       success: function(response) {
         //$('#prueba').text(idsubcat); 
         var data = $.parseJSON(response);
@@ -1336,7 +1360,7 @@ $('#filtro_atr5').change(function(e)
       }
     });
 });
-//============ FIN DE LOS FILTROS
+//============ FIN DE LOS FILTROS ===========
 
 //empezamos con lo de producto
 var contado = 0;

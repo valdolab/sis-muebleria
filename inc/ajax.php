@@ -303,10 +303,12 @@ function deleteAll($dir) {
         if($datap['subcategoria'] == null)
         {
             //no tiene sub
-            $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
-            $catproducto = mysqli_fetch_assoc($select_producto_nosub)['catproducto'];
+            $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
+            $data_producto = mysqli_fetch_assoc($select_producto_nosub);
+            $catproducto = $data_producto['catproducto'];
+            $atr1_producto = $data_producto['atr1_producto'];
             //creamos la ubicacion
-            $estructura = "../img/catalogo_productos/".$catproducto;
+            $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
         }
         else
         {
@@ -315,10 +317,11 @@ function deleteAll($dir) {
             $data_producto = mysqli_fetch_assoc($select_producto_full);
             $catproducto = $data_producto['catproducto'];
             $subcat_producto = $data_producto['subcat_producto'];
+            $atr1_producto = $data_producto['atr1_producto'];
              //creamos la ubicacion
-            $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto;
+            $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
         }
-        $archivador = $estructura."/".$id_producto.".jpg";//.$extencion;
+        $archivador = $estructura."/".$id_producto.".png";//.$extencion;
 
     if (!is_dir($archivador)) 
     {
@@ -767,7 +770,7 @@ if ($_POST['action'] == 'searchCatUsed')
                         $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
                     }
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$id_producto.".jpg";
+                    $archivador = $estructura."/".$id_producto.".png";
                     if(is_file($archivador))
                     {
                         $boton_img = "btn btn-primary btn-sm";
@@ -872,20 +875,21 @@ if ($_POST['action'] == 'searchSubCatUsed')
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
                     $id_producto = $data['idproducto'];
-
+                    
                         $idsubcategoria = $data['subcategoria'];
                         $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
                         $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
-                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
+                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
                         $data_producto = mysqli_fetch_assoc($select_producto_full);
                         $catproducto = $data_producto['catproducto'];
                         $subcat_producto = $data_producto['subcat_producto'];
+                        $atr1_producto = $data_producto['atr1_producto'];
                         //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto;
-                    
+                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
+
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$id_producto.".jpg";
+                    $archivador = $estructura."/".$id_producto.".png";
                     if(is_file($archivador))
                     {
                         $boton_img = "btn btn-primary btn-sm";
@@ -914,11 +918,12 @@ if ($_POST['action'] == 'searchSubCatUsed')
                         <td>'.$garantia." Meses".'</td>';
 
                 $cadenaTabla = $cadenaTabla.'<td align="center">
-                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img('.$id_producto.','.$archivador.','.$siimagen.');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
-                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto("'.$id_producto.'");"><i class="fas fa-edit"></i></button>
-                                <button onClick="eliminar_producto("'.$id_producto.'");" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
+                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
+                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>
+                                <button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
                             </td>
                             </tr>';
+
               }
             }
         $cadenaTabla = $cadenaTabla.'</tbody></table>';
@@ -1001,6 +1006,10 @@ if ($_POST['action'] == 'searchForAtr1')
   if (!empty($_POST['atr1'])) 
   {
       $atr1 = $_POST['atr1'];
+      $atr2 = $_POST['atr2'];
+      $atr3 = $_POST['atr3'];
+      $atr4 = $_POST['atr4'];
+      $atr5 = $_POST['atr5'];
       $idcategoria = $_POST['idcat'];
       $idsubcategoria = $_POST['idsubcat'];
       
@@ -1042,21 +1051,37 @@ if ($_POST['action'] == 'searchForAtr1')
             {
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
-                    $id_producto = $data['idproducto'];
+                  $id_producto = $data['idproducto'];
+                  if($data['subcategoria'] == null)
+                    {
+                        $idcategoria = $data['categoria'];
+                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
+                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
+                        //no tiene sub
+                        $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
+                        $data_producto = mysqli_fetch_assoc($select_producto_nosub);
+                        $catproducto = $data_producto['catproducto'];
+                        $atr1_producto = $data_producto['atr1_producto'];
+                        //creamos la ubicacion
+                        $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
+                    }
+                    else
+                    {
                         $idsubcategoria = $data['subcategoria'];
                         $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
                         $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
-                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
+                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
                         $data_producto = mysqli_fetch_assoc($select_producto_full);
                         $catproducto = $data_producto['catproducto'];
                         $subcat_producto = $data_producto['subcat_producto'];
+                        $atr1_producto = $data_producto['atr1_producto'];
                         //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto;
-                    
+                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
+                    }                    
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$id_producto.".jpg";
+                    $archivador = $estructura."/".$id_producto.".png";
                     if(is_file($archivador))
                     {
                         $boton_img = "btn btn-primary btn-sm";
@@ -1085,9 +1110,9 @@ if ($_POST['action'] == 'searchForAtr1')
                         <td>'.$garantia." Meses".'</td>';
 
                 $cadenaTabla = $cadenaTabla.'<td align="center">
-                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img('.$id_producto.','.$archivador.','.$siimagen.');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
-                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto("'.$id_producto.'");"><i class="fas fa-edit"></i></button>
-                                <button onClick="eliminar_producto("'.$id_producto.'");" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
+                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
+                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>
+                                <button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
                             </td>
                             </tr>';
               }
@@ -1107,7 +1132,11 @@ if ($_POST['action'] == 'searchForAtr2')
   include "accion/conexion.php";
   if (!empty($_POST['atr2'])) 
   {
+      $atr1 = $_POST['atr1'];
       $atr2 = $_POST['atr2'];
+      $atr3 = $_POST['atr3'];
+      $atr4 = $_POST['atr4'];
+      $atr5 = $_POST['atr5'];
       $idcategoria = $_POST['idcat'];
       $idsubcategoria = $_POST['idsubcat'];
       
@@ -1149,21 +1178,37 @@ if ($_POST['action'] == 'searchForAtr2')
             {
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
-                    $id_producto = $data['idproducto'];
+                  $id_producto = $data['idproducto'];
+                  if($data['subcategoria'] == null)
+                    {
+                        $idcategoria = $data['categoria'];
+                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
+                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
+                        //no tiene sub
+                        $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
+                        $data_producto = mysqli_fetch_assoc($select_producto_nosub);
+                        $catproducto = $data_producto['catproducto'];
+                        $atr1_producto = $data_producto['atr1_producto'];
+                        //creamos la ubicacion
+                        $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
+                    }
+                    else
+                    {
                         $idsubcategoria = $data['subcategoria'];
                         $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
                         $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
-                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
+                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
                         $data_producto = mysqli_fetch_assoc($select_producto_full);
                         $catproducto = $data_producto['catproducto'];
                         $subcat_producto = $data_producto['subcat_producto'];
+                        $atr1_producto = $data_producto['atr1_producto'];
                         //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto;
-                    
+                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
+                    }                    
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$id_producto.".jpg";
+                    $archivador = $estructura."/".$id_producto.".png";
                     if(is_file($archivador))
                     {
                         $boton_img = "btn btn-primary btn-sm";
@@ -1192,9 +1237,9 @@ if ($_POST['action'] == 'searchForAtr2')
                         <td>'.$garantia." Meses".'</td>';
 
                 $cadenaTabla = $cadenaTabla.'<td align="center">
-                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img('.$id_producto.','.$archivador.','.$siimagen.');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
-                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto("'.$id_producto.'");"><i class="fas fa-edit"></i></button>
-                                <button onClick="eliminar_producto("'.$id_producto.'");" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
+                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
+                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>
+                                <button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
                             </td>
                             </tr>';
               }
@@ -1214,7 +1259,11 @@ if ($_POST['action'] == 'searchForAtr3')
   include "accion/conexion.php";
   if (!empty($_POST['atr3'])) 
   {
+      $atr1 = $_POST['atr1'];
+      $atr2 = $_POST['atr2'];
       $atr3 = $_POST['atr3'];
+      $atr4 = $_POST['atr4'];
+      $atr5 = $_POST['atr5'];
       $idcategoria = $_POST['idcat'];
       $idsubcategoria = $_POST['idsubcat'];
       
@@ -1256,21 +1305,37 @@ if ($_POST['action'] == 'searchForAtr3')
             {
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
-                    $id_producto = $data['idproducto'];
+                  $id_producto = $data['idproducto'];
+                  if($data['subcategoria'] == null)
+                    {
+                        $idcategoria = $data['categoria'];
+                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
+                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
+                        //no tiene sub
+                        $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
+                        $data_producto = mysqli_fetch_assoc($select_producto_nosub);
+                        $catproducto = $data_producto['catproducto'];
+                        $atr1_producto = $data_producto['atr1_producto'];
+                        //creamos la ubicacion
+                        $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
+                    }
+                    else
+                    {
                         $idsubcategoria = $data['subcategoria'];
                         $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
                         $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
-                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
+                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
                         $data_producto = mysqli_fetch_assoc($select_producto_full);
                         $catproducto = $data_producto['catproducto'];
                         $subcat_producto = $data_producto['subcat_producto'];
+                        $atr1_producto = $data_producto['atr1_producto'];
                         //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto;
-                    
+                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
+                    }                    
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$id_producto.".jpg";
+                    $archivador = $estructura."/".$id_producto.".png";
                     if(is_file($archivador))
                     {
                         $boton_img = "btn btn-primary btn-sm";
@@ -1299,9 +1364,9 @@ if ($_POST['action'] == 'searchForAtr3')
                         <td>'.$garantia." Meses".'</td>';
 
                 $cadenaTabla = $cadenaTabla.'<td align="center">
-                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img('.$id_producto.','.$archivador.','.$siimagen.');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
-                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto("'.$id_producto.'");"><i class="fas fa-edit"></i></button>
-                                <button onClick="eliminar_producto("'.$id_producto.'");" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
+                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
+                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>
+                                <button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
                             </td>
                             </tr>';
               }
@@ -1321,7 +1386,11 @@ if ($_POST['action'] == 'searchForAtr4')
   include "accion/conexion.php";
   if (!empty($_POST['atr4'])) 
   {
+      $atr1 = $_POST['atr1'];
+      $atr2 = $_POST['atr2'];
+      $atr3 = $_POST['atr3'];
       $atr4 = $_POST['atr4'];
+      $atr5 = $_POST['atr5'];
       $idcategoria = $_POST['idcat'];
       $idsubcategoria = $_POST['idsubcat'];
       
@@ -1363,21 +1432,37 @@ if ($_POST['action'] == 'searchForAtr4')
             {
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
-                    $id_producto = $data['idproducto'];
+                  $id_producto = $data['idproducto'];
+                  if($data['subcategoria'] == null)
+                    {
+                        $idcategoria = $data['categoria'];
+                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
+                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
+                        //no tiene sub
+                        $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
+                        $data_producto = mysqli_fetch_assoc($select_producto_nosub);
+                        $catproducto = $data_producto['catproducto'];
+                        $atr1_producto = $data_producto['atr1_producto'];
+                        //creamos la ubicacion
+                        $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
+                    }
+                    else
+                    {
                         $idsubcategoria = $data['subcategoria'];
                         $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
                         $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
-                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
+                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
                         $data_producto = mysqli_fetch_assoc($select_producto_full);
                         $catproducto = $data_producto['catproducto'];
                         $subcat_producto = $data_producto['subcat_producto'];
+                        $atr1_producto = $data_producto['atr1_producto'];
                         //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto;
-                    
+                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
+                    }                    
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$id_producto.".jpg";
+                    $archivador = $estructura."/".$id_producto.".png";
                     if(is_file($archivador))
                     {
                         $boton_img = "btn btn-primary btn-sm";
@@ -1406,9 +1491,9 @@ if ($_POST['action'] == 'searchForAtr4')
                         <td>'.$garantia." Meses".'</td>';
 
                 $cadenaTabla = $cadenaTabla.'<td align="center">
-                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img('.$id_producto.','.$archivador.','.$siimagen.');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
-                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto("'.$id_producto.'");"><i class="fas fa-edit"></i></button>
-                                <button onClick="eliminar_producto("'.$id_producto.'");" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
+                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
+                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>
+                                <button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
                             </td>
                             </tr>';
               }
@@ -1428,6 +1513,10 @@ if ($_POST['action'] == 'searchForAtr5')
   include "accion/conexion.php";
   if (!empty($_POST['atr5'])) 
   {
+      $atr1 = $_POST['atr1'];
+      $atr2 = $_POST['atr2'];
+      $atr3 = $_POST['atr3'];
+      $atr4 = $_POST['atr4'];
       $atr5 = $_POST['atr5'];
       $idcategoria = $_POST['idcat'];
       $idsubcategoria = $_POST['idsubcat'];
@@ -1470,21 +1559,37 @@ if ($_POST['action'] == 'searchForAtr5')
             {
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
-                    $id_producto = $data['idproducto'];
+                  $id_producto = $data['idproducto'];
+                  if($data['subcategoria'] == null)
+                    {
+                        $idcategoria = $data['categoria'];
+                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
+                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
+                        //no tiene sub
+                        $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
+                        $data_producto = mysqli_fetch_assoc($select_producto_nosub);
+                        $catproducto = $data_producto['catproducto'];
+                        $atr1_producto = $data_producto['atr1_producto'];
+                        //creamos la ubicacion
+                        $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
+                    }
+                    else
+                    {
                         $idsubcategoria = $data['subcategoria'];
                         $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
                         $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
-                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
+                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
                         $data_producto = mysqli_fetch_assoc($select_producto_full);
                         $catproducto = $data_producto['catproducto'];
                         $subcat_producto = $data_producto['subcat_producto'];
+                        $atr1_producto = $data_producto['atr1_producto'];
                         //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto;
-                    
+                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
+                    }                    
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$id_producto.".jpg";
+                    $archivador = $estructura."/".$id_producto.".png";
                     if(is_file($archivador))
                     {
                         $boton_img = "btn btn-primary btn-sm";
@@ -1513,9 +1618,9 @@ if ($_POST['action'] == 'searchForAtr5')
                         <td>'.$garantia." Meses".'</td>';
 
                 $cadenaTabla = $cadenaTabla.'<td align="center">
-                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img('.$id_producto.','.$archivador.','.$siimagen.');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
-                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto("'.$id_producto.'");"><i class="fas fa-edit"></i></button>
-                                <button onClick="eliminar_producto("'.$id_producto.'");" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
+                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
+                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>
+                                <button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
                             </td>
                             </tr>';
               }

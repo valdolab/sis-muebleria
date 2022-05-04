@@ -110,7 +110,7 @@ if (!empty($_POST))
         //echo $flag_control_dirimg;
 
         $nombre_archivo = $id_producto;
-        $nombre_archivo_real = $_FILES['imgProducto']['name'];
+        $nombre_archivo_real = $_FILES['imgproducto']['name'];
         $extencion = explode(".",$nombre_archivo_real)[1];
         $allow_files = array("png","jpg","jpge");
         if(in_array($extencion, $allow_files))
@@ -125,7 +125,7 @@ if (!empty($_POST))
             {
                 //procedemos con guardarlo 
                 $tmp_archivo = $_FILES['imgProducto']['tmp_name'];
-                $archivador = $estructura."/".$nombre_archivo.".jpg";//.$extencion;
+                $archivador = $estructura."/".$nombre_archivo.".png";//.$extencion;
                 @move_uploaded_file($tmp_archivo, $archivador);
                 if(is_file($archivador))
                 {
@@ -1108,7 +1108,7 @@ if (!empty($_POST))
                         $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
                     }
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$id_producto.".jpg";
+                    $archivador = $estructura."/".$id_producto.".png";
                     if(is_file($archivador))
                     {
                         $boton_img = "btn btn-primary btn-sm";
