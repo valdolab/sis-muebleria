@@ -7,7 +7,7 @@ require_once dirname(__FILE__) . '/../../Classes/PHPExcel.php';
 $objPHPExcel = new PHPExcel();
 // Redirigir la salida al navegador web de un cliente ( Excel5 )
 header('Content-Type: application/vnd.ms-excel');
-header('Content-Disposition: attachment; filename="Lista_productos.xlsx"');
+header('Content-Disposition: attachment; filename="LISTA_DE_PRECIOS.xlsx"');
 header('Cache-Control: max-age=0');
 // Si usted está sirviendo a IE 9 , a continuación, puede ser necesaria la siguiente
 
@@ -188,14 +188,14 @@ $rango="A2:M".$cel;
 $styleArray = array('font' => array( 'name' => 'Arial','size' => 10));
 $objPHPExcel->getActiveSheet()->getStyle($rango)->applyFromArray($styleArray);
 // Cambiar el nombre de hoja de cálculo
-$objPHPExcel->getActiveSheet()->setTitle('Lista de productos');
+$objPHPExcel->getActiveSheet()->setTitle('Lista de precios');
  
  
 // Establecer índice de hoja activa a la primera hoja , por lo que Excel abre esto como la primera hoja
 $objPHPExcel->setActiveSheetIndex(0);
  
 $anio=date("Y");
-$nombreR="Lista_productos_".$anio.".xlsx";
+$nombreR="LISTA DE PRECIOS ".$anio.".xlsx";
 header('Content-Type: application/vnd.ms-excel');
 header("Content-Disposition: attachment; filename=$nombreR");
 header('Cache-Control: max-age=0');

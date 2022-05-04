@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 01-05-2022 a las 16:56:33
+-- Tiempo de generación: 04-05-2022 a las 03:32:01
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `categoria` (
 
 INSERT INTO `categoria` (`idcategoria`, `nombre`, `tiene_subcat`, `atr1`, `atr2`, `atr3`, `atr4`, `atr5`, `contado`, `especial`, `credito1`, `credito2`, `meses_pago`, `meses_garantia`, `creado_en`) VALUES
 ('00095e94-c070-11ec-8edf-18c04dae039e', 'ASD', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-04-22 00:13:47'),
-('5a0be372-c010-11ec-a813-d481d7c3a9ad', 'BICICLETA', 0, 'RODADA', 'TAMAÑO', 'LLANTAS', 'TIPO', NULL, 12, 22, 11, 22, 3, 3, '2022-04-22 00:13:47'),
+('5a0be372-c010-11ec-a813-d481d7c3a9ad', 'BICICLETA', 0, 'MARCA', 'TAMAÑO', 'LLANTAS', 'TIPO', NULL, 12, 22, 11, 22, 3, 3, '2022-04-22 00:13:47'),
 ('6b149c84-c010-11ec-a813-d481d7c3a9ad', 'LINEA BLANCA', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-04-22 00:13:47'),
 ('92ebf98d-c966-11ec-abb6-d481d7c3a9ad', 'ELECTRONICA', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-05-01 15:51:17');
 
@@ -139,14 +139,15 @@ CREATE TABLE IF NOT EXISTS `configuracion` (
   `valor_char` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
   `valor_int` int(11) DEFAULT NULL,
   PRIMARY KEY (`idconfiguracion`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `configuracion`
 --
 
 INSERT INTO `configuracion` (`idconfiguracion`, `configuracion`, `valor_char`, `valor_int`) VALUES
-(1, 'serie', '0000001', NULL);
+(1, 'serie', '0000001', NULL),
+(2, 'activador_especial', NULL, 0);
 
 -- --------------------------------------------------------
 

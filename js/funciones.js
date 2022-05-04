@@ -2555,7 +2555,7 @@ function mostrar_img(idproducto,url_img,si_img)
     $('#flagid_producto_img').val(idproducto);
     if(si_img == 1)
     {
-        $('#productoImg').html('<a href="'+url_img+'" target="_blank" rel="noopener noreferrer" ><img height="750" width="750" id="productoImg" src="'+url_img+'"></a>');
+        $('#productoImg').html('<a href="'+url_img+'" target="_blank" rel="noopener noreferrer" ><img height="700" width="700" id="productoImg" src="'+url_img+'"></a>');
         $('#btn_borrar_img').attr('onClick','borrar_img("'+url_img+'")');
         $('#btn_borrar_img').removeAttr('disabled');
     }
@@ -2566,6 +2566,25 @@ function mostrar_img(idproducto,url_img,si_img)
         $('#btn_borrar_img').attr('disabled','disabled');
     }
 }
+
+function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function(e) 
+    {
+      // Asignamos el atributo src a la tag de imagen
+      $('#productoImg').html('<img height="700" width="700" id="productoImg" src="'+e.target.result+'">');
+    }
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+// El listener va asignado al input
+$("#imgProducto").change(function() 
+{
+  readURL(this);
+});
+
 function borrar_img(url_img)
 {
     var action = 'BorrarImg';

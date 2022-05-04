@@ -6,7 +6,7 @@ $rootPath = realpath('../../img/catalogo_productos/');
 
 // Initialize archive object
 $zip = new ZipArchive();
-$zip->open('../../img/catalogo.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE);
+$zip->open('../../img/CATALOGO_MUEBLERIA.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
 // Create recursive directory iterator
 /** @var SplFileInfo[] $files */
@@ -30,8 +30,8 @@ foreach ($files as $name => $file)
 }
 // Zip archive will be created only after closing object
 $zip->close();
-$file = "../../img/catalogo.zip";
-$nombreR="catalogo.zip";
+$file = "../../img/CATALOGO_MUEBLERIA.zip";
+$nombreR="CATALOGO MUEBLERIA.zip";
 header('Content-Type: application/zip');
 header("Content-Disposition: attachment; filename=$nombreR");
 //header('Content-Length: ' . filesize($file));

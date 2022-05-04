@@ -79,20 +79,23 @@ if (!empty($_POST))
         if($datap['subcategoria'] == null)
         {
             //no tiene sub
-            $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
-            $catproducto = mysqli_fetch_assoc($select_producto_nosub)['catproducto'];
+            $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
+            $data_producto = mysqli_fetch_assoc($select_producto_nosub);
+            $catproducto = $data_producto['catproducto'];
+            $atr1_producto = $data_producto['atr1_producto'];
             //creamos la ubicacion
-            $estructura = "../img/catalogo_productos/".$catproducto;
+            $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
         }
         else
         {
             //si tiene sub
-            $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
+            $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
             $data_producto = mysqli_fetch_assoc($select_producto_full);
             $catproducto = $data_producto['catproducto'];
             $subcat_producto = $data_producto['subcat_producto'];
+            $atr1_producto = $data_producto['atr1_producto'];
              //creamos la ubicacion
-            $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto;
+            $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
         }
 
         $flag_control_dirimg = 1;
@@ -427,7 +430,7 @@ if (!empty($_POST))
         <div class="modal-content">
         <form action="" method="post" autocomplete="on" id="formAdd_img" enctype="multipart/form-data">
             <div class="modal-header">
-                    <h2 class="modal-title">Imagén del producto</h2>
+                    <h2 class="modal-title">Imágen del producto</h2>
                 <div class="row">
                     <div class="col-lg-6">
                           <div class="form-group">
@@ -938,6 +941,7 @@ if (!empty($_POST))
         </div>
 
         <div align="right" class="col-lg-4">
+            <button data-toggle="modal" data-target="#nuevo_producto" class="btn btn-warning" type="button" onclick="nuevo_producto()">Activar Especial</button> 
             <button data-toggle="modal" data-target="#nuevo_producto" class="btn btn-primary" type="button" onclick="nuevo_producto()"><i class="fas fa-plus"></i> Nuevo producto</button> 
         </div>
     </div>
@@ -1018,15 +1022,12 @@ if (!empty($_POST))
               <div class="col-12 col-sm-3">
                 <div class="row">
                     <div class="col-12 col-sm-12" align="center">
-                        <button onclick="show_new_costo();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 88px !important; height: 45px !important; padding: 0px;">Editar Lista</button>
+                        <button onclick="show_new_costo();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 88px !important; height: 38px !important; line-height: 0px;">Editar Lista</button>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-sm-6" align="center" style="padding-right: 0px; padding-left: 12px;">
-                        <button id="btn_pause_lista" onClick='pausar_lista();' class='btn btn-warning btn-sm btn-block' type='button'><i style='color: white;' class='fas fa-pause' id="btn_icon_pause_lista"></i></button>
-                    </div>
-                    <div class="col-12 col-sm-6" align="center" style="padding-left: 0px; padding-right: 0px;">
-                        <button id="btn_save_lista" disabled onClick='guardar_lista();' class='btn btn-success btn-sm btn-block' type='button'><i style='color: white;' class='fas fa-save'></i></button>
+                    <div class="col-12 col-sm-12" align="center">
+                        <button onClick="guardar_lista();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 88px !important; height: 38px !important; line-height: 0px;">Guardar</button>
                     </div>
                 </div>
               </div>
@@ -1085,10 +1086,12 @@ if (!empty($_POST))
                         $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
                         //no tiene sub
-                        $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
-                        $catproducto = mysqli_fetch_assoc($select_producto_nosub)['catproducto'];
+                        $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
+                        $data_producto = mysqli_fetch_assoc($select_producto_nosub);
+                        $catproducto = $data_producto['catproducto'];
+                        $atr1_producto = $data_producto['atr1_producto'];
                         //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto;
+                        $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
                     }
                     else
                     {
@@ -1096,12 +1099,13 @@ if (!empty($_POST))
                         $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
                         $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
-                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
+                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
                         $data_producto = mysqli_fetch_assoc($select_producto_full);
                         $catproducto = $data_producto['catproducto'];
                         $subcat_producto = $data_producto['subcat_producto'];
+                        $atr1_producto = $data_producto['atr1_producto'];
                         //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto;
+                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
                     }
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
                     $archivador = $estructura."/".$id_producto.".jpg";
