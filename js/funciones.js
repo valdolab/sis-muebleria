@@ -645,6 +645,21 @@ $('#idestado_civil').change(function() {
                         $('#categoria_subcategoria option[value="'+data.idcategoria+'"]').text(data.categoria);
                         $('#categoria_producto option[value="'+data.idcategoria+'"]').text(data.categoria);
                         //$('#prueba').html(data.sentencia);
+                        //si se actualizo a que ahora tiene subcat, poner los selects en insertar subcat
+                        if(data.flag_tiene_subcat == 0)
+                        {
+                            //no tiene subcat, quitar de los selects de subcat
+                            $("#categoria_subcategoria option[value='"+data.idcategoria+"']").remove();
+                        }
+                        else
+                        {
+                            //si tiene subcat, poner en los selects de subcat
+                            $('#categoria_subcategoria').append($('<option>',
+                            {
+                                value: data.idcategoria,
+                                text : data.categoria
+                            }));
+                        }
                     }
                     Swal.fire(
                           '!Agregado!',
@@ -699,17 +714,18 @@ $('#idestado_civil').change(function() {
                             text : data.subcategoria
                         }));
                         $('#subcategoria').val(data.idsubcategoria).change();
-                        $('#subcategoria_producto').append($('<option>',
+                        
+                        /*$('#subcategoria_producto').append($('<option>',
                         {
                             value: data.idsubcategoria,
                             text : data.subcategoria
-                        }));
+                        }));*/
                     }
                     else
                     {
                         //actualizamos el texto de la opcion modificada
                         $('#subcategoria option[value="'+data.idsubcategoria+'"]').text(data.subcategoria);
-                        $('#subcategoria_producto option[value="'+data.idsubcategoria+'"]').text(data.subcategoria);
+                        //$('#subcategoria_producto option[value="'+data.idsubcategoria+'"]').text(data.subcategoria);
                         //$('#prueba').html(data.sentencia);
                     }
                     Swal.fire(
@@ -763,14 +779,21 @@ $('#idestado_civil').change(function() {
       success: function(response) 
       {
         //$('#nombre').val(response);
-        if (response != 0)
+        if (response == 0)
         {
-          
-          //$('#prueba').html(data); 
+          $('#tbl_productos td:nth-child(8)').show();
+          $('#tbl_productos th:nth-child(8)').show();
+          $('#especial_cat').removeAttr('disabled');
+          $('#especial_subcat').removeAttr('disabled');
+          $('#especial_producto').removeAttr('disabled');
         }
         else
         {
-            
+          $('#tbl_productos td:nth-child(8)').hide();
+          $('#tbl_productos th:nth-child(8)').hide();
+          $('#especial_cat').attr('disabled','disabled');
+          $('#especial_subcat').attr('disabled','disabled');
+          $('#especial_producto').attr('disabled','disabled');
         }
       },
       error: function(error) {
@@ -1597,7 +1620,7 @@ $('#costo').keyup(function(e)
             $('#costo_contado').val(costo_contado.toFixed(2));
         }
         //especial
-        if(especial == 0)
+        if(especial == 0 || especial == null)
         {
             $('#costo_especial').val(0);
         }
@@ -2707,9 +2730,10 @@ function activar_especial(status_especial)
                   url: 'ajax.php',
                   type: "POST",
                   async: true,
-                  data: {action:action,status_especial:status_especial},
-                  success: function(response) {
-                    //$('#prueba').html(response);
+                  data: {action:action,status_esp:status_especial},
+                  success: function(response) 
+                  {
+                    $('#prueba').html(response);
                     if (response == 0) 
                     {
                         Swal.fire({

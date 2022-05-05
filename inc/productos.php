@@ -546,12 +546,14 @@ if (!empty($_POST))
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="especial">Especial:</label>
+                    <fieldset id="especial_cat">
                             <div class="input-group mb-3">
                               <input name="especial" id="especial" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
                             </div>
+                    </fieldset>
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="credito1">Credito 1:</label>
@@ -683,12 +685,14 @@ if (!empty($_POST))
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="especial_sub">Especial:</label>
+                        <fieldset id="especial_subcat">
                             <div class="input-group mb-3">
                               <input name="especial_sub" id="especial_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
                             </div>
+                        </fieldset>
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="credito1_sub">Credito 1:</label>
@@ -878,12 +882,14 @@ if (!empty($_POST))
                         </div>
                         <div class="form-group col">
                             <label for="especial">Especial:</label>
+                        <fieldset id="especial_producto">
                             <div class="input-group mb-3">
                             <div class="input-group-append">
                                 <span class="input-group-text">$</span>
                               </div>
                               <input name="costo_especial" id="costo_especial" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required readonly>
                           </div>
+                        </fieldset>
                         </div>
                     </div>
                     <div class="row">

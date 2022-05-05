@@ -956,6 +956,7 @@ if ($_POST['action'] == 'FindAtrsCat')
       {
         //buscamos que subtegorias tiene esa categoria
         $FindSubcats = mysqli_query($conexion, "SELECT idsubcategoria,nombre FROM subcategoria WHERE categoria = '$idcategoria' order by nombre asc");
+        $cadena = "<option selected hidden value=''>Agregar una subcategoria</option>";
         if (mysqli_num_rows($FindSubcats) > 0) 
         { 
           $cadena = "<option selected hidden value=''>Seleccione subcategoría</option>";
@@ -1664,8 +1665,9 @@ if ($_POST['action'] == 'BorrarImg')
 if ($_POST['action'] == 'activarEspecial')
 {
   include "accion/conexion.php";
-  if (!empty($_POST['status_especial'])) {
-      $status_especial = $_POST['status_especial'];
+  if (!empty($_POST['status_esp'])) 
+  {
+      $status_especial = $_POST['status_esp'];
 
       if($status_especial == 0)
       {
@@ -1676,7 +1678,7 @@ if ($_POST['action'] == 'activarEspecial')
         $newstatus_especial = 0;
       }
       //actualizamos en la bd
-      $update_especial = mysqli_query($conexion, "UPDATE configuracion set valor_int=$newstatus_especial where configuracion = 'activador_especial'");
+      $update_especial = mysqli_query($conexion, "UPDATE configuracion set valor_int = $newstatus_especial where configuracion = 'activador_especial'");
       if($update_especial)
       {
         $actualizo_especial = 1;
@@ -1685,7 +1687,6 @@ if ($_POST['action'] == 'activarEspecial')
       {
         $actualizo_especial = 0;
       }
-      
     echo json_encode($actualizo_especial,JSON_UNESCAPED_UNICODE);
   }
   exit;
