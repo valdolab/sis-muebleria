@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 04-05-2022 a las 03:32:01
+-- Tiempo de generación: 05-05-2022 a las 01:05:03
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -135,8 +135,8 @@ INSERT INTO `cliente` (`idcliente`, `nombre_cliente`, `zona`, `domicilio_cliente
 DROP TABLE IF EXISTS `configuracion`;
 CREATE TABLE IF NOT EXISTS `configuracion` (
   `idconfiguracion` int(11) NOT NULL AUTO_INCREMENT,
-  `configuracion` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `valor_char` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `configuracion` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `valor_char` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
   `valor_int` int(11) DEFAULT NULL,
   PRIMARY KEY (`idconfiguracion`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
@@ -281,7 +281,7 @@ INSERT INTO `permiso_usuario` (`permiso_idpermiso`, `permiso_idusuario`) VALUES
 DROP TABLE IF EXISTS `producto`;
 CREATE TABLE IF NOT EXISTS `producto` (
   `idproducto` char(36) COLLATE utf8_spanish_ci NOT NULL,
-  `identificador` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `identificador` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `codigo_barras` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
   `categoria` char(36) COLLATE utf8_spanish_ci NOT NULL,
   `subcategoria` char(36) COLLATE utf8_spanish_ci DEFAULT NULL,
@@ -315,13 +315,14 @@ CREATE TABLE IF NOT EXISTS `producto` (
 --
 
 INSERT INTO `producto` (`idproducto`, `identificador`, `codigo_barras`, `categoria`, `subcategoria`, `descripcion`, `serializado`, `atr1_producto`, `atr2_producto`, `atr3_producto`, `atr4_producto`, `atr5_producto`, `stock_min`, `stock_max`, `ext_p`, `costo`, `costo_iva`, `costo_contado`, `costo_especial`, `costo_cr1`, `costo_cr2`, `costo_p1`, `costo_p2`, `costo_eq`, `creado_en`) VALUES
-('082b0355-c68c-11ec-abb6-d481d7c3a9ad', NULL, NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9e77b6b3-c1a7-11ec-91b0-d481d7c3a9ad', 'es una licuadora LG BLABLBL', 0, 'LG', '3', 'plastico', 'grande', NULL, NULL, NULL, NULL, 3600, 4176, 3672, 4032, 3996, 4392, 4.44, 4.88, 450, '2022-04-28 00:42:07'),
-('0def99df-c681-11ec-abb6-d481d7c3a9ad', NULL, NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora SAMSUNG', 0, 'SAMSUNG', '3', '1', '10', '1', NULL, NULL, NULL, 7000, 8120, 7770, 7070, 7770, 7700, 13.32, 13.2, 400, '2022-04-27 23:23:32'),
-('23bba124-c681-11ec-abb6-d481d7c3a9ad', NULL, NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora patito', 0, 'PATITO', '6', '2', '10', '2', NULL, NULL, NULL, 9000, 10440, 9990, 9090, 9990, 9900, 13.32, 13.2, 400, '2022-04-27 23:24:09'),
-('569ff4d5-c906-11ec-abb6-d481d7c3a9ad', NULL, NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'prueba bici', 0, '2', '10', '2', 'montaña', NULL, NULL, NULL, NULL, 5500, 6380, 6160, 6710, 6105, 6710, 3.33, 3.66, 916.67, '2022-05-01 04:22:27'),
+('082b0355-c68c-11ec-abb6-d481d7c3a9ad', 'wp100-asd001', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9e77b6b3-c1a7-11ec-91b0-d481d7c3a9ad', 'es una licuadora LG BLABLBL', 0, 'LG', '3', 'plastico', 'grande', NULL, NULL, NULL, NULL, 3600, 4176, 3672, 4032, 3996, 4392, 4.44, 4.88, 450, '2022-04-28 00:42:07'),
+('0def99df-c681-11ec-abb6-d481d7c3a9ad', 'wp100-asd002', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora SAMSUNG', 0, 'SAMSUNG', '3', '1', '10', '1', NULL, NULL, NULL, 7000, 8120, 7770, 7070, 7770, 7700, 13.32, 13.2, 400, '2022-04-27 23:23:32'),
+('23bba124-c681-11ec-abb6-d481d7c3a9ad', 'wp100-asd003', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora patito', 0, 'PATITO', '6', '2', '10', '2', NULL, NULL, NULL, 9000, 10440, 9990, 9090, 9990, 9900, 13.32, 13.2, 400, '2022-04-27 23:24:09'),
+('569ff4d5-c906-11ec-abb6-d481d7c3a9ad', 'wp100-asd004', NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'prueba bici', 0, '2', '10', '2', 'montaña', NULL, NULL, NULL, NULL, 5500, 6380, 6160, 6710, 6105, 6710, 3.33, 3.66, 916.67, '2022-05-01 04:22:27'),
 ('66bfc35f-c1d7-11ec-91b0-d481d7c3a9ad', 'asd', NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'Aquí va la descricion mas detalla del producto', 1, 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, NULL, 4000, 4640, 4480, 4880, 4440, 4880, 3.33, 3.66, 666.67, '2022-04-22 00:59:04'),
 ('8f2d4de2-c96a-11ec-abb6-d481d7c3a9ad', '32h5g', NULL, '92ebf98d-c966-11ec-abb6-d481d7c3a9ad', 'c1451ae3-c966-11ec-abb6-d481d7c3a9ad', 'tele 32 smart', 1, 'hisense', '32', 'hd', NULL, NULL, NULL, NULL, 15, 3200, 3712, 4160, 4320, 6400, 8000, 8, 10, 400, '2022-05-01 16:19:48'),
-('ecf8fb02-c680-11ec-abb6-d481d7c3a9ad', NULL, NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora LG', 0, 'LG', '6', '2', '12', '1', NULL, NULL, NULL, 5000, 5800, 5550, 5050, 5550, 5500, 13.32, 13.2, 400, '2022-04-27 23:22:37');
+('9b58146b-cc01-11ec-8195-d481d7c3a9ad', ' ', NULL, '00095e94-c070-11ec-8edf-18c04dae039e', 'ae064f03-c07b-11ec-8edf-18c04dae039e', 'prueba con identificador en blanco', 1, 'SAMSUNG', 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, 3000, 3480, 3360, 3360, 3360, 3360, 13.44, 13.44, 400, '2022-05-04 23:26:18'),
+('ecf8fb02-c680-11ec-abb6-d481d7c3a9ad', 'wp100-asd005', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora LG', 0, 'LG', '6', '2', '12', '1', NULL, NULL, NULL, 5000, 5800, 5550, 5050, 5550, 5500, 13.32, 13.2, 400, '2022-04-27 23:22:37');
 
 -- --------------------------------------------------------
 
