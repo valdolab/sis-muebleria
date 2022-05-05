@@ -753,6 +753,31 @@ $('#idestado_civil').change(function() {
     //oculta las columnas de costos de la tabla productos
     hide_costos();
 
+    //buscar y quitar o poner las cosas de especial
+    var action = 'act_des_especial';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action},
+      success: function(response) 
+      {
+        //$('#nombre').val(response);
+        if (response != 0)
+        {
+          
+          //$('#prueba').html(data); 
+        }
+        else
+        {
+            
+        }
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
+
 //FIN DEL DOCUMENT READY
 });
 
@@ -2650,6 +2675,73 @@ function borrar_img(url_img)
             //$('#prueba').val('error');
         }
    }); 
+}
+
+//funcion para activar especial
+function activar_especial(status_especial)
+{
+    var msg = '';
+    var msg_text = '';
+    if(status_especial == 0)
+    {
+        msg = '¿Esta seguro de activar el campo especial?';
+        msg_text = 'El campo especial será AGREGADO en TODO el sistema';
+    }
+    else
+    {
+        msg = '¿Esta seguro de desactivar el campo especial?';
+        msg_text = 'El campo especial será REMOVIDO en TODO el sistema';
+    }
+    Swal.fire({
+            title: msg,
+            text: msg_text,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, activar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'activarEspecial';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action,status_especial:status_especial},
+                  success: function(response) {
+                    //$('#prueba').html(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "productos.php";
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Asignado!',
+                          'Se asignó la nueva matriz correctamente!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "productos.php";
+                            }
+                        })
+                    }
+                    
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });      
+              }
+        })
 }
 
 //ESTAS SON FUNCIONES PARA OTRAS COSAS

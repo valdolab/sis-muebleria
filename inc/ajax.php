@@ -1660,3 +1660,45 @@ if ($_POST['action'] == 'BorrarImg')
   exit;
 }
 
+//para activar/desactivar especial
+if ($_POST['action'] == 'activarEspecial')
+{
+  include "accion/conexion.php";
+  if (!empty($_POST['status_especial'])) {
+      $status_especial = $_POST['status_especial'];
+
+      if($status_especial == 0)
+      {
+        $newstatus_especial = 1;
+      }
+      else
+      {
+        $newstatus_especial = 0;
+      }
+      //actualizamos en la bd
+      $update_especial = mysqli_query($conexion, "UPDATE configuracion set valor_int=$newstatus_especial where configuracion = 'activador_especial'");
+      if($update_especial)
+      {
+        $actualizo_especial = 1;
+      }
+      else
+      {
+        $actualizo_especial = 0;
+      }
+      
+    echo json_encode($actualizo_especial,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+//para poner o quitar los campos de especial
+if ($_POST['action'] == 'act_des_especial')
+{
+  include "accion/conexion.php";
+  $especial = mysqli_query($conexion, "SELECT valor_int from configuracion where configuracion = 'activador_especial'");
+  $status_especial = mysqli_fetch_assoc($especial)['valor_int'];
+
+  echo json_encode($status_especial,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
