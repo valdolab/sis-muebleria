@@ -10,62 +10,79 @@ if (!empty($_POST))
     {
         //insertamos el nuevo producto
         $identificador = $_POST['identificador'];
-        $codigo_barras = $_POST['codigo_barras'];
-        $categoria_producto = $_POST['categoria_producto'];
-        //echo $_POST['subcategoria_producto'];
-        if(isset($_POST['subcategoria_producto']))
+        //verificar si ya existe ese identificador de producto, los cuales se usan para guardar las imagenes
+        $find_id = mysqli_query($conexion, "SELECT idproducto from producto where identificador = '$identificador'");
+        if(mysqli_num_rows($find_id) > 0)
         {
-            $subcategoria_producto = $_POST['subcategoria_producto'];
+            //entonces ya hay uno, avisarle
+            $modal = "$('#mensaje_repetido').modal('show');";
         }
         else
         {
-            $subcategoria_producto = "no";
-        }
-        //echo "/";
-        //echo $subcategoria_producto;
-        //$subcategoria_producto = $_POST['subcategoria_producto'];
-        $descripcion = $_POST['descripcion'];
-        if (isset($_POST['serializado']))
+            $codigo_barras = $_POST['codigo_barras'];
+            $categoria_producto = $_POST['categoria_producto'];
+            //echo $_POST['subcategoria_producto'];
+            if(isset($_POST['subcategoria_producto']))
             {
-                $serializado = 1;
+                $subcategoria_producto = $_POST['subcategoria_producto'];
             }
             else
             {
-                $serializado = 0;
+                $subcategoria_producto = "no";
             }
-        $atr1_producto = $_POST['atr1_producto'];
-        $atr2_producto = $_POST['atr2_producto'];
-        $atr3_producto = $_POST['atr3_producto'];
-        $atr4_producto = $_POST['atr4_producto'];
-        $atr5_producto = $_POST['atr5_producto'];
-        $stock_min = $_POST['stock_min'];
-        $stock_max = $_POST['stock_max'];
-        $ext_p = $_POST['ext_p'];
-        $costo = $_POST['costo'];
-        $costo_iva = $_POST['costo_iva'];
-        $costo_contado = $_POST['costo_contado'];
-        $costo_especial = $_POST['costo_especial'];
-        $costo_cr1 = $_POST['costo_cr1'];
-        $costo_cr2 = $_POST['costo_cr2'];
-        $costo_p1 = $_POST['costo_p1'];
-        $costo_p2 = $_POST['costo_p2'];
-        $costo_eq = $_POST['costo_eq'];
+            //echo "/";
+            //echo $subcategoria_producto;
+            //$subcategoria_producto = $_POST['subcategoria_producto'];
+            $descripcion = $_POST['descripcion'];
+            if (isset($_POST['serializado']))
+                {
+                    $serializado = 1;
+                }
+                else
+                {
+                    $serializado = 0;
+                }
+            $atr1_producto = $_POST['atr1_producto'];
+            $atr2_producto = $_POST['atr2_producto'];
+            $atr3_producto = $_POST['atr3_producto'];
+            $atr4_producto = $_POST['atr4_producto'];
+            $atr5_producto = $_POST['atr5_producto'];
+            $stock_min = $_POST['stock_min'];
+            $stock_max = $_POST['stock_max'];
+            $ext_p = $_POST['ext_p'];
+            $costo = $_POST['costo'];
+            $costo_iva = $_POST['costo_iva'];
+            $costo_contado = $_POST['costo_contado'];
+            if(isset($_POST['costo_especial']))
+            {
+                $costo_especial = $_POST['costo_especial'];
+            }
+            else
+            {   
+                $costo_especial = null;
+            }
+            $costo_cr1 = $_POST['costo_cr1'];
+            $costo_cr2 = $_POST['costo_cr2'];
+            $costo_p1 = $_POST['costo_p1'];
+            $costo_p2 = $_POST['costo_p2'];
+            $costo_eq = $_POST['costo_eq'];
 
-        /*echo $costo;
-        echo "/";
-        echo $costo_contado;
-        echo "/";
-        echo $subcategoria_producto;*/
-        
-        $insert_producto = mysqli_query($conexion, "INSERT INTO producto(idproducto, identificador, codigo_barras, categoria, subcategoria, descripcion, serializado, atr1_producto, atr2_producto, atr3_producto, atr4_producto, atr5_producto, stock_min, stock_max, ext_p, costo, costo_iva, costo_contado, costo_especial, costo_cr1, costo_cr2, costo_p1, costo_p2, costo_eq) VALUES (UUID(), '$identificador', ".(!empty($codigo_barras) ? "'$codigo_barras'" : "NULL").", '$categoria_producto', ".($subcategoria_producto=="no" ? "NULL" : "'$subcategoria_producto'").", ".(!empty($descripcion) ? "'$descripcion'" : "NULL").", $serializado, '$atr1_producto', ".(!empty($atr2_producto) ? "'$atr2_producto'" : "NULL").", ".(!empty($atr3_producto) ? "'$atr3_producto'" : "NULL").", ".(!empty($atr4_producto) ? "'$atr4_producto'" : "NULL").", ".(!empty($atr5_producto) ? "'$atr5_producto'" : "NULL").", ".(!empty($stock_min) ? "'$stock_min'" : "NULL").", ".(!empty($stock_max) ? "'$stock_max'" : "NULL").", ".(!empty($ext_p) ? "'$ext_p'" : "NULL").", $costo, $costo_iva, $costo_contado, $costo_especial, $costo_cr1, $costo_cr2, $costo_p1, $costo_p2, $costo_eq)");
-        if ($insert_producto) 
-        {
-            $modal = "$('#mensaje_success').modal('show');";
-        }
-        else
-        {
-            $modal = "$('#mensaje_error').modal('show');";
-            //echo mysqli_error($conexion);
+            /*echo $costo;
+            echo "/";
+            echo $costo_contado;
+            echo "/";
+            echo $subcategoria_producto;*/
+            
+            $insert_producto = mysqli_query($conexion, "INSERT INTO producto(idproducto, identificador, codigo_barras, categoria, subcategoria, descripcion, serializado, atr1_producto, atr2_producto, atr3_producto, atr4_producto, atr5_producto, stock_min, stock_max, ext_p, costo, costo_iva, costo_contado, costo_especial, costo_cr1, costo_cr2, costo_p1, costo_p2, costo_eq) VALUES (UUID(), '$identificador', ".(!empty($codigo_barras) ? "'$codigo_barras'" : "NULL").", '$categoria_producto', ".($subcategoria_producto=="no" ? "NULL" : "'$subcategoria_producto'").", ".(!empty($descripcion) ? "'$descripcion'" : "NULL").", $serializado, '$atr1_producto', ".(!empty($atr2_producto) ? "'$atr2_producto'" : "NULL").", ".(!empty($atr3_producto) ? "'$atr3_producto'" : "NULL").", ".(!empty($atr4_producto) ? "'$atr4_producto'" : "NULL").", ".(!empty($atr5_producto) ? "'$atr5_producto'" : "NULL").", ".(!empty($stock_min) ? "'$stock_min'" : "NULL").", ".(!empty($stock_max) ? "'$stock_max'" : "NULL").", ".(!empty($ext_p) ? "'$ext_p'" : "NULL").", $costo, $costo_iva, $costo_contado, ".(!empty($costo_especial) ? "$costo_especial" : "NULL").", $costo_cr1, $costo_cr2, $costo_p1, $costo_p2, $costo_eq)");
+            if ($insert_producto) 
+            {
+                $modal = "$('#mensaje_success').modal('show');";
+            }
+            else
+            {
+                $modal = "$('#mensaje_error').modal('show');";
+                //echo mysqli_error($conexion);
+            }
         }
     }
     else if($ban == "load_img")
@@ -73,7 +90,7 @@ if (!empty($_POST))
         //subimos la imagen del prodcuto
         //buscamos la info del producto
         $id_producto = $_POST['flagid_producto_img'];
-        $select_producto = mysqli_query($conexion, "SELECT subcategoria from producto WHERE idproducto = '$id_producto'");
+        $select_producto = mysqli_query($conexion, "SELECT subcategoria, identificador from producto WHERE idproducto = '$id_producto'");
         //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
         $datap = mysqli_fetch_assoc($select_producto);
         if($datap['subcategoria'] == null)
@@ -109,10 +126,11 @@ if (!empty($_POST))
         }
         //echo $flag_control_dirimg;
 
-        $nombre_archivo = $id_producto;
-        $nombre_archivo_real = $_FILES['imgproducto']['name'];
+        $nombre_archivo = $datap['identificador'];
+        $nombre_archivo_real = $_FILES['imgProducto']['name'];
         $extencion = explode(".",$nombre_archivo_real)[1];
         $allow_files = array("png","jpg","jpge");
+        //echo $nombre_archivo_real;
         if(in_array($extencion, $allow_files))
         {
             $tamano_archivo = $_FILES['imgProducto']['size'];
@@ -141,7 +159,8 @@ if (!empty($_POST))
         {
             //decir que no es un archivo permitido
             $modal = "$('#mensaje_imgnoallow').modal('show');";
-        }   
+        }  
+        
     }
     else
     {
@@ -180,14 +199,21 @@ if (!empty($_POST))
         $costo = $_POST['costo'];
         $costo_iva = $_POST['costo_iva'];
         $costo_contado = $_POST['costo_contado'];
-        $costo_especial = $_POST['costo_especial'];
+        if(isset($_POST['costo_especial']))
+        {
+            $costo_especial = $_POST['costo_especial'];
+        }
+        else
+        {   
+            $costo_especial = null;
+        }
         $costo_cr1 = $_POST['costo_cr1'];
         $costo_cr2 = $_POST['costo_cr2'];
         $costo_p1 = $_POST['costo_p1'];
         $costo_p2 = $_POST['costo_p2'];
         $costo_eq = $_POST['costo_eq'];
 
-        $update_producto = mysqli_query($conexion, "UPDATE producto set identificador =  '$identificador', codigo_barras = ".(!empty($codigo_barras) ? "'$codigo_barras'" : "NULL").", categoria = '$categoria_producto', subcategoria = ".($subcategoria_producto!=0 ? "'$subcategoria_producto'" : "NULL").", descripcion = ".(!empty($descripcion) ? "'$descripcion'" : "NULL").", serializado = $serializado, atr1_producto = '$atr1_producto', atr2_producto = ".(!empty($atr2_producto) ? "'$atr2_producto'" : "NULL").", atr3_producto = ".(!empty($atr3_producto) ? "'$atr3_producto'" : "NULL").", atr4_producto = ".(!empty($atr4_producto) ? "'$atr4_producto'" : "NULL").", atr5_producto = ".(!empty($atr5_producto) ? "'$atr5_producto'" : "NULL").", stock_min = ".(!empty($stock_min) ? "'$stock_min'" : "NULL").", stock_max = ".(!empty($stock_max) ? "'$stock_max'" : "NULL").", ext_p = ".(!empty($ext_p) ? "'$ext_p'" : "NULL").", costo = $costo, costo_iva = $costo_iva, costo_contado = $costo_contado, costo_especial = $costo_especial, costo_cr1 = $costo_cr1, costo_cr2 = $costo_cr2, costo_p1 = $costo_p1, costo_p2 = $costo_p2, costo_eq = $costo_eq WHERE idproducto = '$id_producto'");
+        $update_producto = mysqli_query($conexion, "UPDATE producto set identificador =  '$identificador', codigo_barras = ".(!empty($codigo_barras) ? "'$codigo_barras'" : "NULL").", categoria = '$categoria_producto', subcategoria = ".($subcategoria_producto!=0 ? "'$subcategoria_producto'" : "NULL").", descripcion = ".(!empty($descripcion) ? "'$descripcion'" : "NULL").", serializado = $serializado, atr1_producto = '$atr1_producto', atr2_producto = ".(!empty($atr2_producto) ? "'$atr2_producto'" : "NULL").", atr3_producto = ".(!empty($atr3_producto) ? "'$atr3_producto'" : "NULL").", atr4_producto = ".(!empty($atr4_producto) ? "'$atr4_producto'" : "NULL").", atr5_producto = ".(!empty($atr5_producto) ? "'$atr5_producto'" : "NULL").", stock_min = ".(!empty($stock_min) ? "'$stock_min'" : "NULL").", stock_max = ".(!empty($stock_max) ? "'$stock_max'" : "NULL").", ext_p = ".(!empty($ext_p) ? "'$ext_p'" : "NULL").", costo = $costo, costo_iva = $costo_iva, costo_contado = $costo_contado, costo_especial = ".(!empty($costo_especial) ? "$costo_especial" : "NULL").", costo_cr1 = $costo_cr1, costo_cr2 = $costo_cr2, costo_p1 = $costo_p1, costo_p2 = $costo_p2, costo_eq = $costo_eq WHERE idproducto = '$id_producto'");
         if ($update_producto) 
         {
             $modal = "$('#mensaje_success').modal('show');";
@@ -200,6 +226,40 @@ if (!empty($_POST))
     }
 }
 ?>
+
+<div style="posicion: fixed; top: 15%;" id="mensaje_repetido" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    
+                    <div align="center" >
+                        <br>
+                        <!-- <img src="../img/ok.gif" width="100px" height="100px"> -->
+                        <div class="swal2-header">
+                            <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
+                                <div class="swal2-icon-content">!
+                                </div>
+                            </div>   
+                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">¡El producto ya existe!</h2>
+                        </div>
+
+                        <div class="swal2-content">
+                            <div id="swal2-content" class="swal2-html-container" style="display: block;">
+                               Favor de poner otro indentificar para este nuevo producto
+                            </div>
+                        </div>
+                        <div class="swal2-actions" style="display: flex;">
+                            <button data-dismiss="modal" class="swal2-confirm swal2-styled" arial-label type="button" style="display: inline-block;">Ok</button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 <div style="posicion: fixed; top: 15%;" id="mensaje_success" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog" role="document">
@@ -602,8 +662,8 @@ if (!empty($_POST))
                 <div class="row">
                     <div class="col-lg-6">
                         <!-- agrandar SELECT -->
-                        <select class="form-control" id="categoria_subcategoria" name="categoria_subcategoria">
-                                <option hidden selected>Selecciona categoría</option>
+                        <select required="true" class="form-control" id="categoria_subcategoria" name="categoria_subcategoria">
+                                <option value="" hidden selected>Selecciona categoría</option>
                                 <?php
                                     #codigo para la lista de sucursales que se extraen de la base de datos
                                     $result_cat = mysqli_query($conexion,"SELECT idcategoria,nombre FROM categoria where tiene_subcat = 1 order by nombre asc");
@@ -755,6 +815,8 @@ if (!empty($_POST))
                           <div class="form-group">
                                 <label for="nombre_cat">Identificador</label>
                                 <input minlength="3" type="text" class="form-control" name="identificador" id="identificador" required>
+                                <div id="msg_validador">
+                                </div>
                             </div>  
                         </div>
 
@@ -952,11 +1014,15 @@ if (!empty($_POST))
                 $status_especial = mysqli_fetch_assoc($conf_especial)['valor_int'];
                 if($status_especial == 0)
                 {
-                    echo '<button id="btn_act_especial" title="Especial se encuentra DESACTIVADO" class="btn btn-warning" type="button" onclick="activar_especial(0)">Act. Esp</button> ';
+                    ?>
+                    <button id="btn_act_especial" title="Especial se encuentra DESACTIVADO" class="btn btn-warning" type="button" onclick="activar_especial('si')">Act. Esp</button>
+                    <?php 
                 }
                 else
                 {
-                    echo '<button id="btn_act_especial" title="Especial se encuentra ACTIVADO" class="btn btn-success" type="button" onclick="activar_especial(1)">Des. Esp</button> ';
+                    ?>
+                    <button id="btn_act_especial" title="Especial se encuentra ACTIVADO" class="btn btn-success" type="button" onclick="activar_especial('no')">Des. Esp</button>
+                    <?php 
                 }
              ?>
             <button data-toggle="modal" data-target="#nuevo_producto" class="btn btn-primary" type="button" onclick="nuevo_producto()"><i class="fas fa-plus"></i> Nuevo producto</button> 
@@ -1095,6 +1161,7 @@ if (!empty($_POST))
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
                     $id_producto = $data['idproducto'];
+                    $identificador = $data['identificador'];
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
                     if($data['subcategoria'] == null)
                     {
@@ -1125,7 +1192,7 @@ if (!empty($_POST))
                         $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
                     }
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$id_producto.".png";
+                    $archivador = $estructura."/".$identificador.".png";
                     if(is_file($archivador))
                     {
                         $boton_img = "btn btn-primary btn-sm";

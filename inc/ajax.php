@@ -740,6 +740,7 @@ if ($_POST['action'] == 'searchCatUsed')
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
                     $id_producto = $data['idproducto'];
+                    $identificador = $data['identificador'];
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
                     if($data['subcategoria'] == null)
                     {
@@ -770,7 +771,7 @@ if ($_POST['action'] == 'searchCatUsed')
                         $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
                     }
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$id_producto.".png";
+                    $archivador = $estructura."/".$identificador.".png";
                     if(is_file($archivador))
                     {
                         $boton_img = "btn btn-primary btn-sm";
@@ -875,7 +876,7 @@ if ($_POST['action'] == 'searchSubCatUsed')
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
                     $id_producto = $data['idproducto'];
-                    
+                    $identificador = $data['identificador'];
                         $idsubcategoria = $data['subcategoria'];
                         $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
                         $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
@@ -889,7 +890,7 @@ if ($_POST['action'] == 'searchSubCatUsed')
                         $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
 
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$id_producto.".png";
+                    $archivador = $estructura."/".$identificador.".png";
                     if(is_file($archivador))
                     {
                         $boton_img = "btn btn-primary btn-sm";
@@ -1053,6 +1054,7 @@ if ($_POST['action'] == 'searchForAtr1')
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
                   $id_producto = $data['idproducto'];
+                  $identificador = $data['identificador'];
                   if($data['subcategoria'] == null)
                     {
                         $idcategoria = $data['categoria'];
@@ -1082,7 +1084,7 @@ if ($_POST['action'] == 'searchForAtr1')
                         $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
                     }                    
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$id_producto.".png";
+                    $archivador = $estructura."/".$identificador.".png";
                     if(is_file($archivador))
                     {
                         $boton_img = "btn btn-primary btn-sm";
@@ -1180,6 +1182,7 @@ if ($_POST['action'] == 'searchForAtr2')
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
                   $id_producto = $data['idproducto'];
+                  $identificador = $data['identificador'];
                   if($data['subcategoria'] == null)
                     {
                         $idcategoria = $data['categoria'];
@@ -1209,7 +1212,7 @@ if ($_POST['action'] == 'searchForAtr2')
                         $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
                     }                    
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$id_producto.".png";
+                    $archivador = $estructura."/".$identificador.".png";
                     if(is_file($archivador))
                     {
                         $boton_img = "btn btn-primary btn-sm";
@@ -1307,6 +1310,7 @@ if ($_POST['action'] == 'searchForAtr3')
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
                   $id_producto = $data['idproducto'];
+                  $identificador = $data['identificador'];
                   if($data['subcategoria'] == null)
                     {
                         $idcategoria = $data['categoria'];
@@ -1336,7 +1340,7 @@ if ($_POST['action'] == 'searchForAtr3')
                         $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
                     }                    
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$id_producto.".png";
+                    $archivador = $estructura."/".$identificador.".png";
                     if(is_file($archivador))
                     {
                         $boton_img = "btn btn-primary btn-sm";
@@ -1434,6 +1438,7 @@ if ($_POST['action'] == 'searchForAtr4')
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
                   $id_producto = $data['idproducto'];
+                  $identificador = $data['identificador'];
                   if($data['subcategoria'] == null)
                     {
                         $idcategoria = $data['categoria'];
@@ -1463,7 +1468,7 @@ if ($_POST['action'] == 'searchForAtr4')
                         $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
                     }                    
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$id_producto.".png";
+                    $archivador = $estructura."/".$identificador.".png";
                     if(is_file($archivador))
                     {
                         $boton_img = "btn btn-primary btn-sm";
@@ -1561,6 +1566,7 @@ if ($_POST['action'] == 'searchForAtr5')
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
                   $id_producto = $data['idproducto'];
+                  $identificador = $data['identificador'];
                   if($data['subcategoria'] == null)
                     {
                         $idcategoria = $data['categoria'];
@@ -1590,7 +1596,7 @@ if ($_POST['action'] == 'searchForAtr5')
                         $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
                     }                    
                     //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$id_producto.".png";
+                    $archivador = $estructura."/".$identificador.".png";
                     if(is_file($archivador))
                     {
                         $boton_img = "btn btn-primary btn-sm";
@@ -1641,8 +1647,8 @@ if ($_POST['action'] == 'searchForAtr5')
 if ($_POST['action'] == 'BorrarImg') 
 {
   include "accion/conexion.php";
-  if (!empty($_POST['imgproducto'])) {
-      $url_imgproducto = $_POST['imgproducto'];
+  if (!empty($_POST['img_producto'])) {
+      $url_imgproducto = $_POST['img_producto'];
 
       unlink($url_imgproducto);
       if(is_file($url_imgproducto))
@@ -1665,11 +1671,11 @@ if ($_POST['action'] == 'BorrarImg')
 if ($_POST['action'] == 'activarEspecial')
 {
   include "accion/conexion.php";
-  if (!empty($_POST['status_esp'])) 
+  if (!empty($_POST['status_especial'])) 
   {
-      $status_especial = $_POST['status_esp'];
-
-      if($status_especial == 0)
+      $status_especial = $_POST['status_especial'];
+      
+      if($status_especial == "si")
       {
         $newstatus_especial = 1;
       }
@@ -1687,6 +1693,7 @@ if ($_POST['action'] == 'activarEspecial')
       {
         $actualizo_especial = 0;
       }
+    
     echo json_encode($actualizo_especial,JSON_UNESCAPED_UNICODE);
   }
   exit;
@@ -1697,9 +1704,20 @@ if ($_POST['action'] == 'act_des_especial')
 {
   include "accion/conexion.php";
   $especial = mysqli_query($conexion, "SELECT valor_int from configuracion where configuracion = 'activador_especial'");
-  $status_especial = mysqli_fetch_assoc($especial)['valor_int'];
+  $status_especial = (int) mysqli_fetch_assoc($especial)['valor_int'];
 
   echo json_encode($status_especial,JSON_UNESCAPED_UNICODE);
   exit;
 }
 
+//para poner o quitar los campos de especial
+if ($_POST['action'] == 'identificar_producto')
+{
+  include "accion/conexion.php";
+  $identificador = $_POST['identificador'];
+  $find_id = mysqli_query($conexion, "SELECT count(idproducto) as num from producto where identificador = '$identificador'");
+  $resul_findproduct = (int) mysqli_fetch_assoc($find_id)['num'];
+
+  echo json_encode($resul_findproduct,JSON_UNESCAPED_UNICODE);
+  exit;
+}

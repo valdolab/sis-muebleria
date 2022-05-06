@@ -495,6 +495,7 @@ $('#idestado_civil').change(function() {
            data: $(this).serialize(),
            success: function(response)             
            {
+                $('#prueba').html(response);
                 if(response == 0)
                 {
                     Swal.fire({
@@ -778,8 +779,8 @@ $('#idestado_civil').change(function() {
       data: {action:action},
       success: function(response) 
       {
-        //$('#nombre').val(response);
-        if (response == 0)
+        //$('#prueba').html(response);
+        if (response == 1)
         {
           $('#tbl_productos td:nth-child(8)').show();
           $('#tbl_productos th:nth-child(8)').show();
@@ -801,6 +802,45 @@ $('#idestado_civil').change(function() {
       }
     });
 
+    //
+    $('#identificador').on('keypress', function(e) 
+    {
+        if (e.which == 32)
+            return false;
+    });
+
+    $('#identificador').keyup(function(e)
+    {
+        var identificador = $(this).val();
+        var action = 'identificar_producto';
+        $.ajax({
+            url: 'ajax.php',
+            type: "POST",
+            async: true,
+            data: {action:action,identificador:identificador},
+            success: function(response) 
+            {
+                if(response == 0)
+                {
+                    //todo bien
+                    $('#identificador').attr('class','form-control is-valid');
+                    $('#msg_validador').attr('class','valid-feedback');
+                    $('#msg_validador').html('¡Correcto!');
+                }
+                else
+                {
+                    //todo mal, ya existe
+                    $('#identificador').attr('class','form-control is-invalid');
+                    $('#msg_validador').attr('class','invalid-feedback');
+                    $('#msg_validador').html('Este identificador ya esta en uso');
+                }
+                
+            },
+            error: function(error) {
+                //$('#prueba').val('error');
+            }
+       });  
+    });
 //FIN DEL DOCUMENT READY
 });
 
@@ -2534,6 +2574,7 @@ function editar_producto(idproducto)
               $('#costo_eq').val(data.costo_eq);
               //quitamos bloqueo
               $('#atr1_producto,#atr2_producto,#atr3_producto,#atr4_producto,#atr5_producto').removeAttr('readonly');
+              $('#identificador').attr('readonly','readonly');
             }
         },
         error: function(error) {
@@ -2605,6 +2646,8 @@ function nuevo_producto()
     $('#flag_selectsubcat').val('nosubcat');
     $('#serializado').bootstrapToggle('off');
     $('#atr1_producto,#atr2_producto,#atr3_producto,#atr4_producto,#atr5_producto').attr('readonly','readonly');
+    $('#identificador').removeAttr('readonly');
+    $('#label_atr1,#label_atr2,#label_atr3,#label_atr4,#label_atr5').html('');
 }
 
 function nueva_categoria()
@@ -2664,7 +2707,7 @@ function borrar_img(url_img)
         url: 'ajax.php',
         type: "POST",
         async: true,
-        data: {action:action,imgproducto:url_img},
+        data: {action:action,img_producto:url_img},
         success: function(response) {
             //$('#prueba').val(response);
             if (response == 0) 
@@ -2705,15 +2748,21 @@ function activar_especial(status_especial)
 {
     var msg = '';
     var msg_text = '';
-    if(status_especial == 0)
+    var msg_success = '';
+    var msg_btn = '';
+    if(status_especial == "si")
     {
         msg = '¿Esta seguro de activar el campo especial?';
         msg_text = 'El campo especial será AGREGADO en TODO el sistema';
+        msg_success = 'Se activo especial correctamente';
+        msg_btn = 'Sí!, activar';
     }
     else
     {
         msg = '¿Esta seguro de desactivar el campo especial?';
         msg_text = 'El campo especial será REMOVIDO en TODO el sistema';
+        msg_success = 'Se desactivo especial correctamente';
+        msg_btn = 'Sí!, desactivar';
     }
     Swal.fire({
             title: msg,
@@ -2722,7 +2771,7 @@ function activar_especial(status_especial)
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, activar!'
+            confirmButtonText: msg_btn
         }).then((result) => {
             if (result.isConfirmed) {
                 var action = 'activarEspecial';
@@ -2730,10 +2779,10 @@ function activar_especial(status_especial)
                   url: 'ajax.php',
                   type: "POST",
                   async: true,
-                  data: {action:action,status_esp:status_especial},
+                  data: {action:action,status_especial:status_especial},
                   success: function(response) 
                   {
-                    $('#prueba').html(response);
+                    //$('#prueba').html(response);
                     if (response == 0) 
                     {
                         Swal.fire({
@@ -2749,8 +2798,8 @@ function activar_especial(status_especial)
                     else
                     {
                         Swal.fire(
-                          'Asignado!',
-                          'Se asignó la nueva matriz correctamente!',
+                          '¡Guardado!',
+                           msg_success,
                           'success'
                         ).then((result) => {
                             if (result.isConfirmed){
