@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 05-05-2022 a las 01:05:03
+-- Tiempo de generación: 06-05-2022 a las 03:03:40
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -55,7 +55,8 @@ INSERT INTO `categoria` (`idcategoria`, `nombre`, `tiene_subcat`, `atr1`, `atr2`
 ('00095e94-c070-11ec-8edf-18c04dae039e', 'ASD', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-04-22 00:13:47'),
 ('5a0be372-c010-11ec-a813-d481d7c3a9ad', 'BICICLETA', 0, 'MARCA', 'TAMAÑO', 'LLANTAS', 'TIPO', NULL, 12, 22, 11, 22, 3, 3, '2022-04-22 00:13:47'),
 ('6b149c84-c010-11ec-a813-d481d7c3a9ad', 'LINEA BLANCA', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-04-22 00:13:47'),
-('92ebf98d-c966-11ec-abb6-d481d7c3a9ad', 'ELECTRONICA', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-05-01 15:51:17');
+('92ebf98d-c966-11ec-abb6-d481d7c3a9ad', 'ELECTRONICA', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-05-01 15:51:17'),
+('c18a4e3f-ccd6-11ec-8195-d481d7c3a9ad', 'PRUEBA', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-05-06 00:52:03');
 
 -- --------------------------------------------------------
 
@@ -298,7 +299,7 @@ CREATE TABLE IF NOT EXISTS `producto` (
   `costo` double NOT NULL,
   `costo_iva` double NOT NULL,
   `costo_contado` double NOT NULL,
-  `costo_especial` double NOT NULL,
+  `costo_especial` double DEFAULT NULL,
   `costo_cr1` double NOT NULL,
   `costo_cr2` double NOT NULL,
   `costo_p1` double NOT NULL,
@@ -315,13 +316,14 @@ CREATE TABLE IF NOT EXISTS `producto` (
 --
 
 INSERT INTO `producto` (`idproducto`, `identificador`, `codigo_barras`, `categoria`, `subcategoria`, `descripcion`, `serializado`, `atr1_producto`, `atr2_producto`, `atr3_producto`, `atr4_producto`, `atr5_producto`, `stock_min`, `stock_max`, `ext_p`, `costo`, `costo_iva`, `costo_contado`, `costo_especial`, `costo_cr1`, `costo_cr2`, `costo_p1`, `costo_p2`, `costo_eq`, `creado_en`) VALUES
+('0507bbee-ccd8-11ec-8195-d481d7c3a9ad', 'qweasdzxc1', NULL, 'c18a4e3f-ccd6-11ec-8195-d481d7c3a9ad', '47422906-ccd7-11ec-8195-d481d7c3a9ad', 'prueba de prueba de product', 1, 'SAMSUNG', '6', '2', '10', NULL, NULL, NULL, NULL, 4500, 5220, 5445, NULL, 5040, 4590, 4.48, 4.08, 562.5, '2022-05-06 01:01:06'),
 ('082b0355-c68c-11ec-abb6-d481d7c3a9ad', 'wp100-asd001', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9e77b6b3-c1a7-11ec-91b0-d481d7c3a9ad', 'es una licuadora LG BLABLBL', 0, 'LG', '3', 'plastico', 'grande', NULL, NULL, NULL, NULL, 3600, 4176, 3672, 4032, 3996, 4392, 4.44, 4.88, 450, '2022-04-28 00:42:07'),
 ('0def99df-c681-11ec-abb6-d481d7c3a9ad', 'wp100-asd002', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora SAMSUNG', 0, 'SAMSUNG', '3', '1', '10', '1', NULL, NULL, NULL, 7000, 8120, 7770, 7070, 7770, 7700, 13.32, 13.2, 400, '2022-04-27 23:23:32'),
 ('23bba124-c681-11ec-abb6-d481d7c3a9ad', 'wp100-asd003', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora patito', 0, 'PATITO', '6', '2', '10', '2', NULL, NULL, NULL, 9000, 10440, 9990, 9090, 9990, 9900, 13.32, 13.2, 400, '2022-04-27 23:24:09'),
 ('569ff4d5-c906-11ec-abb6-d481d7c3a9ad', 'wp100-asd004', NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'prueba bici', 0, '2', '10', '2', 'montaña', NULL, NULL, NULL, NULL, 5500, 6380, 6160, 6710, 6105, 6710, 3.33, 3.66, 916.67, '2022-05-01 04:22:27'),
 ('66bfc35f-c1d7-11ec-91b0-d481d7c3a9ad', 'asd', NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'Aquí va la descricion mas detalla del producto', 1, 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, NULL, 4000, 4640, 4480, 4880, 4440, 4880, 3.33, 3.66, 666.67, '2022-04-22 00:59:04'),
 ('8f2d4de2-c96a-11ec-abb6-d481d7c3a9ad', '32h5g', NULL, '92ebf98d-c966-11ec-abb6-d481d7c3a9ad', 'c1451ae3-c966-11ec-abb6-d481d7c3a9ad', 'tele 32 smart', 1, 'hisense', '32', 'hd', NULL, NULL, NULL, NULL, 15, 3200, 3712, 4160, 4320, 6400, 8000, 8, 10, 400, '2022-05-01 16:19:48'),
-('9b58146b-cc01-11ec-8195-d481d7c3a9ad', ' ', NULL, '00095e94-c070-11ec-8edf-18c04dae039e', 'ae064f03-c07b-11ec-8edf-18c04dae039e', 'prueba con identificador en blanco', 1, 'SAMSUNG', 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, 3000, 3480, 3360, 3360, 3360, 3360, 13.44, 13.44, 400, '2022-05-04 23:26:18'),
+('9b58146b-cc01-11ec-8195-d481d7c3a9ad', 'wp100-asd006', NULL, '00095e94-c070-11ec-8edf-18c04dae039e', 'ae064f03-c07b-11ec-8edf-18c04dae039e', 'prueba con identificador en blanco', 1, 'SAMSUNG', 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, 3000, 3480, 3360, 3360, 3360, 3360, 13.44, 13.44, 400, '2022-05-04 23:26:18'),
 ('ecf8fb02-c680-11ec-abb6-d481d7c3a9ad', 'wp100-asd005', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora LG', 0, 'LG', '6', '2', '12', '1', NULL, NULL, NULL, 5000, 5800, 5550, 5050, 5550, 5500, 13.32, 13.2, 400, '2022-04-27 23:22:37');
 
 -- --------------------------------------------------------
@@ -398,6 +400,7 @@ CREATE TABLE IF NOT EXISTS `subcategoria` (
 --
 
 INSERT INTO `subcategoria` (`idsubcategoria`, `nombre`, `categoria`, `atr1`, `atr2`, `atr3`, `atr4`, `atr5`, `contado`, `especial`, `credito1`, `credito2`, `meses_pago`, `meses_garantia`, `creado_en`) VALUES
+('47422906-ccd7-11ec-8195-d481d7c3a9ad', 'PRUEBA', 'c18a4e3f-ccd6-11ec-8195-d481d7c3a9ad', 'MARCA', 'ASD', 'ASD', 'ASD', NULL, 21, NULL, 12, 2, 4, 12, '2022-05-06 00:55:48'),
 ('9aded115-c07a-11ec-8edf-18c04dae039e', 'LAVADORA', '6b149c84-c010-11ec-a813-d481d7c3a9ad', 'MARCA', 'KG', 'TAMAÑO', 'PESO', 'PRUEBA', 11, 1, 11, 10, 12, 6, '2022-04-22 00:14:19'),
 ('9e77b6b3-c1a7-11ec-91b0-d481d7c3a9ad', 'LICUADORA', '6b149c84-c010-11ec-a813-d481d7c3a9ad', 'MARCA', 'ASPAS', 'MATERIAL', 'TAMAÑO', NULL, 2, 12, 11, 22, 4, 4, '2022-04-22 00:14:19'),
 ('ae064f03-c07b-11ec-8edf-18c04dae039e', 'ASD', '00095e94-c070-11ec-8edf-18c04dae039e', 'MARCA', 'ASD', 'ASD', 'ASD', 'ASD', 12, 12, 12, 12, 12, 12, '2022-04-22 00:14:19'),
