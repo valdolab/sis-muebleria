@@ -14,48 +14,62 @@ header('Cache-Control: max-age=0');
  
 // Propiedades del documento
 $objPHPExcel->getProperties()->setCreator("Muebleria Compra Facil")
-							 ->setLastModifiedBy("Muebleria Compra Facil")
-							 ->setTitle("Lista")
-							 ->setSubject("Lista Office")
-							 ->setDescription("Generación de lista de los productos")
-							 ->setKeywords("Lista")
-							 ->setCategory("Archivo generado");
+                             ->setLastModifiedBy("Muebleria Compra Facil")
+                             ->setTitle("Lista")
+                             ->setSubject("Lista Office")
+                             ->setDescription("Generación de lista de los productos")
+                             ->setKeywords("Lista")
+                             ->setCategory("Archivo generado");
 
-// Combino las celdas desde A1 hasta F1
+/*
+$especial = mysqli_query($conexion, "SELECT valor_int from configuracion where configuracion = 'activador_especial'");
+$status_especial = mysqli_fetch_assoc($especial)['valor_int'];
+if($status_especial == 0)
+{
+    //no lleva especial
+
+}
+else
+{
+    //si lleva especial
+
+}
+*/
+
 $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:M1');
  
 $objPHPExcel->setActiveSheetIndex(0)
-			->setCellValue('A1', 'LISTA DE PRODUCTOS')
+            ->setCellValue('A1', 'LISTA DE PRODUCTOS')
             ->setCellValue('A2', 'Descripción')
             ->setCellValue('B2', 'Costo actual')
             ->setCellValue('C2', 'Costo + iva')
-			->setCellValue('D2', 'Ext-P')
-			->setCellValue('E2', 'Ext-M')
-			->setCellValue('F2', 'Contado')
-			->setCellValue('G2', 'Especial')
-			->setCellValue('H2', 'CR1')
-			->setCellValue('I2', 'P1')
-			->setCellValue('J2', 'CR2')
-			->setCellValue('K2', 'P2')
-			->setCellValue('L2', 'E-Q')
-			->setCellValue('M2', 'Garantía');
+            ->setCellValue('D2', 'Ext-P')
+            ->setCellValue('E2', 'Ext-M')
+            ->setCellValue('F2', 'Contado')
+            ->setCellValue('G2', 'Especial')
+            ->setCellValue('H2', 'CR1')
+            ->setCellValue('I2', 'P1')
+            ->setCellValue('J2', 'CR2')
+            ->setCellValue('K2', 'P2')
+            ->setCellValue('L2', 'E-Q')
+            ->setCellValue('M2', 'Garantía');
 
 // Fuente de la primera fila en negrita
 $boldArraytitle = array('font' => array('name' => 'Arial','size' => 14, 'bold' => true,),'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER));
  
-$objPHPExcel->getActiveSheet()->getStyle('A1:M1')->applyFromArray($boldArraytitle);	
-			
+$objPHPExcel->getActiveSheet()->getStyle('A1:M1')->applyFromArray($boldArraytitle); 
+            
 // Fuente de la primera fila en negrita
 $boldArray = array('font' => array('bold' => true,),'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER));
  
-$objPHPExcel->getActiveSheet()->getStyle('A2:M2')->applyFromArray($boldArray);		 	
-			
+$objPHPExcel->getActiveSheet()->getStyle('A2:M2')->applyFromArray($boldArray);          
+            
 //Ancho de las columnas
-$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(40);//Descripción	
-$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(12);//Costo actual	
-$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(12);//Costo + iva	
-$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(10);//Ext-P	
-$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(10);//Ext-M			
+$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(40);//Descripción 
+$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(12);//Costo actual    
+$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(12);//Costo + iva 
+$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(10);//Ext-P   
+$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(10);//Ext-M           
 $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(10);//Contado
 $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(10);//Especial
 $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(10);//CR1
@@ -65,13 +79,13 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(10);//P2
 $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(10);//E-Q
 $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(10);//Garantía
 
-	require_once("conexion.php"); 
+    require_once("conexion.php"); 
 
-	$query = mysqli_query($conexion, "SELECT * from producto order by creado_en desc");
+    $query = mysqli_query($conexion, "SELECT * from producto order by creado_en desc");
             $result = mysqli_num_rows($query);
             if ($result > 0) 
             {
-            	$cel=3;//Numero de fila donde empezara a crear  el reporte
+                $cel=3;//Numero de fila donde empezara a crear  el reporte
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
                     $id_producto = $data['idproducto'];
@@ -110,55 +124,57 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(10);//Garantí
                         $subcat_producto = $data_producto['subcat_producto'];
                     }
                     //aqui empezamos a hacer el reporte de las listas de los productos
-
-                    $descripcion = $data['descripcion'];
-                    $costo = $data['costo'];
                     /*
                     $costo_iva = $data['costo_iva'];
-                    $ext_p = $data['ext_p'];
-                    $ext_m = null;
                     $costo_contado = $data['costo_contado'];
                     $costo_especial = $data['costo_especial'];
                     $costo_cr1 = $data['costo_cr1'];
-                    $costo_p1 = $data['costo_p1'];
                     $costo_cr2 = $data['costo_cr2'];
-                    $costo_p2 = $data['costo_p2'];
                     */
+
+                    $costo_iva = $data['costo_iva'];
+                    $descripcion = $data['descripcion'];
+                    $costo = $data['costo'];
+                    $ext_m = 0;  //<- aun no se ha definido
+                    $ext_p = $data['ext_p'];
+                    $costo_p1 = $data['costo_p1'];
+                    $costo_p2 = $data['costo_p2'];
                     $costo_eq = $data['costo_eq'];
-					
-					$a="A".$cel;
-					$b="B".$cel;
-					$c="C".$cel;
-					$d="D".$cel;
-					$e="E".$cel;
-					$f="F".$cel;
-					$g="G".$cel;
-					$h="H".$cel;
-					$i="I".$cel;
-					$j="J".$cel;
-					$k="K".$cel;
-					$l="L".$cel;
-					$m="M".$cel;
-					// Agregar datos
-					//'=SI((B'.$cel.'/'.$meses_pago.')/2<400,400,(B'.$cel.'/'.$meses_pago.')/2)'
+                    
+                    $a="A".$cel;
+                    $b="B".$cel;
+                    $c="C".$cel;
+                    $d="D".$cel;
+                    $e="E".$cel;
+                    $f="F".$cel;
+                    $g="G".$cel;
+                    $h="H".$cel;
+                    $i="I".$cel;
+                    $j="J".$cel;
+                    $k="K".$cel;
+                    $l="L".$cel;
+                    $m="M".$cel;
+                    // Agregar datos
+                    //'=SI((B'.$cel.'/'.$meses_pago.')/2<400,400,(B'.$cel.'/'.$meses_pago.')/2)'
                     //poner la lista con formulas: iva, contado, especial, credito1 y credito2
                     //poner texto plano a los que no son admins
-					$objPHPExcel->setActiveSheetIndex(0)
-			           ->setCellValue($a, $descripcion)
-			           ->setCellValue($b, $costo)
-			           ->setCellValue($c, '=B'.$cel.'+(B'.$cel.'*0.16)')
-			           ->setCellValue($d, $ext_p)
-			           ->setCellValue($e, $ext_m)
-					   ->setCellValue($f, '=B'.$cel.'+(B'.$cel.'*'.($contado/100).')')
-					   ->setCellValue($g, '=B'.$cel.'+(B'.$cel.'*'.($especial/100).')')
-					   ->setCellValue($h, '=B'.$cel.'+(B'.$cel.'*'.($credito1/100).')')
-					   ->setCellValue($l, $costo_eq)
-					   ->setCellValue($i, '=(H'.$cel.'/L'.$cel.')/2')
-			           ->setCellValue($j, '=B'.$cel.'+(B'.$cel.'*'.($credito2/100).')')
-					   ->setCellValue($k, '=(J'.$cel.'/L'.$cel.')/2')
-					   ->setCellValue($m, $garantia);
-					
-					$cel+=1;
+                    $objPHPExcel->setActiveSheetIndex()
+                       ->setCellValue($a, $descripcion)
+                       ->setCellValue($b, $costo)
+                       ->setCellValue($c, '=B'.$cel.'+(B'.$cel.'*0.16)');   //'=B'.$cel.'+(B'.$cel.'*0.16)')
+                       /*
+                       ->setCellValue($d, $ext_p)
+                       ->setCellValue($e, $ext_m)
+                       ->setCellValue($f, '=B'.$cel.'+(B'.$cel.'*'.($contado/100).')')
+                       ->setCellValue($g, '=B'.$cel.'+(B'.$cel.'*'.($especial/100).')')
+                       ->setCellValue($h, '=B'.$cel.'+(B'.$cel.'*'.($credito1/100).')')
+                       ->setCellValue($l, $costo_eq)
+                       ->setCellValue($i, $costo_p1)    //'=(H'.$cel.'/L'.$cel.')/2')
+                       ->setCellValue($j, '=B'.$cel.'+(B'.$cel.'*'.($credito2/100).')')
+                       ->setCellValue($k, $costo_p2)   //'=(J'.$cel.'/L'.$cel.')/2')
+                       ->setCellValue($m, $garantia);
+                    */
+                    $cel+=1;
                 }
             }
 
@@ -208,6 +224,7 @@ header('Cache-Control: max-age=1');
  
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 ob_end_clean();
+$objWriter->setPreCalculateFormulas(false);
 $objWriter->save('php://output');
 exit;
 ob_end_flush();
