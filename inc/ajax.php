@@ -1040,11 +1040,45 @@ if ($_POST['action'] == 'searchForAtr1')
           
           if($idsubcategoria == "NoSubcat")
           {
-            $query_sql = "SELECT * from producto where atr1_producto like '$atr1' and categoria = '$idcategoria' order by creado_en desc";
+            $query_sql = "SELECT * from producto where atr1_producto like '$atr1'";
+            if($atr2 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr2_producto like '$atr2'";
+            }
+            if($atr3 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr3_producto like '$atr3'";
+            }
+            if($atr4 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr4_producto like '$atr4'";
+            }
+            if($atr5 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr5_producto like '$atr5'";
+            }
+            $query_sql = $query_sql." and categoria = '$idcategoria' order by creado_en desc";
           }
           else
           {
-            $query_sql = "SELECT * from producto where atr1_producto like '$atr1' and categoria = '$idcategoria' and subcategoria = '$idsubcategoria' order by creado_en desc";
+            $query_sql = "SELECT * from producto where atr1_producto like '$atr1'";
+            if($atr2 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr2_producto like '$atr2'";
+            }
+            if($atr3 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr3_producto like '$atr3'";
+            }
+            if($atr4 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr4_producto like '$atr4'";
+            }
+            if($atr5 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr5_producto like '$atr5'";
+            }
+            $query_sql = $query_sql." and categoria = '$idcategoria' and subcategoria = '$idsubcategoria' order by creado_en desc";
           }
 
             $query = mysqli_query($conexion, $query_sql);
@@ -1168,11 +1202,45 @@ if ($_POST['action'] == 'searchForAtr2')
           
           if($idsubcategoria == "NoSubcat")
           {
-            $query_sql = "SELECT * from producto where atr2_producto like '$atr2' and categoria = '$idcategoria' order by creado_en desc";
+            $query_sql = "SELECT * from producto where atr2_producto like '$atr2'";
+            if($atr1 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr1_producto like '$atr1'";
+            }
+            if($atr3 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr3_producto like '$atr3'";
+            }
+            if($atr4 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr4_producto like '$atr4'";
+            }
+            if($atr5 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr5_producto like '$atr5'";
+            }
+            $query_sql = $query_sql." and categoria = '$idcategoria' order by creado_en desc";
           }
           else
           {
-            $query_sql = "SELECT * from producto where atr2_producto like '$atr2' and categoria = '$idcategoria' and subcategoria = '$idsubcategoria' order by creado_en desc";
+            $query_sql = "SELECT * from producto where atr2_producto like '$atr2'";
+            if($atr1 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr1_producto like '$atr1'";
+            }
+            if($atr3 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr3_producto like '$atr3'";
+            }
+            if($atr4 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr4_producto like '$atr4'";
+            }
+            if($atr5 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr5_producto like '$atr5'";
+            }
+            $query_sql = $query_sql." and categoria = '$idcategoria' and subcategoria = '$idsubcategoria' order by creado_en desc";
           }
 
             $query = mysqli_query($conexion, $query_sql);
@@ -1296,11 +1364,45 @@ if ($_POST['action'] == 'searchForAtr3')
           
           if($idsubcategoria == "NoSubcat")
           {
-            $query_sql = "SELECT * from producto where atr3_producto like '$atr3' and categoria = '$idcategoria' order by creado_en desc";
+            $query_sql = "SELECT * from producto where atr3_producto like '$atr3'";
+            if($atr2 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr2_producto like '$atr2'";
+            }
+            if($atr1 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr1_producto like '$atr1'";
+            }
+            if($atr4 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr4_producto like '$atr4'";
+            }
+            if($atr5 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr5_producto like '$atr5'";
+            }
+            $query_sql = $query_sql." and categoria = '$idcategoria' order by creado_en desc";
           }
           else
           {
-            $query_sql = "SELECT * from producto where atr3_producto like '$atr3' and categoria = '$idcategoria' and subcategoria = '$idsubcategoria' order by creado_en desc";
+            $query_sql = "SELECT * from producto where atr3_producto like '$atr3'";
+            if($atr2 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr2_producto like '$atr2'";
+            }
+            if($atr1 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr1_producto like '$atr1'";
+            }
+            if($atr4 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr4_producto like '$atr4'";
+            }
+            if($atr5 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr5_producto like '$atr5'";
+            }
+            $query_sql = $query_sql." and categoria = '$idcategoria' and subcategoria = '$idsubcategoria' order by creado_en desc";
           }
 
             $query = mysqli_query($conexion, $query_sql);
@@ -1424,11 +1526,45 @@ if ($_POST['action'] == 'searchForAtr4')
           
           if($idsubcategoria == "NoSubcat")
           {
-            $query_sql = "SELECT * from producto where atr4_producto like '$atr4' and categoria = '$idcategoria' order by creado_en desc";
+            $query_sql = "SELECT * from producto where atr4_producto like '$atr4'";
+            if($atr2 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr2_producto like '$atr2'";
+            }
+            if($atr3 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr3_producto like '$atr3'";
+            }
+            if($atr1 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr1_producto like '$atr1'";
+            }
+            if($atr5 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr5_producto like '$atr5'";
+            }
+            $query_sql = $query_sql." and categoria = '$idcategoria' order by creado_en desc";
           }
           else
           {
-            $query_sql = "SELECT * from producto where atr4_producto like '$atr4' and categoria = '$idcategoria' and subcategoria = '$idsubcategoria' order by creado_en desc";
+            $query_sql = "SELECT * from producto where atr4_producto like '$atr4'";
+            if($atr2 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr2_producto like '$atr2'";
+            }
+            if($atr3 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr3_producto like '$atr3'";
+            }
+            if($atr1 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr1_producto like '$atr1'";
+            }
+            if($atr5 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr5_producto like '$atr5'";
+            }
+            $query_sql = $query_sql." and categoria = '$idcategoria' and subcategoria = '$idsubcategoria' order by creado_en desc";
           }
 
             $query = mysqli_query($conexion, $query_sql);
@@ -1552,11 +1688,45 @@ if ($_POST['action'] == 'searchForAtr5')
           
           if($idsubcategoria == "NoSubcat")
           {
-            $query_sql = "SELECT * from producto where atr5_producto like '$atr5' and categoria = '$idcategoria' order by creado_en desc";
+            $query_sql = "SELECT * from producto where atr5_producto like '$atr5'";
+            if($atr2 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr2_producto like '$atr2'";
+            }
+            if($atr3 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr3_producto like '$atr3'";
+            }
+            if($atr4 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr4_producto like '$atr4'";
+            }
+            if($atr1 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr1_producto like '$atr1'";
+            }
+            $query_sql = $query_sql." and categoria = '$idcategoria' order by creado_en desc";
           }
           else
           {
-            $query_sql = "SELECT * from producto where atr5_producto like '$atr5' and categoria = '$idcategoria' and subcategoria = '$idsubcategoria' order by creado_en desc";
+            $query_sql = "SELECT * from producto where atr5_producto like '$atr5'";
+            if($atr2 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr2_producto like '$atr2'";
+            }
+            if($atr3 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr3_producto like '$atr3'";
+            }
+            if($atr4 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr4_producto like '$atr4'";
+            }
+            if($atr1 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr1_producto like '$atr1'";
+            }
+            $query_sql = $query_sql." and categoria = '$idcategoria' and subcategoria = '$idsubcategoria' order by creado_en desc";
           }
 
             $query = mysqli_query($conexion, $query_sql);

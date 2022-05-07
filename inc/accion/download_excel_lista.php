@@ -29,7 +29,7 @@ if($status_especial == 0)
     $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:L1');
     $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A1', 'LISTA DE PRODUCTOS')
-                ->setCellValue('A2', $status_especial)
+                ->setCellValue('A2', 'Descripción')
                 ->setCellValue('B2', 'Costo actual')
                 ->setCellValue('C2', 'Costo + iva')
                 ->setCellValue('D2', 'Ext-P')
@@ -53,7 +53,7 @@ if($status_especial == 0)
     $objPHPExcel->getActiveSheet()->getStyle('A2:L2')->applyFromArray($boldArray);          
                 
     //Ancho de las columnas
-    $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(40);//Descripción 
+    $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(50);//Descripción 
     $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(12);//Costo actual    
     $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(12);//Costo + iva 
     $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(10);//Ext-P   
@@ -242,7 +242,7 @@ else
     $objPHPExcel->getActiveSheet()->getStyle('A2:M2')->applyFromArray($boldArray);          
                 
     //Ancho de las columnas
-    $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(40);//Descripción 
+    $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(50);//Descripción 
     $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(12);//Costo actual    
     $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(12);//Costo + iva 
     $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(10);//Ext-P   

@@ -1070,31 +1070,31 @@ if (!empty($_POST))
         <div align="left" class="col-lg-1">
             <label>Atributo 1:</label>
             <select class="form-control" id="filtro_atr1" name="filtro_atr1">
-                <option selected hidden>---</option>
+                <option selected hidden value="LABEL">---</option>
             </select>
         </div>
         <div align="left" class="col-lg-1">
             <label>Atributo 2:</label>
             <select class="form-control" id="filtro_atr2" name="filtro_atr2">
-                <option selected hidden>---</option>
+                <option selected hidden value="LABEL">---</option>
             </select>
         </div>
         <div align="left" class="col-lg-1">
             <label>Atributo 3:</label>
             <select class="form-control" id="filtro_atr3" name="filtro_atr3">
-                <option selected hidden>---</option>
+                <option selected hidden value="LABEL">---</option>
             </select>
         </div>
         <div align="left" class="col-lg-1">
             <label>Atributo 4:</label>
             <select class="form-control" id="filtro_atr4" name="filtro_atr4">
-                <option selected hidden>---</option>
+                <option selected hidden value="LABEL">---</option>
             </select>
         </div>
         <div align="left" class="col-lg-1">
             <label>Atributo 5:</label>
             <select class="form-control" id="filtro_atr5" name="filtro_atr5">
-                <option selected hidden>---</option>
+                <option selected hidden value="LABEL">---</option>
             </select>
         </div>
         <div class="col-lg-3">

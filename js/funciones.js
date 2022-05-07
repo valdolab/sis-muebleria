@@ -1119,26 +1119,31 @@ $('#categoria').change(function(e)
             {
                 if(data.atrs_productos[i].atr1_producto != null)
                 {
-                    $('#filtro_atr1').append('<option>'+data.atrs_productos[i].atr1_producto+'</option>');
+                    $('#filtro_atr1').append('<option value="'+data.atrs_productos[i].atr1_producto+'">'+data.atrs_productos[i].atr1_producto+'</option>');
                 }
                 if(data.atrs_productos[i].atr2_producto != null)
                 {
-                    $('#filtro_atr2').append('<option>'+data.atrs_productos[i].atr2_producto+'</option>');
+                    $('#filtro_atr2').append('<option value="'+data.atrs_productos[i].atr2_producto+'">'+data.atrs_productos[i].atr2_producto+'</option>');
                 }
                 if(data.atrs_productos[i].atr3_producto != null)
                 {
-                    $('#filtro_atr3').append('<option>'+data.atrs_productos[i].atr3_producto+'</option>');
+                    $('#filtro_atr3').append('<option value="'+data.atrs_productos[i].atr3_producto+'">'+data.atrs_productos[i].atr3_producto+'</option>');
                 }
                 if(data.atrs_productos[i].atr4_producto != null)
                 {
-                    $('#filtro_atr4').append('<option>'+data.atrs_productos[i].atr4_producto+'</option>');
+                    $('#filtro_atr4').append('<option value="'+data.atrs_productos[i].atr4_producto+'">'+data.atrs_productos[i].atr4_producto+'</option>');
                 }
                 if(data.atrs_productos[i].atr5_producto != null)
                 {
-                    $('#filtro_atr5').append('<option>'+data.atrs_productos[i].atr5_producto+'</option>');
+                    $('#filtro_atr5').append('<option value="'+data.atrs_productos[i].atr5_producto+'">'+data.atrs_productos[i].atr5_producto+'</option>');
                 }
             }
             //fin de poner los atributos
+            remove_repeated_option("filtro_atr1");
+            remove_repeated_option("filtro_atr2");
+            remove_repeated_option("filtro_atr3");
+            remove_repeated_option("filtro_atr4");
+            remove_repeated_option("filtro_atr5");
         }
         else
         {
@@ -1171,6 +1176,25 @@ $('#categoria').change(function(e)
       }
     });
 });
+
+function remove_repeated_option(idselect)
+{
+    $("#"+idselect+" option").val(function(idx, val) 
+    {
+      $(this).siblings('[value="'+ val +'"]').remove();
+    });
+
+    /*
+    var code = {};
+    $("select[name='"+idselect+"'] > option").each(function () {
+        if(code[this.text]) {
+            $(this).remove();
+        } else {
+            code[this.text] = this.value;
+        }
+    });
+    */
+}
 
 //==== para los select de subcategoria
 $('#subcategoria').change(function(e) 
@@ -1256,23 +1280,23 @@ $('#subcategoria').change(function(e)
             {
                 if(data.atrs_productos[i].atr1_producto != null)
                 {
-                    $('#filtro_atr1').append('<option>'+data.atrs_productos[i].atr1_producto+'</option>');
+                    $('#filtro_atr1').append('<option value="'+data.atrs_productos[i].atr1_producto+'">'+data.atrs_productos[i].atr1_producto+'</option>');
                 }
                 if(data.atrs_productos[i].atr2_producto != null)
                 {
-                    $('#filtro_atr2').append('<option>'+data.atrs_productos[i].atr2_producto+'</option>');
+                    $('#filtro_atr2').append('<option value="'+data.atrs_productos[i].atr2_producto+'">'+data.atrs_productos[i].atr2_producto+'</option>');
                 }
                 if(data.atrs_productos[i].atr3_producto != null)
                 {
-                    $('#filtro_atr3').append('<option>'+data.atrs_productos[i].atr3_producto+'</option>');
+                    $('#filtro_atr3').append('<option value="'+data.atrs_productos[i].atr3_producto+'">'+data.atrs_productos[i].atr3_producto+'</option>');
                 }
                 if(data.atrs_productos[i].atr4_producto != null)
                 {
-                    $('#filtro_atr4').append('<option>'+data.atrs_productos[i].atr4_producto+'</option>');
+                    $('#filtro_atr4').append('<option value="'+data.atrs_productos[i].atr4_producto+'">'+data.atrs_productos[i].atr4_producto+'</option>');
                 }
                 if(data.atrs_productos[i].atr5_producto != null)
                 {
-                    $('#filtro_atr5').append('<option>'+data.atrs_productos[i].atr5_producto+'</option>');
+                    $('#filtro_atr5').append('<option value="'+data.atrs_productos[i].atr5_producto+'">'+data.atrs_productos[i].atr5_producto+'</option>');
                 }
             }
         //fin de poner los atributos

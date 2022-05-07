@@ -114,10 +114,11 @@
 
 <?php if ($productos) { ?>
 	<li class="nav-item secundary">
-		<a class="nav-link collapsed text-dark" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+		<a href="productos.php" class="nav-link collapsed text-dark">
 			<i class="fas fa-fw fa-clipboard-list"></i>
 			<span style="font-size: 18px;">Productos</span>
 		</a>
+		<!--  data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities"
 		<div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<a class="collapse-item" href="productos.php">Productos</a>
@@ -133,6 +134,7 @@
 				 ?>
 			</div>
 		</div>
+		-->
 	</li>
 <?php } ?>
 
