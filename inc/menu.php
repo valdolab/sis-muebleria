@@ -60,6 +60,7 @@
 	        $sucursales = 1;
 	        $documentos = 1;
 	        $general = 1;
+	        $es_admin = 1;
         }
         else
         {
@@ -84,6 +85,7 @@
 	        $sucursales = in_array(18, $array_permisos);
 	        $documentos = in_array(19, $array_permisos);
 	        $general = in_array(20, $array_permisos);
+	        $es_admin = 0;
         }
 	 ?>
 	
