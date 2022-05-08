@@ -1112,7 +1112,7 @@ if (!empty($_POST))
                 </div>
                 <div class="row">
                     <div class="col-12 col-sm-12" align="center">
-                        <button onClick="guardar_lista();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 88px !important; height: 38px !important; line-height: 0px;">Guardar</button>
+                        <button disabled="disabled" id="btn_save_lista" onClick="guardar_lista();" type="button" class="btn btn-success py-3 btn-sm" style="width: 88px !important; height: 38px !important; line-height: 0px;">Guardar</button>
                     </div>
                 </div>
               </div>
@@ -1209,7 +1209,7 @@ if (!empty($_POST))
              ?>
                 <tr>
                         <td><?php echo $data['descripcion']; ?></td>
-                        <td><input type="number" name="nuevo_costo" id="nuevo_costo" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
+                        <td><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td><?php echo "$".number_format($data['costo'],2, '.', ','); ?></td>
                         <td><?php echo "$".number_format($data['costo_iva'],2, '.', ','); ?></td>
                         <td><?php echo $data['ext_p']; ?></td>

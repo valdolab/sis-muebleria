@@ -1026,6 +1026,19 @@ $('#tipo').change(function(e)
     });
 });
 
+//funsion para quitar options repetidos
+function remove_repeated_option(idselect)
+{
+    var code = {};
+    $("select[name='"+idselect+"'] > option").each(function () {
+        if(code[this.text]) {
+            $(this).remove();
+        } else {
+            code[this.text] = this.value;
+        }
+    });
+}
+
 //==== para los select de categoria
 $('#categoria').change(function(e) 
 {
@@ -1071,47 +1084,47 @@ $('#categoria').change(function(e)
             $("#filtro_atr1").empty();
             if(data.atr_labels.atr1 != null)
             {
-                $('#filtro_atr1').append('<option selected hidden value="LABEL">'+data.atr_labels.atr1+'</option>');    
+                $('#filtro_atr1').append('<option selected value="LABEL">'+data.atr_labels.atr1+'</option>');    
             }
             else
             {
-                $('#filtro_atr1').append('<option selected hidden value="LABEL">---</option>');
+                $('#filtro_atr1').append('<option selected value="LABEL">---</option>');
             }
             $("#filtro_atr2").empty();
             if(data.atr_labels.atr2 != null)
             {
-                $('#filtro_atr2').append('<option selected hidden value="LABEL">'+data.atr_labels.atr2+'</option>');
+                $('#filtro_atr2').append('<option selected value="LABEL">'+data.atr_labels.atr2+'</option>');
             }
             else
             {
-                $('#filtro_atr2').append('<option selected hidden value="LABEL">---</option>');
+                $('#filtro_atr2').append('<option selected value="LABEL">---</option>');
             }
             $("#filtro_atr3").empty();
             if(data.atr_labels.atr3 != null)
             {
-                $('#filtro_atr3').append('<option selected hidden value="LABEL">'+data.atr_labels.atr3+'</option>');
+                $('#filtro_atr3').append('<option selected value="LABEL">'+data.atr_labels.atr3+'</option>');
             }
             else
             {
-                $('#filtro_atr3').append('<option selected hidden value="LABEL">---</option>');
+                $('#filtro_atr3').append('<option selected value="LABEL">---</option>');
             }
             $("#filtro_atr4").empty();
             if(data.atr_labels.atr4 != null)
             {
-                $('#filtro_atr4').append('<option selected hidden value="LABEL">'+data.atr_labels.atr4+'</option>');
+                $('#filtro_atr4').append('<option selected value="LABEL">'+data.atr_labels.atr4+'</option>');
             }
             else
             {
-                $('#filtro_atr4').append('<option selected hidden value="LABEL">---</option>');
+                $('#filtro_atr4').append('<option selected value="LABEL">---</option>');
             }
             $("#filtro_atr5").empty();
             if(data.atr_labels.atr5 != null)
             {
-                $('#filtro_atr5').append('<option selected hidden value="LABEL">'+data.atr_labels.atr5+'</option>');
+                $('#filtro_atr5').append('<option selected value="LABEL">'+data.atr_labels.atr5+'</option>');
             }
             else
             {
-                $('#filtro_atr5').append('<option selected hidden value="LABEL">---</option>');
+                $('#filtro_atr5').append('<option selected value="LABEL">---</option>');
             }
 
             var size_atrs = data.atrs_productos.length;
@@ -1176,25 +1189,6 @@ $('#categoria').change(function(e)
       }
     });
 });
-
-function remove_repeated_option(idselect)
-{
-    $("#"+idselect+" option").val(function(idx, val) 
-    {
-      $(this).siblings('[value="'+ val +'"]').remove();
-    });
-
-    /*
-    var code = {};
-    $("select[name='"+idselect+"'] > option").each(function () {
-        if(code[this.text]) {
-            $(this).remove();
-        } else {
-            code[this.text] = this.value;
-        }
-    });
-    */
-}
 
 //==== para los select de subcategoria
 $('#subcategoria').change(function(e) 
@@ -1299,6 +1293,11 @@ $('#subcategoria').change(function(e)
                     $('#filtro_atr5').append('<option value="'+data.atrs_productos[i].atr5_producto+'">'+data.atrs_productos[i].atr5_producto+'</option>');
                 }
             }
+            remove_repeated_option("filtro_atr1");
+            remove_repeated_option("filtro_atr2");
+            remove_repeated_option("filtro_atr3");
+            remove_repeated_option("filtro_atr4");
+            remove_repeated_option("filtro_atr5");
         //fin de poner los atributos
       },
       error: function(error) {
@@ -1363,7 +1362,7 @@ $('#filtro_atr2').change(function(e)
       async: true,
       data: {action:action,atr1:atr1,atr2:atr2,atr3:atr3,atr4:atr4,atr5:atr5,idcat:idcat,idsubcat,idsubcat},
       success: function(response) {
-        //$('#prueba').text(idsubcat); 
+        //$('#prueba').html(response); 
         var data = $.parseJSON(response);
         $('#tablaproductos').html(data.cadenaTabla);
         show_search_box();
@@ -1774,6 +1773,29 @@ function show_new_costo()
     $('#tbl_productos td:nth-child(2)').toggle();
     $('#tbl_productos th:nth-child(2)').toggle();
     $('#btn_save_lista').removeAttr('disabled');
+}
+
+function guardar_lista()
+{
+    //SI FUNCIONA
+    //mandar al metodo ajax post y ahi recorrer y guardar los nuevos costos segun las reglas establecidas
+    
+    var new_costo = document.getElementsByName('nuevo_costo[]');
+    var flag_idproducto_newcosto = document.getElementsByName('flag_new_costo_idproducto[]');
+
+    var cadenatemp = '';
+    for (var i = 0; i < flag_idproducto_newcosto.length; i++) 
+    {
+        cadenatemp = cadenatemp + "//" + flag_idproducto_newcosto[i].value;
+    }
+    $('#prueba').html(cadenatemp);
+    
+    var cadenatemp = 'OTROS';
+    for (var i = 0; i < flag_idproducto_newcosto.length; i++) 
+    {
+        cadenatemp = cadenatemp + "//" + new_costo[i].value;
+    }
+    $('#prueba').append(cadenatemp);
 }
 
 //eliminar usuario
