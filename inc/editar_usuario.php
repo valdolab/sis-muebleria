@@ -471,13 +471,24 @@ if (!empty($_POST))
                         </div>
 
                         <div class="form-group col-lg-4">
-                          <fieldset id="tools" disabled>
-                            <label>Puesto</label>
-                              <button data-toggle="modal" data-target="#nuevo_puesto" title="Agregar nuevo puesto" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
-
-                              <button data-toggle="modal" data-target="#editar_puesto" onclick="editar_puesto(<?php echo $up_puesto; ?>);" title="editar puesto" class="btn btn-success btn-xs" type="button" href="#" id="btn_editarpuesto"><i class="fas fa-edit"></i></button>
-                              <button onclick="eliminar_puesto(<?php echo $up_puesto; ?>);" title="Eliminar puesto" class="btn btn-danger btn-xs" type="button" href="#" id="btn_eliminarpuesto"><i class="fas fa-trash"></i></button>
-                          </fieldset>
+                          <?php 
+                                if($_SESSION['rol'] == "SuperAdmin" or $_SESSION['rol'] == "Administrador")
+                                {
+                                    ?>
+                                    <button data-toggle="modal" data-target="#nuevo_puesto" title="Agregar nuevo puesto" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
+                                    <button disabled data-toggle="modal" data-target="#editar_puesto" onclick="editar_puesto();" title="editar puesto" class="btn btn-success btn-xs" type="button" href="#" id="btn_editarpuesto"><i class="fas fa-edit"></i></button>
+                                    <button disabled onclick="eliminar_puesto();" title="Eliminar puesto" class="btn btn-danger btn-xs" type="button" href="#" id="btn_eliminarpuesto"><i class="fas fa-trash"></i></button>
+                                    <?php
+                                }
+                                else
+                                {
+                                    ?>
+                                    <button disabled="disabled" title="Agregar nuevo puesto" class="btn btn-primary btn-xs" type="button"><i class="fas fa-plus"></i></button>
+                                    <button disabled="disabled" title="editar puesto" class="btn btn-success btn-xs" type="button"><i class="fas fa-edit"></i></button>
+                                    <button disabled="disabled" title="Eliminar puesto" class="btn btn-danger btn-xs" type="button"><i class="fas fa-trash"></i></button>
+                                    <?php 
+                                } 
+                             ?>
                           
                           <select disabled class="form-control" id="puesto" name="puesto" required>
                             <option value="" hidden selected>Seleccione una opción</option>
