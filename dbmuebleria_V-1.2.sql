@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 09-05-2022 a las 01:01:36
+-- Tiempo de generación: 09-05-2022 a las 01:34:40
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -330,8 +330,8 @@ INSERT INTO `producto` (`idproducto`, `identificador`, `codigo_barras`, `categor
 ('23bba124-c681-11ec-abb6-d481d7c3a9ad', 'wp100-asd003', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora patito', 0, 'PATITO', '6', '2', '10', '2', NULL, NULL, NULL, 9000, 10440, 11588.4, 10544.4, 11588.4, 11484, 13.32, 13.2, 435, '2022-04-27 23:24:09'),
 ('569ff4d5-c906-11ec-abb6-d481d7c3a9ad', 'wp100-asd004', NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'prueba bici', 0, 'asd', '10', '2', 'montaña', NULL, NULL, NULL, NULL, 5500, 6380, 7145.6, 7783.6, 7081.8, 7783.6, 3.33, 3.66, 1063.33, '2022-05-01 04:22:27'),
 ('66bfc35f-c1d7-11ec-91b0-d481d7c3a9ad', 'asd', NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'Aquí va la descricion mas detalla del producto', 1, 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, NULL, 4500, 5220, 5846.4, 6368.4, 5794.2, 6368.4, 3.33, 3.66, 870, '2022-04-22 00:59:04'),
-('8f2d4de2-c96a-11ec-abb6-d481d7c3a9ad', '32h5g', NULL, '92ebf98d-c966-11ec-abb6-d481d7c3a9ad', NULL, 'tele 32 smart', 1, 'hisense', '32', 'hd', NULL, NULL, NULL, NULL, 15, 3200, 3712, 4825.6, 5011.2, 7424, 9280, 8, 10, 464, '2022-05-01 16:19:48'),
-('9b58146b-cc01-11ec-8195-d481d7c3a9ad', 'wp100-asd006', NULL, '00095e94-c070-11ec-8edf-18c04dae039e', NULL, 'prueba con identificador en blanco', 1, 'SAMSUNG', 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, 3000, 3480, 3897.6, 3897.6, 3897.6, 3897.6, 13.44, 13.44, 400, '2022-05-04 23:26:18'),
+('8f2d4de2-c96a-11ec-abb6-d481d7c3a9ad', '32h5g', NULL, '92ebf98d-c966-11ec-abb6-d481d7c3a9ad', 'c1451ae3-c966-11ec-abb6-d481d7c3a9ad', 'tele 32 smart', 1, 'hisense', '32', 'hd', NULL, NULL, NULL, NULL, 15, 3200, 3712, 4825.6, 5011.2, 7424, 9280, 8, 10, 464, '2022-05-01 16:19:48'),
+('9b58146b-cc01-11ec-8195-d481d7c3a9ad', 'wp100-asd006', NULL, '00095e94-c070-11ec-8edf-18c04dae039e', 'ae064f03-c07b-11ec-8edf-18c04dae039e', 'prueba con identificador en blanco', 1, 'SAMSUNG', 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, 3000, 3480, 3897.6, 3897.6, 3897.6, 3897.6, 13.44, 13.44, 400, '2022-05-04 23:26:18'),
 ('ecf8fb02-c680-11ec-abb6-d481d7c3a9ad', 'wp100-asd005', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora LG', 0, 'LG', '6', '2', '12', '1', NULL, NULL, NULL, 5000, 5800, 6438, 5858, 6438, 6380, 13.32, 13.2, 400, '2022-04-27 23:22:37');
 
 -- --------------------------------------------------------

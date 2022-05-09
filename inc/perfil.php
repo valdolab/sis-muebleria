@@ -18,7 +18,7 @@ else
     $up_idusuario = $data['idusuario'];
     $up_rol = $data['rol'];
     $up_idpuesto = $data['puesto'];
-    $sqlpuesto = mysqli_query($conexion, "SELECT puesto FROM puesto WHERE idpuesto = $up_idpuesto");
+    $sqlpuesto = mysqli_query($conexion, "SELECT puesto FROM puesto WHERE idpuesto = '$up_idpuesto'");
     $up_name_puesto = mysqli_fetch_assoc($sqlpuesto)['puesto'];
 
     $sql2 = mysqli_query($conexion, "SELECT sucursal_idsucursales FROM sucursal_usuario WHERE sucursal_idusuario = '$idusuario'");

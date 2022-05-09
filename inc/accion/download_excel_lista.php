@@ -1,5 +1,6 @@
 <?php
 ob_start();
+session_start();
 /** Incluye PHPExcel */
 require_once dirname(__FILE__) . '/../../Classes/PHPExcel.php';
 //require_once dirname(__FILE__) . '/Classes/PHPExcel.php';
@@ -56,15 +57,15 @@ if($status_especial == 0)
     $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(50);//Descripción 
     $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(12);//Costo actual    
     $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(12);//Costo + iva 
-    $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(10);//Ext-P   
-    $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(10);//Ext-M           
-    $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(10);//Contado
-    $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(10);//CR1
-    $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(10);//P1
-    $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(10);//CR2
-    $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(10);//P2
-    $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(10);//E-Q
-    $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(10);//Garantía
+    $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(12);//Ext-P   
+    $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(12);//Ext-M           
+    $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(12);//Contado
+    $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(12);//CR1
+    $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(12);//P1
+    $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(12);//CR2
+    $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(12);//P2
+    $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(12);//E-Q
+    $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(12);//Garantía
 
         $query = mysqli_query($conexion, "SELECT * from producto order by creado_en desc");
                 $result = mysqli_num_rows($query);
@@ -245,16 +246,16 @@ else
     $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(50);//Descripción 
     $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(12);//Costo actual    
     $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(12);//Costo + iva 
-    $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(10);//Ext-P   
-    $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(10);//Ext-M           
-    $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(10);//Contado
-    $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(10);//Especial
-    $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(10);//CR1
-    $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(10);//P1
-    $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(10);//CR2
-    $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(10);//P2
-    $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(10);//E-Q
-    $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(10);//Garantía
+    $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(12);//Ext-P   
+    $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(12);//Ext-M           
+    $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(12);//Contado
+    $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(12);//Especial
+    $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(12);//CR1
+    $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(12);//P1
+    $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(12);//CR2
+    $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(12);//P2
+    $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(12);//E-Q
+    $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(12);//Garantía
 
         require_once("conexion.php"); 
 
