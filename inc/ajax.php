@@ -671,6 +671,9 @@ if ($_POST['action'] == 'searchTipoUsed')
 //buscar si la categoria esta siendo usada por algun producto y las subcategorias que tengan esa categoria
 if ($_POST['action'] == 'searchCatUsed') 
 {
+  ob_start();
+  session_start();
+
   include "accion/conexion.php";
   if (!empty($_POST['categoria'])) 
   {
@@ -799,13 +802,59 @@ if ($_POST['action'] == 'searchCatUsed')
                         <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
                         <td>'.$garantia." Meses".'</td>';
 
-                $cadenaTabla = $cadenaTabla.'<td align="center">
-                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
-                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>
-                                <button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
-                            </td>
-                            </tr>';
+                $cadenaTabla = $cadenaTabla.'<td align="center">';
 
+                $id_usuario = $_SESSION['iduser'];
+                $sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
+                $array_permisos = [];
+                    while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
+                    {
+                        $array_permisos[] = $row['permiso_idpermiso'];
+                    }
+                    #print_r($array_permisos);
+                    $num_permisos = sizeof($array_permisos);
+                    #PERMISOS
+                    if($_SESSION['rol'] == "SuperAdmin")
+                    {
+                      #es super admin y titene permiso a TODO
+                      $editar_productos = 1;
+                      $eliminar_productos = 1;
+                      $imagenes = 1;
+                    }
+                    else
+                    {
+                      #permisos asignados
+                      $editar_productos = in_array(6, $array_permisos);
+                      $eliminar_productos = in_array(7, $array_permisos);
+                      $imagenes =  in_array(8, $array_permisos);
+                    }
+                    if($imagenes)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                    }
+                    $cadenaTabla = $cadenaTabla."&nbsp;";
+                    if($editar_productos)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
+                    }
+                    $cadenaTabla = $cadenaTabla."&nbsp;";
+                    if($eliminar_productos)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                    }
+                $cadenaTabla = $cadenaTabla.'</td></tr>';
               }
             }
         $cadenaTabla = $cadenaTabla.'</tbody></table>';
@@ -820,12 +869,16 @@ if ($_POST['action'] == 'searchCatUsed')
 
     echo json_encode($resultFindcat,JSON_UNESCAPED_UNICODE);
   }
+  ob_end_flush();
   exit;
 }
 
 //buscar si la subcategoria esta siendo usada por algun producto
 if ($_POST['action'] == 'searchSubCatUsed') 
 {
+  ob_start();
+  session_start();
+
   include "accion/conexion.php";
   if (!empty($_POST['subcategoria'])) {
       $idsubcategoria = $_POST['subcategoria'];
@@ -918,12 +971,59 @@ if ($_POST['action'] == 'searchSubCatUsed')
                         <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
                         <td>'.$garantia." Meses".'</td>';
 
-                $cadenaTabla = $cadenaTabla.'<td align="center">
-                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
-                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>
-                                <button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
-                            </td>
-                            </tr>';
+                $cadenaTabla = $cadenaTabla.'<td align="center">';
+
+                $id_usuario = $_SESSION['iduser'];
+                $sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
+                $array_permisos = [];
+                    while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
+                    {
+                        $array_permisos[] = $row['permiso_idpermiso'];
+                    }
+                    #print_r($array_permisos);
+                    $num_permisos = sizeof($array_permisos);
+                    #PERMISOS
+                    if($_SESSION['rol'] == "SuperAdmin")
+                    {
+                      #es super admin y titene permiso a TODO
+                      $editar_productos = 1;
+                      $eliminar_productos = 1;
+                      $imagenes = 1;
+                    }
+                    else
+                    {
+                      #permisos asignados
+                      $editar_productos = in_array(6, $array_permisos);
+                      $eliminar_productos = in_array(7, $array_permisos);
+                      $imagenes =  in_array(8, $array_permisos);
+                    }
+                    if($imagenes)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                    }
+                    $cadenaTabla = $cadenaTabla."&nbsp;";
+                    if($editar_productos)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
+                    }
+                    $cadenaTabla = $cadenaTabla."&nbsp;";
+                    if($eliminar_productos)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                    }
+                $cadenaTabla = $cadenaTabla.'</td></tr>';
 
               }
             }
@@ -938,6 +1038,7 @@ if ($_POST['action'] == 'searchSubCatUsed')
 
     echo json_encode($resultFindsubcat,JSON_UNESCAPED_UNICODE);
   }
+  ob_end_flush();
   exit;
 }
 
@@ -1004,6 +1105,8 @@ if ($_POST['action'] == 'FindAtrsSubCat')
 //ATR1
 if ($_POST['action'] == 'searchForAtr1') 
 {
+  ob_start();
+  session_start();
   include "accion/conexion.php";
   if (!empty($_POST['atr1'])) 
   {
@@ -1138,12 +1241,59 @@ if ($_POST['action'] == 'searchForAtr1')
                         <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
                         <td>'.$garantia." Meses".'</td>';
 
-                $cadenaTabla = $cadenaTabla.'<td align="center">
-                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
-                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>
-                                <button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
-                            </td>
-                            </tr>';
+                $cadenaTabla = $cadenaTabla.'<td align="center">';
+
+                $id_usuario = $_SESSION['iduser'];
+                $sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
+                $array_permisos = [];
+                    while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
+                    {
+                        $array_permisos[] = $row['permiso_idpermiso'];
+                    }
+                    #print_r($array_permisos);
+                    $num_permisos = sizeof($array_permisos);
+                    #PERMISOS
+                    if($_SESSION['rol'] == "SuperAdmin")
+                    {
+                      #es super admin y titene permiso a TODO
+                      $editar_productos = 1;
+                      $eliminar_productos = 1;
+                      $imagenes = 1;
+                    }
+                    else
+                    {
+                      #permisos asignados
+                      $editar_productos = in_array(6, $array_permisos);
+                      $eliminar_productos = in_array(7, $array_permisos);
+                      $imagenes =  in_array(8, $array_permisos);
+                    }
+                    if($imagenes)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                    }
+                    $cadenaTabla = $cadenaTabla."&nbsp;";
+                    if($editar_productos)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
+                    }
+                    $cadenaTabla = $cadenaTabla."&nbsp;";
+                    if($eliminar_productos)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                    }
+                $cadenaTabla = $cadenaTabla.'</td></tr>';
               }
             }
         $cadenaTabla = $cadenaTabla.'</tbody></table>';
@@ -1153,11 +1303,14 @@ if ($_POST['action'] == 'searchForAtr1')
       
     echo json_encode($resultFindforAtr,JSON_UNESCAPED_UNICODE);
   }
+  ob_end_flush();
   exit;
 }
 //ATR2
 if ($_POST['action'] == 'searchForAtr2') 
 {
+  ob_start();
+  session_start();
   include "accion/conexion.php";
   if (!empty($_POST['atr2'])) 
   {
@@ -1194,7 +1347,7 @@ if ($_POST['action'] == 'searchForAtr2')
           
           if($atr2 != "LABEL")
             {
-              $query_sql = "SELECT * from producto where atr1_producto like '$atr2'";
+              $query_sql = "SELECT * from producto where atr2_producto like '$atr2'";
             }
             else
             {
@@ -1203,7 +1356,7 @@ if ($_POST['action'] == 'searchForAtr2')
             //los demas filtros anidados
             if($atr1 != "LABEL")
             {
-              $query_sql = $query_sql." and atr2_producto like '$atr1'";
+              $query_sql = $query_sql." and atr1_producto like '$atr1'";
             }
             if($atr3 != "LABEL")
             {
@@ -1292,12 +1445,59 @@ if ($_POST['action'] == 'searchForAtr2')
                         <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
                         <td>'.$garantia." Meses".'</td>';
 
-                $cadenaTabla = $cadenaTabla.'<td align="center">
-                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
-                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>
-                                <button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
-                            </td>
-                            </tr>';
+                $cadenaTabla = $cadenaTabla.'<td align="center">';
+
+                $id_usuario = $_SESSION['iduser'];
+                $sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
+                $array_permisos = [];
+                    while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
+                    {
+                        $array_permisos[] = $row['permiso_idpermiso'];
+                    }
+                    #print_r($array_permisos);
+                    $num_permisos = sizeof($array_permisos);
+                    #PERMISOS
+                    if($_SESSION['rol'] == "SuperAdmin")
+                    {
+                      #es super admin y titene permiso a TODO
+                      $editar_productos = 1;
+                      $eliminar_productos = 1;
+                      $imagenes = 1;
+                    }
+                    else
+                    {
+                      #permisos asignados
+                      $editar_productos = in_array(6, $array_permisos);
+                      $eliminar_productos = in_array(7, $array_permisos);
+                      $imagenes =  in_array(8, $array_permisos);
+                    }
+                    if($imagenes)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                    }
+                    $cadenaTabla = $cadenaTabla."&nbsp;";
+                    if($editar_productos)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
+                    }
+                    $cadenaTabla = $cadenaTabla."&nbsp;";
+                    if($eliminar_productos)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                    }
+                $cadenaTabla = $cadenaTabla.'</td></tr>';
               }
             }
         $cadenaTabla = $cadenaTabla.'</tbody></table>';
@@ -1307,11 +1507,14 @@ if ($_POST['action'] == 'searchForAtr2')
       
     echo json_encode($resultFindforAtr,JSON_UNESCAPED_UNICODE);
   }
+  ob_end_flush();
   exit;
 }
 //ATR3
 if ($_POST['action'] == 'searchForAtr3') 
 {
+  ob_start();
+  session_start();
   include "accion/conexion.php";
   if (!empty($_POST['atr3'])) 
   {
@@ -1348,7 +1551,7 @@ if ($_POST['action'] == 'searchForAtr3')
           
           if($atr3 != "LABEL")
             {
-              $query_sql = "SELECT * from producto where atr1_producto like '$atr3'";
+              $query_sql = "SELECT * from producto where atr3_producto like '$atr3'";
             }
             else
             {
@@ -1361,7 +1564,7 @@ if ($_POST['action'] == 'searchForAtr3')
             }
             if($atr1 != "LABEL")
             {
-              $query_sql = $query_sql." and atr3_producto like '$atr1'";
+              $query_sql = $query_sql." and atr1_producto like '$atr1'";
             }
             if($atr4 != "LABEL")
             {
@@ -1446,12 +1649,59 @@ if ($_POST['action'] == 'searchForAtr3')
                         <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
                         <td>'.$garantia." Meses".'</td>';
 
-                $cadenaTabla = $cadenaTabla.'<td align="center">
-                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
-                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>
-                                <button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
-                            </td>
-                            </tr>';
+                $cadenaTabla = $cadenaTabla.'<td align="center">';
+
+                $id_usuario = $_SESSION['iduser'];
+                $sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
+                $array_permisos = [];
+                    while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
+                    {
+                        $array_permisos[] = $row['permiso_idpermiso'];
+                    }
+                    #print_r($array_permisos);
+                    $num_permisos = sizeof($array_permisos);
+                    #PERMISOS
+                    if($_SESSION['rol'] == "SuperAdmin")
+                    {
+                      #es super admin y titene permiso a TODO
+                      $editar_productos = 1;
+                      $eliminar_productos = 1;
+                      $imagenes = 1;
+                    }
+                    else
+                    {
+                      #permisos asignados
+                      $editar_productos = in_array(6, $array_permisos);
+                      $eliminar_productos = in_array(7, $array_permisos);
+                      $imagenes =  in_array(8, $array_permisos);
+                    }
+                    if($imagenes)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                    }
+                    $cadenaTabla = $cadenaTabla."&nbsp;";
+                    if($editar_productos)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
+                    }
+                    $cadenaTabla = $cadenaTabla."&nbsp;";
+                    if($eliminar_productos)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                    }
+                $cadenaTabla = $cadenaTabla.'</td></tr>';
               }
             }
         $cadenaTabla = $cadenaTabla.'</tbody></table>';
@@ -1461,11 +1711,14 @@ if ($_POST['action'] == 'searchForAtr3')
       
     echo json_encode($resultFindforAtr,JSON_UNESCAPED_UNICODE);
   }
+  ob_end_flush();
   exit;
 }
 //ATR4
 if ($_POST['action'] == 'searchForAtr4') 
 {
+  ob_start();
+  session_start();
   include "accion/conexion.php";
   if (!empty($_POST['atr4'])) 
   {
@@ -1502,7 +1755,7 @@ if ($_POST['action'] == 'searchForAtr4')
           
           if($atr4 != "LABEL")
             {
-              $query_sql = "SELECT * from producto where atr1_producto like '$atr4'";
+              $query_sql = "SELECT * from producto where atr4_producto like '$atr4'";
             }
             else
             {
@@ -1519,7 +1772,7 @@ if ($_POST['action'] == 'searchForAtr4')
             }
             if($atr1 != "LABEL")
             {
-              $query_sql = $query_sql." and atr4_producto like '$atr1'";
+              $query_sql = $query_sql." and atr1_producto like '$atr1'";
             }
             if($atr5 != "LABEL")
             {
@@ -1600,12 +1853,59 @@ if ($_POST['action'] == 'searchForAtr4')
                         <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
                         <td>'.$garantia." Meses".'</td>';
 
-                $cadenaTabla = $cadenaTabla.'<td align="center">
-                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
-                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>
-                                <button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
-                            </td>
-                            </tr>';
+                $cadenaTabla = $cadenaTabla.'<td align="center">';
+
+                $id_usuario = $_SESSION['iduser'];
+                $sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
+                $array_permisos = [];
+                    while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
+                    {
+                        $array_permisos[] = $row['permiso_idpermiso'];
+                    }
+                    #print_r($array_permisos);
+                    $num_permisos = sizeof($array_permisos);
+                    #PERMISOS
+                    if($_SESSION['rol'] == "SuperAdmin")
+                    {
+                      #es super admin y titene permiso a TODO
+                      $editar_productos = 1;
+                      $eliminar_productos = 1;
+                      $imagenes = 1;
+                    }
+                    else
+                    {
+                      #permisos asignados
+                      $editar_productos = in_array(6, $array_permisos);
+                      $eliminar_productos = in_array(7, $array_permisos);
+                      $imagenes =  in_array(8, $array_permisos);
+                    }
+                    if($imagenes)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                    }
+                    $cadenaTabla = $cadenaTabla."&nbsp;";
+                    if($editar_productos)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
+                    }
+                    $cadenaTabla = $cadenaTabla."&nbsp;";
+                    if($eliminar_productos)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                    }
+                $cadenaTabla = $cadenaTabla.'</td></tr>';
               }
             }
         $cadenaTabla = $cadenaTabla.'</tbody></table>';
@@ -1615,11 +1915,14 @@ if ($_POST['action'] == 'searchForAtr4')
       
     echo json_encode($resultFindforAtr,JSON_UNESCAPED_UNICODE);
   }
+  ob_end_flush();
   exit;
 }
 //ATR1
 if ($_POST['action'] == 'searchForAtr5') 
 {
+  ob_start();
+  session_start();
   include "accion/conexion.php";
   if (!empty($_POST['atr5'])) 
   {
@@ -1656,7 +1959,7 @@ if ($_POST['action'] == 'searchForAtr5')
           
           if($atr5 != "LABEL")
             {
-              $query_sql = "SELECT * from producto where atr1_producto like '$atr5'";
+              $query_sql = "SELECT * from producto where atr5_producto like '$atr5'";
             }
             else
             {
@@ -1677,7 +1980,7 @@ if ($_POST['action'] == 'searchForAtr5')
             }
             if($atr1 != "LABEL")
             {
-              $query_sql = $query_sql." and atr5_producto like '$atr1'";
+              $query_sql = $query_sql." and atr1_producto like '$atr1'";
             }
 
           if($idsubcategoria == "NoSubcat")
@@ -1754,12 +2057,59 @@ if ($_POST['action'] == 'searchForAtr5')
                         <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
                         <td>'.$garantia." Meses".'</td>';
 
-                $cadenaTabla = $cadenaTabla.'<td align="center">
-                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>
-                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>
-                                <button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>
-                            </td>
-                            </tr>';
+                $cadenaTabla = $cadenaTabla.'<td align="center">';
+
+                $id_usuario = $_SESSION['iduser'];
+                $sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
+                $array_permisos = [];
+                    while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
+                    {
+                        $array_permisos[] = $row['permiso_idpermiso'];
+                    }
+                    #print_r($array_permisos);
+                    $num_permisos = sizeof($array_permisos);
+                    #PERMISOS
+                    if($_SESSION['rol'] == "SuperAdmin")
+                    {
+                      #es super admin y titene permiso a TODO
+                      $editar_productos = 1;
+                      $eliminar_productos = 1;
+                      $imagenes = 1;
+                    }
+                    else
+                    {
+                      #permisos asignados
+                      $editar_productos = in_array(6, $array_permisos);
+                      $eliminar_productos = in_array(7, $array_permisos);
+                      $imagenes =  in_array(8, $array_permisos);
+                    }
+                    if($imagenes)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                    }
+                    $cadenaTabla = $cadenaTabla."&nbsp;";
+                    if($editar_productos)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
+                    }
+                    $cadenaTabla = $cadenaTabla."&nbsp;";
+                    if($eliminar_productos)
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                    }
+                    else
+                    {
+                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                    }
+                $cadenaTabla = $cadenaTabla.'</td></tr>';
               }
             }
         $cadenaTabla = $cadenaTabla.'</tbody></table>';
@@ -1769,6 +2119,7 @@ if ($_POST['action'] == 'searchForAtr5')
       
     echo json_encode($resultFindforAtr,JSON_UNESCAPED_UNICODE);
   }
+  ob_end_flush();
   exit;
 }
 //==== FIN DE LOS FILTROS
@@ -1849,5 +2200,94 @@ if ($_POST['action'] == 'identificar_producto')
   $resul_findproduct = (int) mysqli_fetch_assoc($find_id)['num'];
 
   echo json_encode($resul_findproduct,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+//para buardar la lista con los nuevos costos
+if ($_POST['action'] == 'GuardarEditarLista')
+{
+  include "accion/conexion.php";
+  $array_new_costo = $_POST['array_new_costo'];
+  $array_idproducto_newcosto = $_POST['array_idproducto_newcosto'];
+  /*
+  1. si el nuevo costo es menor al costo actual, actualizar solo si tengo 0
+  en existencia mueblearia, de lo contrario no actualizar costo
+  2. Si el nuevo costo es mayor que el costo actual, SI ACTUALIZARLO SIRMPRE
+  3. Si el mismo, no hacer nada
+*/
+
+  //anteriormente calculamos si hay en existencia muebleria
+  $ext_m = 0; //-> de mientras lo dejamos en 0 porque aun no tenemos de donde calcularlo
+  //recorremos los nuevos costos puestos y
+  //consultamos el costo actual
+  $size_costos = sizeof($array_idproducto_newcosto);
+  for ($i=0; $i < $size_costos; $i++) 
+  { 
+    if(!empty($array_new_costo[$i]))
+    {
+      $select_oldcost = mysqli_query($conexion, "SELECT costo, categoria, subcategoria from producto where idproducto = '$array_idproducto_newcosto[$i]'");
+      $data_producto = mysqli_fetch_assoc($select_oldcost);
+      $actual_cost = (int) $data_producto['costo'];
+      $new_costo = $array_new_costo[$i];
+      if(($new_costo < $actual_cost and $ext_m == 0) or ($new_costo > $actual_cost))
+      {
+        //actualizamos el costo y calculamos nuevos costos de lo demas
+        //primero vemos si tiene solo cat o sub y de ahi sacar la info
+        if($data_producto['subcategoria'] == null)
+        {
+          //no tiene sub
+          $idcategoria = $data_producto['categoria'];
+          $info_cat = mysqli_query($conexion, "SELECT contado, especial, credito1, credito2, meses_pago from categoria where idcategoria = '$idcategoria'");
+          $data_costos = mysqli_fetch_assoc($info_cat);
+        }
+        else
+        {
+          //si tiene sub, de ahi sacamos la info
+          $idsubcategoria = $data_producto['subcategoria'];
+          $info_subcat = mysqli_query($conexion, "SELECT contado, especial, credito1, credito2, meses_pago from subcategoria where idsubcategoria = '$idsubcategoria'");
+          $data_costos = mysqli_fetch_assoc($info_subcat);
+        }
+        //ya que tenemos la info, calculamos los nuevos costos
+        $contado = $data_costos['contado'];
+        $especial = $data_costos['especial'];
+        $credito1 = $data_costos['credito1'];
+        $credito2 = $data_costos['credito2'];
+        $meses_pago = $data_costos['meses_pago'];
+        $newcosto_iva = $new_costo + ($new_costo*0.16);
+        
+        $newcosto_contado = $newcosto_iva + ($newcosto_iva*($contado/100));
+        if($especial == null)
+        {
+          $newcosto_especial = null;
+        }
+        else
+        {
+          $newcosto_especial = $newcosto_iva + ($newcosto_iva*($especial/100));
+        }
+        $newcosto_cr1 = $newcosto_iva  + ($newcosto_iva *($credito1/100));
+        $newcosto_cr2 = $newcosto_iva  + ($newcosto_iva *($credito2/100));
+        $new_e_q = ($newcosto_iva/$meses_pago)/2;
+        if($new_e_q < 400)
+        {
+          $new_e_q = 400;
+        }
+        $new_p1 = ($newcosto_cr1/$new_e_q)/2;
+        $new_p2 = ($newcosto_cr2/$new_e_q)/2;
+        $id_producto = $array_idproducto_newcosto[$i];
+        //fin calculo de nuevos costos, ahora actualizamos en el producto
+        $update_costos = mysqli_query($conexion, "UPDATE producto set costo = $new_costo, costo_iva = $newcosto_iva, costo_contado = $newcosto_contado, costo_especial = ".($newcosto_especial == null ? "NULL" : "$newcosto_especial").", costo_cr1 = $newcosto_cr1, costo_cr2 = $newcosto_cr2, costo_p1 = $new_p1, costo_p2 = $new_p2, costo_eq = $new_e_q where idproducto = '$id_producto'");
+        if($update_costos)
+        {
+          $resul_save_list = 1;
+        }
+        else
+        {
+          $resul_save_list = 0;
+        }
+
+      }
+    }
+  }
+  echo json_encode($resul_save_list,JSON_UNESCAPED_UNICODE);
   exit;
 }

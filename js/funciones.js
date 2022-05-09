@@ -1055,7 +1055,7 @@ $('#categoria').change(function(e)
       data: {action:action,categoria:idcategoria},
       success: function(response) 
       {
-        //$('#prueba').text(response);
+        //$('#prueba').html(response);
         var data = $.parseJSON(response);
         if(data.catUsed == 0)
         {
@@ -1226,47 +1226,47 @@ $('#subcategoria').change(function(e)
             $("#filtro_atr1").empty();
             if(data.atr_labels.atr1 != null)
             {
-                $('#filtro_atr1').append('<option selected hidden value="LABEL">'+data.atr_labels.atr1+'</option>');    
+                $('#filtro_atr1').append('<option selected value="LABEL">'+data.atr_labels.atr1+'</option>');    
             }
             else
             {
-                $('#filtro_atr1').append('<option selected hidden value="LABEL">---</option>');
+                $('#filtro_atr1').append('<option selected value="LABEL">---</option>');
             }
             $("#filtro_atr2").empty();
             if(data.atr_labels.atr2 != null)
             {
-                $('#filtro_atr2').append('<option selected hidden value="LABEL">'+data.atr_labels.atr2+'</option>');
+                $('#filtro_atr2').append('<option selected value="LABEL">'+data.atr_labels.atr2+'</option>');
             }
             else
             {
-                $('#filtro_atr2').append('<option selected hidden value="LABEL">---</option>');
+                $('#filtro_atr2').append('<option selected value="LABEL">---</option>');
             }
             $("#filtro_atr3").empty();
             if(data.atr_labels.atr3 != null)
             {
-                $('#filtro_atr3').append('<option selected hidden value="LABEL">'+data.atr_labels.atr3+'</option>');
+                $('#filtro_atr3').append('<option selected value="LABEL">'+data.atr_labels.atr3+'</option>');
             }
             else
             {
-                $('#filtro_atr3').append('<option selected hidden value="LABEL">---</option>');
+                $('#filtro_atr3').append('<option selected value="LABEL">---</option>');
             }
             $("#filtro_atr4").empty();
             if(data.atr_labels.atr4 != null)
             {
-                $('#filtro_atr4').append('<option selected hidden value="LABEL">'+data.atr_labels.atr4+'</option>');
+                $('#filtro_atr4').append('<option selected value="LABEL">'+data.atr_labels.atr4+'</option>');
             }
             else
             {
-                $('#filtro_atr4').append('<option selected hidden value="LABEL">---</option>');
+                $('#filtro_atr4').append('<option selected value="LABEL">---</option>');
             }
             $("#filtro_atr5").empty();
             if(data.atr_labels.atr5 != null)
             {
-                $('#filtro_atr5').append('<option selected hidden value="LABEL">'+data.atr_labels.atr5+'</option>');
+                $('#filtro_atr5').append('<option selected value="LABEL">'+data.atr_labels.atr5+'</option>');
             }
             else
             {
-                $('#filtro_atr5').append('<option selected hidden value="LABEL">---</option>');
+                $('#filtro_atr5').append('<option selected value="LABEL">---</option>');
             }
 
             var size_atrs = data.atrs_productos.length;
@@ -1363,12 +1363,13 @@ $('#filtro_atr2').change(function(e)
       data: {action:action,atr1:atr1,atr2:atr2,atr3:atr3,atr4:atr4,atr5:atr5,idcat:idcat,idsubcat,idsubcat},
       success: function(response) {
         //$('#prueba').html(response); 
+        
         var data = $.parseJSON(response);
         $('#tablaproductos').html(data.cadenaTabla);
         show_search_box();
         //ocultamos los costos
         hide_costos();
-
+        
       },
       error: function(error) {
         //$('#sucursal').val('error');
@@ -1679,7 +1680,7 @@ $('#costo').keyup(function(e)
         }
         else
         {
-            var costo_contado = costo + (costo*(contado/100));
+            var costo_contado = costo_iva + (costo_iva*(contado/100));
             $('#costo_contado').val(costo_contado.toFixed(2));
         }
         //especial
@@ -1689,7 +1690,7 @@ $('#costo').keyup(function(e)
         }
         else
         {
-            var costo_especial = costo + (costo*(especial/100));
+            var costo_especial = costo_iva + (costo_iva*(especial/100));
             $('#costo_especial').val(costo_especial.toFixed(2));
         }
         //credito1
@@ -1699,7 +1700,7 @@ $('#costo').keyup(function(e)
         }
         else
         {
-            var costo_cr1 = costo + (costo*(cr1/100));
+            var costo_cr1 = costo_iva + (costo_iva*(cr1/100));
             $('#costo_cr1').val(costo_cr1.toFixed(2));
         }
         //credito2
@@ -1709,7 +1710,7 @@ $('#costo').keyup(function(e)
         }
         else
         {
-            var costo_cr2 = costo + (costo*(cr2/100));
+            var costo_cr2 = costo_iva + (costo_iva*(cr2/100));
             $('#costo_cr2').val(costo_cr2.toFixed(2));
         }
         //E-Q
@@ -1719,7 +1720,7 @@ $('#costo').keyup(function(e)
         }
         else
         {
-            var e_q = (costo/meses_pago)/2;
+            var e_q = (costo_iva/meses_pago)/2;
             if(e_q < 400)
             {
                 $('#costo_eq').val(400);
@@ -1777,25 +1778,57 @@ function show_new_costo()
 
 function guardar_lista()
 {
-    //SI FUNCIONA
     //mandar al metodo ajax post y ahi recorrer y guardar los nuevos costos segun las reglas establecidas
-    
     var new_costo = document.getElementsByName('nuevo_costo[]');
-    var flag_idproducto_newcosto = document.getElementsByName('flag_new_costo_idproducto[]');
+    var idproducto_newcosto = document.getElementsByName('flag_new_costo_idproducto[]');
+    var array_new_costo = [];
+    var array_idproducto_newcosto = [];
+    for (var i = 0; i < idproducto_newcosto.length; i++) 
+    {
+        array_new_costo.push(new_costo[i].value);
+        array_idproducto_newcosto.push(idproducto_newcosto[i].value);
+    }
 
-    var cadenatemp = '';
-    for (var i = 0; i < flag_idproducto_newcosto.length; i++) 
-    {
-        cadenatemp = cadenatemp + "//" + flag_idproducto_newcosto[i].value;
-    }
-    $('#prueba').html(cadenatemp);
-    
-    var cadenatemp = 'OTROS';
-    for (var i = 0; i < flag_idproducto_newcosto.length; i++) 
-    {
-        cadenatemp = cadenatemp + "//" + new_costo[i].value;
-    }
-    $('#prueba').append(cadenatemp);
+    var action = 'GuardarEditarLista';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action,array_new_costo:array_new_costo,array_idproducto_newcosto:array_idproducto_newcosto},
+                  success: function(response) 
+                  {
+                    //$('#prueba').html(response);
+                    
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "productos.php";
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          '¡Guardado!',
+                          'Se guardo la lista de precios correctamente!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "productos.php";
+                            }
+                        })
+                    }
+                    
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });  
 }
 
 //eliminar usuario

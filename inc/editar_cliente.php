@@ -537,7 +537,6 @@ if (!empty($_POST))
                                 echo '<button id="update_cliente" disabled type="submit" class="btn btn-success btn-lg">Guardar <i class="fas fa-save"></i></button>';
                                 $disabled_full = "";
                                 $disabled_lim = "";
-                                $show_modals_btn = 'data-toggle="modal"';
                             }
                             else if($editar_cliente_lim)
                             {
@@ -545,7 +544,6 @@ if (!empty($_POST))
                                 echo '<button id="update_cliente" disabled type="submit" class="btn btn-success btn-lg">Guardar <i class="fas fa-save"></i></button>';
                                 $disabled_lim = "";
                                 $disabled_full = "disabled";
-                                $show_modals_btn = '';
                             }
                             else
                             {
@@ -553,7 +551,6 @@ if (!empty($_POST))
                                 echo '<button disabled class="btn btn-success btn-lg">Guardar <i class="fas fa-save"></i></button>';
                                 $disabled_lim = "disabled";
                                 $disabled_full = "disabled";
-                                $show_modals_btn = '';
                             }
                          ?>
                 </div>
@@ -575,12 +572,25 @@ if (!empty($_POST))
                         </div>
 
                         <div class="col-lg-5">
-                            <fieldset id="tools_zona" <?php echo $disabled_full; ?>>
                             <label for="zona">Zona</label>
-                              <button <?php echo $show_modals_btn; ?> data-target="#nueva_zona" title="Agregar nueva zona" class="btn btn-primary btn-xs" type="button" href="#"><i class="fas fa-plus"></i></button>
-                              <button id="btnedit_zona" <?php echo $show_modals_btn; ?> data-target="#editar_zona" onclick="editar_zona(<?php echo $up_zona; ?>);" title="editar zona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
-                                <button disabled id="btneliminar_zona" onclick="eliminar_zona(<?php echo $up_zona; ?>);" title="Eliminar zona" class="btn btn-danger btn-xs" type="button" href="#"><i class="fas fa-trash"></i></button>
-                          </fieldset>
+                            <?php 
+                                if($_SESSION['rol'] == "SuperAdmin" or $_SESSION['rol'] == "Administrador")
+                                {
+                                    ?>
+                                    <button data-toggle="modal" data-target="#nueva_zona" title="Agregar nueva zona" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
+                                    <button disabled data-toggle="modal" data-target="#editar_zona" id="btnedit_zona" onclick="editar_zona();" title="editar zona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
+                                    <button disabled id="btneliminar_zona" onclick="eliminar_zona();" title="Eliminar zona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
+                                    <?php
+                                }
+                                else
+                                {
+                                    ?>
+                                    <button disabled="disabled" title="Agregar nueva zona" class="btn btn-primary btn-xs" type="button"><i class="fas fa-plus"></i></button>
+                                    <button disabled title="editar zona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
+                                    <button disabled title="Eliminar zona" class="btn btn-danger btn-xs" type="button"><i class="fas fa-trash"></i></button>
+                                    <?php 
+                                } 
+                             ?>
 
                             <select class="form-control" id="zona" name="zona" required <?php echo $disabled_lim; ?>>
                                 <option selected hidden>Seleccione una opción</option>
@@ -609,12 +619,27 @@ if (!empty($_POST))
                             <input maxlength="400" type="text" class="form-control" placeholder="" name="domicilio_cliente" id="domicilio_cliente" value="<?php echo $up_domicilio_cliente ?>" <?php echo $disabled_lim; ?>>
                         </div>
                         <div class="form-group col-lg-5">
-                          <fieldset id="tools_subzona" <?php echo $disabled_full; ?>>
+                          
                             <label for="subzona">Colonia (Subzona) </label>
-                              <button <?php echo $show_modals_btn; ?> data-target="#nueva_subzona" title="Agregar nueva subzona" class="btn btn-primary btn-xs" type="button" href="#"><i class="fas fa-plus"></i></button>
-                              <button id="btnedit_subzona" <?php echo $show_modals_btn; ?> data-target="#editar_subzona" onclick="editar_subzona(<?php echo $up_subzona; ?>);" title="editar subzona" class="btn btn-success btn-xs" type="button" href="#"><i class="fas fa-edit"></i></button>
-                              <button disabled id="btneliminar_subzona" onclick="eliminar_subzona(<?php echo $up_subzona; ?>);" title="Eliminar subzona" class="btn btn-danger btn-xs" type="button" href="#"><i class="fas fa-trash"></i></button>
-                          </fieldset>
+                            <?php 
+                                if($_SESSION['rol'] == "SuperAdmin" or $_SESSION['rol'] == "Administrador")
+                                {
+                                    ?>
+                                    <button data-toggle="modal" data-target="#nueva_subzona" title="Agregar nueva subzona" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
+                                    <button disabled id="btnedit_subzona" data-toggle="modal" data-target="#editar_subzona" onclick="editar_subzona();" title="editar subzona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
+                                    <button disabled id="btneliminar_subzona" onclick="eliminar_subzona();" title="Eliminar subzona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
+                                    <?php
+                                }
+                                else
+                                {
+                                    ?>
+                                    <button disabled="disabled" title="Agregar nueva subzona" class="btn btn-primary btn-xs" type="button"><i class="fas fa-plus"></i></button>
+                                    <button disabled="disabled" title="editar subzona" class="btn btn-success btn-xs" type="button"><i class="fas fa-edit"></i></button>
+                                    <button disabled disabled="disabled" title="Eliminar subzona" class="btn btn-danger btn-xs" type="button"><i class="fas fa-trash"></i></button>
+                                    <?php 
+                                } 
+                             ?>
+                          
                                     <select id='subzona' name='subzona' class='form-control' required <?php echo $disabled_lim; ?>>
                                         <?php 
                                             $result = mysqli_query($conexion,"SELECT idsubzona,subzona FROM subzonas where idzona = '$up_zona'");                         

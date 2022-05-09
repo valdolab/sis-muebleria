@@ -1014,20 +1014,50 @@ if (!empty($_POST))
             <?php 
                 $conf_especial = mysqli_query($conexion,"SELECT valor_int from configuracion where configuracion='activador_especial'");
                 $status_especial = mysqli_fetch_assoc($conf_especial)['valor_int'];
-                if($status_especial == 0)
+                if($_SESSION['rol'] == "SuperAdmin" or $_SESSION['rol'] == "Administrador")
                 {
-                    ?>
-                    <button id="btn_act_especial" title="Especial se encuentra DESACTIVADO" class="btn btn-warning" type="button" onclick="activar_especial('si')">Act. Esp</button>
-                    <?php 
+                    if($status_especial == 0)
+                    {
+                        ?>
+                        <button id="btn_act_especial" title="Especial se encuentra DESACTIVADO" class="btn btn-warning" type="button" onclick="activar_especial('si')">Act. Esp</button>
+                        <?php 
+                    }
+                    else
+                    {
+                        ?>
+                        <button id="btn_act_especial" title="Especial se encuentra ACTIVADO" class="btn btn-success" type="button" onclick="activar_especial('no')">Des. Esp</button>
+                        <?php 
+                    }
                 }
                 else
                 {
-                    ?>
-                    <button id="btn_act_especial" title="Especial se encuentra ACTIVADO" class="btn btn-success" type="button" onclick="activar_especial('no')">Des. Esp</button>
-                    <?php 
+                    if($status_especial == 0)
+                    {
+                        ?>
+                        <button id="btn_act_especial" title="Especial se encuentra DESACTIVADO" class="btn btn-warning" type="button" disabled="disabled">Act. Esp</button>
+                        <?php 
+                    }
+                    else
+                    {
+                        ?>
+                        <button id="btn_act_especial" title="Especial se encuentra ACTIVADO" class="btn btn-success" type="button" disabled="disabled">Des. Esp</button>
+                        <?php 
+                    }
                 }
-             ?>
-            <button data-toggle="modal" data-target="#nuevo_producto" class="btn btn-primary" type="button" onclick="nuevo_producto()"><i class="fas fa-plus"></i> Nuevo producto</button> 
+
+            if($nuevo_producto)
+            {
+                ?>
+                <button data-toggle="modal" data-target="#nuevo_producto" class="btn btn-primary" type="button" onclick="nuevo_producto()"><i class="fas fa-plus"></i> Nuevo producto</button> 
+                <?php 
+            }
+            else
+            {
+                ?>
+                <button disabled="disabled" class="btn btn-primary" type="button"><i class="fas fa-plus"></i> Nuevo producto</button> 
+                <?php 
+            }
+            ?>
         </div>
     </div>
 </div>
@@ -1039,9 +1069,24 @@ if (!empty($_POST))
     <div class="row">
         <div class="col-lg-2">
             <label>Categoría:</label>
-            <button data-toggle="modal" data-target="#nueva_cat" title="Agregar nueva categoría" class="btn btn-primary btn-xs" type="button" onclick="nueva_categoria();"><i class="fas fa-plus"></i></button>
-            <button disabled data-toggle="modal" data-target="#nueva_cat" onclick="editar_categoria();" title="editar categoría" class="btn btn-success btn-xs" type="button" href="#" id="btnedit_categoria"><i class="fas fa-edit"></i></button>
-            <button disabled onclick="eliminar_categoria();" title="Eliminar categoría" class="btn btn-danger btn-xs" type="button" href="#" id="btneliminar_categoria"><i class="fas fa-trash"></i></button>
+            <?php 
+                if($_SESSION['rol'] == "SuperAdmin" or $_SESSION['rol'] == "Administrador")
+                {
+                    ?>
+                    <button data-toggle="modal" data-target="#nueva_cat" title="Agregar nueva categoría" class="btn btn-primary btn-xs" type="button" onclick="nueva_categoria();"><i class="fas fa-plus"></i></button>
+                    <button disabled data-toggle="modal" data-target="#nueva_cat" onclick="editar_categoria();" title="editar categoría" class="btn btn-success btn-xs" type="button" href="#" id="btnedit_categoria"><i class="fas fa-edit"></i></button>
+                    <button disabled onclick="eliminar_categoria();" title="Eliminar categoría" class="btn btn-danger btn-xs" type="button" href="#" id="btneliminar_categoria"><i class="fas fa-trash"></i></button>
+                    <?php 
+                }
+                else
+                {
+                    ?>
+                    <button disabled="disabled" title="Agregar nueva categoría" class="btn btn-primary btn-xs" type="button"><i class="fas fa-plus"></i></button>
+                    <button disabled="disabled" title="editar categoría" class="btn btn-success btn-xs" type="button"><i class="fas fa-edit"></i></button>
+                    <button disabled="disabled" title="Eliminar categoría" class="btn btn-danger btn-xs" type="button"><i class="fas fa-trash"></i></button>
+                    <?php 
+                }
+             ?>
 
             <select class="form-control" id="categoria" name="categoria">
                 <option selected hidden>Selecciona categoría</option>
@@ -1060,9 +1105,25 @@ if (!empty($_POST))
         </div>
         <div class="col-lg-2">
             <label>Subcategoría:</label>
-            <button data-toggle="modal" data-target="#nueva_subcat" title="Agregar nueva subcategoría" class="btn btn-primary btn-xs" type="button" onclick="nueva_subcategoria();" ><i class="fas fa-plus"></i></button>
-            <button disabled data-toggle="modal" data-target="#nueva_subcat" onclick="editar_subcategoria();" title="editar subcategoria" class="btn btn-success btn-xs" type="button" href="#" id="btnedit_subcategoria"><i class="fas fa-edit"></i></button>
-            <button disabled onclick="eliminar_subcategoria();" title="Eliminar subcategoria" class="btn btn-danger btn-xs" type="button" href="#" id="btneliminar_subcategoria"><i class="fas fa-trash"></i></button>
+
+            <?php 
+                if($_SESSION['rol'] == "SuperAdmin" or $_SESSION['rol'] == "Administrador")
+                {
+                    ?>
+                    <button data-toggle="modal" data-target="#nueva_subcat" title="Agregar nueva subcategoría" class="btn btn-primary btn-xs" type="button" onclick="nueva_subcategoria();" ><i class="fas fa-plus"></i></button>
+                    <button disabled data-toggle="modal" data-target="#nueva_subcat" onclick="editar_subcategoria();" title="editar subcategoria" class="btn btn-success btn-xs" type="button" href="#" id="btnedit_subcategoria"><i class="fas fa-edit"></i></button>
+                    <button disabled onclick="eliminar_subcategoria();" title="Eliminar subcategoria" class="btn btn-danger btn-xs" type="button" href="#" id="btneliminar_subcategoria"><i class="fas fa-trash"></i></button>
+                    <?php 
+                }
+                else
+                {
+                    ?>
+                    <button disabled="disabled" title="Agregar nueva subcategoría" class="btn btn-primary btn-xs" type="button"><i class="fas fa-plus"></i></button>
+                    <button disabled="disabled" title="editar subcategoría" class="btn btn-success btn-xs" type="button"><i class="fas fa-edit"></i></button>
+                    <button disabled="disabled" title="Eliminar subcategoría" class="btn btn-danger btn-xs" type="button"><i class="fas fa-trash"></i></button>
+                    <?php 
+                }
+             ?>
 
            <select class="form-control" id="subcategoria" name="subcategoria">
             </select>
@@ -1101,21 +1162,54 @@ if (!empty($_POST))
             
             <div class="row">
               <div class="col-12 col-sm-2">
-                  <button onclick="show_costoiva();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 75px !important;">Ver Costos</button>
+                <?php 
+                    if($ver_costos)
+                    {
+                        echo '<button onclick="show_costoiva();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 75px !important;">Ver Costos</button>';
+                    }
+                    else
+                    {
+                        echo '<button disabled="disabled" type="button" class="btn btn-primary py-3 btn-sm" style="width: 75px !important;">Ver Costos</button>';
+                    }
+                 ?>
               </div>
               &nbsp;&nbsp;&nbsp;
-              <div class="col-12 col-sm-3">
-                <div class="row">
-                    <div class="col-12 col-sm-12" align="center">
-                        <button onclick="show_new_costo();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 88px !important; height: 38px !important; line-height: 0px;">Editar Lista</button>
+              <?php 
+                if($editar_lista)
+                {
+                    ?>
+                    <div class="col-12 col-sm-3">
+                    <div class="row">
+                        <div class="col-12 col-sm-12" align="center">
+                            <button onclick="show_new_costo();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 88px !important; height: 38px !important; line-height: 0px;">Editar Lista</button>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-sm-12" align="center">
-                        <button disabled="disabled" id="btn_save_lista" onClick="guardar_lista();" type="button" class="btn btn-success py-3 btn-sm" style="width: 88px !important; height: 38px !important; line-height: 0px;">Guardar</button>
+                    <div class="row">
+                        <div class="col-12 col-sm-12" align="center">
+                            <button disabled="disabled" id="btn_save_lista" onClick="guardar_lista();" type="button" class="btn btn-success py-3 btn-sm" style="width: 88px !important; height: 38px !important; line-height: 0px;">Guardar</button>
+                        </div>
                     </div>
-                </div>
-              </div>
+                    </div>
+                    <?php 
+                }
+                else
+                {
+                    ?>
+                    <div class="col-12 col-sm-3">
+                    <div class="row">
+                        <div class="col-12 col-sm-12" align="center">
+                            <button disabled="disabled" type="button" class="btn btn-primary py-3 btn-sm" style="width: 88px !important; height: 38px !important; line-height: 0px;">Editar Lista</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-sm-12" align="center">
+                            <button disabled="disabled" type="button" class="btn btn-success py-3 btn-sm" style="width: 88px !important; height: 38px !important; line-height: 0px;">Guardar</button>
+                        </div>
+                    </div>
+                    </div>
+                    <?php 
+                }
+               ?>
 
               <div class="col-12 col-sm-3">
                 <a href="accion/download_zip.php" type="button" class="btn btn-primary py-3 btn-sm" style="width: 95px !important;">Descargar Catalogo</a>
@@ -1223,9 +1317,44 @@ if (!empty($_POST))
                         <td><?php echo "$".number_format($data['costo_eq'],2, '.', ','); ?></td>
                         <td><?php echo $garantia." Meses" ?></td>
                         <td align="center">
-                                <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img('<?php echo $id_producto; ?>','<?php echo $archivador; ?>',<?php echo $siimagen; ?>);" class="<?php echo $boton_img; ?>"><i class="fas fa-camera"></i></button>
-                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick='editar_producto("<?php echo $id_producto; ?>");'><i class='fas fa-edit'></i></button>
-                                <button onClick='eliminar_producto("<?php echo $id_producto; ?>");' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
+                            <?php 
+                                if($imagenes)
+                                {
+                                    ?>
+                                    <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img('<?php echo $id_producto; ?>','<?php echo $archivador; ?>',<?php echo $siimagen; ?>);" class="<?php echo $boton_img; ?>"><i class="fas fa-camera"></i></button>
+                                    <?php 
+                                }
+                                else
+                                {
+                                    ?>
+                                    <button disabled="disabled" class="<?php echo $boton_img; ?>"><i class="fas fa-camera"></i></button>
+                                    <?php 
+                                }
+                                if($editar_productos)
+                                {
+                                    ?>
+                                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick='editar_producto("<?php echo $id_producto; ?>");'><i class='fas fa-edit'></i></button>
+                                    <?php 
+                                }
+                                else
+                                {
+                                    ?>
+                                    <button disabled="disabled" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></button>
+                                    <?php 
+                                }
+                                if($eliminar_productos)
+                                {
+                                    ?>
+                                    <button onClick='eliminar_producto("<?php echo $id_producto; ?>");' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
+                                    <?php 
+                                }
+                                else
+                                {
+                                    ?>
+                                    <button disabled="disabled" class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
+                                    <?php 
+                                }
+                             ?>
                         </td>
                     </tr>
             <?php 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 06-05-2022 a las 03:03:40
+-- Tiempo de generación: 09-05-2022 a las 01:01:36
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -148,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `configuracion` (
 
 INSERT INTO `configuracion` (`idconfiguracion`, `configuracion`, `valor_char`, `valor_int`) VALUES
 (1, 'serie', '0000001', NULL),
-(2, 'activador_especial', NULL, 0);
+(2, 'activador_especial', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -217,7 +217,7 @@ CREATE TABLE IF NOT EXISTS `permiso` (
   `idpermiso` int(11) NOT NULL AUTO_INCREMENT,
   `permiso` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`idpermiso`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `permiso`
@@ -230,20 +230,24 @@ INSERT INTO `permiso` (`idpermiso`, `permiso`) VALUES
 (4, 'PRODUCTOS'),
 (5, 'Nuevo producto'),
 (6, 'Editar productos'),
-(7, 'Compras'),
-(8, 'CLIENTES'),
-(9, 'Nuevo cliente'),
-(10, 'Editar cliente Full'),
-(11, 'Editar cliente Limitado'),
-(12, 'Cobranza'),
-(13, 'PROVEEDOR'),
-(14, 'Nuevo proveedor'),
-(15, 'Editar proveedores'),
-(16, 'CONFIGURACION'),
-(17, 'Usuarios'),
-(18, 'Sucursales'),
-(19, 'Documentos'),
-(20, 'General');
+(7, 'Eliminar productos'),
+(8, 'Imágenes'),
+(9, 'Ver costos'),
+(10, 'Editar lista'),
+(11, 'Compras'),
+(12, 'CLIENTES'),
+(13, 'Nuevo cliente'),
+(14, 'Editar cliente Full'),
+(15, 'Editar cliente Limitado'),
+(16, 'Cobranza'),
+(17, 'PROVEEDOR'),
+(18, 'Nuevo proveedor'),
+(19, 'Editar proveedores'),
+(20, 'CONFIGURACION'),
+(21, 'Usuarios'),
+(22, 'Sucursales'),
+(23, 'Documentos'),
+(24, 'General');
 
 -- --------------------------------------------------------
 
@@ -265,13 +269,17 @@ CREATE TABLE IF NOT EXISTS `permiso_usuario` (
 --
 
 INSERT INTO `permiso_usuario` (`permiso_idpermiso`, `permiso_idusuario`) VALUES
-(2, 'OSV'),
-(3, 'OSV'),
-(6, 'OSV'),
-(7, 'OSV'),
-(8, 'OSV'),
-(9, 'OSV'),
-(11, 'OSV');
+(4, 'OSV'),
+(4, 'prueba'),
+(5, 'prueba'),
+(6, 'prueba'),
+(8, 'prueba'),
+(12, 'OSV'),
+(12, 'prueba'),
+(13, 'OSV'),
+(13, 'prueba'),
+(15, 'OSV'),
+(15, 'prueba');
 
 -- --------------------------------------------------------
 
@@ -316,15 +324,15 @@ CREATE TABLE IF NOT EXISTS `producto` (
 --
 
 INSERT INTO `producto` (`idproducto`, `identificador`, `codigo_barras`, `categoria`, `subcategoria`, `descripcion`, `serializado`, `atr1_producto`, `atr2_producto`, `atr3_producto`, `atr4_producto`, `atr5_producto`, `stock_min`, `stock_max`, `ext_p`, `costo`, `costo_iva`, `costo_contado`, `costo_especial`, `costo_cr1`, `costo_cr2`, `costo_p1`, `costo_p2`, `costo_eq`, `creado_en`) VALUES
-('0507bbee-ccd8-11ec-8195-d481d7c3a9ad', 'qweasdzxc1', NULL, 'c18a4e3f-ccd6-11ec-8195-d481d7c3a9ad', '47422906-ccd7-11ec-8195-d481d7c3a9ad', 'prueba de prueba de product', 1, 'SAMSUNG', '6', '2', '10', NULL, NULL, NULL, NULL, 4500, 5220, 5445, NULL, 5040, 4590, 4.48, 4.08, 562.5, '2022-05-06 01:01:06'),
-('082b0355-c68c-11ec-abb6-d481d7c3a9ad', 'wp100-asd001', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9e77b6b3-c1a7-11ec-91b0-d481d7c3a9ad', 'es una licuadora LG BLABLBL', 0, 'LG', '3', 'plastico', 'grande', NULL, NULL, NULL, NULL, 3600, 4176, 3672, 4032, 3996, 4392, 4.44, 4.88, 450, '2022-04-28 00:42:07'),
-('0def99df-c681-11ec-abb6-d481d7c3a9ad', 'wp100-asd002', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora SAMSUNG', 0, 'SAMSUNG', '3', '1', '10', '1', NULL, NULL, NULL, 7000, 8120, 7770, 7070, 7770, 7700, 13.32, 13.2, 400, '2022-04-27 23:23:32'),
-('23bba124-c681-11ec-abb6-d481d7c3a9ad', 'wp100-asd003', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora patito', 0, 'PATITO', '6', '2', '10', '2', NULL, NULL, NULL, 9000, 10440, 9990, 9090, 9990, 9900, 13.32, 13.2, 400, '2022-04-27 23:24:09'),
-('569ff4d5-c906-11ec-abb6-d481d7c3a9ad', 'wp100-asd004', NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'prueba bici', 0, '2', '10', '2', 'montaña', NULL, NULL, NULL, NULL, 5500, 6380, 6160, 6710, 6105, 6710, 3.33, 3.66, 916.67, '2022-05-01 04:22:27'),
-('66bfc35f-c1d7-11ec-91b0-d481d7c3a9ad', 'asd', NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'Aquí va la descricion mas detalla del producto', 1, 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, NULL, 4000, 4640, 4480, 4880, 4440, 4880, 3.33, 3.66, 666.67, '2022-04-22 00:59:04'),
-('8f2d4de2-c96a-11ec-abb6-d481d7c3a9ad', '32h5g', NULL, '92ebf98d-c966-11ec-abb6-d481d7c3a9ad', 'c1451ae3-c966-11ec-abb6-d481d7c3a9ad', 'tele 32 smart', 1, 'hisense', '32', 'hd', NULL, NULL, NULL, NULL, 15, 3200, 3712, 4160, 4320, 6400, 8000, 8, 10, 400, '2022-05-01 16:19:48'),
-('9b58146b-cc01-11ec-8195-d481d7c3a9ad', 'wp100-asd006', NULL, '00095e94-c070-11ec-8edf-18c04dae039e', 'ae064f03-c07b-11ec-8edf-18c04dae039e', 'prueba con identificador en blanco', 1, 'SAMSUNG', 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, 3000, 3480, 3360, 3360, 3360, 3360, 13.44, 13.44, 400, '2022-05-04 23:26:18'),
-('ecf8fb02-c680-11ec-abb6-d481d7c3a9ad', 'wp100-asd005', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora LG', 0, 'LG', '6', '2', '12', '1', NULL, NULL, NULL, 5000, 5800, 5550, 5050, 5550, 5500, 13.32, 13.2, 400, '2022-04-27 23:22:37');
+('0507bbee-ccd8-11ec-8195-d481d7c3a9ad', 'qweasdzxc1', NULL, 'c18a4e3f-ccd6-11ec-8195-d481d7c3a9ad', '47422906-ccd7-11ec-8195-d481d7c3a9ad', 'prueba de prueba de product', 1, 'SAMSUNG', '6', '2', '10', NULL, NULL, NULL, NULL, 4500, 5220, 6316.2, NULL, 5846.4, 5324.4, 4.48, 4.08, 652.5, '2022-05-06 01:01:06'),
+('082b0355-c68c-11ec-abb6-d481d7c3a9ad', 'wp100-asd001', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9e77b6b3-c1a7-11ec-91b0-d481d7c3a9ad', 'es una licuadora LG BLABLBL', 0, 'LG', '3', 'plastico', 'grande', NULL, NULL, NULL, NULL, 3600, 4176, 4259.52, 4677.12, 4635.36, 5094.72, 4.44, 4.88, 522, '2022-04-28 00:42:07'),
+('0def99df-c681-11ec-abb6-d481d7c3a9ad', 'wp100-asd002', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora SAMSUNG', 0, 'SAMSUNG', '3', '1', '10', '1', NULL, NULL, NULL, 7000, 8120, 9013.2, 8201.2, 9013.2, 8932, 13.32, 13.2, 400, '2022-04-27 23:23:32'),
+('23bba124-c681-11ec-abb6-d481d7c3a9ad', 'wp100-asd003', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora patito', 0, 'PATITO', '6', '2', '10', '2', NULL, NULL, NULL, 9000, 10440, 11588.4, 10544.4, 11588.4, 11484, 13.32, 13.2, 435, '2022-04-27 23:24:09'),
+('569ff4d5-c906-11ec-abb6-d481d7c3a9ad', 'wp100-asd004', NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'prueba bici', 0, 'asd', '10', '2', 'montaña', NULL, NULL, NULL, NULL, 5500, 6380, 7145.6, 7783.6, 7081.8, 7783.6, 3.33, 3.66, 1063.33, '2022-05-01 04:22:27'),
+('66bfc35f-c1d7-11ec-91b0-d481d7c3a9ad', 'asd', NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'Aquí va la descricion mas detalla del producto', 1, 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, NULL, 4500, 5220, 5846.4, 6368.4, 5794.2, 6368.4, 3.33, 3.66, 870, '2022-04-22 00:59:04'),
+('8f2d4de2-c96a-11ec-abb6-d481d7c3a9ad', '32h5g', NULL, '92ebf98d-c966-11ec-abb6-d481d7c3a9ad', NULL, 'tele 32 smart', 1, 'hisense', '32', 'hd', NULL, NULL, NULL, NULL, 15, 3200, 3712, 4825.6, 5011.2, 7424, 9280, 8, 10, 464, '2022-05-01 16:19:48'),
+('9b58146b-cc01-11ec-8195-d481d7c3a9ad', 'wp100-asd006', NULL, '00095e94-c070-11ec-8edf-18c04dae039e', NULL, 'prueba con identificador en blanco', 1, 'SAMSUNG', 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, 3000, 3480, 3897.6, 3897.6, 3897.6, 3897.6, 13.44, 13.44, 400, '2022-05-04 23:26:18'),
+('ecf8fb02-c680-11ec-abb6-d481d7c3a9ad', 'wp100-asd005', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora LG', 0, 'LG', '6', '2', '12', '1', NULL, NULL, NULL, 5000, 5800, 6438, 5858, 6438, 6380, 13.32, 13.2, 400, '2022-04-27 23:22:37');
 
 -- --------------------------------------------------------
 
@@ -481,7 +489,8 @@ CREATE TABLE IF NOT EXISTS `sucursal_usuario` (
 INSERT INTO `sucursal_usuario` (`sucursal_idusuario`, `sucursal_idsucursales`) VALUES
 ('IGERAG', 1),
 ('OSV', 1),
-('IGERAG', 2);
+('IGERAG', 2),
+('prueba', 2);
 
 -- --------------------------------------------------------
 
@@ -527,7 +536,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   PRIMARY KEY (`idusuario`),
   KEY `tiene el puesto` (`puesto`),
   KEY `no_user` (`no_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Tabla para manejar los usuarios del sistema';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Tabla para manejar los usuarios del sistema';
 
 --
 -- Volcado de datos para la tabla `usuario`
@@ -535,7 +544,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 
 INSERT INTO `usuario` (`idusuario`, `nombre`, `pass`, `rol`, `puesto`, `estado`, `superadmin`, `no_user`, `creado_en`) VALUES
 ('IGERAG', 'Ruben Aguilar González', '81df10368e0655e4801b66269fd8b973', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 1, '2022-03-29 05:39:17'),
-('OSV', 'Osvaldo David Velazquez', '0c04e1d2f9dec7007ecc22862711b57a', 'Usurario', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 0, 2, '2022-03-29 05:39:17');
+('OSV', 'Osvaldo David Velazquez', '0c04e1d2f9dec7007ecc22862711b57a', 'Usurario', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 0, 2, '2022-03-29 05:39:17'),
+('prueba', 'user de prueba', 'c893bad68927b457dbed39460e6afd62', 'Administrador', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 0, 3, '2022-05-09 00:59:03');
 
 -- --------------------------------------------------------
 

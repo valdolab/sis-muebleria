@@ -46,6 +46,10 @@
 	        $productos = 1;
 	        $nuevo_producto = 1;
 	        $editar_productos = 1;
+	        $eliminar_productos = 1;
+	        $imagenes = 1;
+	        $ver_costos = 1;
+	        $editar_lista = 1;
 	        $compras = 1;
 	        $clientes = 1;
 	        $nuevo_cliente = 1;
@@ -60,7 +64,6 @@
 	        $sucursales = 1;
 	        $documentos = 1;
 	        $general = 1;
-	        $es_admin = 1;
         }
         else
         {
@@ -71,21 +74,24 @@
 	        $productos = in_array(4, $array_permisos);
 	        $nuevo_producto = in_array(5, $array_permisos);
 	        $editar_productos = in_array(6, $array_permisos);
-	        $compras = in_array(7, $array_permisos);
-	        $clientes = in_array(8, $array_permisos);
-	        $nuevo_cliente = in_array(9, $array_permisos);
-	        $editar_cliente_full = in_array(10, $array_permisos);
-	        $editar_cliente_lim = in_array(11, $array_permisos);
-	        $cobranza = in_array(12, $array_permisos);
-	        $proveedor = in_array(13, $array_permisos);
-	        $nuevo_proveedor = in_array(14, $array_permisos);
-	        $editar_proveedor = in_array(15, $array_permisos);
-	        $configuracion = in_array(16, $array_permisos);
-	        $usuarios = in_array(17, $array_permisos);
-	        $sucursales = in_array(18, $array_permisos);
-	        $documentos = in_array(19, $array_permisos);
-	        $general = in_array(20, $array_permisos);
-	        $es_admin = 0;
+	        $eliminar_productos = in_array(7, $array_permisos);
+	        $imagenes =  in_array(8, $array_permisos);
+	        $ver_costos =  in_array(9, $array_permisos);
+	        $editar_lista =  in_array(10, $array_permisos);
+	        $compras = in_array(11, $array_permisos);
+	        $clientes = in_array(12, $array_permisos);
+	        $nuevo_cliente = in_array(13, $array_permisos);
+	        $editar_cliente_full = in_array(14, $array_permisos);
+	        $editar_cliente_lim = in_array(15, $array_permisos);
+	        $cobranza = in_array(16, $array_permisos);
+	        $proveedor = in_array(17, $array_permisos);
+	        $nuevo_proveedor = in_array(18, $array_permisos);
+	        $editar_proveedor = in_array(19, $array_permisos);
+	        $configuracion = in_array(20, $array_permisos);
+	        $usuarios = in_array(21, $array_permisos);
+	        $sucursales = in_array(22, $array_permisos);
+	        $documentos = in_array(23, $array_permisos);
+	        $general = in_array(24, $array_permisos);
         }
 	 ?>
 	
@@ -114,19 +120,15 @@
 
 <?php if ($productos) { ?>
 	<li class="nav-item secundary">
-		<a href="productos.php" class="nav-link collapsed text-dark">
+		<a data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities" class="nav-link collapsed text-dark">
 			<i class="fas fa-fw fa-clipboard-list"></i>
 			<span style="font-size: 18px;">Productos</span>
 		</a>
-		<!--  data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities"
+		<!--  -->
 		<div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<a class="collapse-item" href="productos.php">Productos</a>
 				<?php 
-					if($nuevo_producto)
-					{
-						echo '<a class="collapse-item" href="pagetemp.php">Nuevo Producto</a>';
-					}
 					if($compras)
 					{
 						echo '<a class="collapse-item" href="pagetemp.php">Compras</a>';
@@ -134,7 +136,7 @@
 				 ?>
 			</div>
 		</div>
-		-->
+		
 	</li>
 <?php } ?>
 
