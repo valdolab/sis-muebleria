@@ -7,6 +7,8 @@ $query_usuarios = mysqli_query($conexion, "SELECT COUNT(idusuario) as num_usuari
 $result_usu = mysqli_fetch_array($query_usuarios)['num_usuarios'];
 $query_clientes = mysqli_query($conexion, "SELECT COUNT(idcliente) as num_clientes FROM cliente");
 $result_cli = mysqli_fetch_array($query_clientes)['num_clientes'];
+$query_producto = mysqli_query($conexion, "SELECT COUNT(idproducto) as num_producto FROM producto");
+$result_pro = mysqli_fetch_array($query_producto)['num_producto'];
 #$query_productos = mysqli_query($conexion, "SELECT COUNT(idusuario) as num_productos FROM usuario");
 #$query_ventas = mysqli_query($conexion, "SELECT COUNT(idusuario) as num_ventas FROM usuario");
 
@@ -64,8 +66,8 @@ $result_cli = mysqli_fetch_array($query_clientes)['num_clientes'];
 				<div class="card-body">
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
-							<div class="text-xs font-weight-bold text-info text-uppercase mb-1">Productos</div>
-							<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo 0; ?></div>
+							<div class="text-xs font-weight-bold text-info text-uppercase mb-1">Productos proveedor</div>
+							<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $result_pro; ?></div>
 							<!--<div class="row no-gutters align-items-center">
 								<div class="col-auto">
 									
