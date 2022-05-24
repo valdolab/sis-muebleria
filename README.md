@@ -1,4 +1,3 @@
 # sis-muebleria
-Sistema de la muebleria compra facil
 
-Sistema en desarrollo. Cada fase será terminada en 2 meses.
+Sistema web de gestión de ventas para muebleria compra facil
