@@ -1,3 +1,3 @@
 # sis-muebleria
 
-Sistema web ERP para muebleria compra facil
+Sistema web ERP para muebleria COMPRA FACIL
