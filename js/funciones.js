@@ -591,6 +591,7 @@ $('#idestado_civil').change(function() {
 
     //AQUI van los forms para insertar, y editar de categoria, subcategoria y producto
     //form de insertar categoria
+    //insert_categoria
     $("#formAdd_cat").submit( function () {  
         // Prevent default posting of form - put here to work in case of errors
         event.preventDefault();
@@ -1727,6 +1728,7 @@ $('#costo').keyup(function(e)
             }
             else
             {
+                //redondear al 100 siguiente
                 $('#costo_eq').val(e_q.toFixed(2));
             }
         }
