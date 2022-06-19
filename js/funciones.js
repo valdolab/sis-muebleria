@@ -730,6 +730,14 @@ $('#idestado_civil').change(function() {
                             }
                         }) 
                 }
+                else if(response == 1)
+                {
+                    Swal.fire({
+                          icon: 'warning',
+                          title: 'Ya existe la categoría',
+                          text: 'Introduzca otro nombre de categoría o edite la existente',
+                        })
+                }
                 else
                 {
                     $('#nueva_cat').modal('hide');

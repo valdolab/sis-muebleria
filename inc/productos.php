@@ -817,7 +817,7 @@ if (!empty($_POST))
                         <div class="col-lg-3">
                           <div class="form-group">
                                 <label for="nombre_cat">Identificador</label>
-                                <input minlength="3" type="text" class="form-control" name="identificador" id="identificador" required>
+                                <input minlength="4" type="text" class="form-control" name="identificador" id="identificador" required>
                                 <div id="msg_validador">
                                 </div>
                             </div>  
