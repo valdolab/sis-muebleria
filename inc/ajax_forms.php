@@ -262,6 +262,9 @@ if ($_POST['action'] == 'insert_categoria')
         $resultIDcat = mysqli_query($conexion, "SELECT UUID() as idcategoria");
         $uuid = mysqli_fetch_assoc($resultIDcat)['idcategoria'];
 
+        //comprobar si no existe ya esa categoria, si ya existe avisar y no dejar insertarlo
+        
+
         $insert_cat = mysqli_query($conexion, "INSERT INTO categoria(idcategoria,nombre,tiene_subcat) values ('$uuid','$nombre_cat', $tiene_subcat)");
                 if ($insert_cat) 
                 {
@@ -345,8 +348,12 @@ if ($_POST['action'] == 'insert_categoria')
           $atr4 = $_POST['atr4'];
           $atr5 = $_POST['atr5'];
           $contado = $_POST['contado'];
-          if(!isset($_POST['especial']))
+          if(isset($_POST['especial']))
           {
+            $especial = $_POST['especial'];
+          }
+          else
+          {   
             $especial = null;
           }
           $credito1 = $_POST['credito1'];
@@ -355,7 +362,7 @@ if ($_POST['action'] == 'insert_categoria')
           $garantia = $_POST['garantia'];
         }
         //idcat -> $idcategoria
-        $update_cat = mysqli_query($conexion, "UPDATE categoria set nombre = '$nombre_cat', tiene_subcat = $tiene_subcat, atr1 = ".(!empty($atr1) ? "'$atr1'" : "NULL").", atr2 = ".(!empty($atr2) ? "'$atr2'" : "NULL").", atr3 = ".(!empty($atr3) ? "'$atr3'" : "NULL").", atr4 = ".(!empty($atr4) ? "'$atr4'" : "NULL").", atr5 = ".(!empty($atr5) ? "'$atr5'" : "NULL").", contado = ".(!empty($contado) ? "$contado" : "NULL").", especial = ".(!empty($especial) ? "$especial" : "NULL").", credito1 = ".(!empty($credito1) ? "$credito1" : "NULL").", credito2 = ".(!empty($credito2) ? "$credito2" : "NULL").", meses_pago = ".(!empty($mesespago) ? "$mesespago" : "NULL").", meses_garantia = ".(!empty($garantia) ? "$garantia" : "NULL")." WHERE idcategoria = '$idcategoria'");
+        $update_cat = mysqli_query($conexion, "UPDATE categoria set nombre = '$nombre_cat', tiene_subcat = $tiene_subcat, atr1 = ".(!empty($atr1) ? "'$atr1'" : "NULL").", atr2 = ".(!empty($atr2) ? "'$atr2'" : "NULL").", atr3 = ".(!empty($atr3) ? "'$atr3'" : "NULL").", atr4 = ".(!empty($atr4) ? "'$atr4'" : "NULL").", atr5 = ".(!empty($atr5) ? "'$atr5'" : "NULL").", contado = ".(!empty($contado) ? "$contado" : "NULL").", especial = ".($especial == null ? "NULL" : "$especial").", credito1 = ".(!empty($credito1) ? "$credito1" : "NULL").", credito2 = ".(!empty($credito2) ? "$credito2" : "NULL").", meses_pago = ".(!empty($mesespago) ? "$mesespago" : "NULL").", meses_garantia = ".(!empty($garantia) ? "$garantia" : "NULL")." WHERE idcategoria = '$idcategoria'");
         if ($update_cat) 
         {
           $idcat = array("idcategoria" => $idcategoria);
@@ -374,6 +381,8 @@ if ($_POST['action'] == 'insert_categoria')
   {
     $resultInsertCategoria = 0;
   }
+  //hacer tiempo
+  //sleep(2);
   echo json_encode($resultInsertCategoria,JSON_UNESCAPED_UNICODE);
   exit;
 }
@@ -397,8 +406,12 @@ if ($_POST['action'] == 'insert_subcategoria')
         $atr4 = $_POST['atr4_sub'];
         $atr5 = $_POST['atr5_sub'];
         $contado = $_POST['contado_sub'];
-        if(!isset($_POST['especial']))
+        if(isset($_POST['especial_sub']))
         {
+          $especial = $_POST['especial_sub'];
+        }
+        else
+        {   
           $especial = null;
         }
         $credito1 = $_POST['credito1_sub'];
@@ -408,7 +421,7 @@ if ($_POST['action'] == 'insert_subcategoria')
         $resultIDsubcat = mysqli_query($conexion, "SELECT UUID() as idsubcategoria");
         $uuid = mysqli_fetch_assoc($resultIDsubcat)['idsubcategoria'];
 
-        $insert_subcat = mysqli_query($conexion, "INSERT INTO subcategoria(idsubcategoria, nombre, categoria, atr1, atr2, atr3, atr4, atr5, contado, especial, credito1, credito2, meses_pago, meses_garantia) VALUES ('$uuid','$nombre_subcat', '$categoria_subcategoria', '$atr1', ".(!empty($atr2) ? "'$atr2'" : "NULL").", ".(!empty($atr3) ? "'$atr3'" : "NULL").", ".(!empty($atr4) ? "'$atr4'" : "NULL").", ".(!empty($atr5) ? "'$atr5'" : "NULL").", $contado, ".(!empty($especial) ? "'$especial'" : "NULL").", $credito1, '$credito2', '$mesespago', '$garantia')");
+        $insert_subcat = mysqli_query($conexion, "INSERT INTO subcategoria(idsubcategoria, nombre, categoria, atr1, atr2, atr3, atr4, atr5, contado, especial, credito1, credito2, meses_pago, meses_garantia) VALUES ('$uuid','$nombre_subcat', '$categoria_subcategoria', '$atr1', ".(!empty($atr2) ? "'$atr2'" : "NULL").", ".(!empty($atr3) ? "'$atr3'" : "NULL").", ".(!empty($atr4) ? "'$atr4'" : "NULL").", ".(!empty($atr5) ? "'$atr5'" : "NULL").", $contado, ".($especial == null ? "NULL" : "$especial").", $credito1, '$credito2', '$mesespago', '$garantia')");
         if ($insert_subcat) 
         {
           $idsubcat = array("idsubcategoria" => $uuid);
@@ -432,8 +445,12 @@ if ($_POST['action'] == 'insert_subcategoria')
         $atr4 = $_POST['atr4_sub'];
         $atr5 = $_POST['atr5_sub'];
         $contado = $_POST['contado_sub'];
-        if(!isset($_POST['especial']))
+        if(isset($_POST['especial_sub']))
         {
+          $especial = $_POST['especial_sub'];
+        }
+        else
+        {   
           $especial = null;
         }
         $credito1 = $_POST['credito1_sub'];
@@ -441,7 +458,7 @@ if ($_POST['action'] == 'insert_subcategoria')
         $mesespago = $_POST['mesespago_sub'];
         $garantia = $_POST['garantia_sub'];
         //idcat -> $idcategoria
-        $update_subcat = mysqli_query($conexion, "UPDATE subcategoria set nombre = '$nombre_subcat', categoria = '$categoria_subcategoria', atr1 = '$atr1', atr2 = ".(!empty($atr2) ? "'$atr2'" : "NULL").", atr3 = ".(!empty($atr3) ? "'$atr3'" : "NULL").", atr4 = ".(!empty($atr4) ? "'$atr4'" : "NULL").", atr5 = ".(!empty($atr5) ? "'$atr5'" : "NULL").", contado = ".(!empty($contado) ? "$contado" : "NULL").", especial = ".(!empty($especial) ? "$especial" : "NULL").", credito1 = ".(!empty($credito1) ? "$credito1" : "NULL").", credito2 = ".(!empty($credito2) ? "$credito2" : "NULL").", meses_pago = ".(!empty($mesespago) ? "$mesespago" : "NULL").", meses_garantia = ".(!empty($garantia) ? "$garantia" : "NULL")." WHERE idsubcategoria  = '$idsubcategoria'");
+        $update_subcat = mysqli_query($conexion, "UPDATE subcategoria set nombre = '$nombre_subcat', categoria = '$categoria_subcategoria', atr1 = '$atr1', atr2 = ".(!empty($atr2) ? "'$atr2'" : "NULL").", atr3 = ".(!empty($atr3) ? "'$atr3'" : "NULL").", atr4 = ".(!empty($atr4) ? "'$atr4'" : "NULL").", atr5 = ".(!empty($atr5) ? "'$atr5'" : "NULL").", contado = ".(!empty($contado) ? "$contado" : "NULL").", especial = ".($especial == null ? "NULL" : "$especial").", credito1 = ".(!empty($credito1) ? "$credito1" : "NULL").", credito2 = ".(!empty($credito2) ? "$credito2" : "NULL").", meses_pago = ".(!empty($mesespago) ? "$mesespago" : "NULL").", meses_garantia = ".(!empty($garantia) ? "$garantia" : "NULL")." WHERE idsubcategoria  = '$idsubcategoria'");
         if ($update_subcat) 
         {
           $idsubcat = array("idsubcategoria" => $idsubcategoria);

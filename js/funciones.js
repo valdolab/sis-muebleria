@@ -207,6 +207,19 @@ $('#idestado_civil').change(function() {
            type: 'POST',                 
            url: 'ajax_forms.php',                     
            data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
            success: function(response)             
            {
                 if(response == 0)
@@ -254,6 +267,19 @@ $('#idestado_civil').change(function() {
            type: 'POST',                 
            url: 'ajax_forms.php',                     
            data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
            success: function(response)             
            {
                 if(response == 0)
@@ -298,6 +324,19 @@ $('#idestado_civil').change(function() {
            type: 'POST',                 
            url: 'ajax_forms.php',                     
            data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
            success: function(response)             
            {
                 if(response == 0)
@@ -346,6 +385,19 @@ $('#idestado_civil').change(function() {
            type: 'POST',                 
            url: 'ajax_forms.php',                     
            data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
            success: function(response)             
            {
                 if(response == 0)
@@ -390,6 +442,19 @@ $('#idestado_civil').change(function() {
            type: 'POST',                 
            url: 'ajax_forms.php',                     
            data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
            success: function(response)             
            {
                 if(response == 0)
@@ -448,6 +513,19 @@ $('#idestado_civil').change(function() {
            type: 'POST',                 
            url: 'ajax_forms.php',                     
            data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
            success: function(response)             
            {
                 if(response == 0)
@@ -493,6 +571,19 @@ $('#idestado_civil').change(function() {
            type: 'POST',                 
            url: 'ajax_forms.php',                     
            data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
            success: function(response)             
            {
                 $('#prueba').html(response);
@@ -542,6 +633,19 @@ $('#idestado_civil').change(function() {
            type: 'POST',                 
            url: 'ajax_forms.php',                     
            data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
            success: function(response)             
            {
                 if(response == 0)
@@ -599,6 +703,19 @@ $('#idestado_civil').change(function() {
            type: 'POST',                 
            url: 'ajax_forms.php',                     
            data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
            success: function(response)             
            {
                 if(response == 0)
@@ -685,6 +802,19 @@ $('#idestado_civil').change(function() {
            type: 'POST',                 
            url: 'ajax_forms.php',                     
            data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
            success: function(response)             
            {
                 if(response == 0)
