@@ -721,6 +721,7 @@ if ($_POST['action'] == 'searchCatUsed')
                 <th>Nuevo costo</th>
                 <th>Costo actual</th>
                 <th>Costo+IVA</th>
+                <th>Nuevo Ext.-P</th>
                 <th>Ext.-P</th>
                 <th>Ext-M</th>
                 <th>Contado</th>
@@ -788,9 +789,10 @@ if ($_POST['action'] == 'searchCatUsed')
 
                 $cadenaTabla = $cadenaTabla.'<tr>
                     <td>'.$data['descripcion'].'</td>
-                        <td><input type="number" name="nuevo_costo" id="nuevo_costo" class="form-control"></td>
+                        <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
                         <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
+                        <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td>'.$data['ext_p'].'</td>
                         <td>---</td>
                         <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
@@ -828,14 +830,7 @@ if ($_POST['action'] == 'searchCatUsed')
                       $eliminar_productos = in_array(7, $array_permisos);
                       $imagenes =  in_array(8, $array_permisos);
                     }
-                    if($imagenes)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    }
+                    $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
                     $cadenaTabla = $cadenaTabla."&nbsp;";
                     if($editar_productos)
                     {
@@ -2209,6 +2204,9 @@ if ($_POST['action'] == 'GuardarEditarLista')
   include "accion/conexion.php";
   $array_new_costo = $_POST['array_new_costo'];
   $array_idproducto_newcosto = $_POST['array_idproducto_newcosto'];
+  //el de exp_p
+  $array_new_ext_p = $_POST['array_new_ext_p'];
+  $array_idproducto_newext_p = $_POST['array_idproducto_newext_p'];
   /*
   1. si el nuevo costo es menor al costo actual, actualizar solo si tengo 0
   en existencia mueblearia, de lo contrario no actualizar costo
@@ -2221,6 +2219,7 @@ if ($_POST['action'] == 'GuardarEditarLista')
   //recorremos los nuevos costos puestos y
   //consultamos el costo actual
   $size_costos = sizeof($array_idproducto_newcosto);
+  $resul_save_cost = 1;
   for ($i=0; $i < $size_costos; $i++) 
   { 
     if(!empty($array_new_costo[$i]))
@@ -2262,7 +2261,7 @@ if ($_POST['action'] == 'GuardarEditarLista')
         }
         else
         {
-          $newcosto_especial = $newcosto_iva + ($newcosto_iva*($especial/100));
+          $newcosto_especial = $newcosto_contado + ($newcosto_contado*($especial/100));
         }
         $newcosto_cr1 = $newcosto_iva  + ($newcosto_iva *($credito1/100));
         $newcosto_cr2 = $newcosto_iva  + ($newcosto_iva *($credito2/100));
@@ -2276,18 +2275,50 @@ if ($_POST['action'] == 'GuardarEditarLista')
         $id_producto = $array_idproducto_newcosto[$i];
         //fin calculo de nuevos costos, ahora actualizamos en el producto
         $update_costos = mysqli_query($conexion, "UPDATE producto set costo = $new_costo, costo_iva = $newcosto_iva, costo_contado = $newcosto_contado, costo_especial = ".($newcosto_especial == null ? "NULL" : "$newcosto_especial").", costo_cr1 = $newcosto_cr1, costo_cr2 = $newcosto_cr2, costo_p1 = $new_p1, costo_p2 = $new_p2, costo_eq = $new_e_q where idproducto = '$id_producto'");
-        if($update_costos)
+        if(!$update_costos)
         {
-          $resul_save_list = 1;
+          $resul_save_cost = 0;
         }
-        else
-        {
-          $resul_save_list = 0;
-        }
-
       }
     }
   }
+  //==== ahora hacemos lo mismo con el ext_p 
+  //recorremos los nuevos ext_p puestos y
+  //consultamos los exp_p actuales
+  $size_ext_p = sizeof($array_idproducto_newext_p);
+  $resul_save_exp = 1;
+  for ($i=0; $i < $size_ext_p; $i++) 
+  { 
+    if(!empty($array_new_ext_p[$i]))
+    {
+      $select_oldext = mysqli_query($conexion, "SELECT ext_p  from producto where idproducto = '$array_idproducto_newext_p[$i]'");
+      $data_producto = mysqli_fetch_assoc($select_oldext);
+      $actual_ext_p = (int) $data_producto['ext_p'];
+      $new_ext_p = $array_new_ext_p[$i];
+      if(($new_ext_p < $actual_ext_p and $ext_m == 0) or ($new_ext_p > $actual_ext_p))
+      {
+        $id_producto = $array_idproducto_newext_p[$i];
+        //ahora actualizamos en el producto
+        $update_ext_p = mysqli_query($conexion, "UPDATE producto set ext_p = $new_ext_p where idproducto = '$id_producto'");
+        if(!$update_ext_p)
+        {
+          $resul_save_exp = 0;
+        }
+      }
+    }
+  }
+  //hacemos el calculo para ver si todo salio bien
+  if($resul_save_cost and $resul_save_exp)
+  {
+    //todo chido
+    $resul_save_list = 1;
+  }
+  else
+  {
+    //todo mal
+    $resul_save_list = 0;
+  }
+
   echo json_encode($resul_save_list,JSON_UNESCAPED_UNICODE);
   exit;
 }

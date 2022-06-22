@@ -991,6 +991,8 @@ function hide_costos()
     $('#tbl_productos th:nth-child(3)').hide();
     $('#tbl_productos td:nth-child(4)').hide();
     $('#tbl_productos th:nth-child(4)').hide();
+    $('#tbl_productos td:nth-child(5)').hide();
+    $('#tbl_productos th:nth-child(5)').hide();
 }
 
 //para hacer mayusculas
@@ -1913,6 +1915,9 @@ function show_new_costo()
 {
     $('#tbl_productos td:nth-child(2)').toggle();
     $('#tbl_productos th:nth-child(2)').toggle();
+    $('#tbl_productos td:nth-child(5)').toggle();
+    $('#tbl_productos th:nth-child(5)').toggle();
+    //activar el boton de guardar datos
     $('#btn_save_lista').removeAttr('disabled');
 }
 
@@ -1928,17 +1933,26 @@ function guardar_lista()
         array_new_costo.push(new_costo[i].value);
         array_idproducto_newcosto.push(idproducto_newcosto[i].value);
     }
+    //para las variables de ext_p
+    var new_ext_p = document.getElementsByName('nuevo_ext_p[]');
+    var idproducto_newext_p = document.getElementsByName('flag_new_extp_idproducto[]');
+    var array_new_ext_p = [];
+    var array_idproducto_newext_p = [];
+    for (var i = 0; i < idproducto_newext_p.length; i++) 
+    {
+        array_new_ext_p.push(new_ext_p[i].value);
+        array_idproducto_newext_p.push(idproducto_newext_p[i].value);
+    }
 
     var action = 'GuardarEditarLista';
                 $.ajax({
                   url: 'ajax.php',
                   type: "POST",
                   async: true,
-                  data: {action:action,array_new_costo:array_new_costo,array_idproducto_newcosto:array_idproducto_newcosto},
+                  data: {action:action,array_new_costo:array_new_costo,array_idproducto_newcosto:array_idproducto_newcosto,array_new_ext_p:array_new_ext_p,array_idproducto_newext_p:array_idproducto_newext_p},
                   success: function(response) 
                   {
                     //$('#prueba').html(response);
-                    
                     if (response == 0) 
                     {
                         Swal.fire({
@@ -1955,7 +1969,7 @@ function guardar_lista()
                     {
                         Swal.fire(
                           '¡Guardado!',
-                          'Se guardo la lista de precios correctamente!',
+                          'Se guardo la lista correctamente!',
                           'success'
                         ).then((result) => {
                             if (result.isConfirmed){

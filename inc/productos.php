@@ -498,19 +498,56 @@ if (!empty($_POST))
                     <div class="col-lg-6">
                           <div class="form-group">
                                   <div class="custom-file">
-                                      <input name="imgProducto" type="file" accept=".jpg, .jpeg, .png" class="custom-file-input" id="imgProducto" lang="es">
+                                    <?php 
+                                        if($imagenes)
+                                        {
+                                            ?>
+                                                <input name="imgProducto" type="file" accept=".jpg, .jpeg, .png" class="custom-file-input" id="imgProducto" lang="es">
+                                            <?php
+                                        }
+                                        else
+                                        {
+                                            ?>
+                                                <input disabled="disabled" type="file" accept=".jpg, .jpeg, .png" class="custom-file-input" lang="es">
+                                            <?php
+                                        }
+                                     ?>
                                       <label class="custom-file-label" for="customFileLang" data-browse="Seleccionar">Subir imágen png</label>
                                     </div>
                             </div>  
                         </div>
                         <div class="col-lg-6">
-                            <button id="btn_borrar_img" type="button" class="btn btn-lg btn-danger"><i class="fas fa-trash-alt"></i> Borrar</button>
-
+                            <?php 
+                                if($imagenes)
+                                {
+                                    ?>
+                                        <button id="btn_borrar_img" type="button" class="btn btn-lg btn-danger"><i class="fas fa-trash-alt"></i> Borrar</button>
+                                    <?php 
+                                }
+                                else
+                                {
+                                    ?>
+                                        <button disabled="disabled" type="button" class="btn btn-lg btn-danger"><i class="fas fa-trash-alt"></i> Borrar</button>
+                                    <?php 
+                                }
+                             ?>
                             <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal" aria-label="Close" id="btn_cancerlarimg">
                             Cancelar
                             </button>
-
-                            <input type="submit" value="Subir" class="btn btn-lg btn-success" id="btn_subirimg">
+                            <?php 
+                                if($imagenes)
+                                {
+                                    ?>
+                                        <input type="submit" value="Subir" class="btn btn-lg btn-success" id="btn_subirimg">
+                                    <?php 
+                                }
+                                else
+                                {
+                                    ?>
+                                        <input disabled="disabled" type="button" value="Subir" class="btn btn-lg btn-success">
+                                    <?php 
+                                }
+                             ?>
                         </div>
                 </div>
             </div>
@@ -1187,7 +1224,7 @@ if (!empty($_POST))
                     </div>
                     <div class="row">
                         <div class="col-12 col-sm-12" align="center">
-                            <button disabled="disabled" id="btn_save_lista" onClick="guardar_lista();" type="button" class="btn btn-success py-3 btn-sm" style="width: 88px !important; height: 38px !important; line-height: 0px;">Guardar</button>
+                            <button disabled="disabled" id="btn_save_lista" onClick="guardar_lista();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 88px !important; height: 38px !important; line-height: 0px;">Guardar</button>
                         </div>
                     </div>
                     </div>
@@ -1236,8 +1273,9 @@ if (!empty($_POST))
                 <th>Nuevo costo</th>
                 <th>Costo actual</th>
                 <th>Costo+IVA</th>
+                <th>Nuevo Ext.-P</th>
                 <th>Ext.-P</th>
-                <th>Ext-M</th>
+                <th>Ext.-M</th>
                 <th>Contado</th>
                 <th>Especial</th>
                 <th>CR1</th>
@@ -1304,33 +1342,23 @@ if (!empty($_POST))
              ?>
                 <tr>
                         <td><?php echo $data['descripcion']; ?></td>
-                        <td><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
+                        <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td><?php echo "$".number_format($data['costo'],2, '.', ','); ?></td>
                         <td><?php echo "$".number_format($data['costo_iva'],2, '.', ','); ?></td>
+                        <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td><?php echo $data['ext_p']; ?></td>
                         <td>---</td>
                         <td><?php echo "$".number_format($data['costo_contado'],2, '.', ','); ?></td>
                         <td><?php echo "$".number_format($data['costo_especial'],2, '.', ','); ?></td>
                         <td><?php echo "$".number_format($data['costo_cr1'],2, '.', ','); ?></td>
-                        <td><?php echo $data['costo_p1']; ?></td>
+                        <td><?php echo round($data['costo_p1'],2); ?></td>
                         <td><?php echo "$".number_format($data['costo_cr2'],2, '.', ','); ?></td>
-                        <td><?php echo $data['costo_p2']; ?></td>
+                        <td><?php echo round($data['costo_p2'],2); ?></td>
                         <td><?php echo "$".number_format($data['costo_eq'],2, '.', ','); ?></td>
                         <td><?php echo $garantia." Meses" ?></td>
                         <td align="center">
+                            <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img('<?php echo $id_producto; ?>','<?php echo $archivador; ?>',<?php echo $siimagen; ?>);" class="<?php echo $boton_img; ?>"><i class="fas fa-camera"></i></button>
                             <?php 
-                                if($imagenes)
-                                {
-                                    ?>
-                                    <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img('<?php echo $id_producto; ?>','<?php echo $archivador; ?>',<?php echo $siimagen; ?>);" class="<?php echo $boton_img; ?>"><i class="fas fa-camera"></i></button>
-                                    <?php 
-                                }
-                                else
-                                {
-                                    ?>
-                                    <button disabled="disabled" class="<?php echo $boton_img; ?>"><i class="fas fa-camera"></i></button>
-                                    <?php 
-                                }
                                 if($editar_productos)
                                 {
                                     ?>
