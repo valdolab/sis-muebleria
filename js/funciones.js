@@ -882,6 +882,17 @@ $('#idestado_civil').change(function() {
         return false;   
     });
 
+    //para el guardar imagenes
+    //form para insertar e editar una subcategoria
+    $("#btn_subirimg").submit( function () 
+    {  
+        // Prevent default posting of form - put here to work in case of errors
+        //event.preventDefault();
+        
+        
+        return false;   
+    });
+
     //para las tablas que no son de productos
     $('#tbl').DataTable({
   "columnDefs": [{
@@ -1921,6 +1932,61 @@ function show_new_costo()
     $('#btn_save_lista').removeAttr('disabled');
 }
 
+function drop_ext_p()
+{
+
+    Swal.fire({
+            title: '¿Esta seguro de vaciar Ext.-P?',
+            text: 'Se eliminarán los datos Ext.-P de TODOS los productos',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, Eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'Drop_ext_p';
+                $.ajax({
+                url: 'ajax.php',
+                type: "POST",
+                async: true,
+                data: {action:action},
+                success: function(response) 
+                {
+                    //$('#prueba').html(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                        if (result.isConfirmed){
+                            window.location.href = "productos.php";
+                        }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                        '¡Eliminado!',
+                        'Se elimnaron los datos Ext.-P de TODOS los productos!',
+                        'success'
+                        ).then((result) => {
+                        if (result.isConfirmed){
+                            window.location.href = "productos.php";
+                        }
+                        })
+                    }
+                },
+                error: function(error) {
+                    //$('#prueba').val('error');
+                    }
+                });      
+              }
+        })
+}
+
 function guardar_lista()
 {
     //mandar al metodo ajax post y ahi recorrer y guardar los nuevos costos segun las reglas establecidas
@@ -1989,7 +2055,7 @@ function guardar_lista()
 function eliminar_user(idusuario)
 {
     Swal.fire({
-            title: 'Esta seguro de eliminar?',
+            title: '¿Esta seguro de eliminar?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -2043,7 +2109,7 @@ function eliminar_user(idusuario)
 function eliminar_doc(iddocumento)
 {
     Swal.fire({
-            title: 'Esta seguro de eliminar?',
+            title: '¿Esta seguro de eliminar?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -2097,7 +2163,7 @@ function eliminar_doc(iddocumento)
 function eliminar_sucursal(idsucursal)
 {
     Swal.fire({
-            title: 'Esta seguro de eliminar?',
+            title: '¿Esta seguro de eliminar?',
             html: 'Todos los datos pertenecientes a esta sucursal serán transpasados a la <strong>sucursal MATRIZ</strong>',
             icon: 'warning',
             showCancelButton: true,
@@ -2226,7 +2292,7 @@ function preguntar_regresar()
 function eliminar_puesto(idpuesto)
 {
     Swal.fire({
-            title: 'Esta seguro de eliminar?',
+            title: '¿Esta seguro de eliminar?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -3163,7 +3229,7 @@ function suspender_cliente(idcliente)
 function asignar_matriz(idsucursal)
 {
     Swal.fire({
-            title: 'Esta seguro de convertir esta sucursal como Matriz?',
+            title: '¿Esta seguro de convertir esta sucursal como Matriz?',
             text: 'La matriz actual será revocada',
             icon: 'warning',
             showCancelButton: true,

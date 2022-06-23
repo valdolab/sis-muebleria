@@ -723,7 +723,7 @@ if ($_POST['action'] == 'searchCatUsed')
                 <th>Costo+IVA</th>
                 <th>Nuevo Ext.-P</th>
                 <th>Ext.-P</th>
-                <th>Ext-M</th>
+                <th>Ext.-M</th>
                 <th>Contado</th>
                 <th>Especial</th>
                 <th>CR1</th>
@@ -902,8 +902,9 @@ if ($_POST['action'] == 'searchSubCatUsed')
                 <th>Nuevo costo</th>
                 <th>Costo actual</th>
                 <th>Costo+IVA</th>
+                <th>Nuevo Ext.-P</th>
                 <th>Ext.-P</th>
-                <th>Ext-M</th>
+                <th>Ext.-M</th>
                 <th>Contado</th>
                 <th>Especial</th>
                 <th>CR1</th>
@@ -952,9 +953,10 @@ if ($_POST['action'] == 'searchSubCatUsed')
 
                 $cadenaTabla = $cadenaTabla.'<tr>
                     <td>'.$data['descripcion'].'</td>
-                        <td><input type="number" name="nuevo_costo" id="nuevo_costo" class="form-control"></td>
+                        <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
                         <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
+                        <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td>'.$data['ext_p'].'</td>
                         <td>---</td>
                         <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
@@ -992,14 +994,8 @@ if ($_POST['action'] == 'searchSubCatUsed')
                       $eliminar_productos = in_array(7, $array_permisos);
                       $imagenes =  in_array(8, $array_permisos);
                     }
-                    if($imagenes)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    }
+
+                    $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
                     $cadenaTabla = $cadenaTabla."&nbsp;";
                     if($editar_productos)
                     {
@@ -1121,8 +1117,9 @@ if ($_POST['action'] == 'searchForAtr1')
                 <th>Nuevo costo</th>
                 <th>Costo actual</th>
                 <th>Costo+IVA</th>
+                <th>Nuevo Ext.-P</th>
                 <th>Ext.-P</th>
-                <th>Ext-M</th>
+                <th>Ext.-M</th>
                 <th>Contado</th>
                 <th>Especial</th>
                 <th>CR1</th>
@@ -1222,9 +1219,10 @@ if ($_POST['action'] == 'searchForAtr1')
 
                 $cadenaTabla = $cadenaTabla.'<tr>
                     <td>'.$data['descripcion'].'</td>
-                        <td><input type="number" name="nuevo_costo" id="nuevo_costo" class="form-control"></td>
+                        <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
                         <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
+                        <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td>'.$data['ext_p'].'</td>
                         <td>---</td>
                         <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
@@ -1262,14 +1260,8 @@ if ($_POST['action'] == 'searchForAtr1')
                       $eliminar_productos = in_array(7, $array_permisos);
                       $imagenes =  in_array(8, $array_permisos);
                     }
-                    if($imagenes)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    }
+
+                    $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
                     $cadenaTabla = $cadenaTabla."&nbsp;";
                     if($editar_productos)
                     {
@@ -1325,8 +1317,9 @@ if ($_POST['action'] == 'searchForAtr2')
                 <th>Nuevo costo</th>
                 <th>Costo actual</th>
                 <th>Costo+IVA</th>
+                <th>Nuevo Ext.-P</th>
                 <th>Ext.-P</th>
-                <th>Ext-M</th>
+                <th>Ext.-M</th>
                 <th>Contado</th>
                 <th>Especial</th>
                 <th>CR1</th>
@@ -1426,9 +1419,10 @@ if ($_POST['action'] == 'searchForAtr2')
 
                 $cadenaTabla = $cadenaTabla.'<tr>
                     <td>'.$data['descripcion'].'</td>
-                        <td><input type="number" name="nuevo_costo" id="nuevo_costo" class="form-control"></td>
+                        <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
                         <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
+                        <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td>'.$data['ext_p'].'</td>
                         <td>---</td>
                         <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
@@ -1466,14 +1460,8 @@ if ($_POST['action'] == 'searchForAtr2')
                       $eliminar_productos = in_array(7, $array_permisos);
                       $imagenes =  in_array(8, $array_permisos);
                     }
-                    if($imagenes)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    }
+
+                    $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
                     $cadenaTabla = $cadenaTabla."&nbsp;";
                     if($editar_productos)
                     {
@@ -1529,8 +1517,9 @@ if ($_POST['action'] == 'searchForAtr3')
                 <th>Nuevo costo</th>
                 <th>Costo actual</th>
                 <th>Costo+IVA</th>
+                <th>Nuevo Ext.-P</th>
                 <th>Ext.-P</th>
-                <th>Ext-M</th>
+                <th>Ext.-M</th>
                 <th>Contado</th>
                 <th>Especial</th>
                 <th>CR1</th>
@@ -1630,9 +1619,10 @@ if ($_POST['action'] == 'searchForAtr3')
 
                 $cadenaTabla = $cadenaTabla.'<tr>
                     <td>'.$data['descripcion'].'</td>
-                        <td><input type="number" name="nuevo_costo" id="nuevo_costo" class="form-control"></td>
+                        <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
                         <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
+                        <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td>'.$data['ext_p'].'</td>
                         <td>---</td>
                         <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
@@ -1670,14 +1660,8 @@ if ($_POST['action'] == 'searchForAtr3')
                       $eliminar_productos = in_array(7, $array_permisos);
                       $imagenes =  in_array(8, $array_permisos);
                     }
-                    if($imagenes)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    }
+
+                    $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
                     $cadenaTabla = $cadenaTabla."&nbsp;";
                     if($editar_productos)
                     {
@@ -1733,8 +1717,9 @@ if ($_POST['action'] == 'searchForAtr4')
                 <th>Nuevo costo</th>
                 <th>Costo actual</th>
                 <th>Costo+IVA</th>
+                <th>Nuevo Ext.-P</th>
                 <th>Ext.-P</th>
-                <th>Ext-M</th>
+                <th>Ext.-M</th>
                 <th>Contado</th>
                 <th>Especial</th>
                 <th>CR1</th>
@@ -1834,9 +1819,10 @@ if ($_POST['action'] == 'searchForAtr4')
 
                 $cadenaTabla = $cadenaTabla.'<tr>
                     <td>'.$data['descripcion'].'</td>
-                        <td><input type="number" name="nuevo_costo" id="nuevo_costo" class="form-control"></td>
+                        <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
                         <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
+                        <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td>'.$data['ext_p'].'</td>
                         <td>---</td>
                         <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
@@ -1874,14 +1860,8 @@ if ($_POST['action'] == 'searchForAtr4')
                       $eliminar_productos = in_array(7, $array_permisos);
                       $imagenes =  in_array(8, $array_permisos);
                     }
-                    if($imagenes)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    }
+
+                    $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
                     $cadenaTabla = $cadenaTabla."&nbsp;";
                     if($editar_productos)
                     {
@@ -1937,8 +1917,9 @@ if ($_POST['action'] == 'searchForAtr5')
                 <th>Nuevo costo</th>
                 <th>Costo actual</th>
                 <th>Costo+IVA</th>
+                <th>Nuevo Ext.-P</th>
                 <th>Ext.-P</th>
-                <th>Ext-M</th>
+                <th>Ext.-M</th>
                 <th>Contado</th>
                 <th>Especial</th>
                 <th>CR1</th>
@@ -2038,9 +2019,10 @@ if ($_POST['action'] == 'searchForAtr5')
 
                 $cadenaTabla = $cadenaTabla.'<tr>
                     <td>'.$data['descripcion'].'</td>
-                        <td><input type="number" name="nuevo_costo" id="nuevo_costo" class="form-control"></td>
+                        <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
                         <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
+                        <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td>'.$data['ext_p'].'</td>
                         <td>---</td>
                         <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
@@ -2078,14 +2060,8 @@ if ($_POST['action'] == 'searchForAtr5')
                       $eliminar_productos = in_array(7, $array_permisos);
                       $imagenes =  in_array(8, $array_permisos);
                     }
-                    if($imagenes)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    }
+
+                    $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
                     $cadenaTabla = $cadenaTabla."&nbsp;";
                     if($editar_productos)
                     {
@@ -2322,3 +2298,24 @@ if ($_POST['action'] == 'GuardarEditarLista')
   echo json_encode($resul_save_list,JSON_UNESCAPED_UNICODE);
   exit;
 }
+
+//para borrar todos los ext_p de los productos
+if ($_POST['action'] == 'Drop_ext_p') 
+{
+  include "accion/conexion.php";
+  //eliminar todos los datos de Ext.-p de todos los productos, sin el where para BORRAR TODO
+  $sql_drop_extp = mysqli_query($conexion, "UPDATE producto set ext_p = NULL");
+  if($sql_drop_extp)
+  {
+    $borro_ext_p = 1;
+  }
+  else
+  {
+    $borro_ext_p = 0;
+  }
+
+  //$borro_ext_p = mysqli_error($conexion);
+  echo json_encode($borro_ext_p,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+

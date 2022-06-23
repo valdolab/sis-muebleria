@@ -2,7 +2,6 @@
 ob_start();
 include_once "header.php";
 include "accion/conexion.php";
-
 if (!empty($_POST)) 
 {
     //TODO ESTO DE INGRESAR, EDITAR PRODUCTO Y AGREGAR IMAGEN SE PASARA A AJAX, para mostrar el cargando
@@ -88,6 +87,7 @@ if (!empty($_POST))
     }
     else if($ban == "load_img")
     {
+        //hay que mover esto a ajax
         //subimos la imagen del prodcuto
         //buscamos la info del producto
         $id_producto = $_POST['flagid_producto_img'];
@@ -227,8 +227,6 @@ if (!empty($_POST))
     }
 }
 ?>
-
-
 
 <div style="posicion: fixed; top: 15%;" id="mensaje_repetido" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -568,7 +566,7 @@ if (!empty($_POST))
 </div>
 
 <div id="nueva_cat" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
+    <div class="modal-dialog  modal-xl" role="document">
         <div class="modal-content">
         <form action="" method="post" autocomplete="on" id="formAdd_cat">
             <div class="modal-header">
@@ -1218,10 +1216,22 @@ if (!empty($_POST))
                     ?>
                     <div class="col-12 col-sm-3">
                     <div class="row">
+                        <div class="col-12 col-sm-7" align="center" style="padding-left: 12px; padding-right: 0px;">
+                            <button onClick='show_new_costo();' class='btn btn-primary btn-block' type='submit'><i style='color: white;' class='fas fa-edit'></i></button>
+                        </div>
+                        <div class="col-12 col-sm-5" align="center" style="padding-left: 0px; padding-right: 0px;">
+                            <button onClick='drop_ext_p();' class='btn btn-primary btn-block' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
+                        </div>
+                    </div>
+
+                <!--
+                    <div class="row">
                         <div class="col-12 col-sm-12" align="center">
                             <button onclick="show_new_costo();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 88px !important; height: 38px !important; line-height: 0px;">Editar Lista</button>
                         </div>
                     </div>
+                -->
+
                     <div class="row">
                         <div class="col-12 col-sm-12" align="center">
                             <button disabled="disabled" id="btn_save_lista" onClick="guardar_lista();" type="button" class="btn btn-primary py-3 btn-sm" style="width: 88px !important; height: 38px !important; line-height: 0px;">Guardar</button>

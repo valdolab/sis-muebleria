@@ -412,7 +412,7 @@ if ($_POST['action'] == 'insert_categoria')
     $resultInsertCategoria = 0;
   }
   //hacer tiempo
-  //sleep(2);
+  //sleep(3);
   echo json_encode($resultInsertCategoria,JSON_UNESCAPED_UNICODE);
   exit;
 }
