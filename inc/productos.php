@@ -87,7 +87,7 @@ if (!empty($_POST))
     }
     else if($ban == "load_img")
     {
-        //hay que mover esto a ajax
+        //hay que mover esto a AJAX
         //subimos la imagen del prodcuto
         //buscamos la info del producto
         $id_producto = $_POST['flagid_producto_img'];
@@ -1245,8 +1245,11 @@ if (!empty($_POST))
                     ?>
                     <div class="col-12 col-sm-3">
                     <div class="row">
-                        <div class="col-12 col-sm-12" align="center">
-                            <button disabled="disabled" type="button" class="btn btn-primary py-3 btn-sm" style="width: 88px !important; height: 38px !important; line-height: 0px;">Editar Lista</button>
+                        <div class="col-12 col-sm-7" align="center" style="padding-left: 12px; padding-right: 0px;">
+                            <button disabled="disabled" class='btn btn-primary btn-block' type='submit'><i style='color: white;' class='fas fa-edit'></i></button>
+                        </div>
+                        <div class="col-12 col-sm-5" align="center" style="padding-left: 0px; padding-right: 0px;">
+                            <button disabled="disabled" class='btn btn-primary btn-block' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
                         </div>
                     </div>
                     <div class="row">

@@ -542,3 +542,5 @@ if ($_POST['action'] == 'insert_subcategoria')
   exit;
 }
 
+//aqui va a ir el form de subir imagen
+
