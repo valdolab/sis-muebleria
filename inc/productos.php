@@ -87,86 +87,11 @@ if (!empty($_POST))
     }
     else if($ban == "load_img")
     {
-        //hay que mover esto a AJAX
-        //subimos la imagen del prodcuto
-        //buscamos la info del producto
-        $id_producto = $_POST['flagid_producto_img'];
-        $select_producto = mysqli_query($conexion, "SELECT subcategoria, identificador from producto WHERE idproducto = '$id_producto'");
-        //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-        $datap = mysqli_fetch_assoc($select_producto);
-        if($datap['subcategoria'] == null)
-        {
-            //no tiene sub
-            $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
-            $data_producto = mysqli_fetch_assoc($select_producto_nosub);
-            $catproducto = $data_producto['catproducto'];
-            $atr1_producto = $data_producto['atr1_producto'];
-            //creamos la ubicacion
-            $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
-        }
-        else
-        {
-            //si tiene sub
-            $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
-            $data_producto = mysqli_fetch_assoc($select_producto_full);
-            $catproducto = $data_producto['catproducto'];
-            $subcat_producto = $data_producto['subcat_producto'];
-            $atr1_producto = $data_producto['atr1_producto'];
-             //creamos la ubicacion
-            $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
-        }
-
-        $flag_control_dirimg = 1;
-        if (!is_dir($estructura)) 
-        {
-            if(!mkdir($estructura, 0777, true))
-            {
-                //error al crear la direccion
-                $flag_control_dirimg = 0;
-            }
-        }
-        //echo $flag_control_dirimg;
-
-        $nombre_archivo = $datap['identificador'];
-        $nombre_archivo_real = $_FILES['imgProducto']['name'];
-        $extencion = explode(".",$nombre_archivo_real)[1];
-        $allow_files = array("png","jpg","jpge");
-        //echo $nombre_archivo_real;
-        if(in_array($extencion, $allow_files))
-        {
-            $tamano_archivo = $_FILES['imgProducto']['size'];
-            if($tamano_archivo > 500000)
-            {
-                //imagen muy grande
-                $modal = "$('#mensaje_imggrande').modal('show');";
-            }
-            else
-            {
-                //procedemos con guardarlo 
-                $tmp_archivo = $_FILES['imgProducto']['tmp_name'];
-                $archivador = $estructura."/".$nombre_archivo.".png";//.$extencion;
-                @move_uploaded_file($tmp_archivo, $archivador);
-                if(is_file($archivador))
-                {
-                    $modal = "$('#mensaje_imgsuccess').modal('show');";
-                }
-                else
-                {
-                    $modal = "$('#mensaje_imgerror').modal('show');";
-                }
-            }
-        }
-        else
-        {
-            //decir que no es un archivo permitido
-            $modal = "$('#mensaje_imgnoallow').modal('show');";
-        }  
         
     }
     else
     {
         //entonces editamos el producto
-        //insertamos el nuevo producto
         $id_producto = $_POST['flagid_producto'];
         $identificador = $_POST['identificador'];
         $codigo_barras = $_POST['codigo_barras'];
@@ -557,7 +482,7 @@ if (!empty($_POST))
                             </div>
                         </div>
                     </div>
-                    <input value="load_img" name="flagid_producto" id="imgflagid_producto" hidden readonly>
+                    <input value="load_img" name="action" id="action" hidden readonly>
                     <input type="text" name="flagid_producto_img" id="flagid_producto_img" readonly hidden>
             </div>
         </form>

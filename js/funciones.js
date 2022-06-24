@@ -884,13 +884,73 @@ $('#idestado_civil').change(function() {
 
     //para el guardar imagenes
     //form para insertar e editar una subcategoria
-    $("#btn_subirimg").submit( function () 
+    $("#formAdd_img").submit( function () 
     {  
         // Prevent default posting of form - put here to work in case of errors
-        //event.preventDefault();
-        
-        
-        return false;   
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Subiendo...',
+                          text: 'Espere a que se termine de subir la imágen',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
+           success: function(response)             
+           {
+                //$('#prueba').html(response);
+                if(response == 0)
+                {
+                    //error
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "productos.php";
+                            }
+                        }) 
+                }
+                else if(response == 1)
+                {
+                    //correcto
+                    Swal.fire({
+                          icon: 'success',
+                          title: '!Subido!',
+                          text: '!Se guardo la imágen correctamente!'
+                        })
+                }
+                else if(response == 2)
+                {
+                    //imagen muy grande
+                    Swal.fire({
+                          icon: 'warning',
+                          title: '!Imágen muy grande!',
+                          text: '!La imágen supera los 5MB permitidos!'
+                        })
+                }
+                else if(response == 3)
+                {
+                    //formato de archivo no permitido
+                    Swal.fire({
+                          icon: 'warning',
+                          title: '!Archivo no valido!',
+                          text: '!La imágen no es valida, formatos permitidos: png, jpg, jpge!'
+                        })
+                }         
+           }
+       });   
+       return false;   
     });
 
     //para las tablas que no son de productos
