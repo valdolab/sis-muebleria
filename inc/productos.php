@@ -578,27 +578,7 @@ if (!empty($_POST))
                             </div>
                     </fieldset>
                         </div>
-                        <div class="form-group col-lg-3">
-                            <label for="credito1">Credito 1:</label>
-                            <div class="input-group mb-3">
-                              <input name="credito1" id="credito1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                              <div class="input-group-append">
-                                <span class="input-group-text">%</span>
-                              </div>
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="credito2">Credito 2:</label>
-                            <div class="input-group mb-3">
-                              <input name="credito2" id="credito2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
-                              <div class="input-group-append">
-                                <span class="input-group-text">%</span>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-3"></div>
+
                         <div class="form-group col-lg-3">
                             <label for="mesespago">Meses de pago:</label>
                             <input name="mesespago" id="mesespago" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
@@ -607,7 +587,117 @@ if (!empty($_POST))
                             <label for="garantia">Meses de garantía:</label>
                             <input name="garantia" id="garantia" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
+
                     </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-3">
+                            <h4>Credito 1</h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg">
+                            <label for="credito1">Base inicial:</label>
+                            <div class="input-group mb-3">
+                              <input name="base_inicial_c1" id="base_inicial_c1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg">
+                            <label for="credito2">% de ganancia inicial:</label>
+                            <div class="input-group mb-3">
+                              <input name="ganancia_inicial_c1" id="ganancia_inicial_c1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg">
+                            <label for="credito2">Rango:</label>
+                            <div class="input-group mb-3">
+                              <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="rango_c1" id="rango_c1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg">
+                            <label for="credito2">% de ganancia subsecuente:</label>
+                            <div class="input-group mb-3">
+                              <input name="ganancia_subsecuante_c1" id="ganancia_subsecuante_c1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg">
+                            <label for="credito2">Limite de costo:</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="limite_costo_c1" id="limite_costo_c1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-3">
+                            <h4>Credito 2</h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg">
+                            <label for="credito1">Base inicial:</label>
+                            <div class="input-group mb-3">
+                              <input name="base_inicial_c2" id="base_inicial_c2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg">
+                            <label for="credito2">% de ganancia inicial:</label>
+                            <div class="input-group mb-3">
+                              <input name="ganancia_inicial_c2" id="ganancia_inicial_c2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg">
+                            <label for="credito2">Rango:</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="rango_c2" id="rango_c2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg">
+                            <label for="credito2">% de ganancia subsecuente:</label>
+                            <div class="input-group mb-3">
+                              <input name="ganancia_subsecuante_c2" id="ganancia_subsecuante_c2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg">
+                            <label for="credito2">Limite de costo:</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="limite_costo_c2" id="limite_costo_c2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                            </div>
+                        </div>
+                    </div>
+
                     <input value="insert_categoria" name="action" id="action" hidden>
                     <input type="text" value="" id="flagidcategoria" name="flagidcategoria" hidden>
             </div>

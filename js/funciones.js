@@ -1980,8 +1980,8 @@ function show_costoiva()
 {
     //$('td:nth-child(2)').toggle();
     //$('th:nth-child(2)').toggle();
-    $('#tbl_productos td:nth-child(3)').toggle();
-    $('#tbl_productos th:nth-child(3)').toggle();
+    //$('#tbl_productos td:nth-child(3)').toggle();
+    //$('#tbl_productos th:nth-child(3)').toggle();
     $('#tbl_productos td:nth-child(4)').toggle();
     $('#tbl_productos th:nth-child(4)').toggle();
 }
