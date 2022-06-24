@@ -550,6 +550,7 @@ if ($_POST['action'] == 'load_img')
   {
         //subimos la imagen del prodcuto
         //buscamos la info del producto
+        
         $id_producto = $_POST['flagid_producto_img'];
         $select_producto = mysqli_query($conexion, "SELECT subcategoria, identificador from producto WHERE idproducto = '$id_producto'");
         //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
@@ -627,6 +628,7 @@ if ($_POST['action'] == 'load_img')
             $load_img = 3;
             //$modal = "$('#mensaje_imgnoallow').modal('show');";
         }
+        $load_img = 1;
   }
   else
   {
@@ -634,6 +636,7 @@ if ($_POST['action'] == 'load_img')
     $load_img = 0;
   }
 
+  //$load_img = mysqli_error($conexion);
   //return
   echo json_encode($load_img,JSON_UNESCAPED_UNICODE);
   exit;

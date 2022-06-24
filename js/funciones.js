@@ -928,7 +928,11 @@ $('#idestado_civil').change(function() {
                           icon: 'success',
                           title: '!Subido!',
                           text: '!Se guardo la imágen correctamente!'
-                        })
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "productos.php";
+                            }
+                        }) 
                 }
                 else if(response == 2)
                 {
