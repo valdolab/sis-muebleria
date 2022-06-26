@@ -891,7 +891,10 @@ $('#idestado_civil').change(function() {
         $.ajax({                        
            type: 'POST',                 
            url: 'ajax_forms.php',                     
-           data: $(this).serialize(),
+           data:  new FormData(this),
+           contentType: false,
+                 cache: false,
+           processData:false,
            beforeSend: function() 
            {
                 Swal.fire({

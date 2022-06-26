@@ -637,6 +637,7 @@ if ($_POST['action'] == 'load_img')
   }
 
   //$load_img = mysqli_error($conexion);
+  //sleep(5);
   //return
   echo json_encode($load_img,JSON_UNESCAPED_UNICODE);
   exit;
