@@ -718,6 +718,7 @@ $('#idestado_civil').change(function() {
            },
            success: function(response)             
            {
+                //$('#prueba').html(response);
                 if(response == 0)
                 {
                     Swal.fire({
@@ -2771,8 +2772,19 @@ function editar_categoria(idcategoria)
                 $('#atr5').val(data.atr5);
                 $('#contado').val(data.contado);
                 $('#especial').val(data.especial);
-                $('#credito1').val(data.credito1);
-                $('#credito2').val(data.credito2);
+
+                $('#base_inicial_c1').val(data.base_inicial_c1);
+                $('#ganancia_inicial_c1').val(data.ganancia_inicial_c1);
+                $('#rango_c1').val(data.rango_c1);
+                $('#ganancia_subsecuente_c1').val(data.ganancia_subsecuente_c1);
+                $('#limite_costo_c1').val(data.limite_costo_c1);
+
+                $('#base_inicial_c2').val(data.base_inicial_c2);
+                $('#ganancia_inicial_c2').val(data.ganancia_inicial_c2);
+                $('#rango_c2').val(data.rango_c2);
+                $('#ganancia_subsecuente_c2').val(data.ganancia_subsecuente_c2);
+                $('#limite_costo_c2').val(data.limite_costo_c2);
+
                 $('#mesespago').val(data.meses_pago);
                 $('#garantia').val(data.meses_garantia);
                 $('#tiene_subcat').removeAttr('checked');
@@ -2871,8 +2883,19 @@ function editar_subcategoria(idsubcategoria)
                 $('#atr5_sub').val(data.atr5);
                 $('#contado_sub').val(data.contado);
                 $('#especial_sub').val(data.especial);
-                $('#credito1_sub').val(data.credito1);
-                $('#credito2_sub').val(data.credito2);
+                
+                $('#base_inicial_c1_sub').val(data.base_inicial_c1);
+                $('#ganancia_inicial_c1_sub').val(data.ganancia_inicial_c1);
+                $('#rango_c1_sub').val(data.rango_c1);
+                $('#ganancia_subsecuente_c1_sub').val(data.ganancia_subsecuente_c1);
+                $('#limite_costo_c1_sub').val(data.limite_costo_c1);
+
+                $('#base_inicial_c2_sub').val(data.base_inicial_c2);
+                $('#ganancia_inicial_c2_sub').val(data.ganancia_inicial_c2);
+                $('#rango_c2_sub').val(data.rango_c2);
+                $('#ganancia_subsecuente_c2_sub').val(data.ganancia_subsecuente_c2);
+                $('#limite_costo_c2_sub').val(data.limite_costo_c2);
+
                 $('#mesespago_sub').val(data.meses_pago);
                 $('#garantia_sub').val(data.meses_garantia);
             }

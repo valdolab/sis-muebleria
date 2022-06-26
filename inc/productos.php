@@ -626,7 +626,7 @@ if (!empty($_POST))
                         <div class="form-group col-lg">
                             <label for="credito2">% de ganancia subsecuente:</label>
                             <div class="input-group mb-3">
-                              <input name="ganancia_subsecuante_c1" id="ganancia_subsecuante_c1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="ganancia_subsecuente_c1" id="ganancia_subsecuente_c1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
@@ -680,7 +680,7 @@ if (!empty($_POST))
                         <div class="form-group col-lg">
                             <label for="credito2">% de ganancia subsecuente:</label>
                             <div class="input-group mb-3">
-                              <input name="ganancia_subsecuante_c2" id="ganancia_subsecuante_c2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="ganancia_subsecuente_c2" id="ganancia_subsecuente_c2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
@@ -854,7 +854,7 @@ if (!empty($_POST))
                         <div class="form-group col-lg">
                             <label for="credito2">% de ganancia subsecuente:</label>
                             <div class="input-group mb-3">
-                              <input name="ganancia_subsecuante_c1_sub" id="ganancia_subsecuante_c1_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="ganancia_subsecuente_c1_sub" id="ganancia_subsecuente_c1_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>
@@ -908,7 +908,7 @@ if (!empty($_POST))
                         <div class="form-group col-lg">
                             <label for="credito2">% de ganancia subsecuente:</label>
                             <div class="input-group mb-3">
-                              <input name="ganancia_subsecuante_c2_sub" id="ganancia_subsecuante_c2_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                              <input name="ganancia_subsecuente_c2_sub" id="ganancia_subsecuente_c2_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                               <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                               </div>

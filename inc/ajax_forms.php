@@ -304,14 +304,24 @@ if ($_POST['action'] == 'insert_categoria')
             $especial = null;
           }
 
-          $credito1 = $_POST['credito1'];
-          $credito2 = $_POST['credito2'];
+          $base_inicial_c1 = $_POST['base_inicial_c1'];
+          $ganancia_inicial_c1 = $_POST['ganancia_inicial_c1'];
+          $rango_c1 = $_POST['rango_c1'];
+          $ganancia_subsecuente_c1 = $_POST['ganancia_subsecuente_c1'];
+          $limite_costo_c1 = $_POST['limite_costo_c1'];
+          //credito 2
+          $base_inicial_c2 = $_POST['base_inicial_c2'];
+          $ganancia_inicial_c2 = $_POST['ganancia_inicial_c2'];
+          $rango_c2 = $_POST['rango_c2'];
+          $ganancia_subsecuente_c2 = $_POST['ganancia_subsecuente_c2'];
+          $limite_costo_c2 = $_POST['limite_costo_c2'];
+
           $mesespago = $_POST['mesespago'];
           $garantia = $_POST['garantia'];
           $resultIDcat = mysqli_query($conexion, "SELECT UUID() as idcategoria");
           $uuid = mysqli_fetch_assoc($resultIDcat)['idcategoria'];
 
-          $insert_cat = mysqli_query($conexion, "INSERT INTO categoria(idcategoria, nombre, tiene_subcat, atr1, atr2, atr3, atr4, atr5, contado, especial, credito1, credito2, meses_pago, meses_garantia) VALUES ('$uuid','$nombre_cat', $tiene_subcat, '$atr1', ".(!empty($atr2) ? "'$atr2'" : "NULL").", ".(!empty($atr3) ? "'$atr3'" : "NULL").", ".(!empty($atr4) ? "'$atr4'" : "NULL").", ".(!empty($atr5) ? "'$atr5'" : "NULL").", $contado, ".($especial == null ? "NULL" : "$especial").", $credito1, '$credito2', '$mesespago', '$garantia')");
+          $insert_cat = mysqli_query($conexion, "INSERT INTO categoria(idcategoria, nombre, tiene_subcat, atr1, atr2, atr3, atr4, atr5, contado, especial, base_inicial_c1, ganancia_inicial_c1, rango_c1, ganancia_subsecuente_c1, limite_costo_c1, base_inicial_c2, ganancia_inicial_c2, rango_c2, ganancia_subsecuente_c2, limite_costo_c2, meses_pago, meses_garantia) VALUES ('$uuid','$nombre_cat', $tiene_subcat, '$atr1', ".(!empty($atr2) ? "'$atr2'" : "NULL").", ".(!empty($atr3) ? "'$atr3'" : "NULL").", ".(!empty($atr4) ? "'$atr4'" : "NULL").", ".(!empty($atr5) ? "'$atr5'" : "NULL").", $contado, ".($especial == null ? "NULL" : "$especial").", $base_inicial_c1, $ganancia_inicial_c1, $rango_c1, $ganancia_subsecuente_c1, $limite_costo_c1, $base_inicial_c2, $ganancia_inicial_c2, $rango_c2, $ganancia_subsecuente_c2, $limite_costo_c2, '$mesespago', '$garantia')");
           if ($insert_cat) 
           {
             $idcat = array("idcategoria" => $uuid);
@@ -385,13 +395,24 @@ if ($_POST['action'] == 'insert_categoria')
             {   
               $especial = null;
             }
-            $credito1 = $_POST['credito1'];
-            $credito2 = $_POST['credito2'];
+            //credito 1
+            $base_inicial_c1 = $_POST['base_inicial_c1'];
+            $ganancia_inicial_c1 = $_POST['ganancia_inicial_c1'];
+            $rango_c1 = $_POST['rango_c1'];
+            $ganancia_subsecuente_c1 = $_POST['ganancia_subsecuente_c1'];
+            $limite_costo_c1 = $_POST['limite_costo_c1'];
+            //credito 2
+            $base_inicial_c2 = $_POST['base_inicial_c2'];
+            $ganancia_inicial_c2 = $_POST['ganancia_inicial_c2'];
+            $rango_c2 = $_POST['rango_c2'];
+            $ganancia_subsecuente_c2 = $_POST['ganancia_subsecuente_c2'];
+            $limite_costo_c2 = $_POST['limite_costo_c2'];
+
             $mesespago = $_POST['mesespago'];
             $garantia = $_POST['garantia'];
           }
           //idcat -> $idcategoria
-          $update_cat = mysqli_query($conexion, "UPDATE categoria set nombre = '$nombre_cat', tiene_subcat = $tiene_subcat, atr1 = ".(!empty($atr1) ? "'$atr1'" : "NULL").", atr2 = ".(!empty($atr2) ? "'$atr2'" : "NULL").", atr3 = ".(!empty($atr3) ? "'$atr3'" : "NULL").", atr4 = ".(!empty($atr4) ? "'$atr4'" : "NULL").", atr5 = ".(!empty($atr5) ? "'$atr5'" : "NULL").", contado = ".(!empty($contado) ? "$contado" : "NULL").", especial = ".($especial == null ? "NULL" : "$especial").", credito1 = ".(!empty($credito1) ? "$credito1" : "NULL").", credito2 = ".(!empty($credito2) ? "$credito2" : "NULL").", meses_pago = ".(!empty($mesespago) ? "$mesespago" : "NULL").", meses_garantia = ".(!empty($garantia) ? "$garantia" : "NULL")." WHERE idcategoria = '$idcategoria'");
+          $update_cat = mysqli_query($conexion, "UPDATE categoria set nombre = '$nombre_cat', tiene_subcat = $tiene_subcat, atr1 = ".(!empty($atr1) ? "'$atr1'" : "NULL").", atr2 = ".(!empty($atr2) ? "'$atr2'" : "NULL").", atr3 = ".(!empty($atr3) ? "'$atr3'" : "NULL").", atr4 = ".(!empty($atr4) ? "'$atr4'" : "NULL").", atr5 = ".(!empty($atr5) ? "'$atr5'" : "NULL").", contado = ".(!empty($contado) ? "$contado" : "NULL").", especial = ".($especial == null ? "NULL" : "$especial").", base_inicial_c1 = ".(!empty($base_inicial_c1) ? "$base_inicial_c1" : "NULL").", ganancia_inicial_c1 = ".(!empty($ganancia_inicial_c1) ? "$ganancia_inicial_c1" : "NULL").", rango_c1 = ".(!empty($rango_c1) ? "$rango_c1" : "NULL").", ganancia_subsecuente_c1 = ".(!empty($ganancia_subsecuente_c1) ? "$ganancia_subsecuente_c1" : "NULL").", limite_costo_c1 = ".(!empty($limite_costo_c1) ? "$limite_costo_c1" : "NULL").", base_inicial_c2 = ".(!empty($base_inicial_c2) ? "$base_inicial_c2" : "NULL").", ganancia_inicial_c2 = ".(!empty($ganancia_inicial_c2) ? "$ganancia_inicial_c2" : "NULL").", rango_c2 = ".(!empty($rango_c2) ? "$rango_c2" : "NULL").", ganancia_subsecuente_c2 = ".(!empty($ganancia_subsecuente_c2) ? "$ganancia_subsecuente_c2" : "NULL").", limite_costo_c2 = ".(!empty($limite_costo_c2) ? "$limite_costo_c2" : "NULL").", meses_pago = ".(!empty($mesespago) ? "$mesespago" : "NULL").", meses_garantia = ".(!empty($garantia) ? "$garantia" : "NULL")." WHERE idcategoria = '$idcategoria'");
           if ($update_cat) 
           {
             $idcat = array("idcategoria" => $idcategoria);
@@ -453,14 +474,25 @@ if ($_POST['action'] == 'insert_subcategoria')
           {   
             $especial = null;
           }
-          $credito1 = $_POST['credito1_sub'];
-          $credito2 = $_POST['credito2_sub'];
+          //lo nuevo de credito
+          $base_inicial_c1 = $_POST['base_inicial_c1_sub'];
+          $ganancia_inicial_c1 = $_POST['ganancia_inicial_c1_sub'];
+          $rango_c1 = $_POST['rango_c1_sub'];
+          $ganancia_subsecuente_c1 = $_POST['ganancia_subsecuente_c1_sub'];
+          $limite_costo_c1 = $_POST['limite_costo_c1_sub'];
+          //credito 2
+          $base_inicial_c2 = $_POST['base_inicial_c2_sub'];
+          $ganancia_inicial_c2 = $_POST['ganancia_inicial_c2_sub'];
+          $rango_c2 = $_POST['rango_c2_sub'];
+          $ganancia_subsecuente_c2 = $_POST['ganancia_subsecuente_c2_sub'];
+          $limite_costo_c2 = $_POST['limite_costo_c2_sub'];
+
           $mesespago = $_POST['mesespago_sub'];
           $garantia = $_POST['garantia_sub'];
           $resultIDsubcat = mysqli_query($conexion, "SELECT UUID() as idsubcategoria");
           $uuid = mysqli_fetch_assoc($resultIDsubcat)['idsubcategoria'];
 
-          $insert_subcat = mysqli_query($conexion, "INSERT INTO subcategoria(idsubcategoria, nombre, categoria, atr1, atr2, atr3, atr4, atr5, contado, especial, credito1, credito2, meses_pago, meses_garantia) VALUES ('$uuid','$nombre_subcat', '$categoria_subcategoria', '$atr1', ".(!empty($atr2) ? "'$atr2'" : "NULL").", ".(!empty($atr3) ? "'$atr3'" : "NULL").", ".(!empty($atr4) ? "'$atr4'" : "NULL").", ".(!empty($atr5) ? "'$atr5'" : "NULL").", $contado, ".($especial == null ? "NULL" : "$especial").", $credito1, '$credito2', '$mesespago', '$garantia')");
+          $insert_subcat = mysqli_query($conexion, "INSERT INTO subcategoria(idsubcategoria, nombre, categoria, atr1, atr2, atr3, atr4, atr5, contado, especial, credito1, credito2, meses_pago, meses_garantia) VALUES ('$uuid','$nombre_subcat', '$categoria_subcategoria', '$atr1', ".(!empty($atr2) ? "'$atr2'" : "NULL").", ".(!empty($atr3) ? "'$atr3'" : "NULL").", ".(!empty($atr4) ? "'$atr4'" : "NULL").", ".(!empty($atr5) ? "'$atr5'" : "NULL").", $contado, ".($especial == null ? "NULL" : "$especial").", $base_inicial_c1, $ganancia_inicial_c1, $rango_c1, $ganancia_subsecuente_c1, $limite_costo_c1, $base_inicial_c2, $ganancia_inicial_c2, $rango_c2, $ganancia_subsecuente_c2, $limite_costo_c2, '$mesespago', '$garantia')");
           if ($insert_subcat) 
           {
             $idsubcat = array("idsubcategoria" => $uuid);
@@ -514,12 +546,24 @@ if ($_POST['action'] == 'insert_subcategoria')
           {   
             $especial = null;
           }
-          $credito1 = $_POST['credito1_sub'];
-          $credito2 = $_POST['credito2_sub'];
+
+          //lo nuevo de credito
+          $base_inicial_c1 = $_POST['base_inicial_c1_sub'];
+          $ganancia_inicial_c1 = $_POST['ganancia_inicial_c1_sub'];
+          $rango_c1 = $_POST['rango_c1_sub'];
+          $ganancia_subsecuente_c1 = $_POST['ganancia_subsecuente_c1_sub'];
+          $limite_costo_c1 = $_POST['limite_costo_c1_sub'];
+          //credito 2
+          $base_inicial_c2 = $_POST['base_inicial_c2_sub'];
+          $ganancia_inicial_c2 = $_POST['ganancia_inicial_c2_sub'];
+          $rango_c2 = $_POST['rango_c2_sub'];
+          $ganancia_subsecuente_c2 = $_POST['ganancia_subsecuente_c2_sub'];
+          $limite_costo_c2 = $_POST['limite_costo_c2_sub'];
+
           $mesespago = $_POST['mesespago_sub'];
           $garantia = $_POST['garantia_sub'];
           //idcat -> $idcategoria
-          $update_subcat = mysqli_query($conexion, "UPDATE subcategoria set nombre = '$nombre_subcat', categoria = '$categoria_subcategoria', atr1 = '$atr1', atr2 = ".(!empty($atr2) ? "'$atr2'" : "NULL").", atr3 = ".(!empty($atr3) ? "'$atr3'" : "NULL").", atr4 = ".(!empty($atr4) ? "'$atr4'" : "NULL").", atr5 = ".(!empty($atr5) ? "'$atr5'" : "NULL").", contado = ".(!empty($contado) ? "$contado" : "NULL").", especial = ".($especial == null ? "NULL" : "$especial").", credito1 = ".(!empty($credito1) ? "$credito1" : "NULL").", credito2 = ".(!empty($credito2) ? "$credito2" : "NULL").", meses_pago = ".(!empty($mesespago) ? "$mesespago" : "NULL").", meses_garantia = ".(!empty($garantia) ? "$garantia" : "NULL")." WHERE idsubcategoria  = '$idsubcategoria'");
+          $update_subcat = mysqli_query($conexion, "UPDATE subcategoria set nombre = '$nombre_subcat', categoria = '$categoria_subcategoria', atr1 = '$atr1', atr2 = ".(!empty($atr2) ? "'$atr2'" : "NULL").", atr3 = ".(!empty($atr3) ? "'$atr3'" : "NULL").", atr4 = ".(!empty($atr4) ? "'$atr4'" : "NULL").", atr5 = ".(!empty($atr5) ? "'$atr5'" : "NULL").", contado = ".(!empty($contado) ? "$contado" : "NULL").", especial = ".($especial == null ? "NULL" : "$especial").", base_inicial_c1 = ".(!empty($base_inicial_c1) ? "$base_inicial_c1" : "NULL").", ganancia_inicial_c1 = ".(!empty($ganancia_inicial_c1) ? "$ganancia_inicial_c1" : "NULL").", rango_c1 = ".(!empty($rango_c1) ? "$rango_c1" : "NULL").", ganancia_subsecuente_c1 = ".(!empty($ganancia_subsecuente_c1) ? "$ganancia_subsecuente_c1" : "NULL").", limite_costo_c1 = ".(!empty($limite_costo_c1) ? "$limite_costo_c1" : "NULL").", base_inicial_c2 = ".(!empty($base_inicial_c2) ? "$base_inicial_c2" : "NULL").", ganancia_inicial_c2 = ".(!empty($ganancia_inicial_c2) ? "$ganancia_inicial_c2" : "NULL").", rango_c2 = ".(!empty($rango_c2) ? "$rango_c2" : "NULL").", ganancia_subsecuente_c2 = ".(!empty($ganancia_subsecuente_c2) ? "$ganancia_subsecuente_c2" : "NULL").", limite_costo_c2 = ".(!empty($limite_costo_c2) ? "$limite_costo_c2" : "NULL").", meses_pago = ".(!empty($mesespago) ? "$mesespago" : "NULL").", meses_garantia = ".(!empty($garantia) ? "$garantia" : "NULL")." WHERE idsubcategoria  = '$idsubcategoria'");
           if ($update_subcat) 
           {
             $idsubcat = array("idsubcategoria" => $idsubcategoria);
