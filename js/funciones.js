@@ -961,6 +961,84 @@ $('#idestado_civil').change(function() {
        return false;   
     });
 
+    //form para agregar y editar producto
+    $("#formAdd_producto").submit( function () 
+    {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
+           success: function(response)             
+           {
+                //$('#prueba').html(response);
+                if(response == 0)
+                {
+                    //error
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error al guardar el producto, !intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "productos.php";
+                            }
+                        }) 
+                }
+                else if(response == 1)
+                {
+                    //correcto
+                    Swal.fire({
+                          icon: 'success',
+                          title: '!Guardado!',
+                          text: '!Producto guardado correctamete!'
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "productos.php";
+                            }
+                        }) 
+                }
+                else if(response == 2)
+                {
+                    //repetido
+                    Swal.fire({
+                          icon: 'warning',
+                          title: '¡El producto ya existe!',
+                          text: 'Favor de poner otro indentificar para este nuevo producto'
+                        })
+                }
+                else if(response == 3)
+                {
+                    //correcto editado
+                    Swal.fire({
+                          icon: 'success',
+                          title: '!Guardado!',
+                          text: '!Se actualizao el producto guardado!'
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "productos.php";
+                            }
+                        }) 
+                }         
+           }
+       });   
+       return false;   
+    });
+
     //para las tablas que no son de productos
     $('#tbl').DataTable({
   "columnDefs": [{
@@ -1965,6 +2043,7 @@ $('#costo').keyup(function(e)
         else
         {
             //recorrer secuencia hasta encontrar el rango donde este el costo_iva
+            var cr1 = 0;
             if(costo_iva < base_inicial_c1)
             {
                 cr1 = ganancia_inicial_c1;
@@ -1982,7 +2061,7 @@ $('#costo').keyup(function(e)
                     costo_temp = costo_temp + rango_c1;//2200,2300
                     ganancia_temp = ganancia_temp - 1;//79,78
                     //2250<2200, 2250<2300,   //2100<=10000,2200<=10000
-                    if((costo_iva < costo_temp) || (costo_temp > limite_costo_c1))
+                    if((costo_iva < costo_temp) || (costo_temp >= limite_costo_c1))
                     {
                         cr1 = ganancia_temp;
                         break;
@@ -1991,8 +2070,6 @@ $('#costo').keyup(function(e)
             }
             var costo_cr1 = costo_iva + (costo_iva*(cr1/100));
             $('#costo_cr1').val(costo_cr1.toFixed(2));
-            $('#asd1').val(costo_temp);
-            $('#asd2').val(cr1);
         }
         //==== credito2
         if(base_inicial_c2 == 0)
@@ -2002,6 +2079,7 @@ $('#costo').keyup(function(e)
         else
         {
             //recorrer secuencia hasta encontrar el rango donde este el costo_iva
+            var cr2 = 0;
             if(costo_iva < base_inicial_c2)
             {
                 cr2 = ganancia_inicial_c2;
@@ -2012,17 +2090,24 @@ $('#costo').keyup(function(e)
             }
             else
             {
-                var costo_temp = base_inicial_c2;
-                var ganancia_temp = ganancia_inicial_c2;
-                while((costo_temp <= limite_costo_c2) || (costo_iva < costo_temp))
+                var costo_temp2 = base_inicial_c2 + rango_c2;//2100
+                var ganancia_temp2 = ganancia_subsecuente_c2;// 80
+                while(true)
                 {
-                    costo_temp = costo_temp + rango_c2;
-                    ganancia_temp = ganancia_temp - 1;
-                    cr2 = ganancia_temp;
+                    costo_temp2 = costo_temp2 + rango_c2;//2200,2300
+                    ganancia_temp2 = ganancia_temp2 - 1;//79,78
+                    //2250<2200, 2250<2300,   //2100<=10000,2200<=10000
+                    if((costo_iva < costo_temp2) || (costo_temp2 >= limite_costo_c2))
+                    {
+                        cr2 = ganancia_temp2;
+                        break;
+                    }
                 }
             }
             var costo_cr2 = costo_iva + (costo_iva*(cr2/100));
             $('#costo_cr2').val(costo_cr2.toFixed(2));
+            //$('#asd1').val(costo_temp2);
+            //$('#asd2').val(cr2);
         }
 
         //E-Q
@@ -3123,7 +3208,7 @@ function eliminar_producto(idproducto)
 function nuevo_producto()
 {
     $('#flagid_producto').val('nuevoproducto');
-    $("#formAdd_producto :input:not(#btn_guardar_producto,#btn_cancerlar_producto,#flagid_producto)").val('');
+    $("#formAdd_producto :input:not(#btn_guardar_producto,#btn_cancerlar_producto,#flagid_producto,#action)").val('');
     $('#flag_selectsubcat').val('nosubcat');
     $('#serializado').bootstrapToggle('off');
     $('#atr1_producto,#atr2_producto,#atr3_producto,#atr4_producto,#atr5_producto').attr('readonly','readonly');

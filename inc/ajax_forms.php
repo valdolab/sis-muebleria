@@ -687,4 +687,173 @@ if ($_POST['action'] == 'load_img')
   exit;
 }
 
-  
+//form para insertar nuevo producto o editar el producto selecionado
+if ($_POST['action'] == 'insert_edit_producto') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['flagid_producto'])) 
+  {
+    //TODO ESTO DE INGRESAR, EDITAR PRODUCTO Y AGREGAR IMAGEN SE PASARA A AJAX, para mostrar el cargando
+    $ban = $_POST['flagid_producto'];
+    if($ban == "nuevoproducto")
+    {
+        //insertamos el nuevo producto
+        $identificador = $_POST['identificador'];
+        //verificar si ya existe ese identificador de producto, los cuales se usan para guardar las imagenes
+        $find_id = mysqli_query($conexion, "SELECT idproducto from producto where identificador = '$identificador'");
+        if(mysqli_num_rows($find_id) > 0)
+        {
+            //entonces ya hay uno, avisarle
+            $producto_result = 2;
+            //$modal = "$('#mensaje_repetido').modal('show');";
+        }
+        else
+        {
+            $codigo_barras = $_POST['codigo_barras'];
+            $categoria_producto = $_POST['categoria_producto'];
+            //echo $_POST['subcategoria_producto'];
+            if(isset($_POST['subcategoria_producto']))
+            {
+                $subcategoria_producto = $_POST['subcategoria_producto'];
+            }
+            else
+            {
+                $subcategoria_producto = "no";
+            }
+            //echo "/";
+            //echo $subcategoria_producto;
+            //$subcategoria_producto = $_POST['subcategoria_producto'];
+            $descripcion = $_POST['descripcion'];
+            if (isset($_POST['serializado']))
+                {
+                    $serializado = 1;
+                }
+                else
+                {
+                    $serializado = 0;
+                }
+            $atr1_producto = $_POST['atr1_producto'];
+            $atr2_producto = $_POST['atr2_producto'];
+            $atr3_producto = $_POST['atr3_producto'];
+            $atr4_producto = $_POST['atr4_producto'];
+            $atr5_producto = $_POST['atr5_producto'];
+            $stock_min = $_POST['stock_min'];
+            $stock_max = $_POST['stock_max'];
+            $ext_p = $_POST['ext_p'];
+            $costo = $_POST['costo'];
+            $costo_iva = $_POST['costo_iva'];
+            $costo_contado = $_POST['costo_contado'];
+            if(isset($_POST['costo_especial']))
+            {
+                $costo_especial = $_POST['costo_especial'];
+            }
+            else
+            {   
+                $costo_especial = null;
+            }
+            $costo_cr1 = $_POST['costo_cr1'];
+            $costo_cr2 = $_POST['costo_cr2'];
+            $costo_p1 = $_POST['costo_p1'];
+            $costo_p2 = $_POST['costo_p2'];
+            $costo_eq = $_POST['costo_eq'];
+
+            /*echo $costo;
+            echo "/";
+            echo $costo_contado;
+            echo "/";
+            echo $subcategoria_producto;*/
+            
+            $insert_producto = mysqli_query($conexion, "INSERT INTO producto(idproducto, identificador, codigo_barras, categoria, subcategoria, descripcion, serializado, atr1_producto, atr2_producto, atr3_producto, atr4_producto, atr5_producto, stock_min, stock_max, ext_p, costo, costo_iva, costo_contado, costo_especial, costo_cr1, costo_cr2, costo_p1, costo_p2, costo_eq) VALUES (UUID(), '$identificador', ".(!empty($codigo_barras) ? "'$codigo_barras'" : "NULL").", '$categoria_producto', ".($subcategoria_producto=="no" ? "NULL" : "'$subcategoria_producto'").", ".(!empty($descripcion) ? "'$descripcion'" : "NULL").", $serializado, '$atr1_producto', ".(!empty($atr2_producto) ? "'$atr2_producto'" : "NULL").", ".(!empty($atr3_producto) ? "'$atr3_producto'" : "NULL").", ".(!empty($atr4_producto) ? "'$atr4_producto'" : "NULL").", ".(!empty($atr5_producto) ? "'$atr5_producto'" : "NULL").", ".(!empty($stock_min) ? "'$stock_min'" : "NULL").", ".(!empty($stock_max) ? "'$stock_max'" : "NULL").", ".(!empty($ext_p) ? "'$ext_p'" : "NULL").", $costo, $costo_iva, $costo_contado, ".($costo_especial == null ? "NULL" : "$costo_especial").", $costo_cr1, $costo_cr2, $costo_p1, $costo_p2, $costo_eq)");
+            if ($insert_producto) 
+            {
+                //todo chido
+                $producto_result = 1;
+                //$modal = "$('#mensaje_success').modal('show');";
+            }
+            else
+            {
+                //error
+                $producto_result = 0;
+                //$modal = "$('#mensaje_error').modal('show');";
+                //echo mysqli_error($conexion);
+            }
+        }
+    }
+    else
+    {
+        //entonces editamos el producto
+        $id_producto = $_POST['flagid_producto'];
+        $identificador = $_POST['identificador'];
+        $codigo_barras = $_POST['codigo_barras'];
+        $categoria_producto = $_POST['categoria_producto'];
+        if(isset($_POST['subcategoria_producto']))
+        {
+            $subcategoria_producto = $_POST['subcategoria_producto'];
+        }
+        else
+        {
+            $subcategoria_producto = 0;
+        }
+        //$subcategoria_producto = $_POST['subcategoria_producto'];
+        $descripcion = $_POST['descripcion'];
+        if (isset($_POST['serializado']))
+            {
+                $serializado = 1;
+            }
+            else
+            {
+                $serializado = 0;
+            }
+        $atr1_producto = $_POST['atr1_producto'];
+        $atr2_producto = $_POST['atr2_producto'];
+        $atr3_producto = $_POST['atr3_producto'];
+        $atr4_producto = $_POST['atr4_producto'];
+        $atr5_producto = $_POST['atr5_producto'];
+        $stock_min = $_POST['stock_min'];
+        $stock_max = $_POST['stock_max'];
+        $ext_p = $_POST['ext_p'];
+        $costo = $_POST['costo'];
+        $costo_iva = $_POST['costo_iva'];
+        $costo_contado = $_POST['costo_contado'];
+        if(isset($_POST['costo_especial']))
+        {
+            $costo_especial = $_POST['costo_especial'];
+        }
+        else
+        {   
+            $costo_especial = null;
+        }
+        $costo_cr1 = $_POST['costo_cr1'];
+        $costo_cr2 = $_POST['costo_cr2'];
+        $costo_p1 = $_POST['costo_p1'];
+        $costo_p2 = $_POST['costo_p2'];
+        $costo_eq = $_POST['costo_eq'];
+
+        $update_producto = mysqli_query($conexion, "UPDATE producto set identificador =  '$identificador', codigo_barras = ".(!empty($codigo_barras) ? "'$codigo_barras'" : "NULL").", categoria = '$categoria_producto', subcategoria = ".($subcategoria_producto!=0 ? "'$subcategoria_producto'" : "NULL").", descripcion = ".(!empty($descripcion) ? "'$descripcion'" : "NULL").", serializado = $serializado, atr1_producto = '$atr1_producto', atr2_producto = ".(!empty($atr2_producto) ? "'$atr2_producto'" : "NULL").", atr3_producto = ".(!empty($atr3_producto) ? "'$atr3_producto'" : "NULL").", atr4_producto = ".(!empty($atr4_producto) ? "'$atr4_producto'" : "NULL").", atr5_producto = ".(!empty($atr5_producto) ? "'$atr5_producto'" : "NULL").", stock_min = ".(!empty($stock_min) ? "'$stock_min'" : "NULL").", stock_max = ".(!empty($stock_max) ? "'$stock_max'" : "NULL").", ext_p = ".(!empty($ext_p) ? "'$ext_p'" : "NULL").", costo = $costo, costo_iva = $costo_iva, costo_contado = $costo_contado, costo_especial = ".(!empty($costo_especial) ? "$costo_especial" : "NULL").", costo_cr1 = $costo_cr1, costo_cr2 = $costo_cr2, costo_p1 = $costo_p1, costo_p2 = $costo_p2, costo_eq = $costo_eq WHERE idproducto = '$id_producto'");
+        if ($update_producto) 
+        {
+            //edito bien
+            $producto_result = 3;
+            //$modal = "$('#mensaje_success').modal('show');";
+        }
+        else
+        {
+            $producto_result = 0;
+            //$modal = "$('#mensaje_error').modal('show');";
+            //echo mysqli_error($conexion);
+        }
+    }
+  }
+  else
+  {
+    //algun error cabron
+    $producto_result = 0;
+  }
+
+  //$producto_result = mysqli_error($conexion);
+  //sleep(5);
+  //return
+  echo json_encode($producto_result,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+

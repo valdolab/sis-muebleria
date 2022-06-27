@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 26-06-2022 a las 01:54:34
+-- Tiempo de generación: 27-06-2022 a las 11:47:42
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS `categoria` (
 
 INSERT INTO `categoria` (`idcategoria`, `nombre`, `tiene_subcat`, `atr1`, `atr2`, `atr3`, `atr4`, `atr5`, `contado`, `especial`, `base_inicial_c1`, `ganancia_inicial_c1`, `rango_c1`, `ganancia_subsecuente_c1`, `limite_costo_c1`, `base_inicial_c2`, `ganancia_inicial_c2`, `rango_c2`, `ganancia_subsecuente_c2`, `limite_costo_c2`, `meses_pago`, `meses_garantia`, `creado_en`) VALUES
 ('00095e94-c070-11ec-8edf-18c04dae039e', 'ASD', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-04-22 00:13:47'),
+('4df9bbf2-f5aa-11ec-9ebe-d481d7c3a9ad', 'PRUEBA2', 0, 'MARCA', 'QWE', 'QWE', 'QWE', 'QWE', 12, 12, 2000, 100, 100, 80, 10000, 2000, 150, 200, 130, 20000, 12, 12, '2022-06-26 23:47:08'),
 ('5a0be372-c010-11ec-a813-d481d7c3a9ad', 'BICIBLETA', 0, 'MARCA', 'TAMAÑO', 'LLANTAS', 'TIPO', NULL, 12, 22, 11, 11, 11, 11, 11, 22, 22, 22, 22, 22, 3, 3, '2022-04-22 00:13:47'),
 ('6b149c84-c010-11ec-a813-d481d7c3a9ad', 'LINEA BLANCA', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-04-22 00:13:47'),
 ('92ebf98d-c966-11ec-abb6-d481d7c3a9ad', 'ELECTRONICA', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-05-01 15:51:17'),
@@ -340,6 +341,7 @@ INSERT INTO `producto` (`idproducto`, `identificador`, `codigo_barras`, `categor
 ('66bfc35f-c1d7-11ec-91b0-d481d7c3a9ad', 'asd', NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'Aquí va la descricion mas detalla del producto', 1, 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, NULL, 17, 19.72, 22.0864, 26.945408, 21.8892, 24.0584, 0.0273615, 0.030073, 400, '2022-04-22 00:59:04'),
 ('8f2d4de2-c96a-11ec-abb6-d481d7c3a9ad', '32h5g', NULL, '92ebf98d-c966-11ec-abb6-d481d7c3a9ad', 'c1451ae3-c966-11ec-abb6-d481d7c3a9ad', 'tele 32 smart', 1, 'hisense', '32', 'hd', NULL, NULL, NULL, NULL, NULL, 3200, 3712, 4825.6, 5011.2, 7424, 9280, 8, 10, 464, '2022-05-01 16:19:48'),
 ('9b58146b-cc01-11ec-8195-d481d7c3a9ad', 'wp100-asd006', NULL, '00095e94-c070-11ec-8edf-18c04dae039e', 'ae064f03-c07b-11ec-8edf-18c04dae039e', 'prueba con identificador en blanco', 1, 'SAMSUNG', 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, 3000, 3480, 3897.6, 3897.6, 3897.6, 3897.6, 13.44, 13.44, 400, '2022-05-04 23:26:18'),
+('b2b0fca7-f60e-11ec-9ebe-d481d7c3a9ad', 'wp100-asd0010', NULL, '4df9bbf2-f5aa-11ec-9ebe-d481d7c3a9ad', NULL, 'asdasd', 0, 'asd', 'asd', 'asd', 'asd', 'asd', 12, 12, 12, 4600, 5336, 5976.32, 5976.32, 7843.92, 11419.04, 17.64, 25.68, 400, '2022-06-27 11:45:44'),
 ('ecf8fb02-c680-11ec-abb6-d481d7c3a9ad', 'wp100-asd005', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora LG', 0, 'LG', '6', '2', '12', '1', NULL, NULL, NULL, 16, 18.56, 20.6016, 20.807616, 20.6016, 20.416, 0.025752, 0.02552, 400, '2022-04-27 23:22:37');
 
 -- --------------------------------------------------------
@@ -424,7 +426,7 @@ CREATE TABLE IF NOT EXISTS `subcategoria` (
 --
 
 INSERT INTO `subcategoria` (`idsubcategoria`, `nombre`, `categoria`, `atr1`, `atr2`, `atr3`, `atr4`, `atr5`, `contado`, `especial`, `base_inicial_c1`, `ganancia_inicial_c1`, `rango_c1`, `ganancia_subsecuente_c1`, `limite_costo_c1`, `base_inicial_c2`, `ganancia_inicial_c2`, `rango_c2`, `ganancia_subsecuente_c2`, `limite_costo_c2`, `meses_pago`, `meses_garantia`, `creado_en`) VALUES
-('47422906-ccd7-11ec-8195-d481d7c3a9ad', 'PRUEBA', 'c18a4e3f-ccd6-11ec-8195-d481d7c3a9ad', 'MARCA', 'ASD', 'ASD', 'ASD', NULL, 21, NULL, 12, 0, 0, 0, 0, 2, NULL, NULL, NULL, NULL, 4, 12, '2022-05-06 00:55:48'),
+('47422906-ccd7-11ec-8195-d481d7c3a9ad', 'PRUEBA', 'c18a4e3f-ccd6-11ec-8195-d481d7c3a9ad', 'MARCA', 'ASD', 'ASD', 'ASD', NULL, 21, 12, 12, 1, 1, 1, 1, 2, 12, 12, 12, 12, 4, 12, '2022-05-06 00:55:48'),
 ('9aded115-c07a-11ec-8edf-18c04dae039e', 'LAVADORA', '6b149c84-c010-11ec-a813-d481d7c3a9ad', 'MARCA', 'KG', 'TAMAÑO', 'PESO', 'PRUEBA', 11, 1, 11, 0, 0, 0, 0, 10, NULL, NULL, NULL, NULL, 12, 6, '2022-04-22 00:14:19'),
 ('9e77b6b3-c1a7-11ec-91b0-d481d7c3a9ad', 'LICUADORA', '6b149c84-c010-11ec-a813-d481d7c3a9ad', 'MARCA', 'ASPAS', 'MATERIAL', 'TAMAÑO', NULL, 2, 12, 11, 0, 0, 0, 0, 22, NULL, NULL, NULL, NULL, 4, 4, '2022-04-22 00:14:19'),
 ('ae064f03-c07b-11ec-8edf-18c04dae039e', 'ASD', '00095e94-c070-11ec-8edf-18c04dae039e', 'MARCA', 'ASD', 'ASD', 'ASD', 'ASD', 12, 12, 12, 0, 0, 0, 0, 12, NULL, NULL, NULL, NULL, 12, 12, '2022-04-22 00:14:19'),
