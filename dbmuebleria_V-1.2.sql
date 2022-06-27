@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 27-06-2022 a las 11:47:42
+-- Tiempo de generación: 27-06-2022 a las 21:52:55
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -280,15 +280,9 @@ CREATE TABLE IF NOT EXISTS `permiso_usuario` (
 
 INSERT INTO `permiso_usuario` (`permiso_idpermiso`, `permiso_idusuario`) VALUES
 (4, 'OSV'),
-(4, 'prueba'),
-(5, 'prueba'),
-(6, 'prueba'),
 (12, 'OSV'),
-(12, 'prueba'),
 (13, 'OSV'),
-(13, 'prueba'),
-(15, 'OSV'),
-(15, 'prueba');
+(15, 'OSV');
 
 -- --------------------------------------------------------
 
@@ -505,10 +499,8 @@ CREATE TABLE IF NOT EXISTS `sucursal_usuario` (
 --
 
 INSERT INTO `sucursal_usuario` (`sucursal_idusuario`, `sucursal_idsucursales`) VALUES
-('IGERAG', 1),
-('OSV', 1),
-('IGERAG', 2),
-('prueba', 2);
+('Luis', 1),
+('Luis', 2);
 
 -- --------------------------------------------------------
 
@@ -542,7 +534,7 @@ INSERT INTO `tipo` (`idtipo`, `nombre_tipo`) VALUES
 
 DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE IF NOT EXISTS `usuario` (
-  `idusuario` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `usuario_acceso` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `nombre` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
   `pass` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `rol` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
@@ -551,19 +543,18 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `superadmin` tinyint(1) NOT NULL,
   `no_user` int(11) NOT NULL AUTO_INCREMENT,
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`idusuario`),
+  PRIMARY KEY (`usuario_acceso`),
   KEY `tiene el puesto` (`puesto`),
   KEY `no_user` (`no_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Tabla para manejar los usuarios del sistema';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Tabla para manejar los usuarios del sistema';
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`idusuario`, `nombre`, `pass`, `rol`, `puesto`, `estado`, `superadmin`, `no_user`, `creado_en`) VALUES
-('IGERAG', 'Ruben Aguilar González', '81df10368e0655e4801b66269fd8b973', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 1, '2022-03-29 05:39:17'),
-('OSV', 'Osvaldo David Velazquez', '0c04e1d2f9dec7007ecc22862711b57a', 'Usurario', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 0, 2, '2022-03-29 05:39:17'),
-('prueba', 'user de prueba', 'c893bad68927b457dbed39460e6afd62', 'Administrador', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 0, 3, '2022-05-09 00:59:03');
+INSERT INTO `usuario` (`usuario_acceso`, `nombre`, `pass`, `rol`, `puesto`, `estado`, `superadmin`, `no_user`, `creado_en`) VALUES
+('Luis', 'Luis Augusto Von Duben Aquino', 'c44688b5061756b3cca2b86c016a1535', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 1, '2022-03-29 05:39:17'),
+('OSV', 'Osvaldo David Velazquez', '0c04e1d2f9dec7007ecc22862711b57a', 'Usurario', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 0, 2, '2022-03-29 05:39:17');
 
 -- --------------------------------------------------------
 
@@ -610,7 +601,7 @@ ALTER TABLE `documento`
 -- Filtros para la tabla `permiso_usuario`
 --
 ALTER TABLE `permiso_usuario`
-  ADD CONSTRAINT `asignado al` FOREIGN KEY (`permiso_idusuario`) REFERENCES `usuario` (`idusuario`),
+  ADD CONSTRAINT `asignado al` FOREIGN KEY (`permiso_idusuario`) REFERENCES `usuario` (`usuario_acceso`),
   ADD CONSTRAINT `es el` FOREIGN KEY (`permiso_idpermiso`) REFERENCES `permiso` (`idpermiso`);
 
 --
@@ -649,7 +640,7 @@ ALTER TABLE `sucursales`
 --
 ALTER TABLE `sucursal_usuario`
   ADD CONSTRAINT `asignado a` FOREIGN KEY (`sucursal_idsucursales`) REFERENCES `sucursales` (`idsucursales`),
-  ADD CONSTRAINT `tiene acceso a` FOREIGN KEY (`sucursal_idusuario`) REFERENCES `usuario` (`idusuario`);
+  ADD CONSTRAINT `tiene acceso a` FOREIGN KEY (`sucursal_idusuario`) REFERENCES `usuario` (`usuario_acceso`);
 
 --
 -- Filtros para la tabla `usuario`

@@ -51,24 +51,26 @@ if (!empty($_POST))
           #poner checkboxs para ver de cuales quieres cambiar 
           #ver cuales checkboxs estan seleccionados
           #ACTUALIZA IDUSUARIO
+          $usuario_repetido = 0;
           if (isset($_POST['actualizar_idusuario']))
           {
             #si esta palomeado el checkbox hace esto, o sea significa que quiere actualizar ese campo
             $id_user = $_POST['usuario'];
             
-            $query = mysqli_query($conexion, "SELECT * FROM usuario where idusuario = '$idusuario'");
-            $a = mysqli_fetch_array($query);
-            if (mysqli_fetch_array($query) > 0) 
+            $query = mysqli_query($conexion, "SELECT * FROM usuario where idusuario = '$id_user'");
+            $usuario_repetido = mysqli_num_rows($query);
+            if ($usuario_repetido > 0) 
             {
-                $alert = '<div class="alert alert-warning" role="alert">
-                            El usuario ya existe, introduce otro diferente
-                        </div>';
+                $modal = "$('#mensaje_repetido').modal('show');";
             }
             else
             {
               $query_insert2 = mysqli_query($conexion, "UPDATE usuario SET idusuario='$id_user' where idusuario = '$idusuario'");
 
               $sql_select = mysqli_query($conexion,"SELECT sucursal_idsucursales FROM sucursal_usuario where sucursal_idusuario = '$idusuario'"); 
+
+              echo "UPDATE usuario SET idusuario='$id_user' where idusuario = '$idusuario'";
+              
               $check_sucursales = mysqli_fetch_assoc($sql_select);
               #insertamos las sucursales al nuevo idusario
               $con = 0;
@@ -109,125 +111,163 @@ if (!empty($_POST))
             }
           }#en el ELSE no hacer nada, no actulizar el campo
 
-          #ACTUALIZA NOMBRE
           $flag_act_correcto = 0;
-          if (isset($_POST['actualizar_nombre']))
+          if($usuario_repetido == 0)
           {
-            #si esta palomeado el checkbox hace esto, o sea significa que quiere actualizar ese campo
-            $nombre = $_POST['nombre'];
-            $query_insert1 = mysqli_query($conexion, "UPDATE usuario SET nombre='$nombre' where idusuario='$idusuario'");
-                    if (!$query_insert1) 
-                    {
-                      $flag_act_correcto = 1;
-                    }
-          }#en el ELSE no hacer nada, no actulizar el campo
-          
-          #ACTUALIZA CONTRASEÑA
-          if (isset($_POST['actualizar_pass']))
-          {
-            #si esta palomeado el checkbox hace esto, o sea significa que quiere actualizar ese campo
-            $pass = md5($_POST['pass']);
-            $query_insert3 = mysqli_query($conexion, "UPDATE usuario SET pass='$pass' where idusuario='$idusuario'");
-                    if (!$query_insert3) 
-                    {
-                              $flag_act_correcto = 1;
-                    }
-          }#en el ELSE no hacer nada, no actulizar el campo
-
-          #ACTUALIZA ROL
-          if (isset($_POST['actualizar_rol']))
-          {
-            #si esta palomeado el checkbox hace esto, o sea significa que quiere actualizar ese campo
-            $rol = $_POST['rol'];
-            if($rol == "SuperAdmin")
-            {
-                $superadmin = 1;
-            }
-            else
-            {
-                $superadmin = 0;
-            }
-            $query_insert4 = mysqli_query($conexion, "UPDATE usuario SET rol='$rol', superadmin=$superadmin where idusuario='$idusuario'");
-                    if (!$query_insert4) 
-                    {
-                              $flag_act_correcto = 1;
-                    }
-          }#en el ELSE no hacer nada, no actulizar el campo
-
-          #ACTUALIZA PUESTO
-          if (isset($_POST['actualizar_puesto']))
-          {
-            #si esta palomeado el checkbox hace esto, o sea significa que quiere actualizar ese campo
-            $puesto = $_POST['puesto'];
-            $query_insert5 = mysqli_query($conexion, "UPDATE usuario SET puesto=$puesto where idusuario='$idusuario'");
-                    if (!$query_insert5) 
-                    {
-                              $flag_act_correcto = 1;
-                    }
-          }#en el ELSE no hacer nada, no actulizar el campo
-
-          #ACTUALIZA SUCURSAL O SUCURSALES
-          if (isset($_POST['actualizar_sucursal']))
-          {
-            #si esta palomeado el checkbox hace esto, o sea significa que quiere actualizar ese campo
-            $sucursal = $_POST['sucursal'];
-
-            #===========
-            if (sizeof($sucursal) != 1)
+              #ACTUALIZA NOMBRE
+              if (isset($_POST['actualizar_nombre']))
               {
-                    $con = 0;
-                    #sliminamos todo de ese usuario en la tabla para luego insertar los nuevos
-                    $sql_delete = mysqli_query($conexion, "DELETE FROM sucursal_usuario WHERE sucursal_idusuario = '$idusuario'");
-                    if (!$sql_delete) 
-                    {
-                        $flag_act_correcto = 1;
-                    }
-                    foreach($sucursal as $value)
-                    {
-                        $sql_insert = mysqli_query($conexion, "INSERT INTO sucursal_usuario(sucursal_idusuario,sucursal_idsucursales) values ('$idusuario', $value)");
-                        if ($sql_insert) 
+                #si esta palomeado el checkbox hace esto, o sea significa que quiere actualizar ese campo
+                $nombre = $_POST['nombre'];
+                $query_insert1 = mysqli_query($conexion, "UPDATE usuario SET nombre='$nombre' where idusuario='$idusuario'");
+                        if (!$query_insert1) 
                         {
-                          $con = $con + 1;
-                        }
-                    }
-                    if ($con != sizeof($sucursal)) 
-                      {
                           $flag_act_correcto = 1;
-                      }  
-              }
-              else
+                        }
+              }#en el ELSE no hacer nada, no actulizar el campo
+              
+              #ACTUALIZA CONTRASEÑA
+              if (isset($_POST['actualizar_pass']))
               {
-                
-                $sql_delete2 = mysqli_query($conexion, "DELETE FROM sucursal_usuario WHERE sucursal_idusuario = '$idusuario'");
-                        if (!$sql_delete2) 
+                #si esta palomeado el checkbox hace esto, o sea significa que quiere actualizar ese campo
+                $pass = md5($_POST['pass']);
+                $query_insert3 = mysqli_query($conexion, "UPDATE usuario SET pass='$pass' where idusuario='$idusuario'");
+                        if (!$query_insert3) 
                         {
                                   $flag_act_correcto = 1;
                         }
-                $sucursal_val = $sucursal[0];
-                $sql_insert2 = mysqli_query($conexion, "INSERT INTO sucursal_usuario(sucursal_idusuario,sucursal_idsucursales) values ('$idusuario', $sucursal_val)");
-                  if (!$sql_insert2)
+              }#en el ELSE no hacer nada, no actulizar el campo
+
+              #ACTUALIZA ROL
+              if (isset($_POST['actualizar_rol']))
+              {
+                #si esta palomeado el checkbox hace esto, o sea significa que quiere actualizar ese campo
+                $rol = $_POST['rol'];
+                if($rol == "SuperAdmin")
+                {
+                    $superadmin = 1;
+                }
+                else
+                {
+                    $superadmin = 0;
+                }
+                $query_insert4 = mysqli_query($conexion, "UPDATE usuario SET rol='$rol', superadmin=$superadmin where idusuario='$idusuario'");
+                        if (!$query_insert4) 
+                        {
+                                  $flag_act_correcto = 1;
+                        }
+              }#en el ELSE no hacer nada, no actulizar el campo
+
+              #ACTUALIZA PUESTO
+              if (isset($_POST['actualizar_puesto']))
+              {
+                #si esta palomeado el checkbox hace esto, o sea significa que quiere actualizar ese campo
+                $puesto = $_POST['puesto'];
+                $query_insert5 = mysqli_query($conexion, "UPDATE usuario SET puesto=$puesto where idusuario='$idusuario'");
+                        if (!$query_insert5) 
+                        {
+                                  $flag_act_correcto = 1;
+                        }
+              }#en el ELSE no hacer nada, no actulizar el campo
+
+              #ACTUALIZA SUCURSAL O SUCURSALES
+              if (isset($_POST['actualizar_sucursal']))
+              {
+                #si esta palomeado el checkbox hace esto, o sea significa que quiere actualizar ese campo
+                $sucursal = $_POST['sucursal'];
+
+                #===========
+                if (sizeof($sucursal) != 1)
                   {
-                      $flag_act_correcto = 1;
+                        $con = 0;
+                        #sliminamos todo de ese usuario en la tabla para luego insertar los nuevos
+                        $sql_delete = mysqli_query($conexion, "DELETE FROM sucursal_usuario WHERE sucursal_idusuario = '$idusuario'");
+                        if (!$sql_delete) 
+                        {
+                            $flag_act_correcto = 1;
+                        }
+                        foreach($sucursal as $value)
+                        {
+                            $sql_insert = mysqli_query($conexion, "INSERT INTO sucursal_usuario(sucursal_idusuario,sucursal_idsucursales) values ('$idusuario', $value)");
+                            if ($sql_insert) 
+                            {
+                              $con = $con + 1;
+                            }
+                        }
+                        if ($con != sizeof($sucursal)) 
+                          {
+                              $flag_act_correcto = 1;
+                          }  
                   }
-              } 
-            #==========
-          }#en el ELSE no hacer nada, no actulizar el campo
+                  else
+                  {
+                    
+                    $sql_delete2 = mysqli_query($conexion, "DELETE FROM sucursal_usuario WHERE sucursal_idusuario = '$idusuario'");
+                            if (!$sql_delete2) 
+                            {
+                                      $flag_act_correcto = 1;
+                            }
+                    $sucursal_val = $sucursal[0];
+                    $sql_insert2 = mysqli_query($conexion, "INSERT INTO sucursal_usuario(sucursal_idusuario,sucursal_idsucursales) values ('$idusuario', $sucursal_val)");
+                      if (!$sql_insert2)
+                      {
+                          $flag_act_correcto = 1;
+                      }
+                  } 
+                #==========
+              }#en el ELSE no hacer nada, no actulizar el campo
 
-          if ($flag_act_correcto == 1)
-          {
-            #si es igual a 1 hubo algun error en cualquiera al actualizar
-            $modal = "$('#mensaje_error').modal('show');";
+              if($flag_act_correcto == 1)
+              {
+                #si es igual a 1 hubo algun error en cualquiera al actualizar
+                $modal = "$('#mensaje_error').modal('show');";
 
-          }
-          else
-          {
-            #si no hubo ningun error, indicar que se hizo con exito
-            $modal = "$('#mensaje_success').modal('show');";
-          }
+              }
+              else
+              {
+                #si no hubo ningun error, indicar que se hizo con exito
+                $modal = "$('#mensaje_success').modal('show');";
+              }
+            }
+          echo mysqli_error($conexion);
         }
     }
 }
 ?>
+
+<div style="posicion: fixed; top: 15%;" id="mensaje_repetido" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    
+                    <div align="center" >
+                        <br>
+                        <!-- <img src="../img/ok.gif" width="100px" height="100px"> -->
+                        <div class="swal2-header">
+                            <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
+                                <div class="swal2-icon-content">!
+                                </div>
+                            </div>   
+                            <h2 id="swal2-title" class="swal2-title" style="display: flex;">¡El usuario ya existe!</h2>
+                        </div>
+
+                        <div class="swal2-content">
+                            <div id="swal2-content" class="swal2-html-container" style="display: block;">
+                               Favor de poner otro usuario
+                            </div>
+                        </div>
+                        <div class="swal2-actions" style="display: flex;">
+                            <button data-dismiss="modal" class="swal2-confirm swal2-styled" arial-label type="button" style="display: inline-block;">Ok</button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 <div style="posicion: fixed; top: 15%;" id="mensaje_error" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog" role="document">
@@ -254,7 +294,7 @@ if (!empty($_POST))
                             </div>
                         </div>
                         <div class="swal2-actions">
-                            <a href="sucursales.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
+                            <a href="usuarios.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
                         </div>
 
                     </div>
@@ -291,7 +331,7 @@ if (!empty($_POST))
                                 Usuario editado correctamete
                             </div>
                         </div>
-                        <div class="swal2-actions">
+                        <div class="swal2-actions" style="display: flex;">
                             <a href="usuarios.php" class="swal2-confirm swal2-styled" type="button" style="display: inline-block;">Ok</a>
                         </div>
 

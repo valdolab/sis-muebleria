@@ -1163,7 +1163,7 @@ $('#tiene_subcat').change(function()
   if (document.getElementById('tiene_subcat').checked)
   {
     $("#formAdd_cat :input:not(#nombre_cat,#tiene_subcat,#btn_guardarcat,#btn_cancerlarcat,#atr1,#action,#flagidcategoria)").attr("disabled","disabled");
-    $('#atr1,#atr2,#atr3,#atr4,#atr5,#contado,#especial,#credito1,#credito2,#mesespago,#garantia').val('');
+    $('#formAdd_cat :input:not(#nombre_cat,#tiene_subcat,#btn_guardarcat,#btn_cancerlarcat,#atr1,#action,#flagidcategoria)').val('');
   }
   else
   {
@@ -2315,7 +2315,7 @@ function eliminar_user(idusuario)
                   async: true,
                   data: {action:action,usuario:idusuario},
                   success: function(response) {
-                    //$('#prueba').val(response);
+                    //$('#prueba').html(response);
                     if (response == 0) 
                     {
                         Swal.fire({

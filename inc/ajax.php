@@ -7,7 +7,7 @@ include "accion/conexion.php";
 
     $query_delete2 = mysqli_query($conexion, "DELETE FROM sucursal_usuario WHERE sucursal_idusuario = '$idusuario'");
 
-    $query_select1 = mysqli_query($conexion,"SELECT *  from permiso_usuario WHERE sucursal_idusuario = '$idusuario'");
+    $query_select1 = mysqli_query($conexion,"SELECT *  from permiso_usuario WHERE permiso_idusuario = '$idusuario'");
     if (mysqli_num_rows($query_select1) > 0)
     {
       $query_delete3 = mysqli_query($conexion, "DELETE FROM permiso_usuario WHERE permiso_idusuario = '$idusuario'");
@@ -24,6 +24,7 @@ include "accion/conexion.php";
     }else {
       $elimino_usuario = 0;
     }
+    //$elimino_usuario = mysqli_error($conexion);
     echo json_encode($elimino_usuario,JSON_UNESCAPED_UNICODE);
   }
   exit;

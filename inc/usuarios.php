@@ -3,8 +3,6 @@ ob_start();
 include_once "header.php";
 include "accion/conexion.php";
 
-
-
 ?>
 
 <input onClick='se_agrego()' name='bandera' id='bandera' value='new' hidden>
@@ -53,7 +51,8 @@ include "accion/conexion.php";
     <div class="row">
         <div class="col-lg-10">
             <h4><strong>GESTION DE USUARIOS</strong></h4>
-            <!--<input type="" name="prueba" id="prueba">-->
+            <div id="prueba">
+            </div>
         </div>
 
         <div align="right" class="col-lg-2">
