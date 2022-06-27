@@ -1132,6 +1132,9 @@ if (!empty($_POST))
                           </div>
                         </div>
                     </div>
+                    <input type="number" name="asd1" id="asd1">
+                    <input type="number" name="asd2" id="asd2">
+
                     <input type="" name="flagid_producto" id="flagid_producto" readonly hidden>
                     <input type="" name="flag_selectsubcat" id="flag_selectsubcat" readonly hidden>
             </div>

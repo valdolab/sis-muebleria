@@ -744,7 +744,7 @@ $('#idestado_civil').change(function() {
                     $('#nueva_cat').modal('hide');
                     //limpiar el input
                     //$('#prueba').html(response);
-                    $('#nombre_cat,#atr1,#atr2,#atr3,#atr4,#atr5,#contado,#especial,#credito1,#credito2,#mesespago,#garantia').val('');
+                    //$('#nombre_cat,#atr1,#atr2,#atr3,#atr4,#atr5,#contado,#especial,#credito1,#credito2,#mesespago,#garantia').val('');
                     var data = $.parseJSON(response);
                     if(data.flag_insert == 1)
                     {
@@ -844,7 +844,7 @@ $('#idestado_civil').change(function() {
                     $('#nueva_subcat').modal('hide');
                     //limpiar el input
                     //$('#prueba').html(response);
-                    $('#nombre_subcat,#atr1_sub,#atr2_sub,#atr3_sub,#atr4_sub,#atr5_sub,#contado_sub,#especial_sub,#credito1_sub,#credito2_sub,#mesespago_sub,#garantia_sub').val('');
+                    //$('#nombre_subcat,#atr1_sub,#atr2_sub,#atr3_sub,#atr4_sub,#atr5_sub,#contado_sub,#especial_sub,#credito1_sub,#credito2_sub,#mesespago_sub,#garantia_sub').val('');
                     var data = $.parseJSON(response);
                     if(data.flag_insert == 1)
                     {
@@ -1697,8 +1697,19 @@ $('#filtro_atr5').change(function(e)
 //empezamos con lo de producto
 var contado = 0;
 var especial = 0;
-var cr1 = 0;
-var cr2 = 0;
+//cr1
+var base_inicial_c1 = 0;
+var ganancia_inicial_c1 = 0;
+var rango_c1 = 0;
+var ganancia_subsecuente_c1 = 0;
+var limite_costo_c1 = 0;
+//cr2
+var base_inicial_c2 = 0;
+var ganancia_inicial_c2 = 0;
+var rango_c2 = 0;
+var ganancia_subsecuente_c2 = 0;
+var limite_costo_c2 = 0;
+
 var meses_pago = 0;
 //interfaz de producto, mostrar los atributos de categorias o subcategorias
 $('#categoria_producto').change(function(e) 
@@ -1773,8 +1784,19 @@ $('#categoria_producto').change(function(e)
             //aqui poner los porcentajes de contado, especial, cr1, cr2 en inputs ocultos para despues usarlos para calcular el valor cuando se ponga costos
             contado = data.contado;
             especial = data.especial;
-            cr1 = data.credito1;
-            cr2 = data.credito2;
+            //cr1
+            base_inicial_c1 = parseFloat(data.base_inicial_c1);
+            ganancia_inicial_c1 = parseFloat(data.ganancia_inicial_c1);
+            rango_c1 = parseFloat(data.rango_c1);
+            ganancia_subsecuente_c1 = parseFloat(data.ganancia_subsecuente_c1);
+            limite_costo_c1 = parseFloat(data.limite_costo_c1);
+            //cr2
+            base_inicial_c2 = parseFloat(data.base_inicial_c2);
+            ganancia_inicial_c2 = parseFloat(data.ganancia_inicial_c2);
+            rango_c2 = parseFloat(data.rango_c2);
+            ganancia_subsecuente_c2 = parseFloat(data.ganancia_subsecuente_c2);
+            limite_costo_c2 = parseFloat(data.limite_costo_c2);
+
             meses_pago = data.meses_pago;
         }
         else
@@ -1794,8 +1816,18 @@ $('#categoria_producto').change(function(e)
             $('#subcategoria_producto').removeAttr('readonly');
             contado = 0;
             especial = 0;
-            cr1 = 0;
-            cr2 = 0;
+            //cr1
+            base_inicial_c1 = 0;
+            ganancia_inicial_c1 = 0;
+            rango_c1 = 0;
+            ganancia_subsecuente_c1 = 0;
+            limite_costo_c1 = 0;
+            //cr2
+            base_inicial_c2 = 0;
+            ganancia_inicial_c2 = 0;
+            rango_c2 = 0;
+            ganancia_subsecuente_c2 = 0;
+            limite_costo_c2 = 0;
             meses_pago = 0;
         }
         //$('#prueba').html(data); 
@@ -1874,8 +1906,19 @@ $('#subcategoria_producto').change(function(e)
             //aqui poner los porcentajes de contado, especial, cr1, cr2 en inputs ocultos para despues usarlos para calcular el valor cuando se ponga costos
             contado = data.contado;
             especial = data.especial;
-            cr1 = data.credito1;
-            cr2 = data.credito2;
+            //cr1
+            base_inicial_c1 = parseFloat(data.base_inicial_c1);
+            ganancia_inicial_c1 = parseFloat(data.ganancia_inicial_c1);
+            rango_c1 = parseFloat(data.rango_c1);
+            ganancia_subsecuente_c1 = parseFloat(data.ganancia_subsecuente_c1);
+            limite_costo_c1 = parseFloat(data.limite_costo_c1);
+            //cr2
+            base_inicial_c2 = parseFloat(data.base_inicial_c2);
+            ganancia_inicial_c2 = parseFloat(data.ganancia_inicial_c2);
+            rango_c2 = parseFloat(data.rango_c2);
+            ganancia_subsecuente_c2 = parseFloat(data.ganancia_subsecuente_c2);
+            limite_costo_c2 = parseFloat(data.limite_costo_c2);
+
             meses_pago = data.meses_pago;
 
         //$('#prueba').html(data); 
@@ -1913,26 +1956,75 @@ $('#costo').keyup(function(e)
             var costo_especial = costo_iva + (costo_iva*(especial/100));
             $('#costo_especial').val(costo_especial.toFixed(2));
         }
-        //credito1
-        if(cr1 == 0)
+
+        //==== credito1
+        if(base_inicial_c1 == 0)
         {
             $('#costo_cr1').val(0);
         }
         else
         {
+            //recorrer secuencia hasta encontrar el rango donde este el costo_iva
+            if(costo_iva < base_inicial_c1)
+            {
+                cr1 = ganancia_inicial_c1;
+            }
+            else if (costo_iva < (base_inicial_c1 + rango_c1))
+            {
+                cr1 = ganancia_subsecuente_c1;
+            }
+            else
+            {
+                var costo_temp = base_inicial_c1 + rango_c1;//2100
+                var ganancia_temp = ganancia_subsecuente_c1;// 80
+                while(true)
+                {
+                    costo_temp = costo_temp + rango_c1;//2200,2300
+                    ganancia_temp = ganancia_temp - 1;//79,78
+                    //2250<2200, 2250<2300,   //2100<=10000,2200<=10000
+                    if((costo_iva < costo_temp) || (costo_temp > limite_costo_c1))
+                    {
+                        cr1 = ganancia_temp;
+                        break;
+                    }
+                }
+            }
             var costo_cr1 = costo_iva + (costo_iva*(cr1/100));
             $('#costo_cr1').val(costo_cr1.toFixed(2));
+            $('#asd1').val(costo_temp);
+            $('#asd2').val(cr1);
         }
-        //credito2
-        if(cr2 == 0)
+        //==== credito2
+        if(base_inicial_c2 == 0)
         {
             $('#costo_cr2').val(0);
         }
         else
         {
+            //recorrer secuencia hasta encontrar el rango donde este el costo_iva
+            if(costo_iva < base_inicial_c2)
+            {
+                cr2 = ganancia_inicial_c2;
+            }
+            else if(costo_iva < base_inicial_c2 + rango_c2)
+            {
+                cr2 = ganancia_subsecuente_c2;
+            }
+            else
+            {
+                var costo_temp = base_inicial_c2;
+                var ganancia_temp = ganancia_inicial_c2;
+                while((costo_temp <= limite_costo_c2) || (costo_iva < costo_temp))
+                {
+                    costo_temp = costo_temp + rango_c2;
+                    ganancia_temp = ganancia_temp - 1;
+                    cr2 = ganancia_temp;
+                }
+            }
             var costo_cr2 = costo_iva + (costo_iva*(cr2/100));
             $('#costo_cr2').val(costo_cr2.toFixed(2));
         }
+
         //E-Q
         if(meses_pago == 0)
         {
