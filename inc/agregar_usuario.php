@@ -18,13 +18,16 @@ if (!empty($_POST))
         if($ban == 'newusuario')
         {
           $nombre = $_POST['nombre'];
-          $idusuario = $_POST['usuario'];
           $pass = md5($_POST['pass']);
           $rol = $_POST['rol'];
           $puesto = $_POST['puesto'];
           $sucursal = $_POST['sucursal'];
 
-          $query = mysqli_query($conexion, "SELECT idusuario FROM usuario where idusuario = '$idusuario'");
+          $usuario_acceso = $_POST['usuario'];
+          $resultIDtipo = mysqli_query($conexion, "SELECT UUID() as idtipo");
+          $idusuario = mysqli_fetch_assoc($resultIDtipo)['idtipo'];
+
+          $query = mysqli_query($conexion, "SELECT idusuario FROM usuario where usuario_acceso = '$usuario_acceso'");
           $result = mysqli_fetch_array($query);
           if ($result > 0) {
               $alert = '<div class="alert alert-warning" role="alert">
@@ -46,7 +49,7 @@ if (!empty($_POST))
 
               if (sizeof($sucursal) != 1) #es para insertar con varias sucursales, multisucursal
               {
-                    $query_insert = mysqli_query($conexion, "INSERT INTO usuario(idusuario,nombre,pass,rol,puesto,estado,superadmin) values ('$idusuario', '$nombre', '$pass', '$rol', '$puesto', 1, $superadmin)");
+                    $query_insert = mysqli_query($conexion, "INSERT INTO usuario(idusuario,usuario_acceso,nombre,pass,rol,puesto,estado,superadmin) values ('$idusuario', '$usuario_acceso', '$nombre', '$pass', '$rol', '$puesto', 1, $superadmin)");
                     if (!$query_insert)
                     { 
                               $alert = '<div class="alert alert-danger" role="alert">
@@ -84,7 +87,7 @@ if (!empty($_POST))
               else if(sizeof($sucursal) == 1)
               {
                 $sucursal_val = $sucursal[0];
-                $query_insert = mysqli_query($conexion, "INSERT INTO usuario(idusuario,nombre,pass,rol,puesto,estado,superadmin) values ('$idusuario', '$nombre', '$pass', '$rol' , '$puesto', 1, $superadmin)");
+                $query_insert = mysqli_query($conexion, "INSERT INTO usuario(idusuario,usuario_acceso,nombre,pass,rol,puesto,estado,superadmin) values ('$idusuario','$usuario_acceso', '$nombre', '$pass', '$rol' , '$puesto', 1, $superadmin)");
                     if (!$query_insert)
                     {
                         #$modal = "$('#mensaje_error').modal('show');"; 

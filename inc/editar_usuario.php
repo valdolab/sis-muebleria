@@ -18,7 +18,7 @@ else
 {
     $data = mysqli_fetch_array($sql);
     $up_nombre = $data['nombre'];
-    $up_idusuario = $data['idusuario'];
+    $up_idusuario = $data['usuario_acceso'];
     $up_rol = $data['rol'];
     $up_puesto = $data['puesto'];
 
@@ -57,7 +57,7 @@ if (!empty($_POST))
             #si esta palomeado el checkbox hace esto, o sea significa que quiere actualizar ese campo
             $id_user = $_POST['usuario'];
             
-            $query = mysqli_query($conexion, "SELECT * FROM usuario where idusuario = '$id_user'");
+            $query = mysqli_query($conexion, "SELECT * FROM usuario where usuario_acceso = '$id_user'");
             $usuario_repetido = mysqli_num_rows($query);
             if ($usuario_repetido > 0) 
             {
@@ -65,49 +65,11 @@ if (!empty($_POST))
             }
             else
             {
-              $query_insert2 = mysqli_query($conexion, "UPDATE usuario SET idusuario='$id_user' where idusuario = '$idusuario'");
+              $query_insert2 = mysqli_query($conexion, "UPDATE usuario SET usuario_acceso='$id_user' where idusuario = '$idusuario'");
 
               $sql_select = mysqli_query($conexion,"SELECT sucursal_idsucursales FROM sucursal_usuario where sucursal_idusuario = '$idusuario'"); 
-
-              echo "UPDATE usuario SET idusuario='$id_user' where idusuario = '$idusuario'";
               
-              $check_sucursales = mysqli_fetch_assoc($sql_select);
-              #insertamos las sucursales al nuevo idusario
-              $con = 0;
-                    #echo "value : ".$value.'<br/>';
-                    if (!$query_insert2) 
-                    {
-                        $flag_act_correcto = 1;
-                    }
-
-                    if(is_array($check_sucursales))
-                    {
-                        foreach($check_sucursales as $value)
-                        {
-                            $sql_insert2 = mysqli_query($conexion, "INSERT INTO sucursal_usuario(sucursal_idusuario,sucursal_idsucursales) values ('$id_user', $value)");
-                            if ($sql_insert2) 
-                            {
-                              $con = $con + 1;
-                            }
-                        }
-                        if ($con != sizeof($check_sucursales)) 
-                          {
-                              $flag_act_correcto = 1;
-                          } 
-                    }
-                    else
-                    {
-                        $sucursal_user = $check_sucursales['sucursal_idsucursales'];
-                        $sql_insert3 = mysqli_query($conexion, "INSERT INTO sucursal_usuario(sucursal_idusuario,sucursal_idsucursales) values ('$id_user', $sucursal_user)");
-                        if (!$sql_insert3) 
-                        {
-                            $flag_act_correcto = 1;
-                        }
-                    }
-
-              #borramos las sucursales del viejo usuario
-              $query_insert2_1 = mysqli_query($conexion, "DELETE FROM sucursal_usuario WHERE sucursal_idusuario = '$idusuario'");
-              $idusuario = $id_user;
+              echo "UPDATE usuario SET idusuario='$id_user' where idusuario = '$idusuario'";
             }
           }#en el ELSE no hacer nada, no actulizar el campo
 

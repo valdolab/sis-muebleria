@@ -268,7 +268,7 @@ INSERT INTO `permiso` (`idpermiso`, `permiso`) VALUES
 DROP TABLE IF EXISTS `permiso_usuario`;
 CREATE TABLE IF NOT EXISTS `permiso_usuario` (
   `permiso_idpermiso` int(11) NOT NULL,
-  `permiso_idusuario` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `permiso_idusuario` char(36) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`permiso_idpermiso`,`permiso_idusuario`),
   KEY `asignado al` (`permiso_idusuario`),
   KEY `es el` (`permiso_idpermiso`)
@@ -279,10 +279,10 @@ CREATE TABLE IF NOT EXISTS `permiso_usuario` (
 --
 
 INSERT INTO `permiso_usuario` (`permiso_idpermiso`, `permiso_idusuario`) VALUES
-(4, 'OSV'),
-(12, 'OSV'),
-(13, 'OSV'),
-(15, 'OSV');
+(4, '0a96aada-bd56-11ec-b09f-asjg75jfl123'),
+(12, '0a96aada-bd56-11ec-b09f-asjg75jfl123'),
+(13, '0a96aada-bd56-11ec-b09f-asjg75jfl123'),
+(15, '0a96aada-bd56-11ec-b09f-asjg75jfl123');
 
 -- --------------------------------------------------------
 
@@ -487,7 +487,7 @@ INSERT INTO `sucursales` (`idsucursales`, `sucursales`, `descripcion`, `estado`,
 
 DROP TABLE IF EXISTS `sucursal_usuario`;
 CREATE TABLE IF NOT EXISTS `sucursal_usuario` (
-  `sucursal_idusuario` varchar(100) COLLATE utf8_spanish_ci NOT NULL COMMENT 'corresponde',
+  `sucursal_idusuario` char(36) COLLATE utf8_spanish_ci NOT NULL COMMENT 'corresponde',
   `sucursal_idsucursales` int(11) NOT NULL COMMENT 'tiene',
   PRIMARY KEY (`sucursal_idusuario`,`sucursal_idsucursales`),
   KEY `asignado a` (`sucursal_idsucursales`),
@@ -499,8 +499,8 @@ CREATE TABLE IF NOT EXISTS `sucursal_usuario` (
 --
 
 INSERT INTO `sucursal_usuario` (`sucursal_idusuario`, `sucursal_idsucursales`) VALUES
-('Luis', 1),
-('Luis', 2);
+('0a96aada-bd56-11ec-b09f-asjg75jfl382', 1),
+('0a96aada-bd56-11ec-b09f-asjg75jfl382', 2);
 
 -- --------------------------------------------------------
 
@@ -534,6 +534,7 @@ INSERT INTO `tipo` (`idtipo`, `nombre_tipo`) VALUES
 
 DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE IF NOT EXISTS `usuario` (
+  `idusuario` char(36) COLLATE utf8_spanish_ci NOT NULL,
   `usuario_acceso` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `nombre` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
   `pass` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
@@ -543,18 +544,18 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `superadmin` tinyint(1) NOT NULL,
   `no_user` int(11) NOT NULL AUTO_INCREMENT,
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`usuario_acceso`),
+  PRIMARY KEY (`idusuario`),
   KEY `tiene el puesto` (`puesto`),
   KEY `no_user` (`no_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Tabla para manejar los usuarios del sistema';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Tabla para manejar los usuarios del sistema';
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`usuario_acceso`, `nombre`, `pass`, `rol`, `puesto`, `estado`, `superadmin`, `no_user`, `creado_en`) VALUES
-('Luis', 'Luis Augusto Von Duben Aquino', 'c44688b5061756b3cca2b86c016a1535', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 1, '2022-03-29 05:39:17'),
-('OSV', 'Osvaldo David Velazquez', '0c04e1d2f9dec7007ecc22862711b57a', 'Usurario', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 0, 2, '2022-03-29 05:39:17');
+INSERT INTO `usuario` (`idusuario`, `usuario_acceso`, `nombre`, `pass`, `rol`, `puesto`, `estado`, `superadmin`, `no_user`, `creado_en`) VALUES
+('0a96aada-bd56-11ec-b09f-asjg75jfl382', 'Luis', 'Luis Augusto Von Duben Aquino', 'c44688b5061756b3cca2b86c016a1535', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 1, '2022-03-29 05:39:17'),
+('0a96aada-bd56-11ec-b09f-asjg75jfl123', 'OSV', 'Osvaldo David Velazquez', '0c04e1d2f9dec7007ecc22862711b57a', 'Usurario', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 0, 2, '2022-03-29 05:39:17');
 
 -- --------------------------------------------------------
 
@@ -601,7 +602,7 @@ ALTER TABLE `documento`
 -- Filtros para la tabla `permiso_usuario`
 --
 ALTER TABLE `permiso_usuario`
-  ADD CONSTRAINT `asignado al` FOREIGN KEY (`permiso_idusuario`) REFERENCES `usuario` (`usuario_acceso`),
+  ADD CONSTRAINT `asignado al` FOREIGN KEY (`permiso_idusuario`) REFERENCES `usuario` (`idusuario`),
   ADD CONSTRAINT `es el` FOREIGN KEY (`permiso_idpermiso`) REFERENCES `permiso` (`idpermiso`);
 
 --
@@ -640,7 +641,7 @@ ALTER TABLE `sucursales`
 --
 ALTER TABLE `sucursal_usuario`
   ADD CONSTRAINT `asignado a` FOREIGN KEY (`sucursal_idsucursales`) REFERENCES `sucursales` (`idsucursales`),
-  ADD CONSTRAINT `tiene acceso a` FOREIGN KEY (`sucursal_idusuario`) REFERENCES `usuario` (`usuario_acceso`);
+  ADD CONSTRAINT `tiene acceso a` FOREIGN KEY (`sucursal_idusuario`) REFERENCES `usuario` (`idusuario`);
 
 --
 -- Filtros para la tabla `usuario`

@@ -3,7 +3,11 @@
 require_once "inc/accion/conexion.php";
 if ($_POST['action'] == 'searchSucursal') {
   if (!empty($_POST['usuario'])) {
-    $idusuario = $_POST['usuario'];
+    $usuario_acceso = $_POST['usuario'];
+
+    //calculamos el id del usuario
+    $sql_iduser = mysqli_query($conexion, "SELECT idusuario from usuario where usuario_acceso = '$usuario_acceso'");
+    $idusuario = mysqli_fetch_array($sql_iduser)['idusuario'];
 
     $query = mysqli_query($conexion, "SELECT idsucursales,sucursales from sucursales where idsucursales in (select sucursal_idsucursales from sucursal_usuario where sucursal_idusuario='$idusuario')");
     mysqli_close($conexion);

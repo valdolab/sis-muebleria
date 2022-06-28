@@ -82,7 +82,7 @@ include "accion/conexion.php";
         </thead>
         <tbody>
             <?php
-            $query = mysqli_query($conexion, "SELECT idusuario,nombre,pass,rol,puesto.puesto,estado,superadmin,no_user from usuario INNER JOIN puesto on usuario.puesto = puesto.idpuesto ORDER BY superadmin DESC, rol ASC");
+            $query = mysqli_query($conexion, "SELECT idusuario,usuario_acceso,nombre,pass,rol,puesto.puesto,estado,superadmin,no_user from usuario INNER JOIN puesto on usuario.puesto = puesto.idpuesto ORDER BY superadmin DESC, rol ASC");
             $result = mysqli_num_rows($query);
             if ($result > 0) 
             {
@@ -119,8 +119,8 @@ include "accion/conexion.php";
                             $lista_tipo = $lista_tipo.'<li>'.$row["nombre_tipo"].'</li>';
                         }
 
-                        $sucursales = "<a data-toggle='modal' data-target='#ver_sucursales' onClick='visualizar(\"$data[idusuario]\",\"$lista_suc\");' href='#'>Ver todas <i class='fas fa-eye'></i></a>"; 
-                        $tipos = "<a data-toggle='modal' data-target='#ver_sucursales' onClick='visualizar(\"$data[idusuario]\",\"$lista_tipo\");' href='#'>Ver todas <i class='fas fa-eye'></i></a>";                        
+                        $sucursales = "<a data-toggle='modal' data-target='#ver_sucursales' onClick='visualizar(\"$data[usuario_acceso]\",\"$lista_suc\");' href='#'>Ver todas <i class='fas fa-eye'></i></a>"; 
+                        $tipos = "<a data-toggle='modal' data-target='#ver_sucursales' onClick='visualizar(\"$data[usuario_acceso]\",\"$lista_tipo\");' href='#'>Ver todas <i class='fas fa-eye'></i></a>";                        
                     }
 
                     ##poner que no se puueda borrar a superadmin
@@ -146,7 +146,7 @@ include "accion/conexion.php";
                     ?>
                     <tr>
                         <td><?php echo "US-".$ceros.$id; ?></td>
-                        <td><?php echo $data['idusuario']; ?></td>
+                        <td><?php echo $data['usuario_acceso']; ?></td>
                         <td><?php echo $data['nombre']; ?></td>
                         <td><?php echo $data['rol']; ?></td>
                         <td><?php echo $data['puesto']; ?></td>

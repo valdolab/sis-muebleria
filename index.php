@@ -25,7 +25,7 @@ if (!empty($_SESSION['active'])) {
         $idsucursal = $_POST['idsucursal_flag'];
       }
 
-      $query = mysqli_query($conexion, "SELECT idusuario,nombre,pass,rol FROM usuario WHERE idusuario = '$user' AND pass = '$clave'");
+      $query = mysqli_query($conexion, "SELECT idusuario,usuario_acceso,nombre,pass,rol FROM usuario WHERE usuario_acceso = '$user' AND pass = '$clave'");
       $resultado = mysqli_num_rows($query);
       if ($resultado > 0) 
       {
@@ -33,6 +33,7 @@ if (!empty($_SESSION['active'])) {
 
         $_SESSION['active'] = true;
         $_SESSION['iduser'] = $dato['idusuario'];
+        $_SESSION['iduser_id'] = $dato['usuario_acceso'];
         $_SESSION['nombre'] = $dato['nombre'];;
         $_SESSION['rol'] = $dato['rol'];
         $_SESSION['idsucursal'] = $idsucursal;
