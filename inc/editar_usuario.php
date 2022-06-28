@@ -69,7 +69,7 @@ if (!empty($_POST))
 
               $sql_select = mysqli_query($conexion,"SELECT sucursal_idsucursales FROM sucursal_usuario where sucursal_idusuario = '$idusuario'"); 
               
-              echo "UPDATE usuario SET idusuario='$id_user' where idusuario = '$idusuario'";
+              //echo "UPDATE usuario SET idusuario='$id_user' where idusuario = '$idusuario'";
             }
           }#en el ELSE no hacer nada, no actulizar el campo
 

@@ -83,7 +83,7 @@ include "accion/conexion.php";
     if($numusers_assigned > 0)
     {
       $flag_changeUsers = 1;
-      //actualizar cada alumno de esta sucursal a la sucursal matriz
+      //actualizar cada usuario de esta sucursal a la sucursal matriz
       while($row = mysqli_fetch_assoc($select_findusers))
       {
         //verificar si el usuario de esta sucursal a borrar no tiene asgnada paralelamente la sucursal matriz, si es así no hacer nada
@@ -105,7 +105,7 @@ include "accion/conexion.php";
 
     //ahora si borramos la sucursal
     $query_delete_sucursal = mysqli_query($conexion, "DELETE FROM sucursales WHERE idsucursales = $id_sucursal");
-    mysqli_close($conexion);
+    //mysqli_close($conexion);
     //calcular si todo fue bien o no
     if ($query_delete_sucursal)
     {
@@ -124,6 +124,7 @@ include "accion/conexion.php";
       $elimino_sucursal = 0;
     }
 
+    $elimino_sucursal = mysqli_error($conexion);
     echo json_encode($elimino_sucursal,JSON_UNESCAPED_UNICODE);
   }
   exit;
