@@ -15,7 +15,7 @@ else
 {
     $data = mysqli_fetch_array($sql);
     $up_nombre = $data['nombre'];
-    $up_idusuario = $data['idusuario'];
+    $up_idusuario = $data['usuario_acceso'];
     $up_rol = $data['rol'];
     $up_idpuesto = $data['puesto'];
     $sqlpuesto = mysqli_query($conexion, "SELECT puesto FROM puesto WHERE idpuesto = '$up_idpuesto'");

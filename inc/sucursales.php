@@ -12,7 +12,8 @@ include "accion/conexion.php";
     <div class="row">
         <div class="col-lg-10">
             <h4><strong>GESTION DE SUCURSALES</strong></h4>
-            <!--<input type="" name="prueba" id="prueba">-->
+            <div id="prueba">
+            </div>
         </div>
 
         <div align="right" class="col-lg-2">

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 27-06-2022 a las 21:52:55
+-- Tiempo de generación: 29-06-2022 a las 06:05:26
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -183,7 +183,7 @@ CREATE TABLE IF NOT EXISTS `documento` (
 --
 
 INSERT INTO `documento` (`iddocumento`, `name_documento`, `folio`, `serie`, `idsucursal`, `estado`, `creado_en`) VALUES
-(1, 'NOTA DE VENTA', 'MAT', '0000001', 2, 1, '2022-03-29 06:17:20'),
+(1, 'NOTA DE VENTA', 'MAT', '0000001', 1, 1, '2022-03-29 06:17:20'),
 (2, 'NOTA DE VENTA', 'TUX', '0000001', 1, 1, '2022-06-12 16:32:03');
 
 -- --------------------------------------------------------
@@ -468,7 +468,7 @@ CREATE TABLE IF NOT EXISTS `sucursales` (
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idsucursales`),
   KEY `es de tipo` (`tipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `sucursales`
@@ -476,8 +476,7 @@ CREATE TABLE IF NOT EXISTS `sucursales` (
 
 INSERT INTO `sucursales` (`idsucursales`, `sucursales`, `descripcion`, `estado`, `matriz`, `tipo`, `creado_en`) VALUES
 (1, 'Tuxtla-Matriz', 'Sucursal Matrix-Tuxtla Gutiérrez', 1, 1, 'a8791f44-bc7e-11ec-bf6e-d481d7c3a9ad', '2022-03-29 06:16:44'),
-(2, 'Galecio', 'Sucursal de Galecio, Chiapa de Corzo', 1, 0, 'asd91f44-bc7e-11ec-bf6e-d481d7c3a9ad', '2022-03-29 06:16:44'),
-(3, 'sucursal prueba', 'asd', 1, 0, 'a8791f44-bc7e-11ec-bf6e-d481d7c3a9ad', '2022-04-01 19:49:58');
+(2, 'Galecio', 'Sucursal de Galecio, Chiapa de Corzo', 1, 0, 'asd91f44-bc7e-11ec-bf6e-d481d7c3a9ad', '2022-03-29 06:16:44');
 
 -- --------------------------------------------------------
 
@@ -487,20 +486,22 @@ INSERT INTO `sucursales` (`idsucursales`, `sucursales`, `descripcion`, `estado`,
 
 DROP TABLE IF EXISTS `sucursal_usuario`;
 CREATE TABLE IF NOT EXISTS `sucursal_usuario` (
+  `idsucursal_usuario` int(11) NOT NULL AUTO_INCREMENT,
   `sucursal_idusuario` char(36) COLLATE utf8_spanish_ci NOT NULL COMMENT 'corresponde',
   `sucursal_idsucursales` int(11) NOT NULL COMMENT 'tiene',
-  PRIMARY KEY (`sucursal_idusuario`,`sucursal_idsucursales`),
+  PRIMARY KEY (`idsucursal_usuario`),
   KEY `asignado a` (`sucursal_idsucursales`),
   KEY `tiene acceso a` (`sucursal_idusuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `sucursal_usuario`
 --
 
-INSERT INTO `sucursal_usuario` (`sucursal_idusuario`, `sucursal_idsucursales`) VALUES
-('0a96aada-bd56-11ec-b09f-asjg75jfl382', 1),
-('0a96aada-bd56-11ec-b09f-asjg75jfl382', 2);
+INSERT INTO `sucursal_usuario` (`idsucursal_usuario`, `sucursal_idusuario`, `sucursal_idsucursales`) VALUES
+(1, '0a96aada-bd56-11ec-b09f-asjg75jfl382', 1),
+(3, '0a96aada-bd56-11ec-b09f-asjg75jfl382', 2),
+(8, '0a96aada-bd56-11ec-b09f-asjg75jfl123', 1);
 
 -- --------------------------------------------------------
 
@@ -554,8 +555,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 --
 
 INSERT INTO `usuario` (`idusuario`, `usuario_acceso`, `nombre`, `pass`, `rol`, `puesto`, `estado`, `superadmin`, `no_user`, `creado_en`) VALUES
-('0a96aada-bd56-11ec-b09f-asjg75jfl382', 'Luis', 'Luis Augusto Von Duben Aquino', 'c44688b5061756b3cca2b86c016a1535', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 1, '2022-03-29 05:39:17'),
-('0a96aada-bd56-11ec-b09f-asjg75jfl123', 'OSV', 'Osvaldo David Velazquez', '0c04e1d2f9dec7007ecc22862711b57a', 'Usurario', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 0, 2, '2022-03-29 05:39:17');
+('0a96aada-bd56-11ec-b09f-asjg75jfl123', 'IGERAG', 'Ruben Aguilar González', '81df10368e0655e4801b66269fd8b973', 'Usurario', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 0, 2, '2022-03-29 05:39:17'),
+('0a96aada-bd56-11ec-b09f-asjg75jfl382', 'Luis', 'Luis Augusto Von Duben Aquino', 'c44688b5061756b3cca2b86c016a1535', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 1, '2022-03-29 05:39:17');
 
 -- --------------------------------------------------------
 

@@ -5,8 +5,8 @@
     $clave = "";
     $bd = "dbmuebleria";
     #para el servidor
-    #$user = "id17012782_userdbmuebleria";
-    #$clave = "dA$oS%OpjJM3aOEU";
+    #$user = "id17012782_user_dbmuebleria";
+    #$clave = "Ga>lU3ovqV&sj$FU";
     #$bd = "id17012782_dbmuebleria";
 
     $conexion = mysqli_connect($host,$user,$clave,$bd);

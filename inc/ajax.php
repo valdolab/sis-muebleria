@@ -59,8 +59,8 @@ include "accion/conexion.php";
     $numusers_assigned = mysqli_num_rows($select_findusers);
 
     //numbers of docs finded
-    $select_finddocs = mysqli_query($conexion, "SELECT count(folio) as num_docs from documento where idsucursal = $id_sucursal");
-    $numdocs_assigned = mysqli_fetch_assoc($select_finddocs)['num_docs'];
+    $select_finddocs = mysqli_query($conexion, "SELECT iddocumento from documento where idsucursal = $id_sucursal");
+    $numdocs_assigned = mysqli_num_rows($select_finddocs);
     //then find the ID from matrix
     $select_findMatriz = mysqli_query($conexion, "SELECT idsucursales from sucursales where matriz = 1");
     $id_sucursalmatriz = mysqli_fetch_assoc($select_findMatriz)['idsucursales'];
@@ -68,10 +68,13 @@ include "accion/conexion.php";
     if($numdocs_assigned > 0)
     {
       $cambio_docs_ok = 1;
-      $insert_docs_matrix = mysqli_query($conexion, "UPDATE documento SET idsucursal = $id_sucursalmatriz");
-      if(!$insert_docs_matrix)
+      while($row = mysqli_fetch_assoc($select_finddocs))
       {
-        $cambio_docs_ok = 0;
+        $insert_docs_matrix = mysqli_query($conexion, "UPDATE documento SET idsucursal = $id_sucursalmatriz where iddocumento = $row[iddocumento]");
+        if(!$insert_docs_matrix)
+        {
+          $cambio_docs_ok = 0;
+        } 
       }
     }
     else
@@ -87,16 +90,21 @@ include "accion/conexion.php";
       while($row = mysqli_fetch_assoc($select_findusers))
       {
         //verificar si el usuario de esta sucursal a borrar no tiene asgnada paralelamente la sucursal matriz, si es así no hacer nada
-        $finduserINmatriz = mysqli_query($conexion, "SELECT sucursal_idusuario from sucursal_usuario where sucursal_idusuario = '$row[sucursal_idusuario]' and sucursal_idsucursales = $id_sucursalmatriz");
+        $finduserINmatriz = mysqli_query($conexion, "SELECT sucursales.idsucursales from sucursales INNER JOIN sucursal_usuario on sucursal_usuario.sucursal_idsucursales = sucursales.idsucursales where sucursal_usuario.sucursal_idusuario = '$row[sucursal_idusuario]' and sucursales.matriz = 1");
         if(mysqli_num_rows($finduserINmatriz) == 0)
         {
-          $insert_users_matriz = mysqli_query($conexion, "UPDATE sucursal_usuario SET sucursal_idsucursales = $id_sucursalmatriz where sucursal_idusuario = '$row[sucursal_idusuario]'");
+          $insert_users_matriz = mysqli_query($conexion, "INSERT into sucursal_usuario(sucursal_idusuario,sucursal_idsucursales) values ('$row[sucursal_idusuario]',$id_sucursalmatriz)");
           if(!$insert_users_matriz)
           {
             $flag_changeUsers = 0;
           }
         }
       }
+      $delete_old_suc = mysqli_query($conexion, "DELETE FROM sucursal_usuario where sucursal_idsucursales = $id_sucursal");
+      if(!$delete_old_suc)
+          {
+            $flag_changeUsers = 0;
+          }
     }
     else
     {
@@ -124,7 +132,7 @@ include "accion/conexion.php";
       $elimino_sucursal = 0;
     }
 
-    $elimino_sucursal = mysqli_error($conexion);
+    //$elimino_sucursal = mysqli_error($conexion);
     echo json_encode($elimino_sucursal,JSON_UNESCAPED_UNICODE);
   }
   exit;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 14-04-2022 a las 00:25:59
+-- Tiempo de generación: 29-06-2022 a las 06:34:45
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -20,6 +20,40 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `dbmuebleria`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `categoria`
+--
+
+DROP TABLE IF EXISTS `categoria`;
+CREATE TABLE IF NOT EXISTS `categoria` (
+  `idcategoria` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `tiene_subcat` tinyint(1) NOT NULL,
+  `atr1` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr2` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr3` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr4` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr5` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `contado` double DEFAULT NULL,
+  `especial` double DEFAULT NULL,
+  `base_inicial_c1` double DEFAULT NULL,
+  `ganancia_inicial_c1` double DEFAULT NULL,
+  `rango_c1` double DEFAULT NULL,
+  `ganancia_subsecuente_c1` double DEFAULT NULL,
+  `limite_costo_c1` double DEFAULT NULL,
+  `base_inicial_c2` double DEFAULT NULL,
+  `ganancia_inicial_c2` double DEFAULT NULL,
+  `rango_c2` double DEFAULT NULL,
+  `ganancia_subsecuente_c2` double DEFAULT NULL,
+  `limite_costo_c2` double DEFAULT NULL,
+  `meses_pago` int(11) DEFAULT NULL,
+  `meses_garantia` int(11) DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idcategoria`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -45,26 +79,26 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   `direccion_trabajo_cliente` varchar(400) COLLATE utf8_spanish_ci DEFAULT NULL,
   `antiguedadA_trabajo_cliente` int(11) NOT NULL DEFAULT '0',
   `antiguedadM_trabajo_cliente` int(11) NOT NULL DEFAULT '0',
-  `ingresos_cliente` decimal(11,4) NOT NULL DEFAULT '0.0000',
+  `ingresos_cliente` double NOT NULL DEFAULT '0',
   `tipo_ingresos_cliente` varchar(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Quincenal',
   `nombre_conyugue_cliente` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `antiguedadA_vinculo` int(11) DEFAULT NULL,
   `antiguedadM_vinculo` int(11) DEFAULT NULL,
   `trabajo_conyugue` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `puesto_conyugue` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `ingreso_mensual_conyugue` decimal(11,4) DEFAULT NULL,
+  `ingreso_mensual_conyugue` double DEFAULT NULL,
   `direccion_trabajo_conyugue` varchar(400) COLLATE utf8_spanish_ci DEFAULT NULL,
   `tel_conyugue` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
   `tipo_vivienda_cliente` varchar(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Propia',
   `edad_residencia` int(11) NOT NULL DEFAULT '0',
-  `renta_mensual` double(11,4) NOT NULL DEFAULT '0.0000',
+  `renta_mensual` double NOT NULL DEFAULT '0',
   `ndependientes` int(11) NOT NULL DEFAULT '0',
   `nombre_aval` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `tel_aval` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
   `domicilio_aval` varchar(500) COLLATE utf8_spanish_ci DEFAULT NULL,
   `trabajo_aval` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `puesto_aval` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `ingreso_mensual_aval` double(11,4) DEFAULT NULL,
+  `ingreso_mensual_aval` double DEFAULT NULL,
   `nombre_conyugue_aval` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `apto_credito` tinyint(1) NOT NULL,
   `nivel_apto` tinyint(2) NOT NULL,
@@ -77,19 +111,6 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   KEY `se encuentra en` (`subzona`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
---
--- Volcado de datos para la tabla `cliente`
---
-
-INSERT INTO `cliente` (`idcliente`, `nombre_cliente`, `zona`, `domicilio_cliente`, `subzona`, `tel1_cliente`, `tel2_cliente`, `cp_cliente`, `idestado_civil`, `curp`, `rfc`, `trabajo_cliente`, `puesto_cliente`, `direccion_trabajo_cliente`, `antiguedadA_trabajo_cliente`, `antiguedadM_trabajo_cliente`, `ingresos_cliente`, `tipo_ingresos_cliente`, `nombre_conyugue_cliente`, `antiguedadA_vinculo`, `antiguedadM_vinculo`, `trabajo_conyugue`, `puesto_conyugue`, `ingreso_mensual_conyugue`, `direccion_trabajo_conyugue`, `tel_conyugue`, `tipo_vivienda_cliente`, `edad_residencia`, `renta_mensual`, `ndependientes`, `nombre_aval`, `tel_aval`, `domicilio_aval`, `trabajo_aval`, `puesto_aval`, `ingreso_mensual_aval`, `nombre_conyugue_aval`, `apto_credito`, `nivel_apto`, `estado_cliente`, `no_cliente`, `masinfo`, `creado_en`) VALUES
-('13e792dfb3ce9fc857347744f277b32f', 'Cliente de prueba', '378hinek-bd10-asdd-6yyh-d481d723r4ed', 'cambio de domicilio', 'lkmhlgok-6yth-hyhj-98xz-yujkasndjash', '9611920000', '9611926030', 29070, 0, 'VEGO971224HCSLNS00', 'VEGO9712245K7', 'asdasd', 'asdasd', 'asdasd', 4, 0, '5000.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 4, 0.0000, 2, 'asdas', '9611926030', 'dsasd', 'asdasd', 'asdasda', 5000.0000, 'asdasd', 1, 4, 1, 2, 1, '2022-04-03 21:48:25'),
-('1679091c5a880faf6fb5e6087eb1b2dc', 'poronga2', '378hinek-bd10-asdd-6yyh-d481d723r4ed', NULL, 'lkmhlgok-6yth-hyhj-98xz-yujkasndjash', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 1, 6, 0, '2022-04-03 21:48:59'),
-('707381d68fe45ec481d00b455b632fce', 'probando lo de nocliente', '378hinek-bd10-asdd-6yyh-d481d723r4ed', NULL, 'lkmhlgok-6yth-hyhj-98xz-yujkasndjash', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 4, 0, '2022-04-01 02:06:48'),
-('8f14e45fceea167a5a36dedd4bea2543', 'poronga3', 'a3e3dasd-bd10-hyhj-6765-2182783dpoas', NULL, 'yohrio96-vfgt-23nm-6765-84i34hi883dl', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 7, 0, '2022-04-03 21:52:53'),
-('946622a4f13b86fb515b67f1e798614d', 'probando el nuevo id', 'a3e3dasd-bd10-hyhj-6765-2182783dpoas', 'cambiando el cliente sin cambiar no_cliente', 'yohrio96-vfgt-23nm-6765-84i34hi883dl', NULL, NULL, NULL, 0, 'VEGO971224HCSLNS00', 'VEGO9712245K7', NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 3, 1, 1, 0, '2022-04-03 21:48:03'),
-('e4da3b7fbbce2345d7772b0674a318d5', 'poronga1', 'a3e3dasd-bd10-hyhj-6765-2182783dpoas', NULL, 'yohrio96-vfgt-23nm-6765-84i34hi883dl', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 1, 5, 0, '2022-04-03 21:47:09'),
-('eccbc87e4b5ce2fe28308fd9f2a7baf3', 'Cliente de prueba 3', 'a3e3dasd-bd10-hyhj-6765-2182783dpoas', 'asdasd', 'yohrio96-vfgt-23nm-6765-84i34hi883dl', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, '0.0000', 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0.0000, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 5, 1, 3, 0, '2022-04-03 21:48:34');
-
 -- --------------------------------------------------------
 
 --
@@ -99,18 +120,19 @@ INSERT INTO `cliente` (`idcliente`, `nombre_cliente`, `zona`, `domicilio_cliente
 DROP TABLE IF EXISTS `configuracion`;
 CREATE TABLE IF NOT EXISTS `configuracion` (
   `idconfiguracion` int(11) NOT NULL AUTO_INCREMENT,
-  `configuracion` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `valor_char` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `configuracion` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `valor_char` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
   `valor_int` int(11) DEFAULT NULL,
   PRIMARY KEY (`idconfiguracion`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `configuracion`
 --
 
 INSERT INTO `configuracion` (`idconfiguracion`, `configuracion`, `valor_char`, `valor_int`) VALUES
-(1, 'serie', '0000001', NULL);
+(1, 'serie', '0000001', NULL),
+(2, 'activador_especial', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -136,7 +158,7 @@ CREATE TABLE IF NOT EXISTS `documento` (
 --
 
 INSERT INTO `documento` (`iddocumento`, `name_documento`, `folio`, `serie`, `idsucursal`, `estado`, `creado_en`) VALUES
-(1, 'NOTA DE VENTA', 'GQ', '0000001', 2, 1, '2022-03-29 06:17:20');
+(1, 'NOTA DE VENTA', 'MAT', '0000001', 1, 1, '2022-03-29 06:17:20');
 
 -- --------------------------------------------------------
 
@@ -179,7 +201,7 @@ CREATE TABLE IF NOT EXISTS `permiso` (
   `idpermiso` int(11) NOT NULL AUTO_INCREMENT,
   `permiso` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`idpermiso`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `permiso`
@@ -192,20 +214,24 @@ INSERT INTO `permiso` (`idpermiso`, `permiso`) VALUES
 (4, 'PRODUCTOS'),
 (5, 'Nuevo producto'),
 (6, 'Editar productos'),
-(7, 'Compras'),
-(8, 'CLIENTES'),
-(9, 'Nuevo cliente'),
-(10, 'Editar cliente Full'),
-(11, 'Editar cliente Limitado'),
-(12, 'Cobranza'),
-(13, 'PROVEEDOR'),
-(14, 'Nuevo proveedor'),
-(15, 'Editar proveedores'),
-(16, 'CONFIGURACION'),
-(17, 'Usuarios'),
-(18, 'Sucursales'),
-(19, 'Documentos'),
-(20, 'General');
+(7, 'Eliminar productos'),
+(8, 'Imágenes'),
+(9, 'Ver costos'),
+(10, 'Editar lista'),
+(11, 'Compras'),
+(12, 'CLIENTES'),
+(13, 'Nuevo cliente'),
+(14, 'Editar cliente Full'),
+(15, 'Editar cliente Limitado'),
+(16, 'Cobranza'),
+(17, 'PROVEEDOR'),
+(18, 'Nuevo proveedor'),
+(19, 'Editar proveedores'),
+(20, 'CONFIGURACION'),
+(21, 'Usuarios'),
+(22, 'Sucursales'),
+(23, 'Documentos'),
+(24, 'General');
 
 -- --------------------------------------------------------
 
@@ -216,7 +242,7 @@ INSERT INTO `permiso` (`idpermiso`, `permiso`) VALUES
 DROP TABLE IF EXISTS `permiso_usuario`;
 CREATE TABLE IF NOT EXISTS `permiso_usuario` (
   `permiso_idpermiso` int(11) NOT NULL,
-  `permiso_idusuario` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `permiso_idusuario` char(36) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`permiso_idpermiso`,`permiso_idusuario`),
   KEY `asignado al` (`permiso_idusuario`),
   KEY `es el` (`permiso_idpermiso`)
@@ -227,13 +253,51 @@ CREATE TABLE IF NOT EXISTS `permiso_usuario` (
 --
 
 INSERT INTO `permiso_usuario` (`permiso_idpermiso`, `permiso_idusuario`) VALUES
-(2, 'OSV'),
-(3, 'OSV'),
-(6, 'OSV'),
-(7, 'OSV'),
-(8, 'OSV'),
-(9, 'OSV'),
-(11, 'OSV');
+(4, '0a96aada-bd56-11ec-b09f-asjg75jfl123'),
+(5, '0a96aada-bd56-11ec-b09f-asjg75jfl123'),
+(8, '0a96aada-bd56-11ec-b09f-asjg75jfl123'),
+(9, '0a96aada-bd56-11ec-b09f-asjg75jfl123'),
+(12, '0a96aada-bd56-11ec-b09f-asjg75jfl123'),
+(13, '0a96aada-bd56-11ec-b09f-asjg75jfl123'),
+(15, '0a96aada-bd56-11ec-b09f-asjg75jfl123');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `producto`
+--
+
+DROP TABLE IF EXISTS `producto`;
+CREATE TABLE IF NOT EXISTS `producto` (
+  `idproducto` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `identificador` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `codigo_barras` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `categoria` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `subcategoria` char(36) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `descripcion` text COLLATE utf8_spanish_ci,
+  `serializado` tinyint(1) NOT NULL,
+  `atr1_producto` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr2_producto` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr3_producto` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr4_producto` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr5_producto` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `stock_min` int(11) DEFAULT NULL,
+  `stock_max` int(11) DEFAULT NULL,
+  `ext_p` int(11) DEFAULT NULL,
+  `costo` double NOT NULL,
+  `costo_iva` double NOT NULL,
+  `costo_contado` double NOT NULL,
+  `costo_especial` double DEFAULT NULL,
+  `costo_cr1` double NOT NULL,
+  `costo_cr2` double NOT NULL,
+  `costo_p1` double NOT NULL,
+  `costo_p2` double NOT NULL,
+  `costo_eq` double NOT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idproducto`),
+  KEY `es_categoria` (`categoria`),
+  KEY `es_subcategoria` (`subcategoria`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -280,26 +344,37 @@ CREATE TABLE IF NOT EXISTS `referencias_cliente` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `zonas`
+-- Estructura de tabla para la tabla `subcategoria`
 --
 
-DROP TABLE IF EXISTS `zonas`;
-CREATE TABLE IF NOT EXISTS `zonas` (
-  `idzona` char(36) COLLATE utf8_spanish_ci NOT NULL,
-  `zona` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+DROP TABLE IF EXISTS `subcategoria`;
+CREATE TABLE IF NOT EXISTS `subcategoria` (
+  `idsubcategoria` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `categoria` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `atr1` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr2` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr3` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr4` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atr5` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `contado` double DEFAULT NULL,
+  `especial` double DEFAULT NULL,
+  `base_inicial_c1` double DEFAULT NULL,
+  `ganancia_inicial_c1` double DEFAULT NULL,
+  `rango_c1` double DEFAULT NULL,
+  `ganancia_subsecuente_c1` double DEFAULT NULL,
+  `limite_costo_c1` double DEFAULT NULL,
+  `base_inicial_c2` double DEFAULT NULL,
+  `ganancia_inicial_c2` double DEFAULT NULL,
+  `rango_c2` double DEFAULT NULL,
+  `ganancia_subsecuente_c2` double DEFAULT NULL,
+  `limite_costo_c2` double DEFAULT NULL,
+  `meses_pago` int(11) DEFAULT NULL,
+  `meses_garantia` int(11) DEFAULT NULL,
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`idzona`)
+  PRIMARY KEY (`idsubcategoria`),
+  KEY `pertenece_a_la_categoria` (`categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `zonas`
---
-
-INSERT INTO `zonas` (`idzona`, `zona`, `creado_en`) VALUES
-('378hinek-bd10-asdd-6yyh-d481d723r4ed', 'GALECIO', '2022-03-29 06:16:25'),
-('6e3f32fa-bd10-gthh-hgfh-qiwwudhiqsj3', 'CAMBACEO PROPIO', '2022-03-29 06:16:25'),
-('a3e3dasd-bd10-hyhj-6765-2182783dpoas', 'TUXTLA', '2022-03-29 06:16:25');
-
 
 -- --------------------------------------------------------
 
@@ -323,7 +398,7 @@ CREATE TABLE IF NOT EXISTS `subzonas` (
 
 INSERT INTO `subzonas` (`idsubzona`, `subzona`, `idzona`, `creado_en`) VALUES
 ('lkmhlgok-6yth-hyhj-98xz-yujkasndjash', 'subzona de galecio', '378hinek-bd10-asdd-6yyh-d481d723r4ed', '2022-03-29 06:16:55'),
-('yohrio96-vfgt-23nm-6765-84i34hi883dl', 'subzona1 tuxtla', 'a3e3dasd-bd10-hyhj-6765-2182783dpoas', '2022-03-29 06:16:55');
+('yohrio96-vfgt-23nm-6765-84i34hi883dl', 'Subzona Tuxtla', 'a3e3dasd-bd10-hyhj-6765-2182783dpoas', '2022-03-29 06:16:55');
 
 -- --------------------------------------------------------
 
@@ -342,16 +417,14 @@ CREATE TABLE IF NOT EXISTS `sucursales` (
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idsucursales`),
   KEY `es de tipo` (`tipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `sucursales`
 --
 
 INSERT INTO `sucursales` (`idsucursales`, `sucursales`, `descripcion`, `estado`, `matriz`, `tipo`, `creado_en`) VALUES
-(1, 'Tuxtla-Matriz', 'Sucursal Matrix-Tuxtla Gutiérrez', 1, 1, 'a8791f44-bc7e-11ec-bf6e-d481d7c3a9ad', '2022-03-29 06:16:44'),
-(2, 'Galecio', 'Sucursal de Galecio, Chiapa de Corzo', 1, 0, 'asd91f44-bc7e-11ec-bf6e-d481d7c3a9ad', '2022-03-29 06:16:44'),
-(3, 'sucursal prueba', 'asd', 1, 0, 'a8791f44-bc7e-11ec-bf6e-d481d7c3a9ad', '2022-04-01 19:49:58');
+(1, 'Tuxtla-Matriz', 'Sucursal Matrix-Tuxtla Gutiérrez', 1, 1, 'a8791f44-bc7e-11ec-bf6e-d481d7c3a9ad', '2022-03-29 06:16:44');
 
 -- --------------------------------------------------------
 
@@ -361,21 +434,21 @@ INSERT INTO `sucursales` (`idsucursales`, `sucursales`, `descripcion`, `estado`,
 
 DROP TABLE IF EXISTS `sucursal_usuario`;
 CREATE TABLE IF NOT EXISTS `sucursal_usuario` (
-  `sucursal_idusuario` varchar(100) COLLATE utf8_spanish_ci NOT NULL COMMENT 'corresponde',
+  `idsucursal_usuario` int(11) NOT NULL AUTO_INCREMENT,
+  `sucursal_idusuario` char(36) COLLATE utf8_spanish_ci NOT NULL COMMENT 'corresponde',
   `sucursal_idsucursales` int(11) NOT NULL COMMENT 'tiene',
-  PRIMARY KEY (`sucursal_idusuario`,`sucursal_idsucursales`),
+  PRIMARY KEY (`idsucursal_usuario`),
   KEY `asignado a` (`sucursal_idsucursales`),
   KEY `tiene acceso a` (`sucursal_idusuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `sucursal_usuario`
 --
 
-INSERT INTO `sucursal_usuario` (`sucursal_idusuario`, `sucursal_idsucursales`) VALUES
-('IGERAG', 1),
-('OSV', 1),
-('IGERAG', 2);
+INSERT INTO `sucursal_usuario` (`idsucursal_usuario`, `sucursal_idusuario`, `sucursal_idsucursales`) VALUES
+(1, '0a96aada-bd56-11ec-b09f-asjg75jfl382', 1),
+(8, '0a96aada-bd56-11ec-b09f-asjg75jfl123', 1);
 
 -- --------------------------------------------------------
 
@@ -396,9 +469,7 @@ CREATE TABLE IF NOT EXISTS `tipo` (
 
 INSERT INTO `tipo` (`idtipo`, `nombre_tipo`) VALUES
 ('a8791f44-bc7e-11ec-bf6e-d481d7c3a9ad', 'TIPO1'),
-('asd91f44-bc7e-11ec-bf6e-d481d7c3a9ad', 'TIPO22'),
-('zxc91f44-bc7e-11ec-bf6e-d481d7c3a9zx', 'nuevo tipo'),
-('pii91f44-bc7e-11ec-bf6e-d481d7c3a9qw', 'tipo3');
+('pii91f44-bc7e-11ec-bf6e-d481d7c3a9qw', 'TIPO2');
 
 -- --------------------------------------------------------
 
@@ -408,7 +479,8 @@ INSERT INTO `tipo` (`idtipo`, `nombre_tipo`) VALUES
 
 DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE IF NOT EXISTS `usuario` (
-  `idusuario` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `idusuario` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `usuario_acceso` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `nombre` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
   `pass` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `rol` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
@@ -426,9 +498,31 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`idusuario`, `nombre`, `pass`, `rol`, `puesto`, `estado`, `superadmin`, `no_user`, `creado_en`) VALUES
-('IGERAG', 'Ruben Aguilar González', '81df10368e0655e4801b66269fd8b973', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 1, '2022-03-29 05:39:17'),
-('OSV', 'Osvaldo David Velazquez', '0c04e1d2f9dec7007ecc22862711b57a', 'Usurario', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 0, 2, '2022-03-29 05:39:17');
+INSERT INTO `usuario` (`idusuario`, `usuario_acceso`, `nombre`, `pass`, `rol`, `puesto`, `estado`, `superadmin`, `no_user`, `creado_en`) VALUES
+('0a96aada-bd56-11ec-b09f-asjg75jfl123', 'IGERAG', 'Ruben Aguilar González', '81df10368e0655e4801b66269fd8b973', 'Administrador', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 0, 2, '2022-03-29 05:39:17'),
+('0a96aada-bd56-11ec-b09f-asjg75jfl382', 'Luis', 'Luis Augusto Von Duben Aquino', 'c44688b5061756b3cca2b86c016a1535', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 1, '2022-03-29 05:39:17');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `zonas`
+--
+
+DROP TABLE IF EXISTS `zonas`;
+CREATE TABLE IF NOT EXISTS `zonas` (
+  `idzona` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `zona` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idzona`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `zonas`
+--
+
+INSERT INTO `zonas` (`idzona`, `zona`, `creado_en`) VALUES
+('378hinek-bd10-asdd-6yyh-d481d723r4ed', 'GALECIO', '2022-03-29 06:16:25'),
+('a3e3dasd-bd10-hyhj-6765-2182783dpoas', 'TUXTLA', '2022-03-29 06:16:25');
 
 --
 -- Restricciones para tablas volcadas
@@ -455,10 +549,23 @@ ALTER TABLE `permiso_usuario`
   ADD CONSTRAINT `es el` FOREIGN KEY (`permiso_idpermiso`) REFERENCES `permiso` (`idpermiso`);
 
 --
+-- Filtros para la tabla `producto`
+--
+ALTER TABLE `producto`
+  ADD CONSTRAINT `es_categoria` FOREIGN KEY (`categoria`) REFERENCES `categoria` (`idcategoria`),
+  ADD CONSTRAINT `es_subcategoria` FOREIGN KEY (`subcategoria`) REFERENCES `subcategoria` (`idsubcategoria`);
+
+--
 -- Filtros para la tabla `referencias_cliente`
 --
 ALTER TABLE `referencias_cliente`
   ADD CONSTRAINT `pertenece_a_cliente` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`);
+
+--
+-- Filtros para la tabla `subcategoria`
+--
+ALTER TABLE `subcategoria`
+  ADD CONSTRAINT `pertenece_a_la_categoria` FOREIGN KEY (`categoria`) REFERENCES `categoria` (`idcategoria`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `subzonas`

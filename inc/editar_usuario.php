@@ -125,7 +125,7 @@ if (!empty($_POST))
               {
                 #si esta palomeado el checkbox hace esto, o sea significa que quiere actualizar ese campo
                 $puesto = $_POST['puesto'];
-                $query_insert5 = mysqli_query($conexion, "UPDATE usuario SET puesto=$puesto where idusuario='$idusuario'");
+                $query_insert5 = mysqli_query($conexion, "UPDATE usuario SET puesto = '$puesto' where idusuario='$idusuario'");
                         if (!$query_insert5) 
                         {
                                   $flag_act_correcto = 1;

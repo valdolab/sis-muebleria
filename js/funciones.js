@@ -2424,7 +2424,7 @@ function eliminar_sucursal(idsucursal)
                   async: true,
                   data: {action:action,sucursal:idsucursal},
                   success: function(response) {
-                    $('#prueba').html(response);
+                    //$('#prueba').html(response);
                     if (response == 0) 
                     {
                         Swal.fire({
