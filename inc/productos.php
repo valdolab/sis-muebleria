@@ -410,7 +410,7 @@ include "accion/conexion.php";
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg">
                             <label for="contado">Contado:</label>
                             <div class="input-group mb-3">
                               <input name="contado" id="contado" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
@@ -419,7 +419,7 @@ include "accion/conexion.php";
                               </div>
                             </div>
                         </div>
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg">
                             <label for="especial">Especial:</label>
                     <fieldset id="especial_cat">
                             <div class="input-group mb-3">
@@ -431,13 +431,22 @@ include "accion/conexion.php";
                     </fieldset>
                         </div>
 
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg">
                             <label for="mesespago">Meses de pago:</label>
                             <input name="mesespago" id="mesespago" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg">
                             <label for="garantia">Meses de garantía:</label>
                             <input name="garantia" id="garantia" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                        </div>
+                        <div class="form-group col-lg">
+                            <label for="garantia">Enganche:</label>
+                            <div class="input-group mb-3">
+                              <input name="enganche" id="enganche" type="number" class="form-control" required step="0.01">
+                              <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                              </div>
+                            </div>
                         </div>
                     </div>
 
@@ -638,7 +647,7 @@ include "accion/conexion.php";
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg">
                             <label for="contado_sub">Contado:</label>
                             <div class="input-group mb-3">
                               <input name="contado_sub" id="contado_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
@@ -647,7 +656,7 @@ include "accion/conexion.php";
                               </div>
                             </div>
                         </div>
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg">
                             <label for="especial_sub">Especial:</label>
                         <fieldset id="especial_subcat">
                             <div class="input-group mb-3">
@@ -659,13 +668,22 @@ include "accion/conexion.php";
                         </fieldset>
                         </div>
                         
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg">
                             <label for="mesespago">Meses de pago:</label>
                             <input name="mesespago_sub" id="mesespago_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg">
                             <label for="garantia">Meses de garantía:</label>
                             <input name="garantia_sub" id="garantia_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
+                        </div>
+                        <div class="form-group col-lg">
+                            <label for="garantia">Enganche:</label>
+                            <div class="input-group mb-3">
+                              <input name="enganche_sub" id="enganche_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required step="0.01">
+                              <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                              </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -982,6 +1000,10 @@ include "accion/conexion.php";
                               </div>
                               <input name="costo_eq" id="costo_eq" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required readonly>
                           </div>
+                        </div>
+                        <div class="form-group col-lg">
+                            <label for="costo_enganche">Enganche:</label>
+                            <input name="costo_enganche" id="costo_enganche" type="number" class="form-control" required readonly>
                         </div>
                     </div>
                     <!-- <input type="number" name="asd1" id="asd1">

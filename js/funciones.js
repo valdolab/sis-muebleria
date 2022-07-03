@@ -826,9 +826,9 @@ $('#idestado_civil').change(function() {
            },
            success: function(response)             
            {
+                //$('#prueba').html(response);
                 if(response == 0)
                 {
-                    //$('#prueba').html(response);
                     Swal.fire({
                           icon: 'error',
                           title: 'Oops...',
@@ -1789,6 +1789,7 @@ var ganancia_subsecuente_c2 = 0;
 var limite_costo_c2 = 0;
 
 var meses_pago = 0;
+var enganche = 0;
 //interfaz de producto, mostrar los atributos de categorias o subcategorias
 $('#categoria_producto').change(function(e) 
 {
@@ -1875,6 +1876,7 @@ $('#categoria_producto').change(function(e)
             ganancia_subsecuente_c2 = parseFloat(data.ganancia_subsecuente_c2);
             limite_costo_c2 = parseFloat(data.limite_costo_c2);
 
+            enganche = parseFloat(data.enganche);
             meses_pago = data.meses_pago;
         }
         else
@@ -1907,6 +1909,7 @@ $('#categoria_producto').change(function(e)
             ganancia_subsecuente_c2 = 0;
             limite_costo_c2 = 0;
             meses_pago = 0;
+            enganche = 0;
         }
         //$('#prueba').html(data); 
       },
@@ -1998,7 +2001,7 @@ $('#subcategoria_producto').change(function(e)
             limite_costo_c2 = parseFloat(data.limite_costo_c2);
 
             meses_pago = data.meses_pago;
-
+            enganche = parseFloat(data.enganche);
         //$('#prueba').html(data); 
       },
       error: function(error) {
@@ -2013,7 +2016,7 @@ $('#costo').keyup(function(e)
     if(!isNaN(costo))
     {
         var costo_iva = costo + (costo*0.16);
-        $('#costo_iva').val(costo_iva.toFixed(2));
+        $('#costo_iva').val(Math.ceil(costo_iva));
         //contado
         if(contado == 0)
         {
@@ -2022,7 +2025,7 @@ $('#costo').keyup(function(e)
         else
         {
             var costo_contado = costo_iva + (costo_iva*(contado/100));
-            $('#costo_contado').val(costo_contado.toFixed(2));
+            $('#costo_contado').val(Math.ceil(costo_contado));
         }
         //especial
         if(especial == 0 || especial == null)
@@ -2031,8 +2034,8 @@ $('#costo').keyup(function(e)
         }
         else
         {
-            var costo_especial = costo_iva + (costo_iva*(especial/100));
-            $('#costo_especial').val(costo_especial.toFixed(2));
+            var costo_especial = costo_contado + (costo_contado*(especial/100));
+            $('#costo_especial').val(Math.ceil(costo_especial));
         }
 
         //==== credito1
@@ -2069,7 +2072,7 @@ $('#costo').keyup(function(e)
                 }
             }
             var costo_cr1 = costo_iva + (costo_iva*(cr1/100));
-            $('#costo_cr1').val(costo_cr1.toFixed(2));
+            $('#costo_cr1').val(Math.ceil(costo_cr1));
         }
         //==== credito2
         if(base_inicial_c2 == 0)
@@ -2105,7 +2108,7 @@ $('#costo').keyup(function(e)
                 }
             }
             var costo_cr2 = costo_iva + (costo_iva*(cr2/100));
-            $('#costo_cr2').val(costo_cr2.toFixed(2));
+            $('#costo_cr2').val(Math.ceil(costo_cr2));
             //$('#asd1').val(costo_temp2);
             //$('#asd2').val(cr2);
         }
@@ -2125,7 +2128,7 @@ $('#costo').keyup(function(e)
             else
             {
                 //redondear al 100 siguiente
-                $('#costo_eq').val(e_q.toFixed(2));
+                $('#costo_eq').val(Math.ceil(e_q));
             }
         }
         //p1
@@ -2136,7 +2139,7 @@ $('#costo').keyup(function(e)
         }
         else
         {
-            $('#costo_p1').val(p1.toFixed(2));
+            $('#costo_p1').val(Math.ceil(p1));
         }
         //p2
         var p2 = (costo_cr2/e_q)/2;
@@ -2146,12 +2149,22 @@ $('#costo').keyup(function(e)
         }
         else
         {
-            $('#costo_p2').val(p2.toFixed(2));
+            $('#costo_p2').val(Math.ceil(p2));
+        }
+        //enganche
+        if(enganche == 0)
+        {
+            $('#costo_enganche').val(0);
+        }
+        else
+        {
+            var costo_enganche = costo_cr2*(enganche/100) + 100;
+            $('#costo_enganche').val(Math.ceil(costo_enganche));
         }
     }
     else
     {
-        $('#costo_iva,#costo_contado,#costo_especial,#costo_cr1,#costo_cr2,#costo_eq,#costo_p1,#costo_p2').val(0);
+        $('#costo_iva,#costo_contado,#costo_especial,#costo_cr1,#costo_cr2,#costo_eq,#costo_p1,#costo_p2,#costo_enganche').val(0);
     }
     
 });
@@ -2966,6 +2979,7 @@ function editar_categoria(idcategoria)
                 $('#garantia').val(data.meses_garantia);
                 $('#tiene_subcat').removeAttr('checked');
                 $('#tiene_subcat').bootstrapToggle('off');
+                $('#enganche').val(data.enganche);
               }
             }
         },
@@ -3075,6 +3089,7 @@ function editar_subcategoria(idsubcategoria)
 
                 $('#mesespago_sub').val(data.meses_pago);
                 $('#garantia_sub').val(data.meses_garantia);
+                $('#enganche_sub').val(data.enganche);
             }
         },
         error: function(error) {
@@ -3138,6 +3153,7 @@ function editar_producto(idproducto)
               $('#costo_p1').val(data.costo_p1);
               $('#costo_p2').val(data.costo_p2);
               $('#costo_eq').val(data.costo_eq);
+              $('#costo_enganche').val(data.costo_enganche);
               //quitamos bloqueo
               $('#atr1_producto,#atr2_producto,#atr3_producto,#atr4_producto,#atr5_producto').removeAttr('readonly');
               $('#identificador').attr('readonly','readonly');
@@ -3222,6 +3238,7 @@ function nueva_categoria()
     $("#formAdd_cat :input:not(#btn_guardarcat,#btn_cancerlarcat,#atr1,#tiene_subcat,#action,#flagidcategoria)").val('');
     $('#tiene_subcat').bootstrapToggle('off');
     $('#tiene_subcat').removeAttr('checked');
+    $('#enganche').val(6.5);
 }
 
 //funciones para subcategoria
@@ -3229,6 +3246,7 @@ function nueva_subcategoria()
 {
     $('#flagidsubcategoria').val('nuevasubcat');
     $("#formAdd_subcat :input:not(#btn_guardarsubcat,#btn_cancerlarsubcat,#categoria_subcategoria,#atr1_sub,#action,#flagidsubcategoria)").val('');
+    $('#enganche_sub').val(6.5);
 }
 
 function mostrar_img(idproducto,url_img,si_img)

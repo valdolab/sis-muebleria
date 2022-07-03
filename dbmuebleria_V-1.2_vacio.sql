@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 29-06-2022 a las 06:34:45
+-- Tiempo de generación: 03-07-2022 a las 08:58:12
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS `categoria` (
   `limite_costo_c2` double DEFAULT NULL,
   `meses_pago` int(11) DEFAULT NULL,
   `meses_garantia` int(11) DEFAULT NULL,
+  `enganche` double DEFAULT NULL,
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idcategoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
@@ -293,6 +294,7 @@ CREATE TABLE IF NOT EXISTS `producto` (
   `costo_p1` double NOT NULL,
   `costo_p2` double NOT NULL,
   `costo_eq` double NOT NULL,
+  `costo_enganche` double NOT NULL,
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idproducto`),
   KEY `es_categoria` (`categoria`),
@@ -371,6 +373,7 @@ CREATE TABLE IF NOT EXISTS `subcategoria` (
   `limite_costo_c2` double DEFAULT NULL,
   `meses_pago` int(11) DEFAULT NULL,
   `meses_garantia` int(11) DEFAULT NULL,
+  `enganche` double DEFAULT NULL,
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idsubcategoria`),
   KEY `pertenece_a_la_categoria` (`categoria`)
@@ -440,7 +443,7 @@ CREATE TABLE IF NOT EXISTS `sucursal_usuario` (
   PRIMARY KEY (`idsucursal_usuario`),
   KEY `asignado a` (`sucursal_idsucursales`),
   KEY `tiene acceso a` (`sucursal_idusuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `sucursal_usuario`

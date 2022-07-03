@@ -2214,6 +2214,7 @@ if ($_POST['action'] == 'GuardarEditarLista')
       $data_producto = mysqli_fetch_assoc($select_oldcost);
       $actual_cost = (int) $data_producto['costo'];
       $new_costo = $array_new_costo[$i];
+      $new_costo = ceil($new_costo);
       if(($new_costo < $actual_cost and $ext_m == 0) or ($new_costo > $actual_cost))
       {
         //actualizamos el costo y calculamos nuevos costos de lo demas
@@ -2222,42 +2223,111 @@ if ($_POST['action'] == 'GuardarEditarLista')
         {
           //no tiene sub
           $idcategoria = $data_producto['categoria'];
-          $info_cat = mysqli_query($conexion, "SELECT contado, especial, credito1, credito2, meses_pago from categoria where idcategoria = '$idcategoria'");
+          $info_cat = mysqli_query($conexion, "SELECT contado, especial, base_inicial_c1, ganancia_inicial_c1, rango_c1, ganancia_subsecuente_c1, limite_costo_c1, base_inicial_c2, ganancia_inicial_c2, rango_c2, ganancia_subsecuente_c2, limite_costo_c2, meses_pago from categoria where idcategoria = '$idcategoria'");
           $data_costos = mysqli_fetch_assoc($info_cat);
         }
         else
         {
           //si tiene sub, de ahi sacamos la info
           $idsubcategoria = $data_producto['subcategoria'];
-          $info_subcat = mysqli_query($conexion, "SELECT contado, especial, credito1, credito2, meses_pago from subcategoria where idsubcategoria = '$idsubcategoria'");
+          $info_subcat = mysqli_query($conexion, "SELECT contado, especial, base_inicial_c1, ganancia_inicial_c1, rango_c1, ganancia_subsecuente_c1, limite_costo_c1, base_inicial_c2, ganancia_inicial_c2, rango_c2, ganancia_subsecuente_c2, limite_costo_c2, meses_pago from subcategoria where idsubcategoria = '$idsubcategoria'");
           $data_costos = mysqli_fetch_assoc($info_subcat);
         }
         //ya que tenemos la info, calculamos los nuevos costos
         $contado = $data_costos['contado'];
         $especial = $data_costos['especial'];
-        $credito1 = $data_costos['credito1'];
-        $credito2 = $data_costos['credito2'];
+        //creditos
+        $base_inicial_c1 = $data_costos['base_inicial_c1'];
+        $ganancia_inicial_c1 = $data_costos['ganancia_inicial_c1'];
+        $rango_c1 = $data_costos['rango_c1'];
+        $ganancia_subsecuente_c1 = $data_costos['ganancia_subsecuente_c1'];
+        $limite_costo_c1 = $data_costos['limite_costo_c1'];
+        //credito 2
+        $base_inicial_c2 = $data_costos['base_inicial_c2'];
+        $ganancia_inicial_c2 = $data_costos['ganancia_inicial_c2'];
+        $rango_c2 = $data_costos['rango_c2'];
+        $ganancia_subsecuente_c2 = $data_costos['ganancia_subsecuente_c2'];
+        $limite_costo_c2 = $data_costos['limite_costo_c2'];
+
         $meses_pago = $data_costos['meses_pago'];
-        $newcosto_iva = $new_costo + ($new_costo*0.16);
+        $newcosto_iva = ceil($new_costo + ($new_costo*0.16));
         
-        $newcosto_contado = $newcosto_iva + ($newcosto_iva*($contado/100));
+        $newcosto_contado = ceil($newcosto_iva + ($newcosto_iva*($contado/100)));
         if($especial == null)
         {
           $newcosto_especial = null;
         }
         else
         {
-          $newcosto_especial = $newcosto_contado + ($newcosto_contado*($especial/100));
+          $newcosto_especial = ceil($newcosto_contado + ($newcosto_contado*($especial/100)));
         }
-        $newcosto_cr1 = $newcosto_iva  + ($newcosto_iva *($credito1/100));
-        $newcosto_cr2 = $newcosto_iva  + ($newcosto_iva *($credito2/100));
+        //$newcosto_cr1 = $newcosto_iva  + ($newcosto_iva *($credito1/100));
+        //$newcosto_cr2 = $newcosto_iva  + ($newcosto_iva *($credito2/100));
+        //credito1 
+        $cr1 = 0;
+        if($newcosto_iva < $base_inicial_c1)
+        {
+          $cr1 = $ganancia_inicial_c1;
+        }
+        else if ($newcosto_iva < ($base_inicial_c1 + $rango_c1))
+        {
+          $cr1 = $ganancia_subsecuente_c1;
+        }
+        else
+        {
+          $costo_temp = $base_inicial_c1 + $rango_c1;//2100
+          $ganancia_temp = $ganancia_subsecuente_c1;// 80
+          while(true)
+          {
+            $costo_temp = $costo_temp + $rango_c1;//2200,2300
+            $ganancia_temp = $ganancia_temp - 1;//79,78
+            //2250<2200, 2250<2300,   //2100<=10000,2200<=10000
+            if(($newcosto_iva < $costo_temp) || ($costo_temp >= $limite_costo_c1))
+            {
+              $cr1 = $ganancia_temp;
+              break;
+            }
+          }
+        }
+        $newcosto_cr1 = ceil($newcosto_iva + ($newcosto_iva*($cr1/100)));
+
+        //credito2
+        $cr2 = 0;
+        if($newcosto_iva < $base_inicial_c2)
+        {
+          $cr2 = $ganancia_inicial_c2;
+        }
+        else if ($newcosto_iva < ($base_inicial_c2 + $rango_c2))
+        {
+          $cr2 = $ganancia_subsecuente_c2;
+        }
+        else
+        {
+          $costo_temp2 = $base_inicial_c2 + $rango_c2;//2100
+          $ganancia_temp2 = $ganancia_subsecuente_c2;// 80
+          while(true)
+          {
+            $costo_temp2 = $costo_temp2 + $rango_c2;//2200,2300
+            $ganancia_temp2 = $ganancia_temp2 - 1;//79,78
+            //2250<2200, 2250<2300,   //2100<=10000,2200<=10000
+            if(($newcosto_iva < $costo_temp2) || ($costo_temp2 >= $limite_costo_c2))
+            {
+              $cr2 = $ganancia_temp2;
+              break;
+            }
+          }
+        }
+        $newcosto_cr2 = ceil($newcosto_iva + ($newcosto_iva*($cr2/100)));
+        
         $new_e_q = ($newcosto_iva/$meses_pago)/2;
         if($new_e_q < 400)
         {
           $new_e_q = 400;
         }
-        $new_p1 = ($newcosto_cr1/$new_e_q)/2;
-        $new_p2 = ($newcosto_cr2/$new_e_q)/2;
+        $new_e_q = ceil($new_e_q);
+        
+        $new_p1 = ceil(($newcosto_cr1/$new_e_q)/2);
+        $new_p2 = ceil(($newcosto_cr2/$new_e_q)/2);
         $id_producto = $array_idproducto_newcosto[$i];
         //fin calculo de nuevos costos, ahora actualizamos en el producto
         $update_costos = mysqli_query($conexion, "UPDATE producto set costo = $new_costo, costo_iva = $newcosto_iva, costo_contado = $newcosto_contado, costo_especial = ".($newcosto_especial == null ? "NULL" : "$newcosto_especial").", costo_cr1 = $newcosto_cr1, costo_cr2 = $newcosto_cr2, costo_p1 = $new_p1, costo_p2 = $new_p2, costo_eq = $new_e_q where idproducto = '$id_producto'");
