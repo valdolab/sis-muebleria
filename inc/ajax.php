@@ -2326,8 +2326,8 @@ if ($_POST['action'] == 'GuardarEditarLista')
         }
         $new_e_q = ceil($new_e_q);
         
-        $new_p1 = ceil(($newcosto_cr1/$new_e_q)/2);
-        $new_p2 = ceil(($newcosto_cr2/$new_e_q)/2);
+        $new_p1 = ($newcosto_cr1/$new_e_q)/2;
+        $new_p2 = ($newcosto_cr2/$new_e_q)/2;
         $id_producto = $array_idproducto_newcosto[$i];
         //fin calculo de nuevos costos, ahora actualizamos en el producto
         $update_costos = mysqli_query($conexion, "UPDATE producto set costo = $new_costo, costo_iva = $newcosto_iva, costo_contado = $newcosto_contado, costo_especial = ".($newcosto_especial == null ? "NULL" : "$newcosto_especial").", costo_cr1 = $newcosto_cr1, costo_cr2 = $newcosto_cr2, costo_p1 = $new_p1, costo_p2 = $new_p2, costo_eq = $new_e_q where idproducto = '$id_producto'");

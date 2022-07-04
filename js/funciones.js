@@ -2139,7 +2139,7 @@ $('#costo').keyup(function(e)
         }
         else
         {
-            $('#costo_p1').val(Math.ceil(p1));
+            $('#costo_p1').val(p1);
         }
         //p2
         var p2 = (costo_cr2/e_q)/2;
@@ -2149,7 +2149,7 @@ $('#costo').keyup(function(e)
         }
         else
         {
-            $('#costo_p2').val(Math.ceil(p2));
+            $('#costo_p2').val(p2);
         }
         //enganche
         if(enganche == 0)
