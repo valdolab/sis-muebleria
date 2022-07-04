@@ -855,7 +855,7 @@ $('#idestado_civil').change(function() {
                             text : data.subcategoria
                         }));
                         $('#subcategoria').val(data.idsubcategoria).change();
-                        
+                        $('#subcategoria').removeAttr('disabled');
                         /*$('#subcategoria_producto').append($('<option>',
                         {
                             value: data.idsubcategoria,
