@@ -89,7 +89,7 @@ include "accion/conexion.php";
                         <td align="center"><?php echo $data['nombre_tipo'];; ?></td>
                         <td align="center"> <?php echo $estado; ?> </td>
                         
-                        <td>
+                        <td width="170">
                             <?php 
                             if ($data['estado'] == 1) 
                             { 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 03-07-2022 a las 08:58:12
+-- Tiempo de generación: 04-07-2022 a las 00:24:07
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -427,7 +427,7 @@ CREATE TABLE IF NOT EXISTS `sucursales` (
 --
 
 INSERT INTO `sucursales` (`idsucursales`, `sucursales`, `descripcion`, `estado`, `matriz`, `tipo`, `creado_en`) VALUES
-(1, 'Tuxtla-Matriz', 'Sucursal Matrix-Tuxtla Gutiérrez', 1, 1, 'a8791f44-bc7e-11ec-bf6e-d481d7c3a9ad', '2022-03-29 06:16:44');
+(1, 'Galecio Narcía-Matriz', 'Matriz de la empresa. Aquí se encuentras los mandos medios y la gerencia. Es el punto central de las operaciones de la mueblería.', 1, 1, 'pii91f44-bc7e-11ec-bf6e-d481d7c3a9qw', '2022-03-29 06:16:44');
 
 -- --------------------------------------------------------
 
@@ -471,8 +471,7 @@ CREATE TABLE IF NOT EXISTS `tipo` (
 --
 
 INSERT INTO `tipo` (`idtipo`, `nombre_tipo`) VALUES
-('a8791f44-bc7e-11ec-bf6e-d481d7c3a9ad', 'TIPO1'),
-('pii91f44-bc7e-11ec-bf6e-d481d7c3a9qw', 'TIPO2');
+('pii91f44-bc7e-11ec-bf6e-d481d7c3a9qw', 'MATRIZ');
 
 -- --------------------------------------------------------
 
@@ -502,7 +501,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 --
 
 INSERT INTO `usuario` (`idusuario`, `usuario_acceso`, `nombre`, `pass`, `rol`, `puesto`, `estado`, `superadmin`, `no_user`, `creado_en`) VALUES
-('0a96aada-bd56-11ec-b09f-asjg75jfl123', 'IGERAG', 'Ruben Aguilar González', '81df10368e0655e4801b66269fd8b973', 'Administrador', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 0, 2, '2022-03-29 05:39:17'),
+('0a96aada-bd56-11ec-b09f-asjg75jfl123', 'IGERAG', 'Ruben Aguilar González', '81df10368e0655e4801b66269fd8b973', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 2, '2022-03-29 05:39:17'),
 ('0a96aada-bd56-11ec-b09f-asjg75jfl382', 'Luis', 'Luis Augusto Von Duben Aquino', 'c44688b5061756b3cca2b86c016a1535', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 1, '2022-03-29 05:39:17');
 
 -- --------------------------------------------------------
