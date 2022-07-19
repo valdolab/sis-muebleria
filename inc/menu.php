@@ -44,6 +44,9 @@
 	        $nueva_venta = 1;
 	        $editar_ventas = 1;
 	        $productos = 1;
+	        //hay que agregar el BD los nuevos
+	        $inventario = 1;
+	        //fin de nuevos
 	        $nuevo_producto = 1;
 	        $editar_productos = 1;
 	        $eliminar_productos = 1;
@@ -72,6 +75,9 @@
 	        $nueva_venta = in_array(2, $array_permisos);
 	        $editar_ventas = in_array(3, $array_permisos);
 	        $productos = in_array(4, $array_permisos);
+	        //hay que agregar el BD los nuevos
+	        $inventario = 1;
+	        //fin de nuevos
 	        $nuevo_producto = in_array(5, $array_permisos);
 	        $editar_productos = in_array(6, $array_permisos);
 	        $eliminar_productos = in_array(7, $array_permisos);
@@ -121,7 +127,7 @@
 <?php if ($productos) { ?>
 	<li class="nav-item secundary">
 		<a data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities" class="nav-link collapsed text-dark">
-			<i class="fas fa-fw fa-clipboard-list"></i>
+			<i class="fas fa-box"></i>
 			<span style="font-size: 18px;">Productos</span>
 		</a>
 		<!--  -->
@@ -134,6 +140,24 @@
 						echo '<a class="collapse-item" href="pagetemp.php">Compras</a>';
 					}
 				 ?>
+			</div>
+		</div>
+		
+	</li>
+<?php } ?>
+
+<?php if ($inventario) { ?>
+	<li class="nav-item secundary">
+		<a data-toggle="collapse" data-target="#collapseInventario" aria-expanded="true" aria-controls="collapseUtilities" class="nav-link collapsed text-dark">
+			<i class="fas fa-fw fa-clipboard-list"></i>
+			<span style="font-size: 18px;">Inventarios</span>
+		</a>
+		<!--  -->
+		<div id="collapseInventario" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="inv_entradas.php">Entradas</a>
+				<a class="collapse-item" href="inv_salidas.php">Salidas</a>
+				<a class="collapse-item" href="inv_almacenes.php">Almacenes</a>
 			</div>
 		</div>
 		
