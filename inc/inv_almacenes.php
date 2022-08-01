@@ -5,8 +5,54 @@ include "accion/conexion.php";
 
 ?>
 
-<div class="col-lg-12">
+<div id="nuevo_almacen" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Datos del nuevo almacén</h3>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="on" id="formAdd_subzona">
+                    <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="correo">Nombre:</label>
+                            <input type="text" class="form-control" name="nombre_almacen" id="nombre_almacen" required maxlength="99">
+                        </div>  
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="correo">Sucursal:</label>
+                            <select class="form-control" id="zona_subzona" name="zona_subzona" required>
+                                <option id="opSucursal" value="" hidden selected>Seleccione una opción</option>
+                                    <?php
+                                    #codigo para la lista de sucursales que se extraen de la base de datos
+                                    $result = mysqli_query($conexion,"SELECT idsucursales,sucursales FROM sucursales");                        
+                                    if (mysqli_num_rows($result) > 0) {  
+                                      while($row = mysqli_fetch_assoc($result)){
+                                      echo "<option value='".$row["idsucursales"]."'>".$row["sucursales"]."</option>";
+                                      }
+                                    }
+                                    ?>    
+                              </select>
+                        </div>  
+                        </div>
+                    </div>
+                    <br>
+                    <input value="insert_subzona" name="action" id="action" hidden>
+                    <div align="right">
+                        <input type="submit" value="Agregar" class="btn btn-lg btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="col-lg-12">
 <div class="card">
 <div class="card-body">
     <div class="row">
@@ -17,7 +63,7 @@ include "accion/conexion.php";
 
         <div align="right" class="col-lg-2">
             <!-- <a data-toggle="modal" data-target="#nuevo_documento"  class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nuevo documento</a> -->
-            <a href="agregar_almacen.php"  class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nuevo almacén</a> 
+            <a data-toggle="modal" data-target="#nuevo_almacen" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nuevo almacén</a> 
         </div>
     </div>
 </div>
@@ -39,12 +85,12 @@ include "accion/conexion.php";
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                 Costo:
                                 <br>
-                                <h3 align="center">$24,000</h3>
+                                <h2 align="center">$24,000</h2>
                                 <br>
                                 <br>
                                 Contado:
                                 <br>
-                                <h3 align="center">$44,000</h3>
+                                <h2 align="center">$44,000</h2>
                             </div>
                         </div>
                     </div>
@@ -83,7 +129,7 @@ include "accion/conexion.php";
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                            <div align="right" class="text-xs font-weight-bold text-dark text-uppercase mb-1">
                                 <button class="btn btn-primary"><h4><strong>Descargar CSV</strong></h4></button>
                             </div>
 
@@ -107,25 +153,43 @@ include "accion/conexion.php";
         <thead class="thead-light">
             <tr>
                 <th>No.</th>
-                <th>Documento</th>
-                <th>Folio</th>
-                <th>Serie</th>
+                <th>Categoría</th>
+                <th>Modelo</th>
                 <th>Sucursal</th>
-                <th>Tipo</th>
+                <th>Almacén</th>
+                <th>Stock</th>
+                <th>Costo</th>
+                <th>P.Contado</th>
                 <th style="text-align: center;">Herramientas</th>
             </tr>
         </thead>
         <tbody>
                     <tr>
-                        <td>asd</td>
-                        <td>asd</td>
-                        <td>asd</td>
-                        <td>asd</td>
-                        <td>asd</td>
-                        <td>asd</td>
+                        <td>INV001</td>
+                        <td>Lavadora</td>
+                        <td>WS16</td>
+                        <td>GAL</td>
+                        <td>Bodega</td>
+                        <td>6</td>
+                        <td>$6,000</td>
+                        <td>$12,000</td>
                         <td align="center">
                                 <a href="editar_documento.php?id=" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
-                                <button onClick='eliminar_doc()' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
+                                <button onClick='eliminar_inventario()' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>INV002</td>
+                        <td>Lavadora</td>
+                        <td>WS16</td>
+                        <td>GAL</td>
+                        <td>Bodega</td>
+                        <td>6</td>
+                        <td>$6,000</td>
+                        <td>$12,000</td>
+                        <td align="center">
+                                <a href="editar_documento.php?id=" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
+                                <button onClick='eliminar_inventario()' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
                         </td>
                     </tr>
         </tbody>
