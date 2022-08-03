@@ -825,7 +825,7 @@ include "accion/conexion.php";
                         <div class="col-lg-3">
                           <div class="form-group">
                                 <label for="nombre_cat">Identificador</label>
-                                <input minlength="4" type="text" class="form-control" name="identificador" id="identificador" required>
+                                <input minlength="3" type="text" class="form-control" name="identificador" id="identificador" required>
                                 <div id="msg_validador">
                                 </div>
                             </div>  
@@ -1340,7 +1340,7 @@ include "accion/conexion.php";
                         <td><?php echo "$".number_format($data['costo_iva'],2, '.', ','); ?></td>
                         <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td><?php echo $data['ext_p']; ?></td>
-                        <td>---</td>
+                        <td></td>
                         <td><?php echo "$".number_format($data['costo_contado'],2, '.', ','); ?></td>
                         <td><?php echo "$".number_format($data['costo_especial'],2, '.', ','); ?></td>
                         <td><?php echo "$".number_format($data['costo_cr1'],2, '.', ','); ?></td>

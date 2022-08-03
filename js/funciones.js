@@ -1116,7 +1116,13 @@ $('#idestado_civil').change(function() {
             data: {action:action,identificador:identificador},
             success: function(response) 
             {
-                if(response == 0)
+                if((identificador.length == 1 && identificador.charCodeAt(0) == 35) || identificador.length == 0)
+                {
+                    $('#identificador').attr('class','form-control');
+                    $('#msg_validador').attr('class','');
+                    $("#msg_validador").empty();
+                }
+                else if(response == 0)
                 {
                     //todo bien
                     $('#identificador').attr('class','form-control is-valid');
@@ -1130,7 +1136,6 @@ $('#idestado_civil').change(function() {
                     $('#msg_validador').attr('class','invalid-feedback');
                     $('#msg_validador').html('Este identificador ya esta en uso');
                 }
-                
             },
             error: function(error) {
                 //$('#prueba').val('error');
