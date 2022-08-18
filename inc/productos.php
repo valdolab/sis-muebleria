@@ -1290,50 +1290,55 @@ include "accion/conexion.php";
                 {
                     $id_producto = $data['idproducto'];
                     $identificador = $data['identificador'];
-                    //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    if($data['subcategoria'] == null)
+                    #revisar que no sean null Ext_p y Ext_m, si los dos son nulos no mostrarlos. Mostrar si y solo los dos son null
+                    #POR AHORA NO HAY DE DONDE SACAR Ext_m, por lo tanto solo nos basamos en Ext_p
+                    $query_extp = mysqli_query($conexion, "SELECT ext_p from producto where idproducto = '$id_producto'");
+                    if(mysqli_fetch_assoc($query_extp)['ext_p'])
                     {
-                        $idcategoria = $data['categoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
-                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
+                        #NONULL
+                        //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
+                        if($data['subcategoria'] == null)
+                        {
+                            $idcategoria = $data['categoria'];
+                            $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
+                            $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
-                        //no tiene sub
-                        $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
-                        $data_producto = mysqli_fetch_assoc($select_producto_nosub);
-                        $catproducto = $data_producto['catproducto'];
-                        $atr1_producto = $data_producto['atr1_producto'];
-                        //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
-                    }
-                    else
-                    {
-                        $idsubcategoria = $data['subcategoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
-                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
+                            //no tiene sub
+                            $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
+                            $data_producto = mysqli_fetch_assoc($select_producto_nosub);
+                            $catproducto = $data_producto['catproducto'];
+                            $atr1_producto = $data_producto['atr1_producto'];
+                            //creamos la ubicacion
+                            $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
+                        }
+                        else
+                        {
+                            $idsubcategoria = $data['subcategoria'];
+                            $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
+                            $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
-                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
-                        $data_producto = mysqli_fetch_assoc($select_producto_full);
-                        $catproducto = $data_producto['catproducto'];
-                        $subcat_producto = $data_producto['subcat_producto'];
-                        $atr1_producto = $data_producto['atr1_producto'];
-                        //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
-                    }
-                    //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$identificador.".png";
-                    if(is_file($archivador))
-                    {
-                        $boton_img = "btn btn-primary btn-sm";
-                        $siimagen = 1;
-                    }
-                    else
-                    {
-                        $boton_img = "btn btn-secondary btn-sm";
-                        $siimagen = 0;
-                    }
-
-             ?>
-                <tr>
+                            $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
+                            $data_producto = mysqli_fetch_assoc($select_producto_full);
+                            $catproducto = $data_producto['catproducto'];
+                            $subcat_producto = $data_producto['subcat_producto'];
+                            $atr1_producto = $data_producto['atr1_producto'];
+                            //creamos la ubicacion
+                            $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
+                        }
+                        //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
+                        $archivador = $estructura."/".$identificador.".png";
+                        if(is_file($archivador))
+                        {
+                            $boton_img = "btn btn-primary btn-sm";
+                            $siimagen = 1;
+                        }
+                        else
+                        {
+                            $boton_img = "btn btn-secondary btn-sm";
+                            $siimagen = 0;
+                        }
+                    ?>
+                    <tr>
                         <td><?php echo $data['descripcion']; ?></td>
                         <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
                         <td><?php echo "$".number_format($data['costo'],2, '.', ','); ?></td>
@@ -1379,9 +1384,10 @@ include "accion/conexion.php";
                              ?>
                         </td>
                     </tr>
-            <?php 
-                }
-            } 
+                        <?php 
+                    }#if($ext_p != null)
+                } #while
+            } #if ($result > 0)
             ?>
         </tbody>
     </table>

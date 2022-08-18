@@ -755,111 +755,118 @@ if ($_POST['action'] == 'searchCatUsed')
                 {
                     $id_producto = $data['idproducto'];
                     $identificador = $data['identificador'];
-                    //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    if($data['subcategoria'] == null)
+                    #revisar que no sean null Ext_p y Ext_m, si los dos son nulos no mostrarlos. Mostrar si y solo los dos son null
+                    #POR AHORA NO HAY DE DONDE SACAR Ext_m, por lo tanto solo nos basamos en Ext_p
+                    $query_extp = mysqli_query($conexion, "SELECT ext_p from producto where idproducto = '$id_producto'");
+                    if(mysqli_fetch_assoc($query_extp)['ext_p'])
                     {
-                        $idcategoria = $data['categoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
-                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
+                        #NONULL
+                        //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
+                        if($data['subcategoria'] == null)
+                        {
+                            $idcategoria = $data['categoria'];
+                            $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
+                            $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
-                        //no tiene sub
-                        $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
-                        $data_producto = mysqli_fetch_assoc($select_producto_nosub);
-                        $catproducto = $data_producto['catproducto'];
-                        $atr1_producto = $data_producto['atr1_producto'];
-                        //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
-                    }
-                    else
-                    {
-                        $idsubcategoria = $data['subcategoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
-                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
+                            //no tiene sub
+                            $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
+                            $data_producto = mysqli_fetch_assoc($select_producto_nosub);
+                            $catproducto = $data_producto['catproducto'];
+                            $atr1_producto = $data_producto['atr1_producto'];
+                            //creamos la ubicacion
+                            $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
+                        }
+                        else
+                        {
+                            $idsubcategoria = $data['subcategoria'];
+                            $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
+                            $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
-                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
-                        $data_producto = mysqli_fetch_assoc($select_producto_full);
-                        $catproducto = $data_producto['catproducto'];
-                        $subcat_producto = $data_producto['subcat_producto'];
-                        $atr1_producto = $data_producto['atr1_producto'];
-                        //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
-                    }
-                    //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$identificador.".png";
-                    if(is_file($archivador))
-                    {
-                        $boton_img = "btn btn-primary btn-sm";
-                        $siimagen = 1;
-                    }
-                    else
-                    {
-                        $boton_img = "btn btn-secondary btn-sm";
-                        $siimagen = 0;
-                    }
+                            $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
+                            $data_producto = mysqli_fetch_assoc($select_producto_full);
+                            $catproducto = $data_producto['catproducto'];
+                            $subcat_producto = $data_producto['subcat_producto'];
+                            $atr1_producto = $data_producto['atr1_producto'];
+                            //creamos la ubicacion
+                            $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
+                        }
+                        //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
+                        $archivador = $estructura."/".$identificador.".png";
+                        if(is_file($archivador))
+                        {
+                            $boton_img = "btn btn-primary btn-sm";
+                            $siimagen = 1;
+                        }
+                        else
+                        {
+                            $boton_img = "btn btn-secondary btn-sm";
+                            $siimagen = 0;
+                        }
 
-                $cadenaTabla = $cadenaTabla.'<tr>
-                    <td>'.$data['descripcion'].'</td>
-                        <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
-                        <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
-                        <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
-                        <td>'.$data['ext_p'].'</td>
-                        <td>---</td>
-                        <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_especial'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_cr1'],2, '.', ',').'</td>
-                        <td>'.$data['costo_p1'].'</td>
-                        <td>'."$".number_format($data['costo_cr2'],2, '.', ',').'</td>
-                        <td>'.$data['costo_p2'].'</td>
-                        <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
-                        <td>'.$garantia." Meses".'</td>';
+                    $cadenaTabla = $cadenaTabla.'<tr>
+                        <td>'.$data['descripcion'].'</td>
+                            <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="'.$id_producto.'" readonly hidden></td>
+                            <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
+                            <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
+                            <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="'.$id_producto.'" readonly hidden></td>
+                            <td>'.$data['ext_p'].'</td>
+                            <td></td>
+                            <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
+                            <td>'."$".number_format($data['costo_especial'],2, '.', ',').'</td>
+                            <td>'."$".number_format($data['costo_cr1'],2, '.', ',').'</td>
+                            <td>'.round($data['costo_p1'],2).'</td>
+                            <td>'."$".number_format($data['costo_cr2'],2, '.', ',').'</td>
+                            <td>'.round($data['costo_p2'],2).'</td>
+                            <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
+                            <td>'.$garantia." Meses".'</td>';
 
-                $cadenaTabla = $cadenaTabla.'<td align="center">';
+                    $cadenaTabla = $cadenaTabla.'<td align="center">';
 
-                $id_usuario = $_SESSION['iduser'];
-                $sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
-                $array_permisos = [];
-                    while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
-                    {
-                        $array_permisos[] = $row['permiso_idpermiso'];
-                    }
-                    #print_r($array_permisos);
-                    $num_permisos = sizeof($array_permisos);
-                    #PERMISOS
-                    if($_SESSION['rol'] == "SuperAdmin")
-                    {
-                      #es super admin y titene permiso a TODO
-                      $editar_productos = 1;
-                      $eliminar_productos = 1;
-                      $imagenes = 1;
-                    }
-                    else
-                    {
-                      #permisos asignados
-                      $editar_productos = in_array(6, $array_permisos);
-                      $eliminar_productos = in_array(7, $array_permisos);
-                      $imagenes =  in_array(8, $array_permisos);
-                    }
-                    $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    $cadenaTabla = $cadenaTabla."&nbsp;";
-                    if($editar_productos)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
-                    }
-                    $cadenaTabla = $cadenaTabla."&nbsp;";
-                    if($eliminar_productos)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
-                    }
-                $cadenaTabla = $cadenaTabla.'</td></tr>';
+                    $id_usuario = $_SESSION['iduser'];
+                    $sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
+                    $array_permisos = [];
+                        while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
+                        {
+                            $array_permisos[] = $row['permiso_idpermiso'];
+                        }
+                        #print_r($array_permisos);
+                        $num_permisos = sizeof($array_permisos);
+                        #PERMISOS
+                        if($_SESSION['rol'] == "SuperAdmin")
+                        {
+                          #es super admin y titene permiso a TODO
+                          $editar_productos = 1;
+                          $eliminar_productos = 1;
+                          $imagenes = 1;
+                        }
+                        else
+                        {
+                          #permisos asignados
+                          $editar_productos = in_array(6, $array_permisos);
+                          $eliminar_productos = in_array(7, $array_permisos);
+                          $imagenes =  in_array(8, $array_permisos);
+                        }
+                        $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                        $cadenaTabla = $cadenaTabla."&nbsp;";
+                        if($editar_productos)
+                        {
+                          $cadenaTabla = $cadenaTabla.'<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>';
+                        }
+                        else
+                        {
+                          $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
+                        }
+                        $cadenaTabla = $cadenaTabla."&nbsp;";
+                        if($eliminar_productos)
+                        {
+                          $cadenaTabla = $cadenaTabla.'<button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                        }
+                        else
+                        {
+                          $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                        }
+                    $cadenaTabla = $cadenaTabla.'</td></tr>';
+                }#if($ext_p != null)
               }
             }
         $cadenaTabla = $cadenaTabla.'</tbody></table>';
@@ -936,6 +943,12 @@ if ($_POST['action'] == 'searchSubCatUsed')
                 {
                     $id_producto = $data['idproducto'];
                     $identificador = $data['identificador'];
+                    #revisar que no sean null Ext_p y Ext_m, si los dos son nulos no mostrarlos. Mostrar si y solo los dos son null
+                    #POR AHORA NO HAY DE DONDE SACAR Ext_m, por lo tanto solo nos basamos en Ext_p
+                    $query_extp = mysqli_query($conexion, "SELECT ext_p from producto where idproducto = '$id_producto'");
+                    if(mysqli_fetch_assoc($query_extp)['ext_p'])
+                    {
+                        #NONULL
                         $idsubcategoria = $data['subcategoria'];
                         $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
                         $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
@@ -963,18 +976,18 @@ if ($_POST['action'] == 'searchSubCatUsed')
 
                 $cadenaTabla = $cadenaTabla.'<tr>
                     <td>'.$data['descripcion'].'</td>
-                        <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
+                        <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="'.$id_producto.'" readonly hidden></td>
                         <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
                         <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
-                        <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
+                        <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="'.$id_producto.'" readonly hidden></td>
                         <td>'.$data['ext_p'].'</td>
-                        <td>---</td>
+                        <td></td>
                         <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
                         <td>'."$".number_format($data['costo_especial'],2, '.', ',').'</td>
                         <td>'."$".number_format($data['costo_cr1'],2, '.', ',').'</td>
-                        <td>'.$data['costo_p1'].'</td>
+                        <td>'.round($data['costo_p1'],2).'</td>
                         <td>'."$".number_format($data['costo_cr2'],2, '.', ',').'</td>
-                        <td>'.$data['costo_p2'].'</td>
+                        <td>'.round($data['costo_p2'],2).'</td>
                         <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
                         <td>'.$garantia." Meses".'</td>';
 
@@ -1025,7 +1038,7 @@ if ($_POST['action'] == 'searchSubCatUsed')
                       $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
                     }
                 $cadenaTabla = $cadenaTabla.'</td></tr>';
-
+                }#if($ext_p != null)
               }
             }
         $cadenaTabla = $cadenaTabla.'</tbody></table>';
@@ -1103,8 +1116,8 @@ if ($_POST['action'] == 'FindAtrsSubCat')
 }
 
 //====== CONSULTAS PARA LOS FILTROS POR ATRIBUTOS
-//ATR1
-if ($_POST['action'] == 'searchForAtr1') 
+//ATR 1,2,3,4 y 5
+if ($_POST['action'] == 'searchForAtr') 
 {
   ob_start();
   session_start();
@@ -1142,14 +1155,11 @@ if ($_POST['action'] == 'searchForAtr1')
             </tr>
         </thead>
         <tbody>';
-          
+
+            $query_sql = "SELECT * from producto WHERE 1";  
             if($atr1 != "LABEL")
             {
-              $query_sql = "SELECT * from producto where atr1_producto like '$atr1'";
-            }
-            else
-            {
-              $query_sql = "SELECT * from producto WHERE 1";
+              $query_sql = $query_sql." and atr1_producto like '$atr1'";
             }
             //los demas filtros anidados
             if($atr2 != "LABEL")
@@ -1186,911 +1196,118 @@ if ($_POST['action'] == 'searchForAtr1')
                 {
                   $id_producto = $data['idproducto'];
                   $identificador = $data['identificador'];
-                  if($data['subcategoria'] == null)
+                  #revisar que no sean null Ext_p y Ext_m, si los dos son nulos no mostrarlos. Mostrar si y solo los dos son null
+                    #POR AHORA NO HAY DE DONDE SACAR Ext_m, por lo tanto solo nos basamos en Ext_p
+                    $query_extp = mysqli_query($conexion, "SELECT ext_p from producto where idproducto = '$id_producto'");
+                    if(mysqli_fetch_assoc($query_extp)['ext_p'])
                     {
-                        $idcategoria = $data['categoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
-                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
+                        #NONULL
+                      if($data['subcategoria'] == null)
+                        {
+                            $idcategoria = $data['categoria'];
+                            $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
+                            $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
-                        //no tiene sub
-                        $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
-                        $data_producto = mysqli_fetch_assoc($select_producto_nosub);
-                        $catproducto = $data_producto['catproducto'];
-                        $atr1_producto = $data_producto['atr1_producto'];
-                        //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
-                    }
-                    else
-                    {
-                        $idsubcategoria = $data['subcategoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
-                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
+                            //no tiene sub
+                            $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
+                            $data_producto = mysqli_fetch_assoc($select_producto_nosub);
+                            $catproducto = $data_producto['catproducto'];
+                            $atr1_producto = $data_producto['atr1_producto'];
+                            //creamos la ubicacion
+                            $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
+                        }
+                        else
+                        {
+                            $idsubcategoria = $data['subcategoria'];
+                            $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
+                            $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
 
-                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
-                        $data_producto = mysqli_fetch_assoc($select_producto_full);
-                        $catproducto = $data_producto['catproducto'];
-                        $subcat_producto = $data_producto['subcat_producto'];
-                        $atr1_producto = $data_producto['atr1_producto'];
-                        //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
-                    }                    
-                    //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$identificador.".png";
-                    if(is_file($archivador))
-                    {
-                        $boton_img = "btn btn-primary btn-sm";
-                        $siimagen = 1;
-                    }
-                    else
-                    {
-                        $boton_img = "btn btn-secondary btn-sm";
-                        $siimagen = 0;
-                    }
+                            $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
+                            $data_producto = mysqli_fetch_assoc($select_producto_full);
+                            $catproducto = $data_producto['catproducto'];
+                            $subcat_producto = $data_producto['subcat_producto'];
+                            $atr1_producto = $data_producto['atr1_producto'];
+                            //creamos la ubicacion
+                            $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
+                        }                    
+                        //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
+                        $archivador = $estructura."/".$identificador.".png";
+                        if(is_file($archivador))
+                        {
+                            $boton_img = "btn btn-primary btn-sm";
+                            $siimagen = 1;
+                        }
+                        else
+                        {
+                            $boton_img = "btn btn-secondary btn-sm";
+                            $siimagen = 0;
+                        }
 
-                $cadenaTabla = $cadenaTabla.'<tr>
-                    <td>'.$data['descripcion'].'</td>
-                        <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
-                        <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
-                        <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
-                        <td>'.$data['ext_p'].'</td>
-                        <td>---</td>
-                        <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_especial'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_cr1'],2, '.', ',').'</td>
-                        <td>'.$data['costo_p1'].'</td>
-                        <td>'."$".number_format($data['costo_cr2'],2, '.', ',').'</td>
-                        <td>'.$data['costo_p2'].'</td>
-                        <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
-                        <td>'.$garantia." Meses".'</td>';
+                    $cadenaTabla = $cadenaTabla.'<tr>
+                        <td>'.$data['descripcion'].'</td>
+                            <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="'.$id_producto.'" readonly hidden></td>
+                            <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
+                            <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
+                            <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="'.$id_producto.'" readonly hidden></td>
+                            <td>'.$data['ext_p'].'</td>
+                            <td></td>
+                            <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
+                            <td>'."$".number_format($data['costo_especial'],2, '.', ',').'</td>
+                            <td>'."$".number_format($data['costo_cr1'],2, '.', ',').'</td>
+                            <td>'.round($data['costo_p1'],2).'</td>
+                            <td>'."$".number_format($data['costo_cr2'],2, '.', ',').'</td>
+                            <td>'.round($data['costo_p2'],2).'</td>
+                            <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
+                            <td>'.$garantia." Meses".'</td>';
 
-                $cadenaTabla = $cadenaTabla.'<td align="center">';
+                    $cadenaTabla = $cadenaTabla.'<td align="center">';
 
-                $id_usuario = $_SESSION['iduser'];
-                $sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
-                $array_permisos = [];
-                    while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
-                    {
-                        $array_permisos[] = $row['permiso_idpermiso'];
-                    }
-                    #print_r($array_permisos);
-                    $num_permisos = sizeof($array_permisos);
-                    #PERMISOS
-                    if($_SESSION['rol'] == "SuperAdmin")
-                    {
-                      #es super admin y titene permiso a TODO
-                      $editar_productos = 1;
-                      $eliminar_productos = 1;
-                      $imagenes = 1;
-                    }
-                    else
-                    {
-                      #permisos asignados
-                      $editar_productos = in_array(6, $array_permisos);
-                      $eliminar_productos = in_array(7, $array_permisos);
-                      $imagenes =  in_array(8, $array_permisos);
-                    }
+                    $id_usuario = $_SESSION['iduser'];
+                    $sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
+                    $array_permisos = [];
+                        while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
+                        {
+                            $array_permisos[] = $row['permiso_idpermiso'];
+                        }
+                        #print_r($array_permisos);
+                        $num_permisos = sizeof($array_permisos);
+                        #PERMISOS
+                        if($_SESSION['rol'] == "SuperAdmin")
+                        {
+                          #es super admin y titene permiso a TODO
+                          $editar_productos = 1;
+                          $eliminar_productos = 1;
+                          $imagenes = 1;
+                        }
+                        else
+                        {
+                          #permisos asignados
+                          $editar_productos = in_array(6, $array_permisos);
+                          $eliminar_productos = in_array(7, $array_permisos);
+                          $imagenes =  in_array(8, $array_permisos);
+                        }
 
-                    $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    $cadenaTabla = $cadenaTabla."&nbsp;";
-                    if($editar_productos)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
-                    }
-                    $cadenaTabla = $cadenaTabla."&nbsp;";
-                    if($eliminar_productos)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
-                    }
-                $cadenaTabla = $cadenaTabla.'</td></tr>';
-              }
-            }
-        $cadenaTabla = $cadenaTabla.'</tbody></table>';
-
-        $cadenaTabla = array("cadenaTabla" => $cadenaTabla);
-        $resultFindforAtr = $cadenaTabla;
-      
-    echo json_encode($resultFindforAtr,JSON_UNESCAPED_UNICODE);
-  }
-  ob_end_flush();
-  exit;
-}
-//ATR2
-if ($_POST['action'] == 'searchForAtr2') 
-{
-  ob_start();
-  session_start();
-  include "accion/conexion.php";
-  if (!empty($_POST['atr2'])) 
-  {
-      $atr1 = $_POST['atr1'];
-      $atr2 = $_POST['atr2'];
-      $atr3 = $_POST['atr3'];
-      $atr4 = $_POST['atr4'];
-      $atr5 = $_POST['atr5'];
-      $idcategoria = $_POST['idcat'];
-      $idsubcategoria = $_POST['idsubcat'];
-      
-      $cadenaTabla = '
-<table class="table" id="tbl_productos">
-        <thead class="thead-light">
-            <tr>
-                <th>Descripción</th>
-                <th>Nuevo costo</th>
-                <th>Costo actual</th>
-                <th>Costo+IVA</th>
-                <th>Nuevo Ext.-P</th>
-                <th>Ext.-P</th>
-                <th>Ext.-M</th>
-                <th>Contado</th>
-                <th>Especial</th>
-                <th>CR1</th>
-                <th>P1</th>
-                <th>CR2</th>
-                <th>P2</th>
-                <th>E-Q</th>
-                <th>GAR</th>
-                <th style="text-align: center;">Herramientas</th>
-            </tr>
-        </thead>
-        <tbody>';
-          
-          if($atr2 != "LABEL")
-            {
-              $query_sql = "SELECT * from producto where atr2_producto like '$atr2'";
-            }
-            else
-            {
-              $query_sql = "SELECT * from producto WHERE 1";
-            }
-            //los demas filtros anidados
-            if($atr1 != "LABEL")
-            {
-              $query_sql = $query_sql." and atr1_producto like '$atr1'";
-            }
-            if($atr3 != "LABEL")
-            {
-              $query_sql = $query_sql." and atr3_producto like '$atr3'";
-            }
-            if($atr4 != "LABEL")
-            {
-              $query_sql = $query_sql." and atr4_producto like '$atr4'";
-            }
-            if($atr5 != "LABEL")
-            {
-              $query_sql = $query_sql." and atr5_producto like '$atr5'";
-            }
-
-          if($idsubcategoria == "NoSubcat")
-          {
-            $query_sql = $query_sql." and categoria = '$idcategoria' order by creado_en desc";
-          }
-          else
-          {
-            $query_sql = $query_sql." and categoria = '$idcategoria' and subcategoria = '$idsubcategoria' order by creado_en desc";
-          }
-
-            $query = mysqli_query($conexion, $query_sql);
-            $result = mysqli_num_rows($query);
-            if ($result > 0) 
-            {
-                while ($data = mysqli_fetch_assoc($query)) 
-                {
-                  $id_producto = $data['idproducto'];
-                  $identificador = $data['identificador'];
-                  if($data['subcategoria'] == null)
-                    {
-                        $idcategoria = $data['categoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
-                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
-
-                        //no tiene sub
-                        $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
-                        $data_producto = mysqli_fetch_assoc($select_producto_nosub);
-                        $catproducto = $data_producto['catproducto'];
-                        $atr1_producto = $data_producto['atr1_producto'];
-                        //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
-                    }
-                    else
-                    {
-                        $idsubcategoria = $data['subcategoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
-                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
-
-                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
-                        $data_producto = mysqli_fetch_assoc($select_producto_full);
-                        $catproducto = $data_producto['catproducto'];
-                        $subcat_producto = $data_producto['subcat_producto'];
-                        $atr1_producto = $data_producto['atr1_producto'];
-                        //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
-                    }                    
-                    //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$identificador.".png";
-                    if(is_file($archivador))
-                    {
-                        $boton_img = "btn btn-primary btn-sm";
-                        $siimagen = 1;
-                    }
-                    else
-                    {
-                        $boton_img = "btn btn-secondary btn-sm";
-                        $siimagen = 0;
-                    }
-
-                $cadenaTabla = $cadenaTabla.'<tr>
-                    <td>'.$data['descripcion'].'</td>
-                        <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
-                        <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
-                        <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
-                        <td>'.$data['ext_p'].'</td>
-                        <td>---</td>
-                        <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_especial'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_cr1'],2, '.', ',').'</td>
-                        <td>'.$data['costo_p1'].'</td>
-                        <td>'."$".number_format($data['costo_cr2'],2, '.', ',').'</td>
-                        <td>'.$data['costo_p2'].'</td>
-                        <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
-                        <td>'.$garantia." Meses".'</td>';
-
-                $cadenaTabla = $cadenaTabla.'<td align="center">';
-
-                $id_usuario = $_SESSION['iduser'];
-                $sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
-                $array_permisos = [];
-                    while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
-                    {
-                        $array_permisos[] = $row['permiso_idpermiso'];
-                    }
-                    #print_r($array_permisos);
-                    $num_permisos = sizeof($array_permisos);
-                    #PERMISOS
-                    if($_SESSION['rol'] == "SuperAdmin")
-                    {
-                      #es super admin y titene permiso a TODO
-                      $editar_productos = 1;
-                      $eliminar_productos = 1;
-                      $imagenes = 1;
-                    }
-                    else
-                    {
-                      #permisos asignados
-                      $editar_productos = in_array(6, $array_permisos);
-                      $eliminar_productos = in_array(7, $array_permisos);
-                      $imagenes =  in_array(8, $array_permisos);
-                    }
-
-                    $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    $cadenaTabla = $cadenaTabla."&nbsp;";
-                    if($editar_productos)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
-                    }
-                    $cadenaTabla = $cadenaTabla."&nbsp;";
-                    if($eliminar_productos)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
-                    }
-                $cadenaTabla = $cadenaTabla.'</td></tr>';
-              }
-            }
-        $cadenaTabla = $cadenaTabla.'</tbody></table>';
-
-        $cadenaTabla = array("cadenaTabla" => $cadenaTabla);
-        $resultFindforAtr = $cadenaTabla;
-      
-    echo json_encode($resultFindforAtr,JSON_UNESCAPED_UNICODE);
-  }
-  ob_end_flush();
-  exit;
-}
-//ATR3
-if ($_POST['action'] == 'searchForAtr3') 
-{
-  ob_start();
-  session_start();
-  include "accion/conexion.php";
-  if (!empty($_POST['atr3'])) 
-  {
-      $atr1 = $_POST['atr1'];
-      $atr2 = $_POST['atr2'];
-      $atr3 = $_POST['atr3'];
-      $atr4 = $_POST['atr4'];
-      $atr5 = $_POST['atr5'];
-      $idcategoria = $_POST['idcat'];
-      $idsubcategoria = $_POST['idsubcat'];
-      
-      $cadenaTabla = '
-<table class="table" id="tbl_productos">
-        <thead class="thead-light">
-            <tr>
-                <th>Descripción</th>
-                <th>Nuevo costo</th>
-                <th>Costo actual</th>
-                <th>Costo+IVA</th>
-                <th>Nuevo Ext.-P</th>
-                <th>Ext.-P</th>
-                <th>Ext.-M</th>
-                <th>Contado</th>
-                <th>Especial</th>
-                <th>CR1</th>
-                <th>P1</th>
-                <th>CR2</th>
-                <th>P2</th>
-                <th>E-Q</th>
-                <th>GAR</th>
-                <th style="text-align: center;">Herramientas</th>
-            </tr>
-        </thead>
-        <tbody>';
-          
-          if($atr3 != "LABEL")
-            {
-              $query_sql = "SELECT * from producto where atr3_producto like '$atr3'";
-            }
-            else
-            {
-              $query_sql = "SELECT * from producto WHERE 1";
-            }
-            //los demas filtros anidados
-            if($atr2 != "LABEL")
-            {
-              $query_sql = $query_sql." and atr2_producto like '$atr2'";
-            }
-            if($atr1 != "LABEL")
-            {
-              $query_sql = $query_sql." and atr1_producto like '$atr1'";
-            }
-            if($atr4 != "LABEL")
-            {
-              $query_sql = $query_sql." and atr4_producto like '$atr4'";
-            }
-            if($atr5 != "LABEL")
-            {
-              $query_sql = $query_sql." and atr5_producto like '$atr5'";
-            }
-
-          if($idsubcategoria == "NoSubcat")
-          {
-            $query_sql = $query_sql." and categoria = '$idcategoria' order by creado_en desc";
-          }
-          else
-          {
-            $query_sql = $query_sql." and categoria = '$idcategoria' and subcategoria = '$idsubcategoria' order by creado_en desc";
-          }
-
-            $query = mysqli_query($conexion, $query_sql);
-            $result = mysqli_num_rows($query);
-            if ($result > 0) 
-            {
-                while ($data = mysqli_fetch_assoc($query)) 
-                {
-                  $id_producto = $data['idproducto'];
-                  $identificador = $data['identificador'];
-                  if($data['subcategoria'] == null)
-                    {
-                        $idcategoria = $data['categoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
-                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
-
-                        //no tiene sub
-                        $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
-                        $data_producto = mysqli_fetch_assoc($select_producto_nosub);
-                        $catproducto = $data_producto['catproducto'];
-                        $atr1_producto = $data_producto['atr1_producto'];
-                        //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
-                    }
-                    else
-                    {
-                        $idsubcategoria = $data['subcategoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
-                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
-
-                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
-                        $data_producto = mysqli_fetch_assoc($select_producto_full);
-                        $catproducto = $data_producto['catproducto'];
-                        $subcat_producto = $data_producto['subcat_producto'];
-                        $atr1_producto = $data_producto['atr1_producto'];
-                        //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
-                    }                    
-                    //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$identificador.".png";
-                    if(is_file($archivador))
-                    {
-                        $boton_img = "btn btn-primary btn-sm";
-                        $siimagen = 1;
-                    }
-                    else
-                    {
-                        $boton_img = "btn btn-secondary btn-sm";
-                        $siimagen = 0;
-                    }
-
-                $cadenaTabla = $cadenaTabla.'<tr>
-                    <td>'.$data['descripcion'].'</td>
-                        <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
-                        <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
-                        <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
-                        <td>'.$data['ext_p'].'</td>
-                        <td>---</td>
-                        <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_especial'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_cr1'],2, '.', ',').'</td>
-                        <td>'.$data['costo_p1'].'</td>
-                        <td>'."$".number_format($data['costo_cr2'],2, '.', ',').'</td>
-                        <td>'.$data['costo_p2'].'</td>
-                        <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
-                        <td>'.$garantia." Meses".'</td>';
-
-                $cadenaTabla = $cadenaTabla.'<td align="center">';
-
-                $id_usuario = $_SESSION['iduser'];
-                $sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
-                $array_permisos = [];
-                    while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
-                    {
-                        $array_permisos[] = $row['permiso_idpermiso'];
-                    }
-                    #print_r($array_permisos);
-                    $num_permisos = sizeof($array_permisos);
-                    #PERMISOS
-                    if($_SESSION['rol'] == "SuperAdmin")
-                    {
-                      #es super admin y titene permiso a TODO
-                      $editar_productos = 1;
-                      $eliminar_productos = 1;
-                      $imagenes = 1;
-                    }
-                    else
-                    {
-                      #permisos asignados
-                      $editar_productos = in_array(6, $array_permisos);
-                      $eliminar_productos = in_array(7, $array_permisos);
-                      $imagenes =  in_array(8, $array_permisos);
-                    }
-
-                    $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    $cadenaTabla = $cadenaTabla."&nbsp;";
-                    if($editar_productos)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
-                    }
-                    $cadenaTabla = $cadenaTabla."&nbsp;";
-                    if($eliminar_productos)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
-                    }
-                $cadenaTabla = $cadenaTabla.'</td></tr>';
-              }
-            }
-        $cadenaTabla = $cadenaTabla.'</tbody></table>';
-
-        $cadenaTabla = array("cadenaTabla" => $cadenaTabla);
-        $resultFindforAtr = $cadenaTabla;
-      
-    echo json_encode($resultFindforAtr,JSON_UNESCAPED_UNICODE);
-  }
-  ob_end_flush();
-  exit;
-}
-//ATR4
-if ($_POST['action'] == 'searchForAtr4') 
-{
-  ob_start();
-  session_start();
-  include "accion/conexion.php";
-  if (!empty($_POST['atr4'])) 
-  {
-      $atr1 = $_POST['atr1'];
-      $atr2 = $_POST['atr2'];
-      $atr3 = $_POST['atr3'];
-      $atr4 = $_POST['atr4'];
-      $atr5 = $_POST['atr5'];
-      $idcategoria = $_POST['idcat'];
-      $idsubcategoria = $_POST['idsubcat'];
-      
-      $cadenaTabla = '
-<table class="table" id="tbl_productos">
-        <thead class="thead-light">
-            <tr>
-                <th>Descripción</th>
-                <th>Nuevo costo</th>
-                <th>Costo actual</th>
-                <th>Costo+IVA</th>
-                <th>Nuevo Ext.-P</th>
-                <th>Ext.-P</th>
-                <th>Ext.-M</th>
-                <th>Contado</th>
-                <th>Especial</th>
-                <th>CR1</th>
-                <th>P1</th>
-                <th>CR2</th>
-                <th>P2</th>
-                <th>E-Q</th>
-                <th>GAR</th>
-                <th style="text-align: center;">Herramientas</th>
-            </tr>
-        </thead>
-        <tbody>';
-          
-          if($atr4 != "LABEL")
-            {
-              $query_sql = "SELECT * from producto where atr4_producto like '$atr4'";
-            }
-            else
-            {
-              $query_sql = "SELECT * from producto WHERE 1";
-            }
-            //los demas filtros anidados
-            if($atr2 != "LABEL")
-            {
-              $query_sql = $query_sql." and atr2_producto like '$atr2'";
-            }
-            if($atr3 != "LABEL")
-            {
-              $query_sql = $query_sql." and atr3_producto like '$atr3'";
-            }
-            if($atr1 != "LABEL")
-            {
-              $query_sql = $query_sql." and atr1_producto like '$atr1'";
-            }
-            if($atr5 != "LABEL")
-            {
-              $query_sql = $query_sql." and atr5_producto like '$atr5'";
-            }
-
-          if($idsubcategoria == "NoSubcat")
-          {
-            $query_sql = $query_sql." and categoria = '$idcategoria' order by creado_en desc";
-          }
-          else
-          {
-            $query_sql = $query_sql." and categoria = '$idcategoria' and subcategoria = '$idsubcategoria' order by creado_en desc";
-          }
-
-            $query = mysqli_query($conexion, $query_sql);
-            $result = mysqli_num_rows($query);
-            if ($result > 0) 
-            {
-                while ($data = mysqli_fetch_assoc($query)) 
-                {
-                  $id_producto = $data['idproducto'];
-                  $identificador = $data['identificador'];
-                  if($data['subcategoria'] == null)
-                    {
-                        $idcategoria = $data['categoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
-                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
-
-                        //no tiene sub
-                        $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
-                        $data_producto = mysqli_fetch_assoc($select_producto_nosub);
-                        $catproducto = $data_producto['catproducto'];
-                        $atr1_producto = $data_producto['atr1_producto'];
-                        //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
-                    }
-                    else
-                    {
-                        $idsubcategoria = $data['subcategoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
-                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
-
-                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
-                        $data_producto = mysqli_fetch_assoc($select_producto_full);
-                        $catproducto = $data_producto['catproducto'];
-                        $subcat_producto = $data_producto['subcat_producto'];
-                        $atr1_producto = $data_producto['atr1_producto'];
-                        //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
-                    }                    
-                    //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$identificador.".png";
-                    if(is_file($archivador))
-                    {
-                        $boton_img = "btn btn-primary btn-sm";
-                        $siimagen = 1;
-                    }
-                    else
-                    {
-                        $boton_img = "btn btn-secondary btn-sm";
-                        $siimagen = 0;
-                    }
-
-                $cadenaTabla = $cadenaTabla.'<tr>
-                    <td>'.$data['descripcion'].'</td>
-                        <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
-                        <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
-                        <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
-                        <td>'.$data['ext_p'].'</td>
-                        <td>---</td>
-                        <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_especial'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_cr1'],2, '.', ',').'</td>
-                        <td>'.$data['costo_p1'].'</td>
-                        <td>'."$".number_format($data['costo_cr2'],2, '.', ',').'</td>
-                        <td>'.$data['costo_p2'].'</td>
-                        <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
-                        <td>'.$garantia." Meses".'</td>';
-
-                $cadenaTabla = $cadenaTabla.'<td align="center">';
-
-                $id_usuario = $_SESSION['iduser'];
-                $sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
-                $array_permisos = [];
-                    while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
-                    {
-                        $array_permisos[] = $row['permiso_idpermiso'];
-                    }
-                    #print_r($array_permisos);
-                    $num_permisos = sizeof($array_permisos);
-                    #PERMISOS
-                    if($_SESSION['rol'] == "SuperAdmin")
-                    {
-                      #es super admin y titene permiso a TODO
-                      $editar_productos = 1;
-                      $eliminar_productos = 1;
-                      $imagenes = 1;
-                    }
-                    else
-                    {
-                      #permisos asignados
-                      $editar_productos = in_array(6, $array_permisos);
-                      $eliminar_productos = in_array(7, $array_permisos);
-                      $imagenes =  in_array(8, $array_permisos);
-                    }
-
-                    $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    $cadenaTabla = $cadenaTabla."&nbsp;";
-                    if($editar_productos)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
-                    }
-                    $cadenaTabla = $cadenaTabla."&nbsp;";
-                    if($eliminar_productos)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
-                    }
-                $cadenaTabla = $cadenaTabla.'</td></tr>';
-              }
-            }
-        $cadenaTabla = $cadenaTabla.'</tbody></table>';
-
-        $cadenaTabla = array("cadenaTabla" => $cadenaTabla);
-        $resultFindforAtr = $cadenaTabla;
-      
-    echo json_encode($resultFindforAtr,JSON_UNESCAPED_UNICODE);
-  }
-  ob_end_flush();
-  exit;
-}
-//ATR1
-if ($_POST['action'] == 'searchForAtr5') 
-{
-  ob_start();
-  session_start();
-  include "accion/conexion.php";
-  if (!empty($_POST['atr5'])) 
-  {
-      $atr1 = $_POST['atr1'];
-      $atr2 = $_POST['atr2'];
-      $atr3 = $_POST['atr3'];
-      $atr4 = $_POST['atr4'];
-      $atr5 = $_POST['atr5'];
-      $idcategoria = $_POST['idcat'];
-      $idsubcategoria = $_POST['idsubcat'];
-      
-      $cadenaTabla = '
-<table class="table" id="tbl_productos">
-        <thead class="thead-light">
-            <tr>
-                <th>Descripción</th>
-                <th>Nuevo costo</th>
-                <th>Costo actual</th>
-                <th>Costo+IVA</th>
-                <th>Nuevo Ext.-P</th>
-                <th>Ext.-P</th>
-                <th>Ext.-M</th>
-                <th>Contado</th>
-                <th>Especial</th>
-                <th>CR1</th>
-                <th>P1</th>
-                <th>CR2</th>
-                <th>P2</th>
-                <th>E-Q</th>
-                <th>GAR</th>
-                <th style="text-align: center;">Herramientas</th>
-            </tr>
-        </thead>
-        <tbody>';
-          
-          if($atr5 != "LABEL")
-            {
-              $query_sql = "SELECT * from producto where atr5_producto like '$atr5'";
-            }
-            else
-            {
-              $query_sql = "SELECT * from producto WHERE 1";
-            }
-            //los demas filtros anidados
-            if($atr2 != "LABEL")
-            {
-              $query_sql = $query_sql." and atr2_producto like '$atr2'";
-            }
-            if($atr3 != "LABEL")
-            {
-              $query_sql = $query_sql." and atr3_producto like '$atr3'";
-            }
-            if($atr4 != "LABEL")
-            {
-              $query_sql = $query_sql." and atr4_producto like '$atr4'";
-            }
-            if($atr1 != "LABEL")
-            {
-              $query_sql = $query_sql." and atr1_producto like '$atr1'";
-            }
-
-          if($idsubcategoria == "NoSubcat")
-          {
-            $query_sql = $query_sql." and categoria = '$idcategoria' order by creado_en desc";
-          }
-          else
-          {
-            $query_sql = $query_sql." and categoria = '$idcategoria' and subcategoria = '$idsubcategoria' order by creado_en desc";
-          }
-
-            $query = mysqli_query($conexion, $query_sql);
-            $result = mysqli_num_rows($query);
-            if ($result > 0) 
-            {
-                while ($data = mysqli_fetch_assoc($query)) 
-                {
-                  $id_producto = $data['idproducto'];
-                  $identificador = $data['identificador'];
-                  if($data['subcategoria'] == null)
-                    {
-                        $idcategoria = $data['categoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
-                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
-
-                        //no tiene sub
-                        $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
-                        $data_producto = mysqli_fetch_assoc($select_producto_nosub);
-                        $catproducto = $data_producto['catproducto'];
-                        $atr1_producto = $data_producto['atr1_producto'];
-                        //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
-                    }
-                    else
-                    {
-                        $idsubcategoria = $data['subcategoria'];
-                        $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
-                        $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
-
-                        $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
-                        $data_producto = mysqli_fetch_assoc($select_producto_full);
-                        $catproducto = $data_producto['catproducto'];
-                        $subcat_producto = $data_producto['subcat_producto'];
-                        $atr1_producto = $data_producto['atr1_producto'];
-                        //creamos la ubicacion
-                        $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
-                    }                    
-                    //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
-                    $archivador = $estructura."/".$identificador.".png";
-                    if(is_file($archivador))
-                    {
-                        $boton_img = "btn btn-primary btn-sm";
-                        $siimagen = 1;
-                    }
-                    else
-                    {
-                        $boton_img = "btn btn-secondary btn-sm";
-                        $siimagen = 0;
-                    }
-
-                $cadenaTabla = $cadenaTabla.'<tr>
-                    <td>'.$data['descripcion'].'</td>
-                        <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
-                        <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
-                        <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="<?php echo $id_producto; ?>" readonly hidden></td>
-                        <td>'.$data['ext_p'].'</td>
-                        <td>---</td>
-                        <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_especial'],2, '.', ',').'</td>
-                        <td>'."$".number_format($data['costo_cr1'],2, '.', ',').'</td>
-                        <td>'.$data['costo_p1'].'</td>
-                        <td>'."$".number_format($data['costo_cr2'],2, '.', ',').'</td>
-                        <td>'.$data['costo_p2'].'</td>
-                        <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
-                        <td>'.$garantia." Meses".'</td>';
-
-                $cadenaTabla = $cadenaTabla.'<td align="center">';
-
-                $id_usuario = $_SESSION['iduser'];
-                $sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
-                $array_permisos = [];
-                    while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
-                    {
-                        $array_permisos[] = $row['permiso_idpermiso'];
-                    }
-                    #print_r($array_permisos);
-                    $num_permisos = sizeof($array_permisos);
-                    #PERMISOS
-                    if($_SESSION['rol'] == "SuperAdmin")
-                    {
-                      #es super admin y titene permiso a TODO
-                      $editar_productos = 1;
-                      $eliminar_productos = 1;
-                      $imagenes = 1;
-                    }
-                    else
-                    {
-                      #permisos asignados
-                      $editar_productos = in_array(6, $array_permisos);
-                      $eliminar_productos = in_array(7, $array_permisos);
-                      $imagenes =  in_array(8, $array_permisos);
-                    }
-
-                    $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
-                    $cadenaTabla = $cadenaTabla."&nbsp;";
-                    if($editar_productos)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
-                    }
-                    $cadenaTabla = $cadenaTabla."&nbsp;";
-                    if($eliminar_productos)
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
-                    }
-                    else
-                    {
-                      $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
-                    }
-                $cadenaTabla = $cadenaTabla.'</td></tr>';
+                        $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                        $cadenaTabla = $cadenaTabla."&nbsp;";
+                        if($editar_productos)
+                        {
+                          $cadenaTabla = $cadenaTabla.'<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>';
+                        }
+                        else
+                        {
+                          $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
+                        }
+                        $cadenaTabla = $cadenaTabla."&nbsp;";
+                        if($eliminar_productos)
+                        {
+                          $cadenaTabla = $cadenaTabla.'<button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                        }
+                        else
+                        {
+                          $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                        }
+                    $cadenaTabla = $cadenaTabla.'</td></tr>';
+                  }#if($ext_p != null)
               }
             }
         $cadenaTabla = $cadenaTabla.'</tbody></table>';
@@ -2195,13 +1412,13 @@ if ($_POST['action'] == 'GuardarEditarLista')
   $array_idproducto_newext_p = $_POST['array_idproducto_newext_p'];
   /*
   1. si el nuevo costo es menor al costo actual, actualizar solo si tengo 0
-  en existencia mueblearia, de lo contrario no actualizar costo
+  en existencia mueblearia (Ext_m), de lo contrario no actualizar costo
   2. Si el nuevo costo es mayor que el costo actual, SI ACTUALIZARLO SIRMPRE
   3. Si el mismo, no hacer nada
 */
 
   //anteriormente calculamos si hay en existencia muebleria
-  $ext_m = 0; //-> de mientras lo dejamos en 0 porque aun no tenemos de donde calcularlo
+  $ext_m = 0; //-> DE MIENTRAS lo dejamos en 0 porque aun no tenemos de donde calcularlo
   //recorremos los nuevos costos puestos y
   //consultamos el costo actual
   $size_costos = sizeof($array_idproducto_newcosto);
@@ -2396,6 +1613,212 @@ if ($_POST['action'] == 'Drop_ext_p')
 
   //$borro_ext_p = mysqli_error($conexion);
   echo json_encode($borro_ext_p,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+#select and show the hidden productos (tienen null en Ext_p o Ext_m)
+if ($_POST['action'] == 'get_hidden_products') 
+{
+  ob_start();
+  session_start();
+  include "accion/conexion.php";
+  if (!empty($_POST['atr1'])) 
+  {
+      $atr1 = $_POST['atr1'];
+      $atr2 = $_POST['atr2'];
+      $atr3 = $_POST['atr3'];
+      $atr4 = $_POST['atr4'];
+      $atr5 = $_POST['atr5'];
+      $idcategoria = $_POST['idcat'];
+      $idsubcategoria = $_POST['idsubcat'];
+      
+      $cadenaTabla = '
+<table class="table" id="tbl_productos">
+        <thead class="thead-light">
+            <tr>
+                <th>Descripción</th>
+                <th>Nuevo costo</th>
+                <th>Costo actual</th>
+                <th>Costo+IVA</th>
+                <th>Nuevo Ext.-P</th>
+                <th>Ext.-P</th>
+                <th>Ext.-M</th>
+                <th>Contado</th>
+                <th>Especial</th>
+                <th>CR1</th>
+                <th>P1</th>
+                <th>CR2</th>
+                <th>P2</th>
+                <th>E-Q</th>
+                <th>GAR</th>
+                <th style="text-align: center;">Herramientas</th>
+            </tr>
+        </thead>
+        <tbody>';
+          
+            if($atr1 != "LABEL")
+            {
+              $query_sql = "SELECT * from producto where atr1_producto like '$atr1'";
+            }
+            else
+            {
+              $query_sql = "SELECT * from producto WHERE 1";
+            }
+            //los demas filtros anidados
+            if($atr2 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr2_producto like '$atr2'";
+            }
+            if($atr3 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr3_producto like '$atr3'";
+            }
+            if($atr4 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr4_producto like '$atr4'";
+            }
+            if($atr5 != "LABEL")
+            {
+              $query_sql = $query_sql." and atr5_producto like '$atr5'";
+            }
+
+          if($idcategoria != "Selecciona categoría") #no ha seleccionada nada
+          {
+            if($idsubcategoria == "NoSubcat")
+            {
+              $query_sql = $query_sql." and categoria = '$idcategoria' order by creado_en desc";
+            }
+            else
+            {
+              $query_sql = $query_sql." and categoria = '$idcategoria' and subcategoria = '$idsubcategoria' order by creado_en desc";
+            }
+          }
+
+            $query = mysqli_query($conexion, $query_sql);
+            $result = mysqli_num_rows($query);
+            if ($result > 0) 
+            {
+                while ($data = mysqli_fetch_assoc($query)) 
+                {
+                  $id_producto = $data['idproducto'];
+                  $identificador = $data['identificador'];
+                  
+                          if($data['subcategoria'] == null)
+                          {
+                              $idcategoria = $data['categoria'];
+                              $query_meses = mysqli_query($conexion, "SELECT meses_garantia from categoria where idcategoria = '$idcategoria'");
+                              $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
+
+                              //no tiene sub
+                              $select_producto_nosub = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria WHERE idproducto = '$id_producto'");
+                              $data_producto = mysqli_fetch_assoc($select_producto_nosub);
+                              $catproducto = $data_producto['catproducto'];
+                              $atr1_producto = $data_producto['atr1_producto'];
+                              //creamos la ubicacion
+                              $estructura = "../img/catalogo_productos/".$catproducto."/".$atr1_producto;
+                          }
+                          else
+                          {
+                              $idsubcategoria = $data['subcategoria'];
+                              $query_meses = mysqli_query($conexion, "SELECT meses_garantia from subcategoria where idsubcategoria = '$idsubcategoria'");
+                              $garantia = mysqli_fetch_assoc($query_meses)['meses_garantia'];
+
+                              $select_producto_full = mysqli_query($conexion, "SELECT categoria.nombre as catproducto, subcategoria.nombre as subcat_producto, atr1_producto FROM producto INNER JOIN categoria on categoria.idcategoria = producto.categoria INNER JOIN subcategoria on subcategoria.idsubcategoria = producto.subcategoria WHERE idproducto = '$id_producto'");
+                              $data_producto = mysqli_fetch_assoc($select_producto_full);
+                              $catproducto = $data_producto['catproducto'];
+                              $subcat_producto = $data_producto['subcat_producto'];
+                              $atr1_producto = $data_producto['atr1_producto'];
+                              //creamos la ubicacion
+                              $estructura = "../img/catalogo_productos/".$catproducto."/".$subcat_producto."/".$atr1_producto;
+                          }                    
+                          //aqui vamos a ver si tienen foto o no, para mostrar los iconos acorde
+                          $archivador = $estructura."/".$identificador.".png";
+                          if(is_file($archivador))
+                          {
+                              $boton_img = "btn btn-primary btn-sm";
+                              $siimagen = 1;
+                          }
+                          else
+                          {
+                              $boton_img = "btn btn-secondary btn-sm";
+                              $siimagen = 0;
+                          }
+
+                      $cadenaTabla = $cadenaTabla.'<tr>
+                          <td>'.$data['descripcion'].'</td>
+                              <td width="110"><input type="number" name="nuevo_costo[]" id="nuevo_costo[]" class="form-control"><input type="text" name="flag_new_costo_idproducto[]" id="flag_new_costo_idproducto[]" value="'.$id_producto.'" readonly hidden></td>
+                              <td>'."$".number_format($data['costo'],2, '.', ',').'</td>
+                              <td>'."$".number_format($data['costo_iva'],2, '.', ',').'</td>
+                              <td width="110"><input type="number" name="nuevo_ext_p[]" id="nuevo_ext_p[]" class="form-control"><input type="text" name="flag_new_extp_idproducto[]" id="flag_new_extp_idproducto[]" value="'.$id_producto.'" readonly hidden></td>
+                              <td>'.$data['ext_p'].'</td>
+                              <td></td>
+                              <td>'."$".number_format($data['costo_contado'],2, '.', ',').'</td>
+                              <td>'."$".number_format($data['costo_especial'],2, '.', ',').'</td>
+                              <td>'."$".number_format($data['costo_cr1'],2, '.', ',').'</td>
+                              <td>'.round($data['costo_p1'],2).'</td>
+                              <td>'."$".number_format($data['costo_cr2'],2, '.', ',').'</td>
+                              <td>'.round($data['costo_p2'],2).'</td>
+                              <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
+                              <td>'.$garantia." Meses".'</td>';
+
+                      $cadenaTabla = $cadenaTabla.'<td align="center">';
+
+                      $id_usuario = $_SESSION['iduser'];
+                      $sqlpermisos_usuario = mysqli_query($conexion, "SELECT permiso_idpermiso FROM permiso_usuario where permiso_idusuario = '$id_usuario'");
+                      $array_permisos = [];
+                          while($row = mysqli_fetch_assoc($sqlpermisos_usuario)) 
+                          {
+                              $array_permisos[] = $row['permiso_idpermiso'];
+                          }
+                          #print_r($array_permisos);
+                          $num_permisos = sizeof($array_permisos);
+                          #PERMISOS
+                          if($_SESSION['rol'] == "SuperAdmin")
+                          {
+                            #es super admin y titene permiso a TODO
+                            $editar_productos = 1;
+                            $eliminar_productos = 1;
+                            $imagenes = 1;
+                          }
+                          else
+                          {
+                            #permisos asignados
+                            $editar_productos = in_array(6, $array_permisos);
+                            $eliminar_productos = in_array(7, $array_permisos);
+                            $imagenes =  in_array(8, $array_permisos);
+                          }
+
+                          $cadenaTabla = $cadenaTabla.'<button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img(\''.$id_producto.'\',\''.$archivador.'\',\''.$siimagen.'\');" class="'.$boton_img.'"><i class="fas fa-camera"></i></button>';
+                          $cadenaTabla = $cadenaTabla."&nbsp;";
+                          if($editar_productos)
+                          {
+                            $cadenaTabla = $cadenaTabla.'<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto" onclick="editar_producto(\''.$id_producto.'\');"><i class="fas fa-edit"></i></button>';
+                          }
+                          else
+                          {
+                            $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>';
+                          }
+                          $cadenaTabla = $cadenaTabla."&nbsp;";
+                          if($eliminar_productos)
+                          {
+                            $cadenaTabla = $cadenaTabla.'<button onClick="eliminar_producto(\''.$id_producto.'\');" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                          }
+                          else
+                          {
+                            $cadenaTabla = $cadenaTabla.'<button disabled="disabled" class="btn btn-danger btn-sm" type="submit"><i style="color: white;" class="fas fa-trash-alt"></i></button>';
+                          }
+                      $cadenaTabla = $cadenaTabla.'</td></tr>';
+              }
+            }
+        $cadenaTabla = $cadenaTabla.'</tbody></table>';
+
+        $cadenaTabla = array("cadenaTabla" => $cadenaTabla);
+        $resultFindforAtr = $cadenaTabla;
+    
+    #$resultFindforAtr = $query_sql;
+    echo json_encode($resultFindforAtr,JSON_UNESCAPED_UNICODE);
+  }
+  ob_end_flush();
   exit;
 }
 

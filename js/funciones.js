@@ -795,7 +795,9 @@ $('#idestado_civil').change(function() {
                           'success'
                         ).then((result) => {
                             if (result.isConfirmed)
-                            {}
+                            {
+                                actualizar_tabla_productos();
+                            }
                         })
                 }         
            }
@@ -875,7 +877,9 @@ $('#idestado_civil').change(function() {
                           'success'
                         ).then((result) => {
                             if (result.isConfirmed)
-                            {}
+                            {
+                                actualizar_tabla_productos();
+                            }
                         })
                 }         
            }
@@ -1160,6 +1164,40 @@ function hide_costos()
 //para hacer mayusculas
 function mayusculas(e) {
     e.value = e.value.toUpperCase();
+}
+
+function actualizar_tabla_productos()
+{
+    var atr1 = $('#filtro_atr1').val();  
+    var atr2 = $('#filtro_atr2').val();
+    var atr3 = $('#filtro_atr3').val();
+    var atr4 = $('#filtro_atr4').val();
+    var atr5 = $('#filtro_atr5').val();
+    //si es LABEL entonces no han seleccionado nada o seleccionaron TODAS
+    
+    //otras variables
+    var idcat = $('#categoria').val();
+    var idsubcat = $('#subcategoria').val();
+
+    var action = 'searchForAtr';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,atr1:atr1,atr2:atr2,atr3:atr3,atr4:atr4,atr5:atr5,idcat:idcat,idsubcat,idsubcat},
+      success: function(response) {
+        //$('#prueba').html(response); 
+        var data = $.parseJSON(response);
+        $('#tablaproductos').html(data.cadenaTabla);
+        show_search_box();
+        //ocultamos los costos
+        hide_costos();
+
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
 }
 
 //funciones y cosas para el modulo productos
@@ -1610,170 +1648,12 @@ $('#subcategoria').change(function(e)
 });
 
 //=========================== los select para los filtros por atributos
-//FILTRO 1
-$('#filtro_atr1').change(function(e) 
+//FILTRO 1 2 3 4 y 5
+$('#filtro_atr1, #filtro_atr2, #filtro_atr3, #filtro_atr4, #filtro_atr5').change(function(e) 
 {
     e.preventDefault();
     //variables para los filtros
-    var atr1 = $(this).val();  
-    var atr2 = $('#filtro_atr2').val();
-    var atr3 = $('#filtro_atr3').val();
-    var atr4 = $('#filtro_atr4').val();
-    var atr5 = $('#filtro_atr5').val();
-    //si es LABEL entonces no han seleccionado nada o seleccionaron TODAS
-    
-    //otras variables
-    var idcat = $('#categoria').val();
-    var idsubcat = $('#subcategoria').val();
-
-    var action = 'searchForAtr1';
-    $.ajax({
-      url: 'ajax.php',
-      type: "POST",
-      async: true,
-      data: {action:action,atr1:atr1,atr2:atr2,atr3:atr3,atr4:atr4,atr5:atr5,idcat:idcat,idsubcat,idsubcat},
-      success: function(response) {
-        //$('#prueba').html(response); 
-        var data = $.parseJSON(response);
-        $('#tablaproductos').html(data.cadenaTabla);
-        show_search_box();
-        //ocultamos los costos
-        hide_costos();
-
-      },
-      error: function(error) {
-        //$('#sucursal').val('error');
-      }
-    });
-});
-//FILTRO 2
-$('#filtro_atr2').change(function(e) 
-{
-    e.preventDefault();
-    var atr2 = $(this).val();
-    var atr1 = $('#filtro_atr1').val();
-    var atr3 = $('#filtro_atr3').val();
-    var atr4 = $('#filtro_atr4').val();
-    var atr5 = $('#filtro_atr5').val();
-    var idcat = $('#categoria').val();
-    var idsubcat = $('#subcategoria').val();
-
-    var action = 'searchForAtr2';
-    $.ajax({
-      url: 'ajax.php',
-      type: "POST",
-      async: true,
-      data: {action:action,atr1:atr1,atr2:atr2,atr3:atr3,atr4:atr4,atr5:atr5,idcat:idcat,idsubcat,idsubcat},
-      success: function(response) {
-        //$('#prueba').html(response); 
-        
-        var data = $.parseJSON(response);
-        $('#tablaproductos').html(data.cadenaTabla);
-        show_search_box();
-        //ocultamos los costos
-        hide_costos();
-        
-      },
-      error: function(error) {
-        //$('#sucursal').val('error');
-      }
-    });
-});
-//FILTRO 3
-$('#filtro_atr3').change(function(e) 
-{
-    e.preventDefault();
-    var atr3 = $(this).val();
-    var atr2 = $('#filtro_atr2').val();
-    var atr1 = $('#filtro_atr1').val();
-    var atr4 = $('#filtro_atr4').val();
-    var atr5 = $('#filtro_atr5').val();
-    var idcat = $('#categoria').val();
-    var idsubcat = $('#subcategoria').val();
-
-    var action = 'searchForAtr3';
-    $.ajax({
-      url: 'ajax.php',
-      type: "POST",
-      async: true,
-      data: {action:action,atr1:atr1,atr2:atr2,atr3:atr3,atr4:atr4,atr5:atr5,idcat:idcat,idsubcat,idsubcat},
-      success: function(response) {
-        //$('#prueba').text(idsubcat); 
-        var data = $.parseJSON(response);
-        $('#tablaproductos').html(data.cadenaTabla);
-        show_search_box();
-        //ocultamos los costos
-        hide_costos();
-
-      },
-      error: function(error) {
-        //$('#sucursal').val('error');
-      }
-    });
-});
-//FILTRO 4
-$('#filtro_atr4').change(function(e) 
-{
-    e.preventDefault();
-    var atr4 = $(this).val();
-    var atr2 = $('#filtro_atr2').val();
-    var atr3 = $('#filtro_atr3').val();
-    var atr1 = $('#filtro_atr1').val();
-    var atr5 = $('#filtro_atr5').val();
-    var idcat = $('#categoria').val();
-    var idsubcat = $('#subcategoria').val();
-
-    var action = 'searchForAtr4';
-    $.ajax({
-      url: 'ajax.php',
-      type: "POST",
-      async: true,
-      data: {action:action,atr1:atr1,atr2:atr2,atr3:atr3,atr4:atr4,atr5:atr5,idcat:idcat,idsubcat,idsubcat},
-      success: function(response) {
-        //$('#prueba').text(idsubcat); 
-        var data = $.parseJSON(response);
-        $('#tablaproductos').html(data.cadenaTabla);
-        show_search_box();
-        //ocultamos los costos
-        hide_costos();
-
-      },
-      error: function(error) {
-        //$('#sucursal').val('error');
-      }
-    });
-});
-//FILTRO 5
-$('#filtro_atr5').change(function(e) 
-{
-    e.preventDefault();
-    var atr5 = $(this).val();
-    var atr2 = $('#filtro_atr2').val();
-    var atr3 = $('#filtro_atr3').val();
-    var atr4 = $('#filtro_atr4').val();
-    var atr1 = $('#filtro_atr1').val();
-    var idcat = $('#categoria').val();
-    var idsubcat = $('#subcategoria').val();
-
-    var action = 'searchForAtr5';
-    $.ajax({
-      url: 'ajax.php',
-      type: "POST",
-      async: true,
-      data: {action:action,atr1:atr1,atr2:atr2,atr3:atr3,atr4:atr4,atr5:atr5,idcat:idcat,idsubcat,idsubcat},
-      success: function(response) {
-        //$('#prueba').text(idsubcat); 
-        var data = $.parseJSON(response);
-        $('#tablaproductos').html(data.cadenaTabla);
-        show_search_box();
-        //ocultamos los costos
-        hide_costos();
-
-      },
-      error: function(error) {
-        //$('#sucursal').val('error');
-      }
-    });
+    actualizar_tabla_productos();
 });
 //============ FIN DE LOS FILTROS ===========
 
@@ -2193,6 +2073,32 @@ function show_new_costo()
     $('#tbl_productos th:nth-child(5)').toggle();
     //activar el boton de guardar datos
     $('#btn_save_lista').removeAttr('disabled');
+    //mostrar los productos que estan ocultos por tener null en Ext_p o Ext_m
+    var action = 'get_hidden_products';
+    //otras variables
+    var atr1 = $('#filtro_atr1').val();
+    var atr2 = $('#filtro_atr2').val();
+    var atr3 = $('#filtro_atr3').val();
+    var atr4 = $('#filtro_atr4').val();
+    var atr5 = $('#filtro_atr5').val();
+    var idcat = $('#categoria').val();
+    var idsubcat = $('#subcategoria').val();
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,atr1:atr1,atr2:atr2,atr3:atr3,atr4:atr4,atr5:atr5,idcat:idcat,idsubcat,idsubcat},
+      success: function(response) {
+        //$('#prueba').html(response); 
+        var data = $.parseJSON(response);
+        $('#tablaproductos').html(data.cadenaTabla);
+        show_search_box();
+
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
 }
 
 function drop_ext_p()
@@ -3054,7 +2960,7 @@ function eliminar_subcategoria(idsubcategoria)
         })
 }
 
-//para editar puesto
+//para editar subcategoria
 function editar_subcategoria(idsubcategoria)
 {
     var action = 'SelectSubCat';

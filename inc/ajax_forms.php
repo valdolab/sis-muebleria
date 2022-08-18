@@ -514,6 +514,8 @@ if ($_POST['action'] == 'insert_subcategoria')
     }
     else
     {
+        //no es nueva subcategoria, se edita una existente, por lo tanto:
+        //al terminar de actualizarlo, se actualuzan los datos de todos los productos que pertenezcan a esta subcat
         //code for update a selected categoria
         $nombre_subcat = $_POST['nombre_subcat'];
         $existe_editsubcat = mysqli_query($conexion, "SELECT count(idsubcategoria) as num from subcategoria where nombre = '$nombre_subcat'");
@@ -572,7 +574,102 @@ if ($_POST['action'] == 'insert_subcategoria')
 
           //idcat -> $idcategoria
           $update_subcat = mysqli_query($conexion, "UPDATE subcategoria set nombre = '$nombre_subcat', categoria = '$categoria_subcategoria', atr1 = '$atr1', atr2 = ".(!empty($atr2) ? "'$atr2'" : "NULL").", atr3 = ".(!empty($atr3) ? "'$atr3'" : "NULL").", atr4 = ".(!empty($atr4) ? "'$atr4'" : "NULL").", atr5 = ".(!empty($atr5) ? "'$atr5'" : "NULL").", contado = ".(!empty($contado) ? "$contado" : "NULL").", especial = ".($especial == null ? "NULL" : "$especial").", base_inicial_c1 = ".(!empty($base_inicial_c1) ? "$base_inicial_c1" : "NULL").", ganancia_inicial_c1 = ".(!empty($ganancia_inicial_c1) ? "$ganancia_inicial_c1" : "NULL").", rango_c1 = ".(!empty($rango_c1) ? "$rango_c1" : "NULL").", ganancia_subsecuente_c1 = ".(!empty($ganancia_subsecuente_c1) ? "$ganancia_subsecuente_c1" : "NULL").", limite_costo_c1 = ".(!empty($limite_costo_c1) ? "$limite_costo_c1" : "NULL").", base_inicial_c2 = ".(!empty($base_inicial_c2) ? "$base_inicial_c2" : "NULL").", ganancia_inicial_c2 = ".(!empty($ganancia_inicial_c2) ? "$ganancia_inicial_c2" : "NULL").", rango_c2 = ".(!empty($rango_c2) ? "$rango_c2" : "NULL").", ganancia_subsecuente_c2 = ".(!empty($ganancia_subsecuente_c2) ? "$ganancia_subsecuente_c2" : "NULL").", limite_costo_c2 = ".(!empty($limite_costo_c2) ? "$limite_costo_c2" : "NULL").", meses_pago = ".(!empty($mesespago) ? "$mesespago" : "NULL").", meses_garantia = ".(!empty($garantia) ? "$garantia" : "NULL").", enganche = ".(!empty($enganche) ? "$enganche" : "NULL")." WHERE idsubcategoria  = '$idsubcategoria'");
-          if ($update_subcat) 
+          
+          //actualizar productos con base en los nuevos parametros de subcategoria
+          //ACTUALIZAR TODOS LOS PRODUCTOS QUE PERTENCEZCAN A ESTA SUBCATEGORIA
+          $selcet_idproductos = mysqli_query($conexion, "SELECT idproducto,costo,costo_iva FROM producto where subcategoria = '$idsubcategoria'");
+          $resul_save_cost = 1;
+          while ($data = mysqli_fetch_assoc($selcet_idproductos)) 
+          {
+            $id_productos = $data['idproducto'];
+            //actualizar cada producto
+            //actualizamos el costo y calculamos nuevos costos de lo demas
+            //sacar la info de los parametros de subcat
+            $newcosto_iva = $data['costo_iva'];
+            $newcosto_contado = ceil($newcosto_iva + ($newcosto_iva*($contado/100)));
+            if($especial == null)
+            {
+              $newcosto_especial = null;
+            }
+            else
+            {
+              $newcosto_especial = ceil($newcosto_contado + ($newcosto_contado*($especial/100)));
+            }
+            //credito1 
+            $cr1 = 0;
+            if($newcosto_iva < $base_inicial_c1)
+            {
+              $cr1 = $ganancia_inicial_c1;
+            }
+            else if ($newcosto_iva < ($base_inicial_c1 + $rango_c1))
+            {
+              $cr1 = $ganancia_subsecuente_c1;
+            }
+            else
+            {
+              $costo_temp = $base_inicial_c1 + $rango_c1;//2100
+              $ganancia_temp = $ganancia_subsecuente_c1;// 80
+              while(true)
+              {
+                $costo_temp = $costo_temp + $rango_c1;//2200,2300
+                $ganancia_temp = $ganancia_temp - 1;//79,78
+                //2250<2200, 2250<2300,   //2100<=10000,2200<=10000
+                if(($newcosto_iva < $costo_temp) || ($costo_temp >= $limite_costo_c1))
+                {
+                  $cr1 = $ganancia_temp;
+                  break;
+                }
+              }
+            }
+            $newcosto_cr1 = ceil($newcosto_iva + ($newcosto_iva*($cr1/100)));
+
+            //credito2
+            $cr2 = 0;
+            if($newcosto_iva < $base_inicial_c2)
+            {
+              $cr2 = $ganancia_inicial_c2;
+            }
+            else if ($newcosto_iva < ($base_inicial_c2 + $rango_c2))
+            {
+              $cr2 = $ganancia_subsecuente_c2;
+            }
+            else
+            {
+              $costo_temp2 = $base_inicial_c2 + $rango_c2;//2100
+              $ganancia_temp2 = $ganancia_subsecuente_c2;// 80
+              while(true)
+              {
+                $costo_temp2 = $costo_temp2 + $rango_c2;//2200,2300
+                $ganancia_temp2 = $ganancia_temp2 - 1;//79,78
+                //2250<2200, 2250<2300,   //2100<=10000,2200<=10000
+                if(($newcosto_iva < $costo_temp2) || ($costo_temp2 >= $limite_costo_c2))
+                {
+                  $cr2 = $ganancia_temp2;
+                  break;
+                }
+              }
+            }
+            $newcosto_cr2 = ceil($newcosto_iva + ($newcosto_iva*($cr2/100)));
+            
+            $new_e_q = ($newcosto_iva/$mesespago)/2;
+            if($new_e_q < 400)
+            {
+              $new_e_q = 400;
+            }
+            $new_e_q = ceil($new_e_q);
+            
+            $new_p1 = ($newcosto_cr1/$new_e_q)/2;
+            $new_p2 = ($newcosto_cr2/$new_e_q)/2;
+            //guardamos en la base 
+            //fin calculo de nuevos costos, ahora actualizamos en el producto
+            $update_costos = mysqli_query($conexion, "UPDATE producto set costo_contado = $newcosto_contado, costo_especial = ".($newcosto_especial == null ? "NULL" : "$newcosto_especial").", costo_cr1 = $newcosto_cr1, costo_cr2 = $newcosto_cr2, costo_p1 = $new_p1, costo_p2 = $new_p2, costo_eq = $new_e_q where idproducto = '$id_productos'");
+            if(!$update_costos)
+            {
+              $resul_save_cost = 0;
+            }
+          }
+          //revisar y mandar mensajes correspondientes
+          if ($update_subcat and $resul_save_cost) 
           {
             $idsubcat = array("idsubcategoria" => $idsubcategoria);
             $subcategoria = array("subcategoria" => $nombre_subcat);
@@ -790,7 +887,8 @@ if ($_POST['action'] == 'insert_edit_producto')
         }
     }
     else
-    {
+    { 
+        //editar producto
         //entonces editamos el producto
         $id_producto = $_POST['flagid_producto'];
         $identificador = $_POST['identificador'];
