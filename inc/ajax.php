@@ -740,7 +740,8 @@ if ($_POST['action'] == 'searchCatUsed')
                 <th>P1</th>
                 <th>CR2</th>
                 <th>P2</th>
-                <th>E-Q</th>
+                <th>Quin</th>
+                <th>Enga</th>
                 <th>GAR</th>
                 <th style="text-align: center;">Herramientas</th>
             </tr>
@@ -818,7 +819,8 @@ if ($_POST['action'] == 'searchCatUsed')
                             <td>'."$".number_format($data['costo_cr2'],2, '.', ',').'</td>
                             <td>'.round($data['costo_p2'],2).'</td>
                             <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
-                            <td>'.$garantia." Meses".'</td>';
+                            <td>'."$".number_format($data['costo_enganche'],2, '.', ',').'</td>
+                            <td>'.$garantia." Ms".'</td>';
 
                     $cadenaTabla = $cadenaTabla.'<td align="center">';
 
@@ -928,7 +930,8 @@ if ($_POST['action'] == 'searchSubCatUsed')
                 <th>P1</th>
                 <th>CR2</th>
                 <th>P2</th>
-                <th>E-Q</th>
+                <th>Quin</th>
+                <th>Enga</th>
                 <th>GAR</th>
                 <th style="text-align: center;">Herramientas</th>
             </tr>
@@ -989,7 +992,8 @@ if ($_POST['action'] == 'searchSubCatUsed')
                         <td>'."$".number_format($data['costo_cr2'],2, '.', ',').'</td>
                         <td>'.round($data['costo_p2'],2).'</td>
                         <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
-                        <td>'.$garantia." Meses".'</td>';
+                        <td>'."$".number_format($data['costo_enganche'],2, '.', ',').'</td>
+                        <td>'.$garantia." Ms".'</td>';
 
                 $cadenaTabla = $cadenaTabla.'<td align="center">';
 
@@ -1149,7 +1153,8 @@ if ($_POST['action'] == 'searchForAtr')
                 <th>P1</th>
                 <th>CR2</th>
                 <th>P2</th>
-                <th>E-Q</th>
+                <th>Quin</th>
+                <th>Enga</th>
                 <th>GAR</th>
                 <th style="text-align: center;">Herramientas</th>
             </tr>
@@ -1258,7 +1263,8 @@ if ($_POST['action'] == 'searchForAtr')
                             <td>'."$".number_format($data['costo_cr2'],2, '.', ',').'</td>
                             <td>'.round($data['costo_p2'],2).'</td>
                             <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
-                            <td>'.$garantia." Meses".'</td>';
+                            <td>'."$".number_format($data['costo_enganche'],2, '.', ',').'</td>
+                            <td>'.$garantia." Ms".'</td>';
 
                     $cadenaTabla = $cadenaTabla.'<td align="center">';
 

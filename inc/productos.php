@@ -1275,7 +1275,8 @@ include "accion/conexion.php";
                 <th>P1</th>
                 <th>CR2</th>
                 <th>P2</th>
-                <th>E-Q</th>
+                <th>Quin</th>
+                <th>Enga</th>
                 <th>GAR</th>
                 <th style="text-align: center;">Herramientas</th>
             </tr>
@@ -1353,7 +1354,8 @@ include "accion/conexion.php";
                         <td><?php echo "$".number_format($data['costo_cr2'],2, '.', ','); ?></td>
                         <td><?php echo round($data['costo_p2'],2); ?></td>
                         <td><?php echo "$".number_format($data['costo_eq'],2, '.', ','); ?></td>
-                        <td><?php echo $garantia." Meses" ?></td>
+                        <td><?php echo "$".number_format($data['costo_enganche'],2, '.', ','); ?></td>
+                        <td><?php echo $garantia." Ms" ?></td>
                         <td align="center">
                             <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img('<?php echo $id_producto; ?>','<?php echo $archivador; ?>',<?php echo $siimagen; ?>);" class="<?php echo $boton_img; ?>"><i class="fas fa-camera"></i></button>
                             <?php 

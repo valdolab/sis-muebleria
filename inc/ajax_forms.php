@@ -746,7 +746,7 @@ if ($_POST['action'] == 'load_img')
         if(in_array($extencion, $allow_files))
         {
             $tamano_archivo = $_FILES['imgProducto']['size'];
-            if($tamano_archivo > 500000) //5MB
+            if($tamano_archivo > 10000000) //10MB
             {
                 //imagen muy grande
                 $load_img = 2;
@@ -778,7 +778,7 @@ if ($_POST['action'] == 'load_img')
             $load_img = 3;
             //$modal = "$('#mensaje_imgnoallow').modal('show');";
         }
-        $load_img = 1;
+        //$load_img = 1;
   }
   else
   {
