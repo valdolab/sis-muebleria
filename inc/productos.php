@@ -1265,7 +1265,7 @@ include "accion/conexion.php";
                 <th>Descripción</th>
                 <th>Nuevo costo</th>
                 <th>Costo actual</th>
-                <th>Costo+IVA</th>
+                <th>Costo IVA</th>
                 <th>Nuevo Ext.-P</th>
                 <th>Ext.-P</th>
                 <th>Ext.-M</th>

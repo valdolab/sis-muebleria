@@ -2067,10 +2067,6 @@ function show_costoiva()
 
 function show_new_costo()
 {
-    $('#tbl_productos td:nth-child(2)').toggle();
-    $('#tbl_productos th:nth-child(2)').toggle();
-    $('#tbl_productos td:nth-child(5)').toggle();
-    $('#tbl_productos th:nth-child(5)').toggle();
     //activar el boton de guardar datos
     $('#btn_save_lista').removeAttr('disabled');
     //mostrar los productos que estan ocultos por tener null en Ext_p o Ext_m
@@ -2093,6 +2089,13 @@ function show_new_costo()
         var data = $.parseJSON(response);
         $('#tablaproductos').html(data.cadenaTabla);
         show_search_box();
+        hide_costos();
+        $('#tbl_productos td:nth-child(2)').toggle();
+        $('#tbl_productos th:nth-child(2)').toggle();
+        $('#tbl_productos td:nth-child(3)').toggle();
+        $('#tbl_productos th:nth-child(3)').toggle();
+        $('#tbl_productos td:nth-child(5)').toggle();
+        $('#tbl_productos th:nth-child(5)').toggle();
 
       },
       error: function(error) {

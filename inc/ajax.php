@@ -730,7 +730,7 @@ if ($_POST['action'] == 'searchCatUsed')
                 <th>Descripción</th>
                 <th>Nuevo costo</th>
                 <th>Costo actual</th>
-                <th>Costo+IVA</th>
+                <th>Costo IVA</th>
                 <th>Nuevo Ext.-P</th>
                 <th>Ext.-P</th>
                 <th>Ext.-M</th>
@@ -920,7 +920,7 @@ if ($_POST['action'] == 'searchSubCatUsed')
                 <th>Descripción</th>
                 <th>Nuevo costo</th>
                 <th>Costo actual</th>
-                <th>Costo+IVA</th>
+                <th>Costo IVA</th>
                 <th>Nuevo Ext.-P</th>
                 <th>Ext.-P</th>
                 <th>Ext.-M</th>
@@ -1143,7 +1143,7 @@ if ($_POST['action'] == 'searchForAtr')
                 <th>Descripción</th>
                 <th>Nuevo costo</th>
                 <th>Costo actual</th>
-                <th>Costo+IVA</th>
+                <th>Costo IVA</th>
                 <th>Nuevo Ext.-P</th>
                 <th>Ext.-P</th>
                 <th>Ext.-M</th>
@@ -1645,7 +1645,7 @@ if ($_POST['action'] == 'get_hidden_products')
                 <th>Descripción</th>
                 <th>Nuevo costo</th>
                 <th>Costo actual</th>
-                <th>Costo+IVA</th>
+                <th>Costo IVA</th>
                 <th>Nuevo Ext.-P</th>
                 <th>Ext.-P</th>
                 <th>Ext.-M</th>
@@ -1655,7 +1655,8 @@ if ($_POST['action'] == 'get_hidden_products')
                 <th>P1</th>
                 <th>CR2</th>
                 <th>P2</th>
-                <th>E-Q</th>
+                <th>Quin</th>
+                <th>Enga</th>
                 <th>GAR</th>
                 <th style="text-align: center;">Herramientas</th>
             </tr>
@@ -1765,7 +1766,8 @@ if ($_POST['action'] == 'get_hidden_products')
                               <td>'."$".number_format($data['costo_cr2'],2, '.', ',').'</td>
                               <td>'.round($data['costo_p2'],2).'</td>
                               <td>'."$".number_format($data['costo_eq'],2, '.', ',').'</td>
-                              <td>'.$garantia." Meses".'</td>';
+                              <td>'."$".number_format($data['costo_enganche'],2, '.', ',').'</td>
+                              <td>'.$garantia." Ms".'</td>';
 
                       $cadenaTabla = $cadenaTabla.'<td align="center">';
 
