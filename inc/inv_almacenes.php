@@ -152,26 +152,28 @@ include "accion/conexion.php";
     <table class="table" id="tbl">
         <thead class="thead-light">
             <tr>
-                <th>No.</th>
                 <th>Categoría</th>
-                <th>Modelo</th>
+                <th>Subcategoría</th>
                 <th>Sucursal</th>
                 <th>Almacén</th>
-                <th>Stock</th>
-                <th>Costo</th>
-                <th>P.Contado</th>
+                <th>Modelo</th>
+                <th>Stock M</th>
+                <th>Costo + IVA</th>
+                <th>Costo contado</th>
+                <th>Costo cr1</th>
                 <th style="text-align: center;">Herramientas</th>
             </tr>
         </thead>
         <tbody>
                     <tr>
-                        <td>INV001</td>
+                        <td>Linea blanca</td>
                         <td>Lavadora</td>
-                        <td>WS16</td>
                         <td>GAL</td>
                         <td>Bodega</td>
+                        <td>asd</td>
                         <td>6</td>
                         <td>$6,000</td>
+                        <td>$12,000</td>
                         <td>$12,000</td>
                         <td align="center">
                                 <a href="editar_documento.php?id=" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
@@ -179,13 +181,14 @@ include "accion/conexion.php";
                         </td>
                     </tr>
                     <tr>
-                        <td>INV002</td>
+                        <td>Linea blanca</td>
                         <td>Lavadora</td>
-                        <td>WS16</td>
                         <td>GAL</td>
                         <td>Bodega</td>
+                        <td>asd</td>
                         <td>6</td>
                         <td>$6,000</td>
+                        <td>$12,000</td>
                         <td>$12,000</td>
                         <td align="center">
                                 <a href="editar_documento.php?id=" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>

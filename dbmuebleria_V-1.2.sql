@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 29-06-2022 a las 06:05:26
+-- Tiempo de generación: 23-08-2022 a las 01:09:08
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -20,6 +20,21 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `dbmuebleria`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `almacen`
+--
+
+DROP TABLE IF EXISTS `almacen`;
+CREATE TABLE IF NOT EXISTS `almacen` (
+  `idalmacen` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `sucursal` int(11) NOT NULL,
+  PRIMARY KEY (`idalmacen`),
+  KEY `pertenece` (`sucursal`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -51,6 +66,7 @@ CREATE TABLE IF NOT EXISTS `categoria` (
   `limite_costo_c2` double DEFAULT NULL,
   `meses_pago` int(11) DEFAULT NULL,
   `meses_garantia` int(11) DEFAULT NULL,
+  `enganche` double DEFAULT NULL,
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idcategoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
@@ -59,13 +75,8 @@ CREATE TABLE IF NOT EXISTS `categoria` (
 -- Volcado de datos para la tabla `categoria`
 --
 
-INSERT INTO `categoria` (`idcategoria`, `nombre`, `tiene_subcat`, `atr1`, `atr2`, `atr3`, `atr4`, `atr5`, `contado`, `especial`, `base_inicial_c1`, `ganancia_inicial_c1`, `rango_c1`, `ganancia_subsecuente_c1`, `limite_costo_c1`, `base_inicial_c2`, `ganancia_inicial_c2`, `rango_c2`, `ganancia_subsecuente_c2`, `limite_costo_c2`, `meses_pago`, `meses_garantia`, `creado_en`) VALUES
-('00095e94-c070-11ec-8edf-18c04dae039e', 'ASD', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-04-22 00:13:47'),
-('4df9bbf2-f5aa-11ec-9ebe-d481d7c3a9ad', 'PRUEBA2', 0, 'MARCA', 'QWE', 'QWE', 'QWE', 'QWE', 12, 12, 2000, 100, 100, 80, 10000, 2000, 150, 200, 130, 20000, 12, 12, '2022-06-26 23:47:08'),
-('5a0be372-c010-11ec-a813-d481d7c3a9ad', 'BICIBLETA', 0, 'MARCA', 'TAMAÑO', 'LLANTAS', 'TIPO', NULL, 12, 22, 11, 11, 11, 11, 11, 22, 22, 22, 22, 22, 3, 3, '2022-04-22 00:13:47'),
-('6b149c84-c010-11ec-a813-d481d7c3a9ad', 'LINEA BLANCA', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-04-22 00:13:47'),
-('92ebf98d-c966-11ec-abb6-d481d7c3a9ad', 'ELECTRONICA', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-05-01 15:51:17'),
-('c18a4e3f-ccd6-11ec-8195-d481d7c3a9ad', 'PRUEBA', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-05-06 00:52:03');
+INSERT INTO `categoria` (`idcategoria`, `nombre`, `tiene_subcat`, `atr1`, `atr2`, `atr3`, `atr4`, `atr5`, `contado`, `especial`, `base_inicial_c1`, `ganancia_inicial_c1`, `rango_c1`, `ganancia_subsecuente_c1`, `limite_costo_c1`, `base_inicial_c2`, `ganancia_inicial_c2`, `rango_c2`, `ganancia_subsecuente_c2`, `limite_costo_c2`, `meses_pago`, `meses_garantia`, `enganche`, `creado_en`) VALUES
+('ae569a66-0838-11ed-8a78-feed01260033', 'MUEBLES', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-07-20 14:31:45');
 
 -- --------------------------------------------------------
 
@@ -123,19 +134,6 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   KEY `se encuentra en` (`subzona`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
---
--- Volcado de datos para la tabla `cliente`
---
-
-INSERT INTO `cliente` (`idcliente`, `nombre_cliente`, `zona`, `domicilio_cliente`, `subzona`, `tel1_cliente`, `tel2_cliente`, `cp_cliente`, `idestado_civil`, `curp`, `rfc`, `trabajo_cliente`, `puesto_cliente`, `direccion_trabajo_cliente`, `antiguedadA_trabajo_cliente`, `antiguedadM_trabajo_cliente`, `ingresos_cliente`, `tipo_ingresos_cliente`, `nombre_conyugue_cliente`, `antiguedadA_vinculo`, `antiguedadM_vinculo`, `trabajo_conyugue`, `puesto_conyugue`, `ingreso_mensual_conyugue`, `direccion_trabajo_conyugue`, `tel_conyugue`, `tipo_vivienda_cliente`, `edad_residencia`, `renta_mensual`, `ndependientes`, `nombre_aval`, `tel_aval`, `domicilio_aval`, `trabajo_aval`, `puesto_aval`, `ingreso_mensual_aval`, `nombre_conyugue_aval`, `apto_credito`, `nivel_apto`, `estado_cliente`, `no_cliente`, `masinfo`, `creado_en`) VALUES
-('13e792dfb3ce9fc857347744f277b32f', 'Cliente de prueba', '378hinek-bd10-asdd-6yyh-d481d723r4ed', 'cambio de domicilio', 'lkmhlgok-6yth-hyhj-98xz-yujkasndjash', '9611920000', '9611926030', 29070, 0, 'VEGO971224HCSLNS00', 'VEGO9712245K7', 'asdasd', 'asdasd', 'asdasd', 4, 0, 5000, 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 4, 0, 2, 'asdas', '9611926030', 'dsasd', 'asdasd', 'asdasda', 5000.958, 'asdasd', 1, 4, 1, 2, 1, '2022-04-03 21:48:25'),
-('1679091c5a880faf6fb5e6087eb1b2dc', 'poronga2', '378hinek-bd10-asdd-6yyh-d481d723r4ed', NULL, 'lkmhlgok-6yth-hyhj-98xz-yujkasndjash', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 1, 6, 0, '2022-04-03 21:48:59'),
-('707381d68fe45ec481d00b455b632fce', 'probando lo de nocliente', '378hinek-bd10-asdd-6yyh-d481d723r4ed', NULL, 'lkmhlgok-6yth-hyhj-98xz-yujkasndjash', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 4, 0, '2022-04-01 02:06:48'),
-('8f14e45fceea167a5a36dedd4bea2543', 'poronga3', 'a3e3dasd-bd10-hyhj-6765-2182783dpoas', NULL, 'yohrio96-vfgt-23nm-6765-84i34hi883dl', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 7, 0, '2022-04-03 21:52:53'),
-('946622a4f13b86fb515b67f1e798614d', 'probando el nuevo id', 'a3e3dasd-bd10-hyhj-6765-2182783dpoas', 'cambiando el cliente sin cambiar no_cliente', 'yohrio96-vfgt-23nm-6765-84i34hi883dl', NULL, NULL, NULL, 0, 'VEGO971224HCSLNS00', 'VEGO9712245K7', NULL, NULL, NULL, 0, 0, 0, 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 3, 1, 1, 0, '2022-04-03 21:48:03'),
-('e4da3b7fbbce2345d7772b0674a318d5', 'poronga1', 'a3e3dasd-bd10-hyhj-6765-2182783dpoas', NULL, 'yohrio96-vfgt-23nm-6765-84i34hi883dl', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 1, 5, 0, '2022-04-03 21:47:09'),
-('eccbc87e4b5ce2fe28308fd9f2a7baf3', 'Cliente de prueba 3', 'a3e3dasd-bd10-hyhj-6765-2182783dpoas', 'asdasd', 'yohrio96-vfgt-23nm-6765-84i34hi883dl', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 5, 1, 3, 0, '2022-04-03 21:48:34');
-
 -- --------------------------------------------------------
 
 --
@@ -176,15 +174,14 @@ CREATE TABLE IF NOT EXISTS `documento` (
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`iddocumento`),
   KEY `es de la` (`idsucursal`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `documento`
 --
 
 INSERT INTO `documento` (`iddocumento`, `name_documento`, `folio`, `serie`, `idsucursal`, `estado`, `creado_en`) VALUES
-(1, 'NOTA DE VENTA', 'MAT', '0000001', 1, 1, '2022-03-29 06:17:20'),
-(2, 'NOTA DE VENTA', 'TUX', '0000001', 1, 1, '2022-06-12 16:32:03');
+(1, 'NOTA DE VENTA', 'MAT', '0000001', 1, 1, '2022-03-29 06:17:20');
 
 -- --------------------------------------------------------
 
@@ -280,6 +277,9 @@ CREATE TABLE IF NOT EXISTS `permiso_usuario` (
 
 INSERT INTO `permiso_usuario` (`permiso_idpermiso`, `permiso_idusuario`) VALUES
 (4, '0a96aada-bd56-11ec-b09f-asjg75jfl123'),
+(5, '0a96aada-bd56-11ec-b09f-asjg75jfl123'),
+(8, '0a96aada-bd56-11ec-b09f-asjg75jfl123'),
+(9, '0a96aada-bd56-11ec-b09f-asjg75jfl123'),
 (12, '0a96aada-bd56-11ec-b09f-asjg75jfl123'),
 (13, '0a96aada-bd56-11ec-b09f-asjg75jfl123'),
 (15, '0a96aada-bd56-11ec-b09f-asjg75jfl123');
@@ -316,6 +316,7 @@ CREATE TABLE IF NOT EXISTS `producto` (
   `costo_p1` double NOT NULL,
   `costo_p2` double NOT NULL,
   `costo_eq` double NOT NULL,
+  `costo_enganche` double NOT NULL,
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idproducto`),
   KEY `es_categoria` (`categoria`),
@@ -326,17 +327,13 @@ CREATE TABLE IF NOT EXISTS `producto` (
 -- Volcado de datos para la tabla `producto`
 --
 
-INSERT INTO `producto` (`idproducto`, `identificador`, `codigo_barras`, `categoria`, `subcategoria`, `descripcion`, `serializado`, `atr1_producto`, `atr2_producto`, `atr3_producto`, `atr4_producto`, `atr5_producto`, `stock_min`, `stock_max`, `ext_p`, `costo`, `costo_iva`, `costo_contado`, `costo_especial`, `costo_cr1`, `costo_cr2`, `costo_p1`, `costo_p2`, `costo_eq`, `creado_en`) VALUES
-('0507bbee-ccd8-11ec-8195-d481d7c3a9ad', 'qweasdzxc1', NULL, 'c18a4e3f-ccd6-11ec-8195-d481d7c3a9ad', '47422906-ccd7-11ec-8195-d481d7c3a9ad', 'prueba de prueba de product', 1, 'SAMSUNG', '6', '2', '10', NULL, NULL, NULL, NULL, 4500, 5220, 6316.2, NULL, 5846.4, 5324.4, 4.48, 4.08, 652.5, '2022-05-06 01:01:06'),
-('082b0355-c68c-11ec-abb6-d481d7c3a9ad', 'wp100-asd001', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9e77b6b3-c1a7-11ec-91b0-d481d7c3a9ad', 'es una licuadora LG BLABLBL', 0, 'LG', '3', 'plastico', 'grande', NULL, NULL, NULL, NULL, 17, 19.72, 20.1144, 22.528128, 21.8892, 24.0584, 0.0273615, 0.030073, 400, '2022-04-28 00:42:07'),
-('0def99df-c681-11ec-abb6-d481d7c3a9ad', 'wp100-asd002', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora SAMSUNG', 0, 'SAMSUNG', '3', '1', '10', '1', NULL, NULL, NULL, 7000, 8120, 9013.2, 8201.2, 9013.2, 8932, 13.32, 13.2, 400, '2022-04-27 23:23:32'),
-('23bba124-c681-11ec-abb6-d481d7c3a9ad', 'wp100-asd003', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora patito', 0, 'PATITO', '6', '2', '10', '2', NULL, NULL, NULL, 1, 1.16, 1.2876, 1.1716, 1.2876, 1.276, 0.0016095, 0.001595, 400, '2022-04-27 23:24:09'),
-('569ff4d5-c906-11ec-abb6-d481d7c3a9ad', 'wp100-asd004', NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'prueba bici', 0, 'asd', '10', '2', 'montaña', NULL, NULL, NULL, NULL, 5600, 6496, 7275.52, 8876.1344, 7210.56, 7925.12, 3.33, 3.66, 1082.6666666667, '2022-05-01 04:22:27'),
-('66bfc35f-c1d7-11ec-91b0-d481d7c3a9ad', 'asd', NULL, '5a0be372-c010-11ec-a813-d481d7c3a9ad', NULL, 'Aquí va la descricion mas detalla del producto', 1, 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, NULL, 17, 19.72, 22.0864, 26.945408, 21.8892, 24.0584, 0.0273615, 0.030073, 400, '2022-04-22 00:59:04'),
-('8f2d4de2-c96a-11ec-abb6-d481d7c3a9ad', '32h5g', NULL, '92ebf98d-c966-11ec-abb6-d481d7c3a9ad', 'c1451ae3-c966-11ec-abb6-d481d7c3a9ad', 'tele 32 smart', 1, 'hisense', '32', 'hd', NULL, NULL, NULL, NULL, NULL, 3200, 3712, 4825.6, 5011.2, 7424, 9280, 8, 10, 464, '2022-05-01 16:19:48'),
-('9b58146b-cc01-11ec-8195-d481d7c3a9ad', 'wp100-asd006', NULL, '00095e94-c070-11ec-8edf-18c04dae039e', 'ae064f03-c07b-11ec-8edf-18c04dae039e', 'prueba con identificador en blanco', 1, 'SAMSUNG', 'asd', 'asd', 'asd', 'asd', NULL, NULL, NULL, 3000, 3480, 3897.6, 3897.6, 3897.6, 3897.6, 13.44, 13.44, 400, '2022-05-04 23:26:18'),
-('b2b0fca7-f60e-11ec-9ebe-d481d7c3a9ad', 'wp100-asd0010', NULL, '4df9bbf2-f5aa-11ec-9ebe-d481d7c3a9ad', NULL, 'asdasd', 0, 'asd', 'asd', 'asd', 'asd', 'asd', 12, 12, 12, 4600, 5336, 5976.32, 5976.32, 7843.92, 11419.04, 17.64, 25.68, 400, '2022-06-27 11:45:44'),
-('ecf8fb02-c680-11ec-abb6-d481d7c3a9ad', 'wp100-asd005', NULL, '6b149c84-c010-11ec-a813-d481d7c3a9ad', '9aded115-c07a-11ec-8edf-18c04dae039e', 'lavadora LG', 0, 'LG', '6', '2', '12', '1', NULL, NULL, NULL, 16, 18.56, 20.6016, 20.807616, 20.6016, 20.416, 0.025752, 0.02552, 400, '2022-04-27 23:22:37');
+INSERT INTO `producto` (`idproducto`, `identificador`, `codigo_barras`, `categoria`, `subcategoria`, `descripcion`, `serializado`, `atr1_producto`, `atr2_producto`, `atr3_producto`, `atr4_producto`, `atr5_producto`, `stock_min`, `stock_max`, `ext_p`, `costo`, `costo_iva`, `costo_contado`, `costo_especial`, `costo_cr1`, `costo_cr2`, `costo_p1`, `costo_p2`, `costo_eq`, `costo_enganche`, `creado_en`) VALUES
+('2482928a-083a-11ed-8a78-feed01260033', 'CELAYA-CELAYA', NULL, 'ae569a66-0838-11ed-8a78-feed01260033', '3c5ed5a3-0839-11ed-8a78-feed01260033', 'ANTE COMEDOR TUBULAR CELEYA SILLA CELAYA (4sillas 1 1/4\", 1banca mesa rectangular 3\" de 1.50 (x) 0.90)', 0, 'VALMAR', 'TUBULAR', 'RECTANGULAR', '4', NULL, NULL, NULL, 4, 5941, 6892, 9649, 11097, 13026, 13647, 7.5556844547564, 7.9158932714617, 862, 987, '2022-07-20 14:42:13'),
+('5b64b366-083a-11ed-8a78-feed01260033', 'LAZZIO-LAZZIO', NULL, 'ae569a66-0838-11ed-8a78-feed01260033', '3c5ed5a3-0839-11ed-8a78-feed01260033', 'ANTE COMEDOR TUBULAR MOD LAZZIO SILLAS LAZZIO (6SILLAS, 1MESA RECTANGULAR, 3\")', 0, 'VALMAR', 'TUBULAR', 'RECTANGULAR', '6', NULL, NULL, NULL, 1, 6226, 7223, 10113, 11630, 13580, 14230, 7.5193798449612, 7.8792912513843, 903, 1025, '2022-07-20 14:43:45'),
+('78227e70-083a-11ed-8a78-feed01260033', 'MONACO-MONACO', NULL, 'ae569a66-0838-11ed-8a78-feed01260033', '3c5ed5a3-0839-11ed-8a78-feed01260033', 'ANTE COMEDOR TUBULAR MOD MONACO SILLAS MONACO (6SILLAS, 1 MESA RECTANGULAR)', 0, 'VALMAR', 'TUBULAR', 'RECTANGULAR', '6', NULL, NULL, NULL, NULL, 6277, 7282, 10195, 11725, 13691, 14346, 7.5142700329308, 7.8737650933041, 911, 1033, '2022-07-20 14:44:33'),
+('929893e5-0839-11ed-8a78-feed01260033', 'DAMASCO-DAMASCO', NULL, 'ae569a66-0838-11ed-8a78-feed01260033', '3c5ed5a3-0839-11ed-8a78-feed01260033', 'ANTE COMEDOR TUBULAR MOD DAMASCO SILLA DAMASCO (4 sillas 1\", mesa rectangular 1 1/2\" de 1.22(x) 0.90)', 0, 'VALMAR', 'TUBULAR', 'RECTANGULAR', '4', NULL, NULL, NULL, NULL, 2752, 3193, 4471, 5142, 6386, 6706, 7.9825, 8.3825, 400, 536, '2022-07-20 14:38:08'),
+('c1831932-0839-11ed-8a78-feed01260033', 'LIZA-SANTIAGO', NULL, 'ae569a66-0838-11ed-8a78-feed01260033', '3c5ed5a3-0839-11ed-8a78-feed01260033', 'ANTE COMEDOR TUBULAR MOD LIZA SILLAS SANTIAGO (6SILLAS, 1MESA RECTANGULAR)', 0, 'VALMAR', 'TUBULAR', 'RECTANGULAR', '6', NULL, NULL, NULL, 2, 4260, 4942, 6919, 7957, 9588, 10033, 7.7572815533981, 8.1173139158576, 618, 753, '2022-07-20 14:39:27'),
+('f03e4ddf-0839-11ed-8a78-feed01260033', 'VERSALLES-TIFFANY', NULL, 'ae569a66-0838-11ed-8a78-feed01260033', '3c5ed5a3-0839-11ed-8a78-feed01260033', 'ANTE COMEDOR TUBULAR VERSALLES SILLA TIFFANY (6sillas 1 1/4\", mesa rectangular 3\" de 1.50(x) 0.90)', 0, 'VALMAR', 'TUBULAR', 'RECTANGULAR', '6', NULL, NULL, NULL, NULL, 4842, 5617, 7864, 9044, 10785, 11291, 7.6706970128023, 8.0305832147937, 703, 834, '2022-07-20 14:40:45');
 
 -- --------------------------------------------------------
 
@@ -410,6 +407,7 @@ CREATE TABLE IF NOT EXISTS `subcategoria` (
   `limite_costo_c2` double DEFAULT NULL,
   `meses_pago` int(11) DEFAULT NULL,
   `meses_garantia` int(11) DEFAULT NULL,
+  `enganche` double DEFAULT NULL,
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idsubcategoria`),
   KEY `pertenece_a_la_categoria` (`categoria`)
@@ -419,12 +417,8 @@ CREATE TABLE IF NOT EXISTS `subcategoria` (
 -- Volcado de datos para la tabla `subcategoria`
 --
 
-INSERT INTO `subcategoria` (`idsubcategoria`, `nombre`, `categoria`, `atr1`, `atr2`, `atr3`, `atr4`, `atr5`, `contado`, `especial`, `base_inicial_c1`, `ganancia_inicial_c1`, `rango_c1`, `ganancia_subsecuente_c1`, `limite_costo_c1`, `base_inicial_c2`, `ganancia_inicial_c2`, `rango_c2`, `ganancia_subsecuente_c2`, `limite_costo_c2`, `meses_pago`, `meses_garantia`, `creado_en`) VALUES
-('47422906-ccd7-11ec-8195-d481d7c3a9ad', 'PRUEBA', 'c18a4e3f-ccd6-11ec-8195-d481d7c3a9ad', 'MARCA', 'ASD', 'ASD', 'ASD', NULL, 21, 12, 12, 1, 1, 1, 1, 2, 12, 12, 12, 12, 4, 12, '2022-05-06 00:55:48'),
-('9aded115-c07a-11ec-8edf-18c04dae039e', 'LAVADORA', '6b149c84-c010-11ec-a813-d481d7c3a9ad', 'MARCA', 'KG', 'TAMAÑO', 'PESO', 'PRUEBA', 11, 1, 11, 0, 0, 0, 0, 10, NULL, NULL, NULL, NULL, 12, 6, '2022-04-22 00:14:19'),
-('9e77b6b3-c1a7-11ec-91b0-d481d7c3a9ad', 'LICUADORA', '6b149c84-c010-11ec-a813-d481d7c3a9ad', 'MARCA', 'ASPAS', 'MATERIAL', 'TAMAÑO', NULL, 2, 12, 11, 0, 0, 0, 0, 22, NULL, NULL, NULL, NULL, 4, 4, '2022-04-22 00:14:19'),
-('ae064f03-c07b-11ec-8edf-18c04dae039e', 'ASD', '00095e94-c070-11ec-8edf-18c04dae039e', 'MARCA', 'ASD', 'ASD', 'ASD', 'ASD', 12, 12, 12, 0, 0, 0, 0, 12, NULL, NULL, NULL, NULL, 12, 12, '2022-04-22 00:14:19'),
-('c1451ae3-c966-11ec-abb6-d481d7c3a9ad', 'TELE', '92ebf98d-c966-11ec-abb6-d481d7c3a9ad', 'MARCA', 'PULGADAS', 'RESOLUCION', NULL, NULL, 30, 35, 100, 0, 0, 0, 0, 150, NULL, NULL, NULL, NULL, 4, 12, '2022-05-01 15:52:35');
+INSERT INTO `subcategoria` (`idsubcategoria`, `nombre`, `categoria`, `atr1`, `atr2`, `atr3`, `atr4`, `atr5`, `contado`, `especial`, `base_inicial_c1`, `ganancia_inicial_c1`, `rango_c1`, `ganancia_subsecuente_c1`, `limite_costo_c1`, `base_inicial_c2`, `ganancia_inicial_c2`, `rango_c2`, `ganancia_subsecuente_c2`, `limite_costo_c2`, `meses_pago`, `meses_garantia`, `enganche`, `creado_en`) VALUES
+('3c5ed5a3-0839-11ed-8a78-feed01260033', 'ANTECOMEDORES', 'ae569a66-0838-11ed-8a78-feed01260033', 'MARCA', 'TIPO', 'MESA', 'SILLAS', NULL, 40, 15, 4400, 100, 400, 95, 20400, 4000, 110, 400, 105, 20000, 4, 6, 6.5, '2022-07-20 14:35:43');
 
 -- --------------------------------------------------------
 
@@ -447,9 +441,8 @@ CREATE TABLE IF NOT EXISTS `subzonas` (
 --
 
 INSERT INTO `subzonas` (`idsubzona`, `subzona`, `idzona`, `creado_en`) VALUES
-('0d738354-bd56-11ec-b09f-18c04dae039e', 'prueba', '378hinek-bd10-asdd-6yyh-d481d723r4ed', '2022-04-16 07:23:03'),
 ('lkmhlgok-6yth-hyhj-98xz-yujkasndjash', 'subzona de galecio', '378hinek-bd10-asdd-6yyh-d481d723r4ed', '2022-03-29 06:16:55'),
-('yohrio96-vfgt-23nm-6765-84i34hi883dl', 'subzona1 tuxtla', 'a3e3dasd-bd10-hyhj-6765-2182783dpoas', '2022-03-29 06:16:55');
+('yohrio96-vfgt-23nm-6765-84i34hi883dl', 'Subzona Tuxtla', 'a3e3dasd-bd10-hyhj-6765-2182783dpoas', '2022-03-29 06:16:55');
 
 -- --------------------------------------------------------
 
@@ -468,15 +461,14 @@ CREATE TABLE IF NOT EXISTS `sucursales` (
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idsucursales`),
   KEY `es de tipo` (`tipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `sucursales`
 --
 
 INSERT INTO `sucursales` (`idsucursales`, `sucursales`, `descripcion`, `estado`, `matriz`, `tipo`, `creado_en`) VALUES
-(1, 'Tuxtla-Matriz', 'Sucursal Matrix-Tuxtla Gutiérrez', 1, 1, 'a8791f44-bc7e-11ec-bf6e-d481d7c3a9ad', '2022-03-29 06:16:44'),
-(2, 'Galecio', 'Sucursal de Galecio, Chiapa de Corzo', 1, 0, 'asd91f44-bc7e-11ec-bf6e-d481d7c3a9ad', '2022-03-29 06:16:44');
+(1, 'Galecio Narcía-Matriz', 'Matriz de la empresa. Aquí se encuentras los mandos medios y la gerencia. Es el punto central de las operaciones de la mueblería.', 1, 1, 'pii91f44-bc7e-11ec-bf6e-d481d7c3a9qw', '2022-03-29 06:16:44');
 
 -- --------------------------------------------------------
 
@@ -492,7 +484,7 @@ CREATE TABLE IF NOT EXISTS `sucursal_usuario` (
   PRIMARY KEY (`idsucursal_usuario`),
   KEY `asignado a` (`sucursal_idsucursales`),
   KEY `tiene acceso a` (`sucursal_idusuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `sucursal_usuario`
@@ -500,7 +492,6 @@ CREATE TABLE IF NOT EXISTS `sucursal_usuario` (
 
 INSERT INTO `sucursal_usuario` (`idsucursal_usuario`, `sucursal_idusuario`, `sucursal_idsucursales`) VALUES
 (1, '0a96aada-bd56-11ec-b09f-asjg75jfl382', 1),
-(3, '0a96aada-bd56-11ec-b09f-asjg75jfl382', 2),
 (8, '0a96aada-bd56-11ec-b09f-asjg75jfl123', 1);
 
 -- --------------------------------------------------------
@@ -521,11 +512,7 @@ CREATE TABLE IF NOT EXISTS `tipo` (
 --
 
 INSERT INTO `tipo` (`idtipo`, `nombre_tipo`) VALUES
-('81956ef4-bf77-11ec-a5db-d481d7c3a9ad', 'TIPO4'),
-('829f9d7e-bf5b-11ec-a5db-d481d7c3a9ad', 'tipo de prueba'),
-('a8791f44-bc7e-11ec-bf6e-d481d7c3a9ad', 'TIPO1'),
-('asd91f44-bc7e-11ec-bf6e-d481d7c3a9ad', 'TIPO22'),
-('pii91f44-bc7e-11ec-bf6e-d481d7c3a9qw', 'tipo3');
+('pii91f44-bc7e-11ec-bf6e-d481d7c3a9qw', 'MATRIZ');
 
 -- --------------------------------------------------------
 
@@ -555,7 +542,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 --
 
 INSERT INTO `usuario` (`idusuario`, `usuario_acceso`, `nombre`, `pass`, `rol`, `puesto`, `estado`, `superadmin`, `no_user`, `creado_en`) VALUES
-('0a96aada-bd56-11ec-b09f-asjg75jfl123', 'IGERAG', 'Ruben Aguilar González', '81df10368e0655e4801b66269fd8b973', 'Usurario', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 0, 2, '2022-03-29 05:39:17'),
+('0a96aada-bd56-11ec-b09f-asjg75jfl123', 'IGERAG', 'Ruben Aguilar González', '81df10368e0655e4801b66269fd8b973', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 2, '2022-03-29 05:39:17'),
 ('0a96aada-bd56-11ec-b09f-asjg75jfl382', 'Luis', 'Luis Augusto Von Duben Aquino', 'c44688b5061756b3cca2b86c016a1535', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 1, '2022-03-29 05:39:17');
 
 -- --------------------------------------------------------
@@ -577,14 +564,18 @@ CREATE TABLE IF NOT EXISTS `zonas` (
 --
 
 INSERT INTO `zonas` (`idzona`, `zona`, `creado_en`) VALUES
-('0a96aada-bd56-11ec-b09f-18c04dae039e', 'prueba', '2022-04-16 07:22:58'),
 ('378hinek-bd10-asdd-6yyh-d481d723r4ed', 'GALECIO', '2022-03-29 06:16:25'),
-('6e3f32fa-bd10-gthh-hgfh-qiwwudhiqsj3', 'CAMBACEO PROPIO', '2022-03-29 06:16:25'),
 ('a3e3dasd-bd10-hyhj-6765-2182783dpoas', 'TUXTLA', '2022-03-29 06:16:25');
 
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `almacen`
+--
+ALTER TABLE `almacen`
+  ADD CONSTRAINT `pertence a almacen` FOREIGN KEY (`sucursal`) REFERENCES `sucursales` (`idsucursales`);
 
 --
 -- Filtros para la tabla `cliente`
