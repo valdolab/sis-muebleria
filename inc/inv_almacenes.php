@@ -15,7 +15,7 @@ include "accion/conexion.php";
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" autocomplete="on" id="formAdd_subzona">
+                <form action="" method="post" autocomplete="on" id="formAdd_almacen">
                     <div class="row">
                         <div class="col-lg-6">
                           <div class="form-group">
@@ -26,7 +26,7 @@ include "accion/conexion.php";
                         <div class="col-lg-6">
                           <div class="form-group">
                             <label for="correo">Sucursal:</label>
-                            <select class="form-control" id="zona_subzona" name="zona_subzona" required>
+                            <select class="form-control" id="sucursal_almacen" name="sucursal_almacen" required>
                                 <option id="opSucursal" value="" hidden selected>Seleccione una opción</option>
                                     <?php
                                     #codigo para la lista de sucursales que se extraen de la base de datos
@@ -42,7 +42,7 @@ include "accion/conexion.php";
                         </div>
                     </div>
                     <br>
-                    <input value="insert_subzona" name="action" id="action" hidden>
+                    <input value="insert_almacen" name="action" id="action" hidden>
                     <div align="right">
                         <input type="submit" value="Agregar" class="btn btn-lg btn-primary">
                     </div>

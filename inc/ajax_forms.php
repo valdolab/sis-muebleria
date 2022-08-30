@@ -966,3 +966,46 @@ if ($_POST['action'] == 'insert_edit_producto')
   exit;
 }
 
+#para insertar un nuevo almacén
+if ($_POST['action'] == 'insert_almacen') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['nombre_almacen'])) 
+  {
+    $nuevo_almacen = $_POST['nombre_almacen'];
+    $idsucursal_almacen = $_POST['sucursal_almacen'];
+
+    //verificar si ya existe ese nombre de almacen
+    $find_id = mysqli_query($conexion, "SELECT idalmacen from almacen where nombre = '$nuevo_almacen'");
+    if(mysqli_num_rows($find_id) > 0)
+    {
+      //entonces ya hay uno, avisarle
+      $resultInsertAlmacen = 2;
+      //$modal = "$('#mensaje_repetido').modal('show');";
+    }
+    else
+    {
+      $resultIDalmacen= mysqli_query($conexion, "SELECT UUID() as idalmacen");
+      $uuid = mysqli_fetch_assoc($resultIDalmacen)['idalmacen'];
+      $insert_almacen = mysqli_query($conexion, "INSERT INTO almacen(idalmacen,nombre,sucursal) values ('$uuid','$nuevo_almacen', '$idsucursal_almacen')");
+      if ($insert_almacen) 
+      {
+        #$idalmacen = array("idalmacen" => $uuid);
+        #$almacen = array("almacen" => $nuevo_almacen);
+        #$resultInsertAlmacen = $idalmacen + $almacen;
+        $resultInsertAlmacen = 1;
+      } 
+      else
+      {
+        $resultInsertAlmacen = 0;
+      }
+    }
+  }
+  else
+  {
+    $resultInsertAlmacen = 0;
+  }
+  echo json_encode($resultInsertAlmacen,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+

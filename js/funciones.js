@@ -1031,7 +1031,7 @@ $('#idestado_civil').change(function() {
                     Swal.fire({
                           icon: 'success',
                           title: '!Guardado!',
-                          text: '!Se actualizao el producto guardado!'
+                          text: '!Se actualizó el producto!'
                         }).then((result) => {
                             if (result.isConfirmed){
                                 window.location.href = "productos.php";
@@ -1043,29 +1043,107 @@ $('#idestado_civil').change(function() {
        return false;   
     });
 
+    //form para agregar un almacén
+    $("#formAdd_almacen").submit( function () 
+    {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
+           success: function(response)             
+           {
+                //$('#prueba').html(response);
+                if(response == 0)
+                {
+                    //error
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error al guardar el almacén, !intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "inv_almacenes.php";
+                            }
+                        }) 
+                }
+                else if(response == 1)
+                {
+                    //correcto
+                    Swal.fire({
+                          icon: 'success',
+                          title: '!Guardado!',
+                          text: '!Almacén guardado correctamete!'
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "inv_almacenes.php";
+                            }
+                        }) 
+                }
+                else if(response == 2)
+                {
+                    //repetido
+                    Swal.fire({
+                          icon: 'warning',
+                          title: '¡El almacén ya existe!',
+                          text: 'Favor de poner otro indentificar para este nuevo almacén'
+                        })
+                }
+                else if(response == 3)
+                {
+                    //correcto editado
+                    Swal.fire({
+                          icon: 'success',
+                          title: '!Guardado!',
+                          text: '!Se actualizó el almacén!'
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "inv_almacenes.php";
+                            }
+                        }) 
+                }         
+           }
+       });   
+       return false;   
+    });
+
     //para las tablas que no son de productos
     $('#tbl').DataTable({
-  "columnDefs": [{
-   "targets": 0
-  }],
-  language: {
-   "sProcessing": "Procesando...",
-   "sLengthMenu": "Mostrar _MENU_ resultados",
-   "sZeroRecords": "No se encontraron resultados",
-   "sEmptyTable": "Ningún dato disponible en esta tabla",
-   "sInfo": "Mostrando resultados _START_-_END_ de  _TOTAL_",
-   "sInfoEmpty": "Mostrando resultados del 0 al 0 de un total de 0 registros",
-   "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-   "sSearch": "Buscar:",
-   "sLoadingRecords": "Cargando...",
-   "oPaginate": {
-    "sFirst": "Primero",
-    "sLast": "Último",
-    "sNext": "Siguiente",
-    "sPrevious": "Anterior"
-   },
-  }
- });
+      "columnDefs": [{
+       "targets": 0
+      }],
+      language: {
+       "sProcessing": "Procesando...",
+       "sLengthMenu": "Mostrar _MENU_ resultados",
+       "sZeroRecords": "No se encontraron resultados",
+       "sEmptyTable": "Ningún dato disponible en esta tabla",
+       "sInfo": "Mostrando resultados _START_-_END_ de  _TOTAL_",
+       "sInfoEmpty": "Mostrando resultados del 0 al 0 de un total de 0 registros",
+       "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+       "sSearch": "Buscar:",
+       "sLoadingRecords": "Cargando...",
+       "oPaginate": {
+        "sFirst": "Primero",
+        "sLast": "Último",
+        "sNext": "Siguiente",
+        "sPrevious": "Anterior"
+       },
+      }
+     });
 
     //oculta las columnas de costos de la tabla productos
     hide_costos();
