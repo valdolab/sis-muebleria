@@ -161,7 +161,7 @@ include "accion/conexion.php";
                 <th>Costo + IVA</th>
                 <th>Costo contado</th>
                 <th>Costo cr1</th>
-                <th style="text-align: center;">Herramientas</th>
+                <!-- <th style="text-align: center;">Herramientas</th> -->
             </tr>
         </thead>
         <tbody>
@@ -175,10 +175,11 @@ include "accion/conexion.php";
                         <td>$6,000</td>
                         <td>$12,000</td>
                         <td>$12,000</td>
+                        <!--
                         <td align="center">
                                 <a href="editar_documento.php?id=" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
                                 <button onClick='eliminar_inventario()' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
-                        </td>
+                        </td>-->
                     </tr>
                     <tr>
                         <td>Linea blanca</td>
@@ -190,10 +191,11 @@ include "accion/conexion.php";
                         <td>$6,000</td>
                         <td>$12,000</td>
                         <td>$12,000</td>
+                        <!--
                         <td align="center">
                                 <a href="editar_documento.php?id=" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
                                 <button onClick='eliminar_inventario()' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
-                        </td>
+                        </td>-->
                     </tr>
         </tbody>
     </table>

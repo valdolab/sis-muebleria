@@ -1121,6 +1121,98 @@ $('#idestado_civil').change(function() {
        return false;   
     });
 
+    //form para agregar un tipo de venta
+    $("#formAdd_tipo_venta").submit( function () 
+    {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
+           success: function(response)             
+           {
+                //$('#prueba').html(response);
+                if(response == 0)
+                {
+                    //error brutal
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error al guardar el nuevo tipo de venta, !intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //recargamos la pagina actual sin el POST
+                                window.location.href=window.location.href;
+                            }
+                        }) 
+                }
+                else if(response == 2)
+                {
+                    //repetido
+                    Swal.fire({
+                          icon: 'warning',
+                          title: '¡El tipo de venta ya existe!',
+                          text: 'Favor de poner otro indentificar para este nuevo almacén'
+                        })
+                }
+                else
+                {
+                    //sacamos la bandera
+                    var data = $.parseJSON(response);
+                    if(data.flag_action == 1)
+                    {
+                        //INSERT
+                        //se agrego nuevo tipo de venta
+                        $('#nuevo_tipo_venta').modal('hide');
+                        //limpiar el input
+                        $('#nuevatipo_venta').val('');
+                        $('#tipo_venta').append($('<option>',
+                        {
+                            value: data.idtipo_venta,
+                            text : data.nombre_venta
+                        }));
+                        //correcto
+                        Swal.fire({
+                              icon: 'success',
+                              title: '!Guardado!',
+                              text: '!Tipo de venta guardado correctamete!'
+                            }).then((result) => {
+                                if (result.isConfirmed){}
+                            }) 
+                    }
+                    else
+                    {
+                        //UPDATE
+                        $('#tipo_venta option[value="'+data.idtipo_venta+'"]').text(data.nombre_venta);
+                        //correcto editado
+                        Swal.fire({
+                              icon: 'success',
+                              title: '!Guardado!',
+                              text: '!Se actualizó el tipo de venta!'
+                            }).then((result) => {
+                                if (result.isConfirmed){}
+                            }) 
+                    }
+                }       
+           }
+       });   
+       return false;   
+    });
+
     //para las tablas que no son de productos
     $('#tbl').DataTable({
       "columnDefs": [{
@@ -1224,6 +1316,36 @@ $('#idestado_civil').change(function() {
             }
        });  
     });
+
+    //funcion para autocompletar cuando buscamos un cliente por ID o nombre
+    //buscar por nombre SELECT * FROM cliente WHERE nombre LIKE '%$nombre%'
+    /*$("#id_cliente").autocomplete({
+        minLength: 3,
+        source: function (request, response) 
+        {
+            var action = 'search_cliente_nombre';
+            var id_cliente = $(this).val();
+            $.ajax({
+                url: "ajax.php",
+                dataType: "json",
+                data: {action: action, idcliente: id_cliente},
+                success: function (data) 
+                {
+                    response(data);
+                }
+            });
+        },
+        select: function (event, ui) 
+        {
+            $("#idcliente").val(ui.item.id);
+            $("#nom_cliente").val(ui.item.label);
+            $("#tel_cliente").val(ui.item.telefono);
+            $("#dir_cliente").val(ui.item.direccion);
+        }
+    })*/
+    //buscar por IDCliente
+
+
 //FIN DEL DOCUMENT READY
 });
 
@@ -2579,7 +2701,7 @@ function eliminar_puesto(idpuesto)
                           'success'
                         ).then((result) => {
                             if (result.isConfirmed){
-                                //con esto recargamos la pagina sin el POST DATA
+                                //actualizamos el valor sin recargar la pagina
                                 $("#puesto option[value='"+idpuesto+"']").remove();
                             }
                         })

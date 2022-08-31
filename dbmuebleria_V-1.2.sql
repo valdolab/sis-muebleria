@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 23-08-2022 a las 01:09:08
+-- Tiempo de generación: 31-08-2022 a las 22:14:01
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -35,6 +35,13 @@ CREATE TABLE IF NOT EXISTS `almacen` (
   PRIMARY KEY (`idalmacen`),
   KEY `pertenece` (`sucursal`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `almacen`
+--
+
+INSERT INTO `almacen` (`idalmacen`, `nombre`, `sucursal`) VALUES
+('dab06576-28b9-11ed-97d0-d481d7c3a9ad', 'almacen prueba', 1);
 
 -- --------------------------------------------------------
 
@@ -134,6 +141,14 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   KEY `se encuentra en` (`subzona`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `cliente`
+--
+
+INSERT INTO `cliente` (`idcliente`, `nombre_cliente`, `zona`, `domicilio_cliente`, `subzona`, `tel1_cliente`, `tel2_cliente`, `cp_cliente`, `idestado_civil`, `curp`, `rfc`, `trabajo_cliente`, `puesto_cliente`, `direccion_trabajo_cliente`, `antiguedadA_trabajo_cliente`, `antiguedadM_trabajo_cliente`, `ingresos_cliente`, `tipo_ingresos_cliente`, `nombre_conyugue_cliente`, `antiguedadA_vinculo`, `antiguedadM_vinculo`, `trabajo_conyugue`, `puesto_conyugue`, `ingreso_mensual_conyugue`, `direccion_trabajo_conyugue`, `tel_conyugue`, `tipo_vivienda_cliente`, `edad_residencia`, `renta_mensual`, `ndependientes`, `nombre_aval`, `tel_aval`, `domicilio_aval`, `trabajo_aval`, `puesto_aval`, `ingreso_mensual_aval`, `nombre_conyugue_aval`, `apto_credito`, `nivel_apto`, `estado_cliente`, `no_cliente`, `masinfo`, `creado_en`) VALUES
+('aa8efe15825a7cc3b1e740ff88321bbc', 'Cliente de prueba 1', '378hinek-bd10-asdd-6yyh-d481d723r4ed', 'asdasdasd', 'lkmhlgok-6yth-hyhj-98xz-yujkasndjash', '9611920000', '9611926030', 29070, 0, 'VEGO32323212121212', 'VEGO323232323', NULL, NULL, NULL, 0, 0, 0, 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 1, 1, 0, '2022-08-31 00:11:42'),
+('d8f600509aeed427e463430f8904544a', 'Cliente de prueba 2', 'a3e3dasd-bd10-hyhj-6765-2182783dpoas', 'cambiando el cliente sin cambiar el id no_cliente', 'yohrio96-vfgt-23nm-6765-84i34hi883dl', '9611920001', '9611920000', 20077, 0, 'VEGO32323213131313', 'VEGO325252525', NULL, NULL, NULL, 0, 0, 0, 'Quincenal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Propia', 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 1, 2, 0, '2022-08-31 00:12:32');
+
 -- --------------------------------------------------------
 
 --
@@ -182,6 +197,19 @@ CREATE TABLE IF NOT EXISTS `documento` (
 
 INSERT INTO `documento` (`iddocumento`, `name_documento`, `folio`, `serie`, `idsucursal`, `estado`, `creado_en`) VALUES
 (1, 'NOTA DE VENTA', 'MAT', '0000001', 1, 1, '2022-03-29 06:17:20');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `modalidad_pago`
+--
+
+DROP TABLE IF EXISTS `modalidad_pago`;
+CREATE TABLE IF NOT EXISTS `modalidad_pago` (
+  `idmodalidad_pago` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre_modalidad` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`idmodalidad_pago`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -544,6 +572,29 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 INSERT INTO `usuario` (`idusuario`, `usuario_acceso`, `nombre`, `pass`, `rol`, `puesto`, `estado`, `superadmin`, `no_user`, `creado_en`) VALUES
 ('0a96aada-bd56-11ec-b09f-asjg75jfl123', 'IGERAG', 'Ruben Aguilar González', '81df10368e0655e4801b66269fd8b973', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 2, '2022-03-29 05:39:17'),
 ('0a96aada-bd56-11ec-b09f-asjg75jfl382', 'Luis', 'Luis Augusto Von Duben Aquino', 'c44688b5061756b3cca2b86c016a1535', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 1, '2022-03-29 05:39:17');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `venta_tipo`
+--
+
+DROP TABLE IF EXISTS `venta_tipo`;
+CREATE TABLE IF NOT EXISTS `venta_tipo` (
+  `idtipo_venta` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre_venta` varchar(100) CHARACTER SET utf32 COLLATE utf32_spanish_ci NOT NULL,
+  PRIMARY KEY (`idtipo_venta`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `venta_tipo`
+--
+
+INSERT INTO `venta_tipo` (`idtipo_venta`, `nombre_venta`) VALUES
+('2651952b-2977-11ed-a437-d481d7c3a9ad', 'Credito'),
+('38f8be92-2979-11ed-a437-d481d7c3a9ad', 'PayJoy'),
+('462c4a06-2977-11ed-a437-d481d7c3a9ad', 'Contado'),
+('88a698bf-2979-11ed-a437-d481d7c3a9ad', 'PayJoy2');
 
 -- --------------------------------------------------------
 

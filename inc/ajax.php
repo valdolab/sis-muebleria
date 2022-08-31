@@ -1830,3 +1830,15 @@ if ($_POST['action'] == 'get_hidden_products')
   exit;
 }
 
+//para buscar el cliente con en su IDCliente
+if ($_POST['action'] == 'search_cliente_nombre') 
+{
+  include "accion/conexion.php";
+  //eliminar todos los datos de Ext.-p de todos los productos, sin el where para BORRAR TODO
+  
+
+  //$borro_ext_p = mysqli_error($conexion);
+  //echo json_encode($borro_ext_p,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+

@@ -6,6 +6,163 @@ include "accion/conexion.php";
 
 ?>
 
+<div id="nueva_zona" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="my-modal-title">Agregar nueva zona</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="on" id="formAdd_zona">
+                    <div class="row">
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <label for="correo">Nueva zona</label>
+                            <input type="text" class="form-control" name="nuevazona" id="nuevazona" required maxlength="99">
+                        </div>  
+                        </div>
+                    </div>
+
+                    <input value="insert_zona" name="action" id="action" hidden>
+                    <div align="right">
+                        <input type="submit" value="Agregar" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editar_zona" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="my-modal-title">Editar zona</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="on" id="formEdit_zona">
+                    <div class="row">
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <label for="correo">zona</label>
+                            <input type="text" name="idnewzona_edit" id="idnewzona_edit" hidden>
+                            <input type="text" class="form-control" name="newzona_edit" id="newzona_edit" required maxlength="99">
+                        </div>  
+                        </div>
+                    </div>
+
+                    <input value="edit_zona" name="action" id="action" hidden>
+                    <div align="right">
+                        <input type="submit" value="Actualizar" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="nueva_subzona" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="my-modal-title">Nueva subzona (Colonia)</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="on" id="formAdd_subzona">
+                    <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="correo">Nueva subzona</label>
+                            <input type="text" class="form-control" name="nuevasubzona" id="nuevasubzona" required maxlength="99">
+                        </div>  
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="correo">Pertenece a la zona:</label>
+                            <select class="form-control" id="zona_subzona" name="zona_subzona" required>
+                                <option selected hidden>Seleccione una opción</option>
+                                <?php
+                                #codigo para la lista de sucursales que se extraen de la base de datos
+                                $result = mysqli_query($conexion,"SELECT idzona,zona FROM zonas");                        
+                                if (mysqli_num_rows($result) > 0) {  
+                                  while($row = mysqli_fetch_assoc($result))
+                                  {
+                                    echo "<option value='".$row["idzona"]."'>".$row["zona"]."</option>";
+                                  }
+                                }
+                                ?>
+                              </select>
+                        </div>  
+                        </div>
+                    </div>
+
+                    <input value="insert_subzona" name="action" id="action" hidden>
+                    <div align="right">
+                        <input type="submit" value="Agregar" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editar_subzona" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="my-modal-title">Editar subzona (Colonia)</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="off" id="formEdit_subzona">
+                    <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="correo">subzona</label>
+                            <input type="text" name="idnewsubzona_edit" id="idnewsubzona_edit" hidden>
+                            <input type="text" class="form-control" name="newsubzona_edit" id="newsubzona_edit" required maxlength="99">
+                        </div>  
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="correo">Pertenece a la zona:</label>
+                            <select class="form-control" id="zona_subzona_edit" name="zona_subzona_edit" required>
+                                <?php
+                                #codigo para la lista de sucursales que se extraen de la base de datos
+                                $result = mysqli_query($conexion,"SELECT idzona,zona FROM zonas");                        
+                                if (mysqli_num_rows($result) > 0) {  
+                                  while($row = mysqli_fetch_assoc($result))
+                                  {
+                                    echo "<option value='".$row["idzona"]."'>".$row["zona"]."</option>";
+                                  }
+                                }
+                                ?>
+                              </select>
+                        </div>  
+                        </div>
+                    </div>
+
+                    <input value="edit_subzona" name="action" id="action" hidden>
+                    <div align="right">
+                        <input type="submit" value="Agregar" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="col-lg-12">
 
 <div class="card">
@@ -33,14 +190,37 @@ include "accion/conexion.php";
             <div class="card-body">
                     <div class="row">
 
-                        <div class="form-group col-lg-2">
-                            <label for="nombre_aval">ID Cliente</label>
-                            <input onkeyup="mayusculas(this)" type="text" class="form-control" placeholder="Buscar por ID cliente" name="id_cliente" id="id_cliente">
-                        </div>
-
                         <div class="form-group col-lg-5">
-                            <label for="nombre_aval">Cliente</label>
-                            <input type="text" class="form-control" placeholder="Buscar por nombre del cliente" name="nom_cliente" id="nom_cliente">
+                            <label for="nombre_aval">Proveedor</label>
+                            <?php 
+                                if($_SESSION['rol'] == "SuperAdmin" or $_SESSION['rol'] == "Administrador")
+                                {
+                                    ?>
+                                    <button data-toggle="modal" data-target="#nuevo_proveedor" title="Agregar nuevo Proveedor" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
+                                    <button disabled id="btneliminar_proveedor" onclick="eliminar_proveedor();" title="Eliminar Proveedor" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
+                                    <?php
+                                }
+                                else
+                                {
+                                    ?>
+                                    <button disabled="disabled" title="Agregar nueva zona" class="btn btn-primary btn-xs" type="button"><i class="fas fa-plus"></i></button>
+                                    <button disabled title="editar zona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
+                                    <button disabled title="Eliminar zona" class="btn btn-danger btn-xs" type="button"><i class="fas fa-trash"></i></button>
+                                    <?php 
+                                } 
+                             ?>
+                                <select class="form-control" id="proveedor" name="proveedor" required>
+                                <option selected hidden>Seleccione una opción</option>
+                                <?php
+                                $result = mysqli_query($conexion,"SELECT idzona,zona FROM zonas");                        
+                                if (mysqli_num_rows($result) > 0) {  
+                                  while($row = mysqli_fetch_assoc($result))
+                                  {
+                                    echo "<option value='".$row["idzona"]."'>".$row["zona"]."</option>";
+                                  }
+                                }
+                                ?>
+                            </select>
                         </div>
 
                         <div class="form-group col-lg-2">
@@ -50,7 +230,7 @@ include "accion/conexion.php";
 
                         <div class="form-group col-lg-3">
                             <label for="trabajo_aval">Fecha</label>
-                            <input type="date" class="form-control" placeholder="" name="fecha" id="fecha">
+                            <input type="date" value="<?php echo date('Y-m-d'); ?>" class="form-control" placeholder="" name="fecha" id="fecha">
                         </div>
 
                         <div class="col-lg-2">

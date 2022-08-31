@@ -1009,3 +1009,69 @@ if ($_POST['action'] == 'insert_almacen')
   exit;
 }
 
+#para insertar y editar un tipo de venta
+if ($_POST['action'] == 'insert_tipo_venta') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['nuevatipo_venta'])) 
+  {
+    $nuevo_tipo_venta = $_POST['nuevatipo_venta'];
+
+    //verificar si ya existe ese tipo de venta
+    $find_id = mysqli_query($conexion, "SELECT idtipo_venta from venta_tipo where nombre_venta = '$nuevo_tipo_venta'");
+    if(mysqli_num_rows($find_id) > 0)
+    {
+      //entonces ya hay uno, avisarle
+      $resultVentaTipo = 2;
+      //$modal = "$('#mensaje_repetido').modal('show');";
+    }
+    else
+    {
+      //no es repetido
+      $ban = $_POST['flagid_tipoVenta'];
+      if($ban == "nuevo_tipo_de_venta")
+      {
+          //insertar nuevo tipo de producto
+          $resultIDtipoVenta= mysqli_query($conexion, "SELECT UUID() as idtipo_venta");
+          $uuid = mysqli_fetch_assoc($resultIDtipoVenta)['idtipo_venta'];
+          $insert_tipo_venta = mysqli_query($conexion, "INSERT INTO venta_tipo(idtipo_venta,nombre_venta) values ('$uuid','$nuevo_tipo_venta')");
+          if ($insert_tipo_venta) 
+          {
+            //$resultVentaTipo = 1; 1-> insertar, 3->editar
+            $flag_action = array("flag_action" => 1);
+            $idtipo_venta = array("idtipo_venta" => $uuid);
+            $nombre_venta = array("nombre_venta" => $nuevo_tipo_venta);
+            $resultVentaTipo = $idtipo_venta + $nombre_venta + $flag_action;
+          } 
+          else
+          {
+            $resultVentaTipo = 0;
+          }
+      }
+      else
+      {
+        //editar nuevo tipo de producto
+        $id_tipo_venta = $ban;
+        $update_tipo_venta = mysqli_query($conexion, "UPDATE venta_tipo SET nombre_venta='$nuevo_tipo_venta' where idtipo_venta = '$id_tipo_venta'");
+        if ($update_tipo_venta) 
+        {
+          $flag_action = array("flag_action" => 3);
+          $idtipo_venta = array("idtipo_venta" => $id_tipo_venta);
+          $nombre_venta = array("nombre_venta" => $nuevo_tipo_venta);
+          $resultVentaTipo = $idtipo_venta + $nombre_venta + $flag_action;
+        } 
+        else
+        {
+          $resultVentaTipo = 0;
+        }
+      }
+    }
+  }
+  else
+  {
+    $resultVentaTipo = 0;
+  }
+  echo json_encode($resultVentaTipo,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+

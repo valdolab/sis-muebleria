@@ -128,16 +128,20 @@ include "accion/conexion.php";
                     $query3 = mysqli_query($conexion, "SELECT subzona FROM subzonas where idsubzona = '$idsubzona'");
                     $subzona_cliente = mysqli_fetch_array($query3)['subzona'];
 
-                    $ceros = "000";
+                    $ceros = "0000";
                         if ($no_cliente > 9)
                         {
-                            $ceros = "00";
+                            $ceros = "000";
                         }
                         elseif ($no_cliente > 99) 
                         {
-                            $ceros = "0";
+                            $ceros = "00";
                         }
                         elseif ($no_cliente > 999) 
+                        {
+                            $ceros = "0";
+                        }
+                        elseif ($no_cliente > 9999) 
                         {
                             $ceros = "";
                         }

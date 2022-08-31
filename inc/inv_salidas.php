@@ -6,6 +6,164 @@ include "accion/conexion.php";
 
 ?>
 
+<div id="nueva_zona" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg text-black">
+                <h5 class="modal-title" id="my-modal-title">Agregar nueva zona</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="on" id="formAdd_zona">
+                    <div class="row">
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <label for="correo">Nueva zona</label>
+                            <input type="text" class="form-control" name="nuevazona" id="nuevazona" required maxlength="99">
+                        </div>  
+                        </div>
+                    </div>
+
+                    <input value="insert_zona" name="action" id="action" hidden>
+                    <div align="right">
+                        <input type="submit" value="Agregar" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="nueva_subzona" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg text-black">
+                <h5 class="modal-title" id="my-modal-title">Nueva subzona (Colonia)</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="on" id="formAdd_subzona">
+                    <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="correo">Nueva subzona</label>
+                            <input type="text" class="form-control" name="nuevasubzona" id="nuevasubzona" required maxlength="99">
+                        </div>  
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="correo">Pertenece a la zona:</label>
+                            <select class="form-control" id="zona_subzona" name="zona_subzona" required>
+                                <option selected hidden>Seleccione una opción</option>
+                                <?php
+                                #codigo para la lista de sucursales que se extraen de la base de datos
+                                $result = mysqli_query($conexion,"SELECT idzona,zona FROM zonas");                        
+                                if (mysqli_num_rows($result) > 0) {  
+                                  while($row = mysqli_fetch_assoc($result))
+                                  {
+                                    echo "<option value='".$row["idzona"]."'>".$row["zona"]."</option>";
+                                  }
+                                }
+                                ?>
+                              </select>
+                        </div>  
+                        </div>
+                    </div>
+
+                    <input value="insert_subzona" name="action" id="action" hidden>
+                    <div align="right">
+                        <input type="submit" value="Agregar" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editar_subzona" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg text-black">
+                <h5 class="modal-title" id="my-modal-title">Editar subzona (Colonia)</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="off" id="formEdit_subzona">
+                    <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="correo">subzona</label>
+                            <input type="text" name="idnewsubzona_edit" id="idnewsubzona_edit" hidden>
+                            <input type="text" class="form-control" name="newsubzona_edit" id="newsubzona_edit" required maxlength="99">
+                        </div>  
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="correo">Pertenece a la zona:</label>
+                            <select class="form-control" id="zona_subzona_edit" name="zona_subzona_edit" required>
+                                <?php
+                                #codigo para la lista de sucursales que se extraen de la base de datos
+                                $result = mysqli_query($conexion,"SELECT idzona,zona FROM zonas");                        
+                                if (mysqli_num_rows($result) > 0) {  
+                                  while($row = mysqli_fetch_assoc($result))
+                                  {
+                                    echo "<option value='".$row["idzona"]."'>".$row["zona"]."</option>";
+                                  }
+                                }
+                                ?>
+                              </select>
+                        </div>  
+                        </div>
+                    </div>
+
+                    <input value="edit_subzona" name="action" id="action" hidden>
+                    <div align="right">
+                        <input type="submit" value="Agregar" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- agregar tipo de venta -->
+<div id="nuevo_tipo_venta" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg text-black">
+                <h5 class="modal-title" id="my-modal-title">Agregar nuevo tipo de venta</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="on" id="formAdd_tipo_venta">
+                    <div class="row">
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <label for="correo">Nuevo tipo de venta</label>
+                            <input type="text" class="form-control" name="nuevatipo_venta" id="nuevatipo_venta" required maxlength="99">
+                        </div>  
+                        </div>
+                    </div>
+
+                    <input value="insert_tipo_venta" name="action" id="action" hidden>
+                    <input value="nuevo_tipo_de_venta" name="flagid_tipoVenta" id="flagid_tipoVenta" hidden>
+                    <div align="right">
+                        <input type="submit" value="Agregar" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="col-lg-12">
 
 <div class="card">
@@ -50,7 +208,7 @@ include "accion/conexion.php";
 
                         <div class="form-group col-lg-3">
                             <label for="trabajo_aval">Fecha</label>
-                            <input type="date" class="form-control" placeholder="" name="fecha" id="fecha">
+                            <input type="date" value="<?php echo date('Y-m-d'); ?>" class="form-control" placeholder="" name="fecha" id="fecha">
                         </div>
 
                         <div class="col-lg-2">
@@ -60,16 +218,12 @@ include "accion/conexion.php";
                                 {
                                     ?>
                                     <button data-toggle="modal" data-target="#nueva_zona" title="Agregar nueva zona" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
-                                    <button disabled data-toggle="modal" data-target="#editar_zona" id="btnedit_zona" onclick="editar_zona();" title="editar zona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
-                                    <button disabled id="btneliminar_zona" onclick="eliminar_zona();" title="Eliminar zona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
                                     <?php
                                 }
                                 else
                                 {
                                     ?>
                                     <button disabled="disabled" title="Agregar nueva zona" class="btn btn-primary btn-xs" type="button"><i class="fas fa-plus"></i></button>
-                                    <button disabled title="editar zona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
-                                    <button disabled title="Eliminar zona" class="btn btn-danger btn-xs" type="button"><i class="fas fa-trash"></i></button>
                                     <?php 
                                 } 
                              ?>
@@ -96,7 +250,6 @@ include "accion/conexion.php";
                                     ?>
                                     <button data-toggle="modal" data-target="#nueva_subzona" title="Agregar nueva subzona" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
                                     <button disabled id="btnedit_subzona" data-toggle="modal" data-target="#editar_subzona" onclick="editar_subzona();" title="editar subzona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
-                                    <button disabled id="btneliminar_subzona" onclick="eliminar_subzona();" title="Eliminar subzona" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
                                     <?php
                                 }
                                 else
@@ -104,7 +257,6 @@ include "accion/conexion.php";
                                     ?>
                                     <button disabled="disabled" title="Agregar nueva subzona" class="btn btn-primary btn-xs" type="button"><i class="fas fa-plus"></i></button>
                                     <button disabled="disabled" title="editar subzona" class="btn btn-success btn-xs" type="button"><i class="fas fa-edit"></i></button>
-                                    <button disabled disabled="disabled" title="Eliminar subzona" class="btn btn-danger btn-xs" type="button"><i class="fas fa-trash"></i></button>
                                     <?php 
                                 } 
                              ?>
@@ -120,17 +272,36 @@ include "accion/conexion.php";
                         </div>
                         
                         <div class="form-group col-lg-3">
-                            <label for="puesto_aval">Tipo de venta</label>
-
-                            <button disabled="disabled" title="Agregar nuevo tipo" class="btn btn-primary btn-xs" type="button"><i class="fas fa-plus"></i></button>
-                            <button disabled="disabled" title="editar tipo" class="btn btn-success btn-xs" type="button"><i class="fas fa-edit"></i></button>
-                            <button disabled disabled="disabled" title="Eliminar tipo" class="btn btn-danger btn-xs" type="button"><i class="fas fa-trash"></i></button>
-
+                            <label for="tipo_venta">Tipo de venta</label>
+                            <?php 
+                                if($_SESSION['rol'] == "SuperAdmin" or $_SESSION['rol'] == "Administrador")
+                                {
+                                    ?>
+                                    <button data-toggle="modal" data-target="#nuevo_tipo_venta" title="Agregar nuevo tipo de venta" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
+                                    <button disabled data-toggle="modal" data-target="#editar_tipo_venta" id="btnedit_tipo_venta" onclick="editar_tipo_venta();" title="editar tipo de venta" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
+                                    <button disabled id="btneliminar_tipo_venta" onclick="eliminar_tipo_venta();" title="Eliminar tipo de venta" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
+                                    <?php
+                                }
+                                else
+                                {
+                                    ?>
+                                    <button disabled="disabled" title="Agregar nuevo tipo de venta" class="btn btn-primary btn-xs" type="button"><i class="fas fa-plus"></i></button>
+                                    <button disabled title="editar tipo de venta" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
+                                    <button disabled title="Eliminar tipo de venta" class="btn btn-danger btn-xs" type="button"><i class="fas fa-trash"></i></button>
+                                    <?php 
+                                } 
+                             ?>
                             <select id='tipo_venta' name='tipo_venta' class='form-control' required>
                                 <option selected hidden value=''>Seleccione un tipo</option>
-                                <option value="Credito">Credito</option>
-                                <option value="Contado">Contado</option>
-                                <option value="PayJoy">PayJoy</option>
+                                <?php
+                                $result = mysqli_query($conexion,"SELECT idtipo_venta,nombre_venta FROM venta_tipo");                        
+                                if (mysqli_num_rows($result) > 0) {  
+                                  while($row = mysqli_fetch_assoc($result))
+                                  {
+                                    echo "<option value='".$row["idtipo_venta"]."'>".$row["nombre_venta"]."</option>";
+                                  }
+                                }
+                                ?>
                             </select> 
                         </div>
 
@@ -159,12 +330,26 @@ include "accion/conexion.php";
                             <input type="text" class="form-control" name="pago_parcial" id="pago_parcial">
                         </div>
 
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg-2">
                             <label for="n_pagos">1er día de pago</label>
                             <input type="date" class="form-control" name="n_pagos" id="n_pagos">
                         </div>
 
-                        <div align="right" class="form-group col-lg-5">
+                        <div class="form-group col-lg-3">
+                            <label for="puesto_aval">Días de pago</label>
+                            <select id='dias_pago' name='dias_pago' class='form-control' required>
+                                <option selected hidden value=''>Seleccione una opción</option>
+                                <option value="lu">Lunes</option>
+                                <option value="ma">Martes</option>
+                                <option value="mi">Miercoles</option>
+                                <option value="ju">Jueves</option>
+                                <option value="vi">Viernes</option>
+                                <option value="sa">Sábado</option>
+                                <option value="do">Domingo</option>
+                            </select> 
+                        </div>
+
+                        <div align="right" class="form-group col-lg-3">
                             <br>
                             <button class="btn btn-lg btn-primary" id="add_venta">Añadir</button>
                         </div>
