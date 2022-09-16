@@ -3212,6 +3212,31 @@ function editar_subcategoria(idsubcategoria)
    });  
 }
 
+//para editar puesto
+function editar_tipo_venta(idtipo)
+{
+    var action = 'SelectTipo';
+    $.ajax({
+        url: 'ajax.php',
+        type: "POST",
+        async: true,
+        data: {action:action,tipo:idtipo},
+        success: function(response) {
+            //$('#prueba').val(response);
+            if (response != 0) 
+            {
+              var data = $.parseJSON(response);
+                $('#newedit_tipo').val(data.nombre_tipo);
+                $('#idflag_tipo').val(data.idtipo);
+                //$('#idpuesto_flag').val(idpuesto);
+            }
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+   });  
+}
+
 //=== PRODUCTO
 //funcion para mostrar los datos de producto y poner editarlo
 function editar_producto(idproducto)
