@@ -154,13 +154,14 @@ include "accion/conexion.php";
             <tr>
                 <th>Categoría</th>
                 <th>Subcategoría</th>
+                <th>Modelo</th>
                 <th>Sucursal</th>
                 <th>Almacén</th>
-                <th>Modelo</th>
                 <th>Stock M</th>
                 <th>Costo + IVA</th>
                 <th>Costo contado</th>
                 <th>Costo cr1</th>
+                <th width="10">Trans</th>
                 <!-- <th style="text-align: center;">Herramientas</th> -->
             </tr>
         </thead>
@@ -168,34 +169,30 @@ include "accion/conexion.php";
                     <tr>
                         <td>Linea blanca</td>
                         <td>Lavadora</td>
-                        <td>GAL</td>
-                        <td>Bodega</td>
                         <td>asd</td>
+                        <td>TODAS</td>
+                        <td>TODAS</td>
                         <td>6</td>
                         <td>$6,000</td>
                         <td>$12,000</td>
                         <td>$12,000</td>
-                        <!--
-                        <td align="center">
-                                <a href="editar_documento.php?id=" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
-                                <button onClick='eliminar_inventario()' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
-                        </td>-->
+                        <td width="10" align="center">
+                                <button onClick='eliminar_inventario()' class='btn btn-primary btn-sm' type='submit'><i style='color: white;' class='fas fa-exchange-alt'></i></button>
+                        </td>
                     </tr>
                     <tr>
                         <td>Linea blanca</td>
                         <td>Lavadora</td>
-                        <td>GAL</td>
-                        <td>Bodega</td>
-                        <td>asd</td>
+                        <td>asd2</td>
+                        <td>TODAS</td>
+                        <td>TODAS</td>
                         <td>6</td>
                         <td>$6,000</td>
                         <td>$12,000</td>
                         <td>$12,000</td>
-                        <!--
-                        <td align="center">
-                                <a href="editar_documento.php?id=" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
-                                <button onClick='eliminar_inventario()' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>
-                        </td>-->
+                        <td width="10" align="center">
+                                <button onClick='eliminar_inventario()' class='btn btn-primary btn-sm' type='submit'><i style='color: white;' class='fas fa-exchange-alt'></i></button>
+                        </td>
                     </tr>
         </tbody>
     </table>

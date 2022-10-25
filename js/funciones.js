@@ -1166,18 +1166,18 @@ $('#idestado_civil').change(function() {
                     Swal.fire({
                           icon: 'warning',
                           title: '¡El tipo de venta ya existe!',
-                          text: 'Favor de poner otro indentificar para este nuevo almacén'
+                          text: 'Favor de poner otro tipo de venta'
                         })
                 }
                 else
                 {
                     //sacamos la bandera
+                    $('#nuevo_tipo_venta').modal('hide');
                     var data = $.parseJSON(response);
                     if(data.flag_action == 1)
                     {
                         //INSERT
                         //se agrego nuevo tipo de venta
-                        $('#nuevo_tipo_venta').modal('hide');
                         //limpiar el input
                         $('#nuevatipo_venta').val('');
                         $('#tipo_venta').append($('<option>',
@@ -1212,6 +1212,284 @@ $('#idestado_civil').change(function() {
        });   
        return false;   
     });
+
+
+    //form para agregar y/o editar las modalidades de pago
+    $("#formAdd_modalidad_pago").submit( function () 
+    {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
+           success: function(response)             
+           {
+                //$('#prueba').html(response);
+                if(response == 0)
+                {
+                    //error brutal
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error al guardar la nueva modalidad de pago, !intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //recargamos la pagina actual sin el POST
+                                window.location.href=window.location.href;
+                            }
+                        }) 
+                }
+                else if(response == 2)
+                {
+                    //repetido
+                    Swal.fire({
+                          icon: 'warning',
+                          title: '¡Es modalidad de pago ya existe!',
+                          text: 'Favor de poner otro modalidad de pago'
+                        })
+                }
+                else
+                {
+                    //sacamos la bandera
+                    $('#nueva_modalidad_pago').modal('hide');
+                    var data = $.parseJSON(response);
+                    if(data.flag_action == 1)
+                    {
+                        //INSERT
+                        //se agrego nuevo tipo de venta
+                        //limpiar el input
+                        $('#nuevamodalidad_pago').val('');
+                        $('#modalidad_pago').append($('<option>',
+                        {
+                            value: data.idmodalidad_pago,
+                            text : data.nombre_modalidad
+                        }));
+                        //correcto
+                        Swal.fire({
+                              icon: 'success',
+                              title: '!Guardado!',
+                              text: '!Modalidad de pago guardado correctamete!'
+                            }).then((result) => {
+                                if (result.isConfirmed){}
+                            }) 
+                    }
+                    else
+                    {
+                        //UPDATE
+                        $('#modalidad_pago option[value="'+data.idmodalidad_pago+'"]').text(data.nombre_modalidad);
+                        //correcto editado
+                        Swal.fire({
+                              icon: 'success',
+                              title: '!Guardado!',
+                              text: '!Se actualizó la modalidad de pago!'
+                            }).then((result) => {
+                                if (result.isConfirmed){}
+                            }) 
+                    }
+                }       
+           }
+       });   
+       return false;   
+    });
+
+    //form para agregar un tipo de compra
+    $("#formAdd_tipo_compra").submit( function () 
+    {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
+           success: function(response)             
+           {
+                //$('#prueba').html(response);
+                if(response == 0)
+                {
+                    //error brutal
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error al guardar el nuevo tipo de compra, !intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //recargamos la pagina actual sin el POST
+                                window.location.href=window.location.href;
+                            }
+                        }) 
+                }
+                else if(response == 2)
+                {
+                    //repetido
+                    Swal.fire({
+                          icon: 'warning',
+                          title: '¡El tipo de compra ya existe!',
+                          text: 'Favor de poner otro tipo de compra'
+                        })
+                }
+                else
+                {
+                    //sacamos la bandera
+                    $('#nuevo_tipo_compra').modal('hide');
+                    var data = $.parseJSON(response);
+                    if(data.flag_action == 1)
+                    {
+                        //INSERT
+                        //se agrego nuevo tipo de venta
+                        //limpiar el input
+                        $('#nuevatipo_compra').val('');
+                        $('#tipo_compra').append($('<option>',
+                        {
+                            value: data.idtipo_compra,
+                            text : data.nombre_compra
+                        }));
+                        //correcto
+                        Swal.fire({
+                              icon: 'success',
+                              title: '!Guardado!',
+                              text: '!Tipo de compra guardado correctamete!'
+                            }).then((result) => {
+                                if (result.isConfirmed){}
+                            }) 
+                    }
+                    else
+                    {
+                        //UPDATE
+                        $('#tipo_compra option[value="'+data.idtipo_compra+'"]').text(data.nombre_compra);
+                        //correcto editado
+                        Swal.fire({
+                              icon: 'success',
+                              title: '!Guardado!',
+                              text: '!Se actualizó el tipo de compra!'
+                            }).then((result) => {
+                                if (result.isConfirmed){}
+                            }) 
+                    }
+                }       
+           }
+       });   
+       return false;   
+    });
+
+    //form para agregar proveedor
+    $("#formAdd_proveedor").submit( function () 
+    {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
+           success: function(response)             
+           {
+                //$('#prueba').html(response);
+                if(response == 0)
+                {
+                    //error brutal
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error al guardar el nuevo proveedor, !intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //recargamos la pagina actual sin el POST
+                                window.location.href=window.location.href;
+                            }
+                        }) 
+                }
+                else if(response == 2)
+                {
+                    //repetido
+                    Swal.fire({
+                          icon: 'warning',
+                          title: '¡El proveedor ya existe!',
+                          text: 'Favor de poner otro proveedor'
+                        })
+                }
+                else
+                {
+                    //sacamos la bandera
+                    $('#nuevo_proveedor').modal('hide');
+                    var data = $.parseJSON(response);
+                    if(data.flag_action == 1)
+                    {
+                        //INSERT
+                        //se agrego nuevo tipo de venta
+                        //limpiar el input
+                        $('#nuevoProveedor').val('');
+                        $('#proveedor').append($('<option>',
+                        {
+                            value: data.idproveedor,
+                            text : data.nombre_proveedor
+                        }));
+                        //correcto
+                        Swal.fire({
+                              icon: 'success',
+                              title: '!Guardado!',
+                              text: '!Proveedor guardado correctamete!'
+                            }).then((result) => {
+                                if (result.isConfirmed){}
+                            }) 
+                    }
+                    else
+                    {
+                        //UPDATE
+                        $('#proveedor option[value="'+data.idproveedor+'"]').text(data.nombre_proveedor);
+                        //correcto editado
+                        Swal.fire({
+                              icon: 'success',
+                              title: '!Guardado!',
+                              text: '!Se actualizó el proveedor!'
+                            }).then((result) => {
+                                if (result.isConfirmed){}
+                            }) 
+                    }
+                }       
+           }
+       });   
+       return false;   
+    });
+
 
     //para las tablas que no son de productos
     $('#tbl').DataTable({
@@ -1560,6 +1838,138 @@ $('#tipo').change(function(e)
             $('#btn_eliminartipo').attr('disabled','disabled');
         }
         //$('#prueba').html(data); 
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
+});
+
+//funcion para crear el boton de elimnar y editar de los tipos de venta
+$('#tipo_compra').change(function(e) 
+{
+    e.preventDefault();
+    var idtipo_compra = $(this).val();
+    $('#btnedit_tipo_compra').attr('onClick', 'editar_tipo_compra("'+idtipo_compra+'");');
+    $('#btnedit_tipo_compra').removeAttr('disabled');
+
+    var action = 'searchTipoCompraUsed';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,tipo_compra:idtipo_compra},
+      success: function(response) {
+        if(response == 0)
+        {
+            $('#btneliminar_tipo_compra').attr('onClick', 'eliminar_tipo_compra("'+idtipo_compra+'");');
+            $('#btneliminar_tipo_compra').removeAttr('disabled');
+        }
+        else
+        {
+            $('#btneliminar_tipo_compra').attr('onClick', 'eliminar_tipo_compra();');
+            $('#btneliminar_tipo_compra').attr('disabled','disabled');
+        }
+        //$('#prueba').html(response); 
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
+});
+
+//funcion para crear el boton de elimnar y editar de los tipos de venta
+$('#proveedor').change(function(e) 
+{
+    e.preventDefault();
+    var idproveedor = $(this).val();
+    $('#btnedit_proveedor').attr('onClick', 'editar_proveedor("'+idproveedor+'");');
+    $('#btnedit_proveedor').removeAttr('disabled');
+
+    var action = 'searchProveedorUsed';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,proveedor:idproveedor},
+      success: function(response) {
+        if(response == 0)
+        {
+            $('#btneliminar_proveedor').attr('onClick', 'eliminar_proveedor("'+idproveedor+'");');
+            $('#btneliminar_proveedor').removeAttr('disabled');
+        }
+        else
+        {
+            $('#btneliminar_proveedor').attr('onClick', 'eliminar_proveedor();');
+            $('#btneliminar_proveedor').attr('disabled','disabled');
+        }
+        //$('#prueba').html(response); 
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
+});
+
+//funcion para crear el boton de elimnar y editar de los tipos de venta
+$('#tipo_venta').change(function(e) 
+{
+    e.preventDefault();
+    var idtipo_venta = $(this).val();
+    $('#btnedit_tipo_venta').attr('onClick', 'editar_tipo_venta("'+idtipo_venta+'");');
+    $('#btnedit_tipo_venta').removeAttr('disabled');
+
+    var action = 'searchTipoVentaUsed';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,tipo_venta:idtipo_venta},
+      success: function(response) {
+        if(response == 0)
+        {
+            $('#btneliminar_tipo_venta').attr('onClick', 'eliminar_tipo_venta("'+idtipo_venta+'");');
+            $('#btneliminar_tipo_venta').removeAttr('disabled');
+        }
+        else
+        {
+            $('#btneliminar_tipo_venta').attr('onClick', 'eliminar_tipo_venta();');
+            $('#btneliminar_tipo_venta').attr('disabled','disabled');
+        }
+        //$('#prueba').html(response); 
+      },
+      error: function(error) {
+        //$('#sucursal').val('error');
+      }
+    });
+});
+
+//funcion para crear el boton de elimnar y editar de las modalidades de pago
+$('#modalidad_pago').change(function(e) 
+{
+    e.preventDefault();
+    var idmodalidad_pago = $(this).val();
+    $('#btnedit_modalidad_pago').attr('onClick', 'editar_modalidad_pago("'+idmodalidad_pago+'");');
+    $('#btnedit_modalidad_pago').removeAttr('disabled');
+
+    var action = 'searchModalidadPagoUsed';
+    $.ajax({
+      url: 'ajax.php',
+      type: "POST",
+      async: true,
+      data: {action:action,modalidad_pago:idmodalidad_pago},
+      success: function(response) {
+        if(response == 0)
+        {
+            $('#btndelete_modalidad_pago').attr('onClick', 'eliminar_modalidad_pago("'+idmodalidad_pago+'");');
+            $('#btndelete_modalidad_pago').removeAttr('disabled');
+        }
+        else
+        {
+            $('#btndelete_modalidad_pago').attr('onClick', 'eliminar_modalidad_pago();');
+            $('#btndelete_modalidad_pago').attr('disabled','disabled');
+        }
+        //$('#prueba').html(response); 
       },
       error: function(error) {
         //$('#sucursal').val('error');
@@ -3212,23 +3622,22 @@ function editar_subcategoria(idsubcategoria)
    });  
 }
 
-//para editar puesto
-function editar_tipo_venta(idtipo)
+//para editar tipo de venta
+function editar_tipo_venta(idtipo_venta)
 {
-    var action = 'SelectTipo';
+    var action = 'SelectTipoVenta';
     $.ajax({
         url: 'ajax.php',
         type: "POST",
         async: true,
-        data: {action:action,tipo:idtipo},
+        data: {action:action,tipo_venta:idtipo_venta},
         success: function(response) {
-            //$('#prueba').val(response);
+            //$('#prueba').html(response);
             if (response != 0) 
             {
               var data = $.parseJSON(response);
-                $('#newedit_tipo').val(data.nombre_tipo);
-                $('#idflag_tipo').val(data.idtipo);
-                //$('#idpuesto_flag').val(idpuesto);
+              $('#nuevatipo_venta').val(data.nombre_venta);
+              $('#flagid_tipoVenta').val(data.idtipo_venta);
             }
         },
         error: function(error) {
@@ -3236,6 +3645,312 @@ function editar_tipo_venta(idtipo)
         }
    });  
 }
+
+//eliminar tipo de venta
+//funcion para eliminar subzona
+function eliminar_tipo_venta(idtipo_venta)
+{
+    Swal.fire({
+            title: '¿Esta seguro de eliminar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, Eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'eliminarTipoVenta';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action,tipo_venta:idtipo_venta},
+                  success: function(response) {
+                    //$('#prueba').val(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                window.location.href=window.location.href;
+                                //$("#tipo option[value='"+idtipo+"']").remove();
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Eliminado!',
+                          'Se elimino correctamente!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                //window.location.href=window.location.href;
+                                $("#tipo_venta option[value='"+idtipo_venta+"']").remove();
+                            }
+                        })
+                    }
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });      
+              }
+        })
+}
+
+//funcion para editar y eliminar modalidad de pago
+//para editar tipo de venta
+function editar_modalidad_pago(idmodalidad_pago)
+{
+    var action = 'SelectModalidadPago';
+    $.ajax({
+        url: 'ajax.php',
+        type: "POST",
+        async: true,
+        data: {action:action,modalidad_pago:idmodalidad_pago},
+        success: function(response) {
+            //$('#prueba').html(response);
+            if (response != 0) 
+            {
+              var data = $.parseJSON(response);
+              $('#nuevamodalidad_pago').val(data.nombre_modalidad);
+              $('#flagid_modalidadPago').val(data.idmodalidad_pago);
+            }
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+   });  
+}
+
+//eliminar tipo de venta
+//funcion para eliminar subzona
+function eliminar_modalidad_pago(idmodalidad_pago)
+{
+    Swal.fire({
+            title: '¿Esta seguro de eliminar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, Eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'eliminarModalidadPago';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action,modalidad_pago:idmodalidad_pago},
+                  success: function(response) {
+                    //$('#prueba').val(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                window.location.href=window.location.href;
+                                //$("#tipo option[value='"+idtipo+"']").remove();
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Eliminado!',
+                          'Se elimino correctamente!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                //window.location.href=window.location.href;
+                                $("#modalidad_pago option[value='"+idmodalidad_pago+"']").remove();
+                            }
+                        })
+                    }
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });      
+              }
+        })
+}
+
+//para editar tipo de venta
+function editar_tipo_compra(idtipo_compra)
+{
+    var action = 'SelectTipoCompra';
+    $.ajax({
+        url: 'ajax.php',
+        type: "POST",
+        async: true,
+        data: {action:action,tipo_compra:idtipo_compra},
+        success: function(response) {
+            //$('#prueba').html(response);
+            if (response != 0) 
+            {
+              var data = $.parseJSON(response);
+              $('#nuevatipo_compra').val(data.nombre_compra);
+              $('#flagid_tipoCompra').val(data.idtipo_compra);
+            }
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+   });  
+}
+
+//eliminar tipo de venta
+//funcion para eliminar subzona
+function eliminar_tipo_compra(idtipo_compra)
+{
+    Swal.fire({
+            title: '¿Esta seguro de eliminar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, Eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'eliminarTipoCompra';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action,tipo_compra:idtipo_compra},
+                  success: function(response) {
+                    //$('#prueba').val(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                window.location.href=window.location.href;
+                                //$("#tipo option[value='"+idtipo+"']").remove();
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Eliminado!',
+                          'Se elimino correctamente!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                //window.location.href=window.location.href;
+                                $("#tipo_compra option[value='"+idtipo_compra+"']").remove();
+                            }
+                        })
+                    }
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });      
+              }
+        })
+}
+
+//para editar proveedor
+function editar_proveedor(idproveedor)
+{
+    var action = 'SelectProveedor';
+    $.ajax({
+        url: 'ajax.php',
+        type: "POST",
+        async: true,
+        data: {action:action,proveedor:idproveedor},
+        success: function(response) {
+            //$('#prueba').html(response);
+            if (response != 0) 
+            {
+              var data = $.parseJSON(response);
+              $('#nuevoProveedor').val(data.nombre_proveedor);
+              $('#flagid_Proveedor').val(data.idproveedor);
+            }
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+   });  
+}
+
+//eliminar tipo de venta
+//funcion para eliminar subzona
+function eliminar_proveedor(idproveedor)
+{
+    Swal.fire({
+            title: '¿Esta seguro de eliminar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, Eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'eliminarProveedor';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action,proveedor:idproveedor},
+                  success: function(response) {
+                    //$('#prueba').html(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                window.location.href=window.location.href;
+                                //$("#tipo option[value='"+idtipo+"']").remove();
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Eliminado!',
+                          'Se elimino correctamente!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                //window.location.href=window.location.href;
+                                $("#proveedor option[value='"+idproveedor+"']").remove();
+                            }
+                        })
+                    }
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });      
+              }
+        })
+}
+
 
 //=== PRODUCTO
 //funcion para mostrar los datos de producto y poner editarlo
@@ -3388,6 +4103,32 @@ function nueva_subcategoria()
     $('#enganche_sub').val(6.5);
 }
 
+function nueva_modadlidad_pago() 
+{
+    $('#flagid_modalidadPago').val('nueva_modalidad_de_pago');
+    $("#nuevamodalidad_pago").val('');   
+}
+
+function nuevo_tipo_venta()
+{
+    $('#flagid_tipoVenta').val('nuevo_tipo_de_venta');
+    $("#nuevatipo_venta").val('');
+}
+
+function nuevo_tipo_compra()
+{
+    $('#flagid_tipoCompra').val('nuevo_tipo_de_compra');
+    $("#nuevatipo_compra").val('');
+}
+
+function nuevo_proveedor()
+{
+    $('#flagid_Proveedor').val('nuevo_proveedor');
+    $("#nuevoProveedor").val('');
+}
+
+
+//====
 function mostrar_img(idproducto,url_img,si_img)
 {
     $('#flagid_producto_img').val(idproducto);

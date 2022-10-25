@@ -217,7 +217,8 @@ if ($_POST['action'] == 'eliminarCliente')
 }
 
 # #eliminar tipo
-  if ($_POST['action'] == 'eliminarTipo') {
+if ($_POST['action'] == 'eliminarTipo') 
+{
   include "accion/conexion.php";
   if (!empty($_POST['tipo'])) {
     $id_tipo = $_POST['tipo'];
@@ -231,6 +232,84 @@ if ($_POST['action'] == 'eliminarCliente')
       $elimino_tipo = 0;
     }
     echo json_encode($elimino_tipo,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+# #eliminar tipo venta
+if ($_POST['action'] == 'eliminarTipoVenta') 
+{
+  include "accion/conexion.php";
+  if (!empty($_POST['tipo_venta'])) {
+    $id_tipo_venta = $_POST['tipo_venta'];
+
+    $query_tipoV = mysqli_query($conexion, "DELETE FROM venta_tipo WHERE idtipo_venta = '$id_tipo_venta'");
+
+    mysqli_close($conexion);
+    if ($query_tipoV) {
+      $elimino_tipoV= 1;
+    }else {
+      $elimino_tipoV = 0;
+    }
+    echo json_encode($elimino_tipoV,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+# #eliminar modalidad de pago
+if ($_POST['action'] == 'eliminarModalidadPago') 
+{
+  include "accion/conexion.php";
+  if (!empty($_POST['modalidad_pago'])) {
+    $id_modalidad_pago = $_POST['modalidad_pago'];
+
+    $query_ModalidadP = mysqli_query($conexion, "DELETE FROM modalidad_pago WHERE idmodalidad_pago  = '$id_modalidad_pago'");
+
+    mysqli_close($conexion);
+    if ($query_ModalidadP) {
+      $elimino_ModalidadP= 1;
+    }else {
+      $elimino_ModalidadP = 0;
+    }
+    echo json_encode($elimino_ModalidadP,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+if ($_POST['action'] == 'eliminarTipoCompra') 
+{
+  include "accion/conexion.php";
+  if (!empty($_POST['tipo_compra'])) {
+    $id_tipo_compra = $_POST['tipo_compra'];
+
+    $query_tipoC = mysqli_query($conexion, "DELETE FROM compra_tipo WHERE idtipo_compra = '$id_tipo_compra'");
+
+    mysqli_close($conexion);
+    if ($query_tipoC) {
+      $elimino_tipoC= 1;
+    }else {
+      $elimino_tipoC = 0;
+    }
+    echo json_encode($elimino_tipoC,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+if ($_POST['action'] == 'eliminarProveedor') 
+{
+  include "accion/conexion.php";
+  if (!empty($_POST['proveedor'])) {
+    $id_proveedor = $_POST['proveedor'];
+
+    $query_proveedor = mysqli_query($conexion, "DELETE FROM proveedor WHERE idproveedor = '$id_proveedor'");
+
+    mysqli_close($conexion);
+    if ($query_proveedor) {
+      $elimino_compra= 1;
+    }else {
+      $elimino_compra = 0;
+    }
+    echo json_encode($elimino_compra,JSON_UNESCAPED_UNICODE);
   }
   exit;
 }
@@ -372,6 +451,91 @@ function deleteAll($dir) {
   }
   exit;
 }
+
+##buscar datos sobre el tipo para poder editar tipo
+  if ($_POST['action'] == 'SelectTipoVenta') {
+  include "accion/conexion.php";
+  if (!empty($_POST['tipo_venta'])) {
+    $id_tipo_venta = $_POST['tipo_venta'];
+
+    $select_tipov = mysqli_query($conexion, "SELECT idtipo_venta,nombre_venta from venta_tipo where idtipo_venta = '$id_tipo_venta'");
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($select_tipov);
+    $data_tipov = '';
+    if ($result > 0) 
+    {
+      $data_tipov = mysqli_fetch_assoc($select_tipov);
+    }else {
+      $data_tipov = 0;
+    }
+    echo json_encode($data_tipov,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+##buscar datos sobre el tipo para poder editar tipo
+  if ($_POST['action'] == 'SelectModalidadPago') {
+  include "accion/conexion.php";
+  if (!empty($_POST['modalidad_pago'])) {
+    $id_tipo_modalidad = $_POST['modalidad_pago'];
+
+    $select_modalidadp = mysqli_query($conexion, "SELECT idmodalidad_pago,nombre_modalidad from modalidad_pago where idmodalidad_pago = '$id_tipo_modalidad'");
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($select_modalidadp);
+    $data_modalidadp = '';
+    if ($result > 0) 
+    {
+      $data_modalidadp = mysqli_fetch_assoc($select_modalidadp);
+    }else {
+      $data_modalidadp = 0;
+    }
+    echo json_encode($data_modalidadp,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+##buscar datos sobre el tipo para poder editar tipo de compra
+  if ($_POST['action'] == 'SelectTipoCompra') {
+  include "accion/conexion.php";
+  if (!empty($_POST['tipo_compra'])) {
+    $id_tipo_compra = $_POST['tipo_compra'];
+
+    $select_tipoc = mysqli_query($conexion, "SELECT idtipo_compra,nombre_compra from compra_tipo where idtipo_compra = '$id_tipo_compra'");
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($select_tipoc);
+    $data_tipoc = '';
+    if ($result > 0) 
+    {
+      $data_tipoc = mysqli_fetch_assoc($select_tipoc);
+    }else {
+      $data_tipoc = 0;
+    }
+    echo json_encode($data_tipoc,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+##buscar datos sobre el tipo para proveedor
+  if ($_POST['action'] == 'SelectProveedor') {
+  include "accion/conexion.php";
+  if (!empty($_POST['proveedor'])) {
+    $id_proveedor = $_POST['proveedor'];
+
+    $select_proveedor = mysqli_query($conexion, "SELECT idproveedor,nombre_proveedor from proveedor where idproveedor = '$id_proveedor'");
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($select_proveedor);
+    $data_proveedor = '';
+    if ($result > 0) 
+    {
+      $data_proveedor = mysqli_fetch_assoc($select_proveedor);
+    }else {
+      $data_proveedor = 0;
+    }
+    echo json_encode($data_proveedor,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
 
 ##buscar datos sobre el puesto para poder editar puesto
   if ($_POST['action'] == 'SelectPuesto') {
@@ -663,7 +827,7 @@ if ($_POST['action'] == 'searchPuestoUsed')
   exit;
 }
 
-//buscar si la subzona esta siendo usada por algun usuario
+//buscar si el tipo esta siendo usada por algun usuario
 if ($_POST['action'] == 'searchTipoUsed') 
 {
   include "accion/conexion.php";
@@ -674,6 +838,72 @@ if ($_POST['action'] == 'searchTipoUsed')
       $queryFindtipo = mysqli_query($conexion, "SELECT count(idsucursales) as num from sucursales where tipo = '$idtipo'");
       $resultFindtipo = (int) mysqli_fetch_assoc($queryFindtipo)['num'];
     echo json_encode($resultFindtipo,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+//buscar si el tipo de venta esta siendo usada por algun salida o entrada
+if ($_POST['action'] == 'searchTipoVentaUsed') 
+{
+  include "accion/conexion.php";
+  if (!empty($_POST['tipo_venta'])) {
+      $idtipo_venta = $_POST['tipo_venta'];
+
+      //FALTA, EN PROCESO DE DESARROLLO
+      //calculamos si ese tipo de venta esta en uso para no poder borrarlo
+      //$queryFindtipo = mysqli_query($conexion, "SELECT count(idsucursales) as num from sucursales where tipo = '$idtipo'");
+      //$resultFindtipo = (int) mysqli_fetch_assoc($queryFindtipo)['num'];
+      /*if($idtipo_venta == "e1923a6e-361a-11ed-a7ae-d481d7c3a9ad")
+      {
+        $resultFindtipo = 1;
+      }
+      else
+      {
+
+      }*/
+      $resultFindtipo = 0;
+    echo json_encode($resultFindtipo,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+//buscar si la modalidad de pago esta siendo usada por algun salida o entrada
+if ($_POST['action'] == 'searchModalidadPagoUsed') 
+{
+  include "accion/conexion.php";
+  if (!empty($_POST['modalidad_pago'])) {
+      $idmodalidad_pago = $_POST['modalidad_pago'];
+
+      //FALTA, EN PROCESO DE DESARROLLO
+      //calculamos si esa modalidad de pago esta en uso para no poder borrarlo
+      $resultFindModalidad = 0;
+    echo json_encode($resultFindModalidad,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+if ($_POST['action'] == 'searchTipoCompraUsed') 
+{
+  include "accion/conexion.php";
+  if (!empty($_POST['tipo_compra'])) {
+      $idtipo_compra = $_POST['tipo_compra'];
+
+      //FALTA, EN PROCESO DE DESARROLLO
+      $resultFindtipo = 0;
+    echo json_encode($resultFindtipo,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+
+if ($_POST['action'] == 'searchProveedorUsed') 
+{
+  include "accion/conexion.php";
+  if (!empty($_POST['proveedor'])) {
+      $idproveedor = $_POST['proveedor'];
+
+      //FALTA, EN PROCESO DE DESARROLLO
+      $resultProveedor = 0;
+    echo json_encode($resultProveedor,JSON_UNESCAPED_UNICODE);
   }
   exit;
 }

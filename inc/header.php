@@ -28,6 +28,7 @@ $name_sucursal = $dato;
 	<title>Muebleria</title>
 
 	<!-- Custom styles for this template-->
+	<link rel="icon" href="../img/compra_facil.png">
 	<link href="../css/sb-admin-3.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="../css/datatables.min">
 	<link href="../css/select2.min.css" rel="stylesheet">

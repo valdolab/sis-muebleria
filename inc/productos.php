@@ -945,7 +945,7 @@ include "accion/conexion.php";
                               </div>
                         </div>
                         <div class="form-group col">
-                            <label for="contado">Contado:</label>
+                            <label for="contado">CONT:</label>
                             <div class="input-group mb-3">
                             <div class="input-group-append">
                                 <span class="input-group-text">$</span>
@@ -954,7 +954,7 @@ include "accion/conexion.php";
                             </div>
                         </div>
                         <div class="form-group col">
-                            <label for="especial">Especial:</label>
+                            <label for="especial">ESP:</label>
                         <fieldset id="especial_producto">
                             <div class="input-group mb-3">
                             <div class="input-group-append">
@@ -992,18 +992,18 @@ include "accion/conexion.php";
                             <label for="p2">P2:</label>
                               <input name="costo_p2" id="costo_p2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required readonly>
                         </div>
+                        <div class="form-group col-lg">
+                            <label for="costo_enganche">ENG:</label>
+                            <input name="costo_enganche" id="costo_enganche" type="number" class="form-control" required readonly>
+                        </div>
                         <div class="form-group col">
-                            <label for="e_q">E-Q:</label>
+                            <label for="e_q">QUIN:</label>
                             <div class="input-group mb-3">
                             <div class="input-group-append">
                                 <span class="input-group-text">$</span>
                               </div>
                               <input name="costo_eq" id="costo_eq" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required readonly>
                           </div>
-                        </div>
-                        <div class="form-group col-lg">
-                            <label for="costo_enganche">Enganche:</label>
-                            <input name="costo_enganche" id="costo_enganche" type="number" class="form-control" required readonly>
                         </div>
                     </div>
                     <!-- <input type="number" name="asd1" id="asd1">
@@ -1269,14 +1269,14 @@ include "accion/conexion.php";
                 <th>Nuevo Ext.-P</th>
                 <th>Ext.-P</th>
                 <th>Ext.-M</th>
-                <th>Contado</th>
-                <th>Especial</th>
+                <th>CONT</th>
+                <th>ESP</th>
                 <th>CR1</th>
                 <th>P1</th>
                 <th>CR2</th>
                 <th>P2</th>
-                <th>Quin</th>
-                <th>Enga</th>
+                <th>ENG</th>
+                <th>QUIN</th>
                 <th>GAR</th>
                 <th style="text-align: center;">Herramientas</th>
             </tr>
@@ -1353,8 +1353,8 @@ include "accion/conexion.php";
                         <td><?php echo round($data['costo_p1'],2); ?></td>
                         <td><?php echo "$".number_format($data['costo_cr2'],2, '.', ','); ?></td>
                         <td><?php echo round($data['costo_p2'],2); ?></td>
-                        <td><?php echo "$".number_format($data['costo_eq'],2, '.', ','); ?></td>
                         <td><?php echo "$".number_format($data['costo_enganche'],2, '.', ','); ?></td>
+                        <td><?php echo "$".number_format($data['costo_eq'],2, '.', ','); ?></td>
                         <td><?php echo $garantia." Ms" ?></td>
                         <td align="center">
                             <button data-toggle="modal" data-target="#img_producto" onclick="mostrar_img('<?php echo $id_producto; ?>','<?php echo $archivador; ?>',<?php echo $siimagen; ?>);" class="<?php echo $boton_img; ?>"><i class="fas fa-camera"></i></button>

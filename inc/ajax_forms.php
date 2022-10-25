@@ -1031,7 +1031,7 @@ if ($_POST['action'] == 'insert_tipo_venta')
       $ban = $_POST['flagid_tipoVenta'];
       if($ban == "nuevo_tipo_de_venta")
       {
-          //insertar nuevo tipo de producto
+          //insertar nuevo tipo de venta
           $resultIDtipoVenta= mysqli_query($conexion, "SELECT UUID() as idtipo_venta");
           $uuid = mysqli_fetch_assoc($resultIDtipoVenta)['idtipo_venta'];
           $insert_tipo_venta = mysqli_query($conexion, "INSERT INTO venta_tipo(idtipo_venta,nombre_venta) values ('$uuid','$nuevo_tipo_venta')");
@@ -1050,7 +1050,7 @@ if ($_POST['action'] == 'insert_tipo_venta')
       }
       else
       {
-        //editar nuevo tipo de producto
+        //editar nuevo tipo de venta
         $id_tipo_venta = $ban;
         $update_tipo_venta = mysqli_query($conexion, "UPDATE venta_tipo SET nombre_venta='$nuevo_tipo_venta' where idtipo_venta = '$id_tipo_venta'");
         if ($update_tipo_venta) 
@@ -1074,4 +1074,204 @@ if ($_POST['action'] == 'insert_tipo_venta')
   echo json_encode($resultVentaTipo,JSON_UNESCAPED_UNICODE);
   exit;
 }
+
+#para insertar y editar modalidad de pago
+if ($_POST['action'] == 'insert_modalidad_pago') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['nuevamodalidad_pago'])) 
+  {
+    $nueva_modalidad = $_POST['nuevamodalidad_pago'];
+
+    //verificar si ya existe ese tipo de venta
+    $find_id = mysqli_query($conexion, "SELECT idmodalidad_pago from modalidad_pago where idmodalidad_pago = '$nueva_modalidad'");
+    if(mysqli_num_rows($find_id) > 0)
+    {
+      //entonces ya hay uno, avisarle
+      $resultModalidadPago = 2;
+      //$modal = "$('#mensaje_repetido').modal('show');";
+    }
+    else
+    {
+      //no es repetido
+      $ban = $_POST['flagid_modalidadPago'];
+      if($ban == "nueva_modalidad_de_pago")
+      {
+          //insertar nuevo tipo de venta
+          $resultIDModalidadPagoa= mysqli_query($conexion, "SELECT UUID() as idmodalidad_pago");
+          $uuid = mysqli_fetch_assoc($resultIDModalidadPagoa)['idmodalidad_pago'];
+          $insert_modalidad = mysqli_query($conexion, "INSERT INTO modalidad_pago(idmodalidad_pago, nombre_modalidad) values ('$uuid','$nueva_modalidad')");
+          if ($insert_modalidad) 
+          {
+            //$resultModalidadPago = 1; 1-> insertar, 3->editar 2->ya existe, 0->error
+            $flag_action = array("flag_action" => 1);
+            $idmodalidad_pago = array("idmodalidad_pago" => $uuid);
+            $nombre_modalidad = array("nombre_modalidad" => $nueva_modalidad);
+            $resultModalidadPago = $idmodalidad_pago + $nombre_modalidad + $flag_action;
+          } 
+          else
+          {
+            $resultModalidadPago = 0;
+          }
+      }
+      else
+      {
+        //editar nuevo tipo de venta
+        $id_modalidad_pago = $ban;
+        $update_modalidad = mysqli_query($conexion, "UPDATE modalidad_pago SET nombre_modalidad='$nueva_modalidad' where idmodalidad_pago = '$id_modalidad_pago'");
+        if ($update_modalidad) 
+        {
+          $flag_action = array("flag_action" => 3);
+          $idmodalidad_pago = array("idmodalidad_pago" => $id_modalidad_pago);
+          $nombre_modalidad = array("nombre_modalidad" => $nueva_modalidad);
+          $resultModalidadPago = $idmodalidad_pago + $nombre_modalidad + $flag_action;
+        } 
+        else
+        {
+          $resultModalidadPago = 0;
+        }
+      }
+    }
+  }
+  else
+  {
+    $resultModalidadPago = 0;
+  }
+  echo json_encode($resultModalidadPago,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+#para insertar y editar un tipo de compra
+if ($_POST['action'] == 'insert_tipo_compra') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['nuevatipo_compra'])) 
+  {
+    $nuevo_tipo_compra = $_POST['nuevatipo_compra'];
+
+    //verificar si ya existe ese tipo de venta
+    $find_id = mysqli_query($conexion, "SELECT idtipo_compra from compra_tipo where nombre_compra = '$nuevo_tipo_compra'");
+    if(mysqli_num_rows($find_id) > 0)
+    {
+      //entonces ya hay uno, avisarle
+      $resultCompraTipo = 2;
+      //$modal = "$('#mensaje_repetido').modal('show');";
+    }
+    else
+    {
+      //no es repetido
+      $ban = $_POST['flagid_tipoCompra'];
+      if($ban == "nuevo_tipo_de_compra")
+      {
+          //insertar nuevo tipo de venta
+          $resultIDtipoCompra= mysqli_query($conexion, "SELECT UUID() as idtipo_compra");
+          $uuid = mysqli_fetch_assoc($resultIDtipoCompra)['idtipo_compra'];
+          $insert_tipo_compra = mysqli_query($conexion, "INSERT INTO compra_tipo(idtipo_compra,nombre_compra) values ('$uuid','$nuevo_tipo_compra')");
+          if ($insert_tipo_compra) 
+          {
+            //$resultVentaTipo = 1; 1-> insertar, 3->editar
+            $flag_action = array("flag_action" => 1);
+            $idtipo_compra = array("idtipo_compra" => $uuid);
+            $nombre_compra = array("nombre_compra" => $nuevo_tipo_compra);
+            $resultCompraTipo = $idtipo_compra + $nombre_compra + $flag_action;
+          } 
+          else
+          {
+            $resultCompraTipo = 0;
+          }
+      }
+      else
+      {
+        //editar nuevo tipo de venta
+        $id_tipo_compra = $ban;
+        $update_tipo_compra = mysqli_query($conexion, "UPDATE compra_tipo SET nombre_compra='$nuevo_tipo_compra' where idtipo_compra = '$id_tipo_compra'");
+        if ($update_tipo_compra) 
+        {
+          $flag_action = array("flag_action" => 3);
+          $idtipo_compra = array("idtipo_compra" => $id_tipo_compra);
+          $nombre_compra = array("nombre_compra" => $nuevo_tipo_compra);
+          $resultCompraTipo = $idtipo_compra + $nombre_compra + $flag_action;
+        } 
+        else
+        {
+          $resultCompraTipo = 0;
+        }
+      }
+    }
+  }
+  else
+  {
+    $resultCompraTipo = 0;
+  }
+  echo json_encode($resultCompraTipo,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+#para insertar y editar un proveedor
+if ($_POST['action'] == 'insert_proveedor') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['nuevoProveedor'])) 
+  {
+    $nuevo_proveedor = $_POST['nuevoProveedor'];
+
+    //verificar si ya existe ese tipo de venta
+    $find_id = mysqli_query($conexion, "SELECT idproveedor from proveedor where nombre_proveedor = '$nuevo_proveedor'");
+    if(mysqli_num_rows($find_id) > 0)
+    {
+      //entonces ya hay uno, avisarle
+      $resultProveedor = 2;
+      //$modal = "$('#mensaje_repetido').modal('show');";
+    }
+    else
+    {
+      //no es repetido
+      $ban = $_POST['flagid_Proveedor'];
+      if($ban == "nuevo_proveedor")
+      {
+          //insertar nuevo tipo de venta
+          $resultIDProveedor= mysqli_query($conexion, "SELECT UUID() as idproveedor");
+          $uuid = mysqli_fetch_assoc($resultIDProveedor)['idproveedor'];
+          $insert_proveedor = mysqli_query($conexion, "INSERT INTO proveedor(idproveedor,nombre_proveedor) values ('$uuid','$nuevo_proveedor')");
+          if ($insert_proveedor) 
+          {
+            //$resultVentaTipo = 1; 1-> insertar, 3->editar
+            $flag_action = array("flag_action" => 1);
+            $idproveedor = array("idproveedor" => $uuid);
+            $nombre_proveedor = array("nombre_proveedor" => $nuevo_proveedor);
+            $resultProveedor = $idproveedor + $nombre_proveedor + $flag_action;
+          } 
+          else
+          {
+            $resultProveedor = 0;
+          }
+      }
+      else
+      {
+        //editar nuevo tipo de venta
+        $id_proveedor = $ban;
+        $update_proveedor = mysqli_query($conexion, "UPDATE proveedor SET nombre_proveedor='$nuevo_proveedor' where idproveedor = '$id_proveedor'");
+        if ($update_proveedor) 
+        {
+          $flag_action = array("flag_action" => 3);
+          $idproveedor = array("idproveedor" => $id_proveedor);
+          $nombre_proveedor = array("nombre_proveedor" => $nuevo_proveedor);
+          $resultProveedor = $idproveedor + $nombre_proveedor + $flag_action;
+        } 
+        else
+        {
+          $resultProveedor = 0;
+        }
+      }
+    }
+  }
+  else
+  {
+    $resultProveedor = 0;
+  }
+  echo json_encode($resultProveedor,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+
 
