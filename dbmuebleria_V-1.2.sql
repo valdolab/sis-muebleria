@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 31-08-2022 a las 22:14:01
+-- Tiempo de generación: 26-10-2022 a las 23:01:45
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -152,6 +152,27 @@ INSERT INTO `cliente` (`idcliente`, `nombre_cliente`, `zona`, `domicilio_cliente
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `compra_tipo`
+--
+
+DROP TABLE IF EXISTS `compra_tipo`;
+CREATE TABLE IF NOT EXISTS `compra_tipo` (
+  `idtipo_compra` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre_compra` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`idtipo_compra`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `compra_tipo`
+--
+
+INSERT INTO `compra_tipo` (`idtipo_compra`, `nombre_compra`) VALUES
+('2c907098-53f8-11ed-9f62-d481d7c3a9ad', 'Semanal'),
+('36ed5c19-53f8-11ed-9f62-d481d7c3a9ad', 'Quincenal');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `configuracion`
 --
 
@@ -210,6 +231,15 @@ CREATE TABLE IF NOT EXISTS `modalidad_pago` (
   `nombre_modalidad` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`idmodalidad_pago`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `modalidad_pago`
+--
+
+INSERT INTO `modalidad_pago` (`idmodalidad_pago`, `nombre_modalidad`) VALUES
+('2de9e123-53da-11ed-9f62-d481d7c3a9ad', 'Semanal'),
+('35217c59-53da-11ed-9f62-d481d7c3a9ad', 'Quincenal'),
+('45519ce0-53da-11ed-9f62-d481d7c3a9ad', 'Mensual');
 
 -- --------------------------------------------------------
 
@@ -356,12 +386,33 @@ CREATE TABLE IF NOT EXISTS `producto` (
 --
 
 INSERT INTO `producto` (`idproducto`, `identificador`, `codigo_barras`, `categoria`, `subcategoria`, `descripcion`, `serializado`, `atr1_producto`, `atr2_producto`, `atr3_producto`, `atr4_producto`, `atr5_producto`, `stock_min`, `stock_max`, `ext_p`, `costo`, `costo_iva`, `costo_contado`, `costo_especial`, `costo_cr1`, `costo_cr2`, `costo_p1`, `costo_p2`, `costo_eq`, `costo_enganche`, `creado_en`) VALUES
-('2482928a-083a-11ed-8a78-feed01260033', 'CELAYA-CELAYA', NULL, 'ae569a66-0838-11ed-8a78-feed01260033', '3c5ed5a3-0839-11ed-8a78-feed01260033', 'ANTE COMEDOR TUBULAR CELEYA SILLA CELAYA (4sillas 1 1/4\", 1banca mesa rectangular 3\" de 1.50 (x) 0.90)', 0, 'VALMAR', 'TUBULAR', 'RECTANGULAR', '4', NULL, NULL, NULL, 4, 5941, 6892, 9649, 11097, 13026, 13647, 7.5556844547564, 7.9158932714617, 862, 987, '2022-07-20 14:42:13'),
+('2482928a-083a-11ed-8a78-feed01260033', 'CELAYA-CELAYA', NULL, 'ae569a66-0838-11ed-8a78-feed01260033', '3c5ed5a3-0839-11ed-8a78-feed01260033', 'ANTE COMEDOR TUBULAR CELEYA SILLA CELAYA (4sillas 1 1/4\", 1banca mesa rectangular 3\" de 1.50 (x) 0.90)', 0, 'VALMAR', 'TUBULAR', 'RECTANGULAR', '4', NULL, NULL, NULL, 4, 4000, 4640, 6496, 7471, 9048, 9466, 7.8, 8.1603448275862, 580, 987, '2022-07-20 14:42:13'),
 ('5b64b366-083a-11ed-8a78-feed01260033', 'LAZZIO-LAZZIO', NULL, 'ae569a66-0838-11ed-8a78-feed01260033', '3c5ed5a3-0839-11ed-8a78-feed01260033', 'ANTE COMEDOR TUBULAR MOD LAZZIO SILLAS LAZZIO (6SILLAS, 1MESA RECTANGULAR, 3\")', 0, 'VALMAR', 'TUBULAR', 'RECTANGULAR', '6', NULL, NULL, NULL, 1, 6226, 7223, 10113, 11630, 13580, 14230, 7.5193798449612, 7.8792912513843, 903, 1025, '2022-07-20 14:43:45'),
 ('78227e70-083a-11ed-8a78-feed01260033', 'MONACO-MONACO', NULL, 'ae569a66-0838-11ed-8a78-feed01260033', '3c5ed5a3-0839-11ed-8a78-feed01260033', 'ANTE COMEDOR TUBULAR MOD MONACO SILLAS MONACO (6SILLAS, 1 MESA RECTANGULAR)', 0, 'VALMAR', 'TUBULAR', 'RECTANGULAR', '6', NULL, NULL, NULL, NULL, 6277, 7282, 10195, 11725, 13691, 14346, 7.5142700329308, 7.8737650933041, 911, 1033, '2022-07-20 14:44:33'),
-('929893e5-0839-11ed-8a78-feed01260033', 'DAMASCO-DAMASCO', NULL, 'ae569a66-0838-11ed-8a78-feed01260033', '3c5ed5a3-0839-11ed-8a78-feed01260033', 'ANTE COMEDOR TUBULAR MOD DAMASCO SILLA DAMASCO (4 sillas 1\", mesa rectangular 1 1/2\" de 1.22(x) 0.90)', 0, 'VALMAR', 'TUBULAR', 'RECTANGULAR', '4', NULL, NULL, NULL, NULL, 2752, 3193, 4471, 5142, 6386, 6706, 7.9825, 8.3825, 400, 536, '2022-07-20 14:38:08'),
+('929893e5-0839-11ed-8a78-feed01260033', 'DAMASCO-DAMASCO', NULL, 'ae569a66-0838-11ed-8a78-feed01260033', '3c5ed5a3-0839-11ed-8a78-feed01260033', 'ANTE COMEDOR TUBULAR MOD DAMASCO SILLA DAMASCO (4 sillas 1\", mesa rectangular 1 1/2\" de 1.22(x) 0.90)', 0, 'VALMAR', 'TUBULAR', 'RECTANGULAR', '4', NULL, NULL, NULL, NULL, 2000, 2320, 3248, 3736, 4640, 4872, 5.8, 6.09, 400, 536, '2022-07-20 14:38:08'),
 ('c1831932-0839-11ed-8a78-feed01260033', 'LIZA-SANTIAGO', NULL, 'ae569a66-0838-11ed-8a78-feed01260033', '3c5ed5a3-0839-11ed-8a78-feed01260033', 'ANTE COMEDOR TUBULAR MOD LIZA SILLAS SANTIAGO (6SILLAS, 1MESA RECTANGULAR)', 0, 'VALMAR', 'TUBULAR', 'RECTANGULAR', '6', NULL, NULL, NULL, 2, 4260, 4942, 6919, 7957, 9588, 10033, 7.7572815533981, 8.1173139158576, 618, 753, '2022-07-20 14:39:27'),
 ('f03e4ddf-0839-11ed-8a78-feed01260033', 'VERSALLES-TIFFANY', NULL, 'ae569a66-0838-11ed-8a78-feed01260033', '3c5ed5a3-0839-11ed-8a78-feed01260033', 'ANTE COMEDOR TUBULAR VERSALLES SILLA TIFFANY (6sillas 1 1/4\", mesa rectangular 3\" de 1.50(x) 0.90)', 0, 'VALMAR', 'TUBULAR', 'RECTANGULAR', '6', NULL, NULL, NULL, NULL, 4842, 5617, 7864, 9044, 10785, 11291, 7.6706970128023, 8.0305832147937, 703, 834, '2022-07-20 14:40:45');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `proveedor`
+--
+
+DROP TABLE IF EXISTS `proveedor`;
+CREATE TABLE IF NOT EXISTS `proveedor` (
+  `idproveedor` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre_proveedor` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`idproveedor`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `proveedor`
+--
+
+INSERT INTO `proveedor` (`idproveedor`, `nombre_proveedor`) VALUES
+('20554dc8-53f8-11ed-9f62-d481d7c3a9ad', 'Proveedor 2'),
+('cf18e633-53f7-11ed-9f62-d481d7c3a9ad', 'Proveedor 1');
 
 -- --------------------------------------------------------
 
@@ -593,8 +644,7 @@ CREATE TABLE IF NOT EXISTS `venta_tipo` (
 INSERT INTO `venta_tipo` (`idtipo_venta`, `nombre_venta`) VALUES
 ('2651952b-2977-11ed-a437-d481d7c3a9ad', 'Credito'),
 ('38f8be92-2979-11ed-a437-d481d7c3a9ad', 'PayJoy'),
-('462c4a06-2977-11ed-a437-d481d7c3a9ad', 'Contado'),
-('88a698bf-2979-11ed-a437-d481d7c3a9ad', 'PayJoy2');
+('462c4a06-2977-11ed-a437-d481d7c3a9ad', 'Contado');
 
 -- --------------------------------------------------------
 
