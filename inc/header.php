@@ -34,6 +34,7 @@ $name_sucursal = $dato;
 	<link href="../css/select2.min.css" rel="stylesheet">
 	<link href="../css/bootstrap4-toggle.min.css" rel="stylesheet">
 	<link href="../css/datatables.min.css" rel="stylesheet">
+	<link href="../js/jquery-ui/jquery-ui.css" rel="stylesheet">
 	<style type="text/css">
 		.div-interno{
 			  zoom: 75%;

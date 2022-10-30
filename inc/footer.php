@@ -44,6 +44,7 @@
 
 
 <script src="../js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+<script src="../js/jquery-ui/jquery-ui.min.js" crossorigin="anonymous"></script>
 <script src="../js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="../js/datatables.min.js" crossorigin="anonymous"></script>
 <!--<script src="../js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>-->

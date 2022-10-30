@@ -1595,20 +1595,45 @@ $('#idestado_civil').change(function() {
        });  
     });
 
+    //buscar por IDCliente
     //funcion para autocompletar cuando buscamos un cliente por ID o nombre
-    //buscar por nombre SELECT * FROM cliente WHERE nombre LIKE '%$nombre%'
-    /*$("#id_cliente").autocomplete({
-        minLength: 3,
+    //sentencia sql con nombre y ID: SELECT * FROM cliente WHERE nombre LIKE '%$nombre%'
+    $("#id_cliente").autocomplete({
+        minLength: 1,
         source: function (request, response) 
         {
-            var action = 'search_cliente_nombre';
-            var id_cliente = $(this).val();
+            var action = 'search_cliente_info';
+            var id_cliente = $("#id_cliente").val();
             $.ajax({
                 url: "ajax.php",
                 dataType: "json",
                 data: {action: action, idcliente: id_cliente},
                 success: function (data) 
                 {
+                    var data = [
+                    "ActionScript",
+                    "AppleScript",
+                    "Asp",
+                    "BASIC",
+                    "C",
+                    "C++",
+                    "Clojure",
+                    "COBOL",
+                    "ColdFusion",
+                    "Erlang",
+                    "Fortran",
+                    "Groovy",
+                    "Haskell",
+                    "Java",
+                    "JavaScript",
+                    "Lisp",
+                    "Perl",
+                    "PHP",
+                    "Python",
+                    "Ruby",
+                    "Scala",
+                    "Scheme"
+                    ];
                     response(data);
                 }
             });
@@ -1620,9 +1645,35 @@ $('#idestado_civil').change(function() {
             $("#tel_cliente").val(ui.item.telefono);
             $("#dir_cliente").val(ui.item.direccion);
         }
-    })*/
-    //buscar por IDCliente
+    });
 
+    var availableTags = [
+    "ActionScript",
+    "AppleScript",
+    "Asp",
+    "BASIC",
+    "C",
+    "C++",
+    "Clojure",
+    "COBOL",
+    "ColdFusion",
+    "Erlang",
+    "Fortran",
+    "Groovy",
+    "Haskell",
+    "Java",
+    "JavaScript",
+    "Lisp",
+    "Perl",
+    "PHP",
+    "Python",
+    "Ruby",
+    "Scala",
+    "Scheme"
+];
+$( "#id_cliente" ).autocomplete({
+    source: availableTags
+});
 
 //FIN DEL DOCUMENT READY
 });
