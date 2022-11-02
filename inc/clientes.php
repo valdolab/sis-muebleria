@@ -73,6 +73,7 @@ include "accion/conexion.php";
 
             if ($result > 0) 
             {
+                $cat_de_clientes = mysqli_num_rows($query);
                 while ($data = mysqli_fetch_assoc($query))
                 {
                     $idcliente = $data['idcliente'];
@@ -128,23 +129,18 @@ include "accion/conexion.php";
                     $query3 = mysqli_query($conexion, "SELECT subzona FROM subzonas where idsubzona = '$idsubzona'");
                     $subzona_cliente = mysqli_fetch_array($query3)['subzona'];
 
-                    $ceros = "0000";
-                        if ($no_cliente > 9)
-                        {
-                            $ceros = "000";
-                        }
-                        elseif ($no_cliente > 99) 
-                        {
-                            $ceros = "00";
-                        }
-                        elseif ($no_cliente > 999) 
-                        {
-                            $ceros = "0";
-                        }
-                        elseif ($no_cliente > 9999) 
-                        {
-                            $ceros = "";
-                        }
+                    #BUG de la muerte
+                    $long_formato_idcliente = 4;
+                    if($cat_de_clientes > $long_formato_idcliente)
+                    {
+                        $long_formato_idcliente = strlen($cat_de_clientes);
+                    }
+                    $sizeno_cliente = strlen($no_cliente);
+                    $ceros = "";
+                    for ($i=0; $i < $long_formato_idcliente-$sizeno_cliente; $i++) 
+                    { 
+                        $ceros = $ceros."0";
+                    }
                     ?>
                     <tr>
                         <td><?php echo "CTE-".$ceros.$no_cliente; ?></td>

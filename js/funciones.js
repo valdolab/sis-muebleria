@@ -1595,88 +1595,54 @@ $('#idestado_civil').change(function() {
        });  
     });
 
-    //buscar por IDCliente
-    //funcion para autocompletar cuando buscamos un cliente por ID o nombre
-    //sentencia sql con nombre y ID: SELECT * FROM cliente WHERE nombre LIKE '%$nombre%'
-    $("#id_cliente").autocomplete({
+//FIN DEL DOCUMENT READY
+});
+
+//buscar por IDCliente
+//funcion para autocompletar cuando buscamos un cliente por ID o nombre
+//sentencia sql con nombre y ID: SELECT * FROM cliente WHERE nombre LIKE '%$nombre%'
+$("#id_cliente").autocomplete({
         minLength: 1,
-        source: function (request, response) 
-        {
-            var action = 'search_cliente_info';
-            var id_cliente = $("#id_cliente").val();
+        source: function (request, response) {
+            var action = "buscar_x_id_cliente";
             $.ajax({
                 url: "ajax.php",
-                dataType: "json",
-                data: {action: action, idcliente: id_cliente},
+                type: "POST",
+                data: {action: action, buscar_id_cliente: request.term},
                 success: function (data) 
                 {
-                    var data = [
-                    "ActionScript",
-                    "AppleScript",
-                    "Asp",
-                    "BASIC",
-                    "C",
-                    "C++",
-                    "Clojure",
-                    "COBOL",
-                    "ColdFusion",
-                    "Erlang",
-                    "Fortran",
-                    "Groovy",
-                    "Haskell",
-                    "Java",
-                    "JavaScript",
-                    "Lisp",
-                    "Perl",
-                    "PHP",
-                    "Python",
-                    "Ruby",
-                    "Scala",
-                    "Scheme"
-                    ];
-                    response(data);
+                    $('#prueba').html(data); 
+                    console.log(data);
+                    //response(data);
                 }
             });
         },
         select: function (event, ui) 
         {
-            $("#idcliente").val(ui.item.id);
-            $("#nom_cliente").val(ui.item.label);
-            $("#tel_cliente").val(ui.item.telefono);
-            $("#dir_cliente").val(ui.item.direccion);
+            $("#idcliente").val(ui.item.idcliente);
+            $("#nom_cliente").val(ui.item.nombre_cliente);
+            $("#tel_cliente").val(ui.item.tel1_cliente);
         }
     });
 
-    var availableTags = [
-    "ActionScript",
-    "AppleScript",
-    "Asp",
-    "BASIC",
-    "C",
-    "C++",
-    "Clojure",
-    "COBOL",
-    "ColdFusion",
-    "Erlang",
-    "Fortran",
-    "Groovy",
-    "Haskell",
-    "Java",
-    "JavaScript",
-    "Lisp",
-    "Perl",
-    "PHP",
-    "Python",
-    "Ruby",
-    "Scala",
-    "Scheme"
-];
-$( "#id_cliente" ).autocomplete({
-    source: availableTags
-});
-
-//FIN DEL DOCUMENT READY
-});
+$("#nom_cliente").autocomplete({
+        minLength: 2,
+        source: function (request, response) {
+            $.ajax({
+                url: "ajax.php",
+                type: "GET",
+                data: {buscar_nombre_cliente: request.term},
+                success: function (data) {
+                    response(data);
+                }
+            });
+        },
+        select: function (event, ui) {
+            $("#idcliente").val(ui.item.idcliente);
+            $("#nom_cliente").val(ui.item.nombre_cliente);
+            $("#tel_cliente").val(ui.item.tel1_cliente);
+        }
+    });
 
 function hide_costos()
 {

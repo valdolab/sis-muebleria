@@ -164,38 +164,6 @@ include "accion/conexion.php";
     </div>
 </div>
 
-<!-- agregar modalidad de pago -->
-<div id="nueva_modalidad_pago" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg text-black">
-                <h5 class="modal-title" id="my-modal-title">Agregar modalidad de pago</h5>
-                <button class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="" method="post" autocomplete="on" id="formAdd_modalidad_pago">
-                    <div class="row">
-                        <div class="col-lg-12">
-                          <div class="form-group">
-                            <label for="correo">Modalidad de pago</label>
-                            <input type="text" class="form-control" name="nuevamodalidad_pago" id="nuevamodalidad_pago" required maxlength="99">
-                        </div>  
-                        </div>
-                    </div>
-
-                    <input value="insert_modalidad_pago" name="action" id="action" hidden>
-                    <input value="nueva_modalidad_de_pago" name="flagid_modalidadPago" id="flagid_modalidadPago" hidden>
-                    <div align="right">
-                        <input type="submit" value="Agregar" class="btn btn-primary">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div id="prueba">
 </div>
 
@@ -342,39 +310,15 @@ include "accion/conexion.php";
 
                         <div class="form-group col-lg-3">
                             <label for="puesto_aval">Modalidad de pagos</label>
-                            <?php 
-                                if($_SESSION['rol'] == "SuperAdmin" or $_SESSION['rol'] == "Administrador")
-                                {
-                                    ?>
-                                    <button data-toggle="modal" data-target="#nueva_modalidad_pago" onclick="nueva_modadlidad_pago();" title="Agregar nuevo modalidad de pago" class="btn btn-primary btn-xs" type="button" href="#" ><i class="fas fa-plus"></i></button>
-                                    <button disabled data-toggle="modal" data-target="#nueva_modalidad_pago" id="btnedit_modalidad_pago" onclick="editar_modalidad_pago();" title="editar modalidad de pago" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
-                                    <button disabled id="btndelete_modalidad_pago" onclick="eliminar_modalidad_pago();" title="Eliminar modalidad de pago" class="btn btn-danger btn-xs" type="button" href="#" ><i class="fas fa-trash"></i></button>
-                                    <?php
-                                }
-                                else
-                                {
-                                    ?>
-                                    <button disabled="disabled" title="Agregar nueva modalidad" class="btn btn-primary btn-xs" type="button"><i class="fas fa-plus"></i></button>
-                                    <button disabled="disabled" title="editar modalidad" class="btn btn-success btn-xs" type="button"><i class="fas fa-edit"></i></button>
-                                    <button disabled disabled="disabled" title="Eliminar modalidad" class="btn btn-danger btn-xs" type="button"><i class="fas fa-trash"></i></button>
-                                    <?php 
-                                } 
-                             ?>
                             <select id='modalidad_pago' name='modalidad_pago' class='form-control' required>
                                 <option selected hidden value=''>Seleccione una modalidad</option>
-                                <?php
-                                $result = mysqli_query($conexion,"SELECT idmodalidad_pago,nombre_modalidad FROM modalidad_pago");                        
-                                if (mysqli_num_rows($result) > 0) {  
-                                  while($row = mysqli_fetch_assoc($result))
-                                  {
-                                    echo "<option value='".$row["idmodalidad_pago"]."'>".$row["nombre_modalidad"]."</option>";
-                                  }
-                                }
-                                ?>
+                                <option value='semanal'>Semanal</option>
+                                <option value='quincenal'>Quincenal</option>
+                                <option value='mensual'>Mensual</option>
                             </select> 
                         </div>
 
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col-lg-1">
                             <label for="n_pagos">No. pagos</label>
                             <input type="text" class="form-control" name="n_pagos" id="n_pagos">
                         </div>
@@ -389,9 +333,9 @@ include "accion/conexion.php";
                             <input type="date" class="form-control" name="n_pagos" id="n_pagos">
                         </div>
 
-                        <div class="form-group col-lg-3">
-                            <label for="puesto_aval">Días de pago</label>
-                            <select id='dias_pago' name='dias_pago' class='form-control' required>
+                        <div class="form-group col-lg-2">
+                            <label for="puesto_aval">Días de pago semanal</label>
+                            <select id='dias_pago_semanal' name='dias_pago_semanal' class='form-control' required>
                                 <option selected hidden value=''>Seleccione una opción</option>
                                 <option value="lu">Lunes</option>
                                 <option value="ma">Martes</option>
@@ -403,7 +347,17 @@ include "accion/conexion.php";
                             </select> 
                         </div>
 
-                        <div align="right" class="form-group col-lg-3">
+                        <div class="form-group col-lg">
+                            <label for="n_pagos">Día de pago quin</label>
+                            <input type="number" class="form-control" name="dias_pago_quincenal" id="dias_pago_quincenal">
+                        </div>
+
+                        <div class="form-group col-lg">
+                            <label for="n_pagos">Día de pago mensual</label>
+                            <input type="number" class="form-control" name="dias_pago_mensual" id="dias_pago_mensual">
+                        </div>
+
+                        <div align="right" class="form-group col-lg">
                             <br>
                             <button class="btn btn-lg btn-primary" id="add_venta">Añadir</button>
                         </div>

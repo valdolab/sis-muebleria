@@ -375,7 +375,7 @@ include "accion/conexion.php";
 
                         <div class="form-group col-lg-1">
                             <label for="n_pagos">No. pagos</label>
-                            <input type="number" class="form-control" name="n_pagos" id="n_pagos">
+                            <input type="number" class="form-control" name="n_pagos" id="n_pagos" value="1">
                         </div>
 
                         <div class="form-group col-lg-2">

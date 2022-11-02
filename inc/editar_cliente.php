@@ -19,23 +19,19 @@ else
     {
         $data = mysqli_fetch_array($sql);
         $no_cliente = $data['no_cliente'];
-        $ceros = "0000";
-                        if ($no_cliente > 9)
-                        {
-                            $ceros = "000";
-                        }
-                        elseif ($no_cliente > 99) 
-                        {
-                            $ceros = "00";
-                        }
-                        elseif ($no_cliente > 999) 
-                        {
-                            $ceros = "0";
-                        }
-                        elseif ($no_cliente > 9999) 
-                        {
-                            $ceros = "";
-                        }
+
+        $long_formato_idcliente = 4;
+        if($result_sql > $long_formato_idcliente)
+        {
+            $long_formato_idcliente = strlen($result_sql);
+        }
+        $sizeno_cliente = strlen($no_cliente);
+        $ceros = "";
+        for ($i=0; $i < $long_formato_idcliente-$sizeno_cliente; $i++) 
+        { 
+            $ceros = $ceros."0";
+        }
+
         $num_cliente = $ceros.$no_cliente;
 
         $up_nombre_cliente = $data['nombre_cliente'];

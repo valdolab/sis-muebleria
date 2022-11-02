@@ -2061,13 +2061,39 @@ if ($_POST['action'] == 'get_hidden_products')
 }
 
 //para buscar el cliente con en su IDCliente
-if ($_POST['action'] == 'search_cliente_info') 
+if ($_POST['action'] == 'buscar_x_id_cliente') 
 {
-  include "accion/conexion.php";
-  $id_cliente = $_POST['idcliente'];
-  $info_cliente = 0;
+    include "accion/conexion.php";
+    $id_cliente = intval($_POST['buscar_id_cliente']);
+    $cliente = mysqli_query($conexion, "SELECT idcliente, nombre_cliente, tel1_cliente, zona, subzona FROM cliente WHERE no_cliente LIKE '%$id_cliente%' AND estado_cliente = 1");
+    while ($row = mysqli_fetch_assoc($cliente)) 
+    {
+        $data['idcliente'] = $row['idcliente'];
+        $data['nombre_cliente'] = $row['nombre_cliente'];
+        $data['tel1_cliente'] = $row['tel1_cliente'];
+        $data['zona'] = $row['zona'];
+        $data['subzona'] = $row['subzona'];
+        array_push($datos, $data);
+    }
+    echo json_encode($datos);
+    exit;
+}
 
-  echo json_encode($info_cliente,JSON_UNESCAPED_UNICODE);
-  exit;
+//para buscar el cliente con en su IDCliente
+if (isset($_GET['buscar_nombre_cliente'])) 
+{
+    $datos = array();
+    $nom_cliente = $_GET['buscar_nombre_cliente'];
+    $cliente = mysqli_query($conexion, "SELECT idcliente, nombre_cliente, tel1_cliente, zona, subzona FROM cliente WHERE nombre_cliente LIKE '%$nom_cliente%' AND estado_cliente = 1");
+    while ($row = mysqli_fetch_assoc($cliente)) {
+        $data['idcliente'] = $row['idcliente'];
+        $data['nombre_cliente'] = $row['nombre_cliente'];
+        $data['tel1_cliente'] = $row['tel1_cliente'];
+        $data['zona'] = $row['zona'];
+        $data['subzona'] = $row['subzona'];
+        array_push($datos, $data);
+    }
+    echo json_encode($datos);
+    exit;
 }
 
