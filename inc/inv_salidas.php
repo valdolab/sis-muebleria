@@ -5,6 +5,7 @@ include "accion/conexion.php";
 
 
 ?>
+</div>
 
 <div id="nueva_zona" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -187,21 +188,45 @@ include "accion/conexion.php";
 
 <br>
 
-<div class="row">
-<div class="col-lg-1"></div>
-<div class="col-lg-10">
+<div class="col-lg-12">
 <div class="card"> 
             <div class="card-body">
                     <div class="row">
 
                         <div class="form-group col-lg-2">
-                            <label for="nombre_aval">ID Cliente</label>
-                            <input onkeyup="mayusculas(this)" type="text" class="form-control" placeholder="Buscar por ID cliente" name="id_cliente" id="id_cliente">
+                            <label for="id_cliente">ID Cliente</label>
+                            <select class="form-control js-example-data-array" id="id_cliente" name="id_cliente">
+                                <?php 
+                                    #codigo para la lista de idclientes que se extraen de la base de datos
+                                    $result = mysqli_query($conexion,"SELECT idcliente,no_cliente FROM cliente");                        
+                                    if (mysqli_num_rows($result) > 0) {  
+                                      while($row = mysqli_fetch_assoc($result))
+                                      {
+                                        echo "<option value='".$row["idcliente"]."'>"."000".$row["no_cliente"]."</option>";
+                                      }
+                                    }
+                                 ?>
+                            </select>
+                            <!--
+                            <input onkeyup="mayusculas(this)" type="text" class="form-control" placeholder="Buscar por ID cliente" name="id_cliente" id="id_cliente"> -->
                         </div>
 
-                        <div class="form-group col-lg-5">
+                        <div class="form-group col-lg-4">
                             <label for="nombre_aval">Cliente</label>
-                            <input type="text" class="form-control" placeholder="Buscar por nombre del cliente" name="nom_cliente" id="nom_cliente">
+                            <select class="form-control js-example-data-array" id="nom_cliente" name="nom_cliente">
+                                <?php 
+                                    #codigo para la lista de idclientes que se extraen de la base de datos
+                                    $result = mysqli_query($conexion,"SELECT idcliente,nombre_cliente FROM cliente");                        
+                                    if (mysqli_num_rows($result) > 0) {  
+                                      while($row = mysqli_fetch_assoc($result))
+                                      {
+                                        echo "<option value='".$row["idcliente"]."'>".$row["nombre_cliente"]."</option>";
+                                      }
+                                    }
+                                 ?>
+                            </select>
+                            <!--
+                            <input type="text" class="form-control" placeholder="Buscar por nombre del cliente" name="nom_cliente" id="nom_cliente"> -->
                         </div>
 
                         <div class="form-group col-lg-2">
@@ -365,7 +390,6 @@ include "accion/conexion.php";
                     </div>
             </div>
         </div>
-    </div>
 </div>
 
 <br>

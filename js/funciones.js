@@ -169,7 +169,11 @@ $(document).ready(function()
 
  //para el select2 multiple
  $('.js-example-basic-multiple').select2();
-    //funcion para poner tablas en español
+
+  //para el select2 de salidas
+  $('.js-example-data-array').select2();
+
+//funcion para poner tablas en español
 show_search_box();
 //fin tablas en español
 
@@ -1601,48 +1605,70 @@ $('#idestado_civil').change(function() {
 //buscar por IDCliente
 //funcion para autocompletar cuando buscamos un cliente por ID o nombre
 //sentencia sql con nombre y ID: SELECT * FROM cliente WHERE nombre LIKE '%$nombre%'
-$("#id_cliente").autocomplete({
-        minLength: 1,
+$('#id_cliente').on('select2:select', function (e) 
+{
+    var data = e.params.data;
+    //console.log(data.id);
+
+});
+
+$('#nom_cliente').on('select2:select', function (e) 
+{
+    var data = e.params.data;
+    //console.log(data.id);
+
+});
+/*
+$("#nom_cliente").autocomplete({
+        minLength: 2,
         source: function (request, response) {
-            var action = "buscar_x_id_cliente";
+            var action = "buscar_x_nombre_cliente";
             $.ajax({
                 url: "ajax.php",
                 type: "POST",
-                data: {action: action, buscar_id_cliente: request.term},
+                data: {action: action, buscar_nombre_cliente: request.term},
                 success: function (data) 
                 {
-                    $('#prueba').html(data); 
-                    console.log(data);
-                    //response(data);
+                    var datas = $.parseJSON(data);
+                    var nombres = [];
+                    for(var i=0; i < datas.length; i++)
+                    {
+                        nombres.push(datas[i].nombre_cliente);
+                    }
+                    response(nombres);
                 }
             });
         },
         select: function (event, ui) 
         {
+            $('#prueba').html(data); 
             $("#idcliente").val(ui.item.idcliente);
             $("#nom_cliente").val(ui.item.nombre_cliente);
             $("#tel_cliente").val(ui.item.tel1_cliente);
         }
     });
 
-$("#nom_cliente").autocomplete({
-        minLength: 2,
+    minLength: 2,
         source: function (request, response) {
+            var action = "buscar_x_nombre_cliente";
             $.ajax({
                 url: "ajax.php",
-                type: "GET",
-                data: {buscar_nombre_cliente: request.term},
-                success: function (data) {
-                    response(data);
+                type: "POST",
+                data: {action: action, buscar_nombre_cliente: request.term},
+                success: function (data) 
+                {
+                    var datas = $.parseJSON(data);
+                    var nombres = [];
+                    for(var i=0; i < datas.length; i++)
+                    {
+                        nombres.push(datas[i].nombre_cliente);
+                    }
+                    //$('#prueba').html(nombres); 
+                    response(nombres);
                 }
             });
         },
-        select: function (event, ui) {
-            $("#idcliente").val(ui.item.idcliente);
-            $("#nom_cliente").val(ui.item.nombre_cliente);
-            $("#tel_cliente").val(ui.item.tel1_cliente);
-        }
-    });
+*/
 
 function hide_costos()
 {

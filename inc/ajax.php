@@ -2061,9 +2061,15 @@ if ($_POST['action'] == 'get_hidden_products')
 }
 
 //para buscar el cliente con en su IDCliente
+
+
+
+
+/*
 if ($_POST['action'] == 'buscar_x_id_cliente') 
 {
     include "accion/conexion.php";
+    $datos = array();
     $id_cliente = intval($_POST['buscar_id_cliente']);
     $cliente = mysqli_query($conexion, "SELECT idcliente, nombre_cliente, tel1_cliente, zona, subzona FROM cliente WHERE no_cliente LIKE '%$id_cliente%' AND estado_cliente = 1");
     while ($row = mysqli_fetch_assoc($cliente)) 
@@ -2080,10 +2086,11 @@ if ($_POST['action'] == 'buscar_x_id_cliente')
 }
 
 //para buscar el cliente con en su IDCliente
-if (isset($_GET['buscar_nombre_cliente'])) 
+if ($_POST['action'] == 'buscar_x_nombre_cliente') 
 {
+    include "accion/conexion.php";
     $datos = array();
-    $nom_cliente = $_GET['buscar_nombre_cliente'];
+    $nom_cliente = $_POST['buscar_nombre_cliente'];
     $cliente = mysqli_query($conexion, "SELECT idcliente, nombre_cliente, tel1_cliente, zona, subzona FROM cliente WHERE nombre_cliente LIKE '%$nom_cliente%' AND estado_cliente = 1");
     while ($row = mysqli_fetch_assoc($cliente)) {
         $data['idcliente'] = $row['idcliente'];
@@ -2096,4 +2103,5 @@ if (isset($_GET['buscar_nombre_cliente']))
     echo json_encode($datos);
     exit;
 }
+*/
 
