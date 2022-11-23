@@ -1607,16 +1607,58 @@ $('#idestado_civil').change(function() {
 //sentencia sql con nombre y ID: SELECT * FROM cliente WHERE nombre LIKE '%$nombre%'
 $('#id_cliente').on('select2:select', function (e) 
 {
-    var data = e.params.data;
-    //console.log(data.id);
+        var datas = e.params.data;
+        //console.log(data.id);
+        var action = "buscar_x_id_cliente";
+        $.ajax({
+        url: "ajax.php",
+        type: "POST",
+        data: {action: action, idcliente: datas.id},
+        success: function (response) 
+        {
+            //$('#prueba').html(response);
+            var cliente = $.parseJSON(response); 
+            //console.log(cliente);
+            $('#nom_cliente').val(cliente.idcliente).trigger('change');
+            $("#tel_cliente").val(cliente.tel1_cliente);
+            $('option[value="'+cliente.zona+'"]').prop("selected", "selected");
 
+            $("#subzona").empty();
+            $('#subzona').append(cliente.data_subzona);
+            $('option[value="'+cliente.data_subzona+'"]').prop("selected", "selected");
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+    }); 
 });
 
 $('#nom_cliente').on('select2:select', function (e) 
 {
-    var data = e.params.data;
+    var datas = e.params.data;
     //console.log(data.id);
+    var action = "buscar_x_nombre_cliente";
+        $.ajax({
+        url: "ajax.php",
+        type: "POST",
+        data: {action: action, idcliente: datas.id},
+        success: function (response) 
+        {
+            //$('#prueba').html(response);
+            var cliente = $.parseJSON(response); 
+            //console.log(cliente);
+            $("#id_cliente").val(cliente.idcliente).trigger('change');
+            $("#tel_cliente").val(cliente.tel1_cliente);
+            $('option[value="'+cliente.zona+'"]').prop("selected", "selected");
 
+            $("#subzona").empty();
+            $('#subzona').append(cliente.data_subzona);
+            $('option[value="'+cliente.data_subzona+'"]').prop("selected", "selected");
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+    }); 
 });
 /*
 $("#nom_cliente").autocomplete({

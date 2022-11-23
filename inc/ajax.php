@@ -2061,47 +2061,47 @@ if ($_POST['action'] == 'get_hidden_products')
 }
 
 //para buscar el cliente con en su IDCliente
-
-
-
-
-/*
 if ($_POST['action'] == 'buscar_x_id_cliente') 
 {
     include "accion/conexion.php";
-    $datos = array();
-    $id_cliente = intval($_POST['buscar_id_cliente']);
-    $cliente = mysqli_query($conexion, "SELECT idcliente, nombre_cliente, tel1_cliente, zona, subzona FROM cliente WHERE no_cliente LIKE '%$id_cliente%' AND estado_cliente = 1");
-    while ($row = mysqli_fetch_assoc($cliente)) 
+    $id_cliente = $_POST['idcliente'];
+    $select_cliente = mysqli_query($conexion, "SELECT idcliente, nombre_cliente, tel1_cliente, zona, subzona FROM cliente WHERE idcliente = '$id_cliente' AND estado_cliente = 1");
+    $data_cliente = mysqli_fetch_assoc($select_cliente);
+
+    $idzona = $data_cliente['zona'];
+    $select_cliente_subzona = mysqli_query($conexion, "SELECT idsubzona,subzona from subzonas where idzona = '$idzona'");
+    $opciones_subzona = "";
+    while($row = mysqli_fetch_assoc($select_cliente_subzona))
     {
-        $data['idcliente'] = $row['idcliente'];
-        $data['nombre_cliente'] = $row['nombre_cliente'];
-        $data['tel1_cliente'] = $row['tel1_cliente'];
-        $data['zona'] = $row['zona'];
-        $data['subzona'] = $row['subzona'];
-        array_push($datos, $data);
+      $opciones_subzona = $opciones_subzona."<option value='".$row["idsubzona"]."'>".$row["subzona"]."</option>";
     }
-    echo json_encode($datos);
-    exit;
+    $data_subzona = array("data_subzona" => $opciones_subzona);
+
+    $result = $data_cliente + $data_subzona;
+
+    echo json_encode($result,JSON_UNESCAPED_UNICODE);
 }
 
 //para buscar el cliente con en su IDCliente
 if ($_POST['action'] == 'buscar_x_nombre_cliente') 
 {
     include "accion/conexion.php";
-    $datos = array();
-    $nom_cliente = $_POST['buscar_nombre_cliente'];
-    $cliente = mysqli_query($conexion, "SELECT idcliente, nombre_cliente, tel1_cliente, zona, subzona FROM cliente WHERE nombre_cliente LIKE '%$nom_cliente%' AND estado_cliente = 1");
-    while ($row = mysqli_fetch_assoc($cliente)) {
-        $data['idcliente'] = $row['idcliente'];
-        $data['nombre_cliente'] = $row['nombre_cliente'];
-        $data['tel1_cliente'] = $row['tel1_cliente'];
-        $data['zona'] = $row['zona'];
-        $data['subzona'] = $row['subzona'];
-        array_push($datos, $data);
+    $id_cliente = $_POST['idcliente'];
+    $select_cliente = mysqli_query($conexion, "SELECT idcliente, nombre_cliente, tel1_cliente, zona, subzona FROM cliente WHERE idcliente = '$id_cliente' AND estado_cliente = 1");
+    $data_cliente = mysqli_fetch_assoc($select_cliente);
+
+    $idzona = $data_cliente['zona'];
+    $select_cliente_subzona = mysqli_query($conexion, "SELECT idsubzona,subzona from subzonas where idzona = '$idzona'");
+    $opciones_subzona = "";
+    while($row = mysqli_fetch_assoc($select_cliente_subzona))
+    {
+      $opciones_subzona = $opciones_subzona."<option value='".$row["idsubzona"]."'>".$row["subzona"]."</option>";
     }
-    echo json_encode($datos);
-    exit;
+    $data_subzona = array("data_subzona" => $opciones_subzona);
+
+    $result = $data_cliente + $data_subzona;
+
+    echo json_encode($result,JSON_UNESCAPED_UNICODE);
 }
-*/
+
 

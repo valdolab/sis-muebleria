@@ -196,13 +196,22 @@ include "accion/conexion.php";
                         <div class="form-group col-lg-2">
                             <label for="id_cliente">ID Cliente</label>
                             <select class="form-control js-example-data-array" id="id_cliente" name="id_cliente">
+                            <option selected hidden></option>
                                 <?php 
                                     #codigo para la lista de idclientes que se extraen de la base de datos
-                                    $result = mysqli_query($conexion,"SELECT idcliente,no_cliente FROM cliente");                        
-                                    if (mysqli_num_rows($result) > 0) {  
+                                    $result = mysqli_query($conexion,"SELECT idcliente,no_cliente FROM cliente order by no_cliente");                        
+                                    if (mysqli_num_rows($result) > 0) 
+                                    {  
                                       while($row = mysqli_fetch_assoc($result))
                                       {
-                                        echo "<option value='".$row["idcliente"]."'>"."000".$row["no_cliente"]."</option>";
+                                        $long_formato_idcliente = 4;
+                                        $sizeno_cliente = strlen($row["no_cliente"]);
+                                        $ceros = "";
+                                        for ($i=0; $i < $long_formato_idcliente-$sizeno_cliente; $i++) 
+                                        { 
+                                            $ceros = $ceros."0";
+                                        }
+                                        echo "<option value='".$row["idcliente"]."'>".$ceros.$row["no_cliente"]."</option>";
                                       }
                                     }
                                  ?>
@@ -214,9 +223,10 @@ include "accion/conexion.php";
                         <div class="form-group col-lg-4">
                             <label for="nombre_aval">Cliente</label>
                             <select class="form-control js-example-data-array" id="nom_cliente" name="nom_cliente">
+                            <option selected hidden></option>
                                 <?php 
                                     #codigo para la lista de idclientes que se extraen de la base de datos
-                                    $result = mysqli_query($conexion,"SELECT idcliente,nombre_cliente FROM cliente");                        
+                                    $result = mysqli_query($conexion,"SELECT idcliente,nombre_cliente,no_cliente FROM cliente order by no_cliente");                        
                                     if (mysqli_num_rows($result) > 0) {  
                                       while($row = mysqli_fetch_assoc($result))
                                       {

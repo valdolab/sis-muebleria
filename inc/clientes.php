@@ -129,12 +129,7 @@ include "accion/conexion.php";
                     $query3 = mysqli_query($conexion, "SELECT subzona FROM subzonas where idsubzona = '$idsubzona'");
                     $subzona_cliente = mysqli_fetch_array($query3)['subzona'];
 
-                    #BUG de la muerte
                     $long_formato_idcliente = 4;
-                    if($cat_de_clientes > $long_formato_idcliente)
-                    {
-                        $long_formato_idcliente = strlen($cat_de_clientes);
-                    }
                     $sizeno_cliente = strlen($no_cliente);
                     $ceros = "";
                     for ($i=0; $i < $long_formato_idcliente-$sizeno_cliente; $i++) 

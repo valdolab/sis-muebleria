@@ -21,10 +21,6 @@ else
         $no_cliente = $data['no_cliente'];
 
         $long_formato_idcliente = 4;
-        if($result_sql > $long_formato_idcliente)
-        {
-            $long_formato_idcliente = strlen($result_sql);
-        }
         $sizeno_cliente = strlen($no_cliente);
         $ceros = "";
         for ($i=0; $i < $long_formato_idcliente-$sizeno_cliente; $i++) 
