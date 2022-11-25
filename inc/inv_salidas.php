@@ -5,7 +5,7 @@ include "accion/conexion.php";
 
 
 ?>
-</div>
+<!--</div>-->
 
 <div id="nueva_zona" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -188,11 +188,11 @@ include "accion/conexion.php";
 
 <br>
 
+<form action="" method="post" autocomplete="on" id="formAdd_salida">
 <div class="col-lg-12">
 <div class="card"> 
             <div class="card-body">
                     <div class="row">
-
                         <div class="form-group col-lg-2">
                             <label for="id_cliente">ID Cliente</label>
                             <select class="form-control js-example-data-array" id="id_cliente" name="id_cliente">
@@ -369,8 +369,8 @@ include "accion/conexion.php";
                         </div>
 
                         <div class="form-group col-lg-2">
-                            <label for="puesto_aval">Días de pago semanal</label>
-                            <select id='dias_pago_semanal' name='dias_pago_semanal' class='form-control' required>
+                            <label for="dias_pago_semanal">Días de pago semanal</label>
+                            <select id='dias_pago_semanal' name='dias_pago_semanal' class='form-control' disabled required>
                                 <option selected hidden value=''>Seleccione una opción</option>
                                 <option value="lu">Lunes</option>
                                 <option value="ma">Martes</option>
@@ -383,46 +383,56 @@ include "accion/conexion.php";
                         </div>
 
                         <div class="form-group col-lg">
-                            <label for="n_pagos">Día de pago quin</label>
-                            <input type="number" class="form-control" name="dias_pago_quincenal" id="dias_pago_quincenal">
+                            <label for="dias_pago_quincenal">Día de pago quin</label>
+                            <input type="number" class="form-control" name="dias_pago_quincenal" id="dias_pago_quincenal" disabled required>
                         </div>
 
                         <div class="form-group col-lg">
-                            <label for="n_pagos">Día de pago mensual</label>
-                            <input type="number" class="form-control" name="dias_pago_mensual" id="dias_pago_mensual">
+                            <label for="dias_pago_mensual">Día de pago mensual</label>
+                            <input type="number" class="form-control" name="dias_pago_mensual" id="dias_pago_mensual" disabled required>
                         </div>
 
                         <div align="right" class="form-group col-lg">
                             <br>
-                            <button class="btn btn-lg btn-primary" id="add_venta">Añadir</button>
+                            <a onclick="add_salida()" class="btn btn-lg btn-primary" type="button" ><i class="fas fa-plus"></i> Añadir</a>
                         </div>
-
                     </div>
             </div>
         </div>
-</div>
-
-<br>
+    </div>
 
 <div class="row">
-    <div class="col-lg-1"></div>
-    <div class="col-lg-10">
-        <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-lg-10">
-                        
-                </div>
-
-                <div align="right" class="col-lg-2">
-                    <!-- <a data-toggle="modal" data-target="#nuevo_documento"  class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nuevo documento</a> -->
-                </div>
-            </div>
-        </div>
-        </div>  
+    <div class="col-lg-1">
     </div>
+        <div class="col-lg-10">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-lg-2">
+                            <label for="identificador_pro">Identificador</label>
+                            <select class="form-select js-example-data-array" id="identificador_pro" name="identificador_pro">
+                            <option selected hidden></option>
+                                <?php 
+                                    #codigo para la lista de idclientes que se extraen de la base de datos
+                                    $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");                        
+                                    if (mysqli_num_rows($result) > 0) 
+                                    {  
+                                      while($row = mysqli_fetch_assoc($result))
+                                      {
+                                        echo "<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+                                      }
+                                    }
+                                 ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
 </div>
 
+
+</form>
 <br><br>
 
 <script type="text/javascript">

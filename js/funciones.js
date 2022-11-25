@@ -1,68 +1,9 @@
 //FUNCIONES USADAS POR EL SISTEMA
 
 //funcion para agregar mas referencias a los clientes
-var campos_max          = 11;   //max de 10 campos
-var x = 2;
-$('#add_field').click (function(e) {
-    e.preventDefault();     //prevenir novos clicks
-    if (x < campos_max) 
-    {
-        //agregar modal de las referencias
-        $('#modalref').append('<div id="notas_referencias'+x+'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">\
-            <div class="modal-dialog modal-lg" role="document">\
-                <div class="modal-content">\
-                    <div class="modal-header bg-secundary text-black">\
-                        <h5 class="modal-title" id="my-modal-title">Notas de la referencia</h5>\
-                        <button class="close" data-dismiss="modal" aria-label="Close">\
-                            <span aria-hidden="true">&times;</span>\
-                        </button>\
-                    </div>\
-                    <div class="modal-body">\
-                            <div class="form-group">\
-                                 <textarea class="form-control" name="notas_ref[]" title="Ingrese las notas requeridas" id="notas" placeholder="Ingrese las notas requeridas" maxlength="50000" style="height: 400px;"></textarea>\
-                            </div>\
-                    </div>\
-                </div>\
-            </div>\
-        </div>');
-
-        $('#listas').append("<div id='card_ref' class='card'>\
-                <div class='card-body'>\
-                        <div class='row'>\
-                            <div class='form-group col-lg-6'>\
-                                <label for='nombre_ref1'>Nombre Referencia</label>\
-                                <input type='text' class='form-control' name='nombre_ref[]' required>\
-                            </div>\
-                            <div class='col-lg-2' align='center'>\
-                            <label>Notas</label><br>\
-                                <a data-toggle='modal' data-target='#notas_referencias"+x+"' href='#'><i class='far fa-clipboard fa-4x'></i></a>\
-                            </div>\
-                            <div class='form-group col-lg-3'>\
-                                <label for='relacion_ref1'>Relación</label>\
-                                <input type='text' class='form-control' name='relacion_ref[]' required>\
-                            </div>\
-                            <div class='form-group col-lg-6'>\
-                                <label for='dom_ref1'>Domicilio Referencia</label>\
-                                <input type='text' class='form-control' name='dom_ref[]' required>\
-                            </div>\
-                            <div class='col-lg-2'></div>\
-                            <div class='form-group col-lg-3'>\
-                                <label for='tel_ref1'>Teléfono</label>\
-                                <input type='text' class='form-control' placeholder='exp. 9610000000' name='tel_ref[]' required >\
-                            </div>\
-                            <div class='col-lg-1' align='right'>\
-                                <a href='#' class='remover_campo'><i style='color: red;' class='fas fa-trash-alt fa-2x'></i></a>\
-                            </div>\
-                        </div>\
-            </div>\
-        </div>");
-        x++;
-    }
-});
-
 function mostrar_refs(x)
 {  
-    var campos_max = 11;   //max de 10 campos
+    var campos_max = 12;   //max de 10 campos
     if (x < campos_max) 
     {
         //agregar modal de las referencias
@@ -120,6 +61,11 @@ function mostrar_refs(x)
     $('#button_agregar').append('<button id="button_agre" onclick="mostrar_refs('+x+');" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Añadir Referencia</button>');
 }
 
+function add_salida()
+{
+
+}
+
 function borrar_card(idcard)
 {
     $('#borrador'+idcard).remove();
@@ -171,7 +117,15 @@ $(document).ready(function()
  $('.js-example-basic-multiple').select2();
 
   //para el select2 de salidas
-  $('.js-example-data-array').select2();
+  $('.js-example-data-array').select2(
+    {
+        theme: "bootstrap-5",
+        //dropdownParent: $('#body-inner'),
+    });
+
+ $(document).on('select2:open', () => {
+    document.querySelector('.select2-search__field').focus();
+  });
 
 //funcion para poner tablas en español
 show_search_box();
@@ -2034,6 +1988,34 @@ $('#modalidad_pago').change(function(e)
 {
     e.preventDefault();
     var idmodalidad_pago = $(this).val();
+    //console.log(idmodalidad_pago);
+    if (idmodalidad_pago == "mensual")
+    {
+        $('#dias_pago_semanal').val("default").change();
+        $('#dias_pago_semanal').attr("disabled","disabled");
+        $('#dias_pago_quincenal').attr("disabled","disabled");
+        $('#dias_pago_mensual').removeAttr("disabled");
+    }
+    else if(idmodalidad_pago == "quincenal")
+    {
+        $('#dias_pago_semanal').val("default").change();
+        $('#dias_pago_semanal').attr("disabled","disabled");
+        $('#dias_pago_mensual').attr("disabled","disabled");
+        $('#dias_pago_quincenal').removeAttr("disabled");
+    }
+    else if(idmodalidad_pago == "semanal")
+    {
+        $('#dias_pago_mensual').attr("disabled","disabled");
+        $('#dias_pago_quincenal').attr("disabled","disabled");
+        $('#dias_pago_semanal').removeAttr("disabled");
+    }
+});
+
+/*esto ya no, porque ahora ya no se agregan modalidades de pago, estan predefinidas
+$('#modalidad_pago').change(function(e) 
+{
+    e.preventDefault();
+    var idmodalidad_pago = $(this).val();
     $('#btnedit_modalidad_pago').attr('onClick', 'editar_modalidad_pago("'+idmodalidad_pago+'");');
     $('#btnedit_modalidad_pago').removeAttr('disabled');
 
@@ -2061,6 +2043,7 @@ $('#modalidad_pago').change(function(e)
       }
     });
 });
+*/
 
 //funsion para quitar options repetidos
 function remove_repeated_option(idselect)
@@ -4529,8 +4512,6 @@ function asignar_matriz(idsucursal)
               }
         })
 }
-
-
 
 
 //FIN DE FUNCIONES USADAS

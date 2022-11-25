@@ -45,11 +45,11 @@ $result_pro = mysqli_fetch_array($query_producto)['num_producto'];
 
 		<!-- Earnings (Monthly) Card Example -->
 		<a class="col-xl-3 col-md-6 mb-4" href="clientes.php">
-			<div class="card border-left-success shadow h-100 py-2">
+			<div class="card border-left-info shadow h-100 py-2">
 				<div class="card-body">
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
-							<div class="text-xs font-weight-bold text-success text-uppercase mb-1">Clientes</div>
+							<div class="text-xs font-weight-bold text-info text-uppercase mb-1">Clientes</div>
 							<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $result_cli; ?></div>
 						</div>
 						<div class="col-auto">
@@ -61,12 +61,12 @@ $result_pro = mysqli_fetch_array($query_producto)['num_producto'];
 		</a>
 
 		<!-- Earnings (Monthly) Card Example -->
-		<a class="col-xl-3 col-md-6 mb-4" href="pagetemp.php">
-			<div class="card border-left-info shadow h-100 py-2">
+		<a class="col-xl-3 col-md-6 mb-4" href="productos.php">
+			<div class="card border-left-warning shadow h-100 py-2">
 				<div class="card-body">
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
-							<div class="text-xs font-weight-bold text-info text-uppercase mb-1">Productos proveedor</div>
+							<div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Productos proveedor</div>
 							<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $result_pro; ?></div>
 							<!--<div class="row no-gutters align-items-center">
 								<div class="col-auto">
@@ -88,12 +88,28 @@ $result_pro = mysqli_fetch_array($query_producto)['num_producto'];
 		</a>
 
 		<!-- Pending Requests Card Example -->
-		<a class="col-xl-3 col-md-6 mb-4" href="pagetemp.php">
-			<div class="card border-left-warning shadow h-100 py-2">
+		<a class="col-xl col-md-6 mb-4" href="inv_almacenes.php">
+			<div class="card border-left-success shadow h-100 py-2">
 				<div class="card-body">
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
-							<div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Ventas</div>
+							<div class="text-xs font-weight-bold text-success text-uppercase mb-1">Ventas (salidas)</div>
+							<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo 0; ?></div>
+						</div>
+						<div class="col-auto">
+							<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</a>
+
+		<a class="col-xl col-md-6 mb-4" href="inv_almacenes.php">
+			<div class="card border-left-danger shadow h-100 py-2">
+				<div class="card-body">
+					<div class="row no-gutters align-items-center">
+						<div class="col mr-2">
+							<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Compras (entradas)</div>
 							<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo 0; ?></div>
 						</div>
 						<div class="col-auto">

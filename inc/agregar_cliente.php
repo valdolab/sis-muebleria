@@ -823,7 +823,7 @@ if (!empty($_POST))
         <div class="row">
             <div class="col-lg-12">
                 <div align="right">
-                    <a id="add_field" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Añadir Referencia</a>
+                    <button class="btn btn-primary" type="button" onclick="mostrar_refs(2)"><i class="fas fa-plus"></i> Añadir Referencia</button>
                 </div>
             </div> 
         </div>

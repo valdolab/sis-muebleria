@@ -1,5 +1,5 @@
 <!-- Footer -->
-</div>
+</div> 
 <footer class="sticky-footer bg-gray">
   <div class="container my-auto">
     <div class="copyright text-center my-auto">

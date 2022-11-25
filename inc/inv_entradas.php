@@ -208,11 +208,17 @@ include "accion/conexion.php";
             <div class="modal-body">
                 <form action="" method="post" autocomplete="on" id="formAdd_proveedor">
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-8">
                           <div class="form-group">
                             <label for="correo">Proveedor</label>
                             <input type="text" class="form-control" name="nuevoProveedor" id="nuevoProveedor" required maxlength="99">
                         </div>  
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="correo">Teléfono</label>
+                                <input type="text" class="form-control" name="celProveedor" id="celProveedor" required maxlength="99">
+                        </div>
                         </div>
                     </div>
 

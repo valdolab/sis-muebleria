@@ -32,11 +32,12 @@ $name_sucursal = $dato;
 	<link href="../css/sb-admin-3.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="../css/datatables.min">
 	<link href="../css/select2.min.css" rel="stylesheet">
+	<link href="../css/select2-bootstrap-5-theme.min.css" rel="stylesheet">
 	<link href="../css/bootstrap4-toggle.min.css" rel="stylesheet">
 	<link href="../css/datatables.min.css" rel="stylesheet">
 	<link href="../js/jquery-ui/jquery-ui.css" rel="stylesheet">
 	<style type="text/css">
-		.div-interno{
+		#divzoom{
 			  zoom: 75%;
 			}
 	</style>
@@ -44,7 +45,7 @@ $name_sucursal = $dato;
 
 <body id="page-top">
 	<!-- Page Wrapper -->
-	<div id="wrapper" >
+	<div id="wrapper">
 		<?php include_once "menu.php"; ?>
 		<!-- Content Wrapper -->
 		<div style="background-color: white;" id="content-wrapper" class="d-flex flex-column">
@@ -56,6 +57,7 @@ $name_sucursal = $dato;
 			        background: #f4f4f4 !important;
 			      }
 			      </style>
+			
 				<nav style="background-color: white;" class="navbar navbar-expand navbar bg text topbar mb-4 static-top shadow">
 					<!-- Sidebar Toggle (Topbar) -->
 					<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -193,5 +195,4 @@ $name_sucursal = $dato;
 					 ?>
 
 				</nav>
-
-<div id="divzoom" class="div-interno">
+<div id="divzoom">
