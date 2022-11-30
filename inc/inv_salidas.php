@@ -400,17 +400,20 @@ include "accion/conexion.php";
             </div>
         </div>
     </div>
-
-<div class="row">
-    <div class="col-lg-1">
-    </div>
+<!-- aqui va los añadidios dinamicos de las salidas -->
+<div id="lista_salida">
+    
+</div>
+<!--
+    <div class="row">
+        <div class="col-lg-1"></div>
         <div class="col-lg-10">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="form-group col-lg-2">
+                        <div class="col-lg-3">
                             <label for="identificador_pro">Identificador</label>
-                            <select class="form-select js-example-data-array" id="identificador_pro" name="identificador_pro">
+                            <select class="form-control js-example-data-array" id="identificador_pro" name="identificador_pro">
                             <option selected hidden></option>
                                 <?php 
                                     #codigo para la lista de idclientes que se extraen de la base de datos
@@ -425,12 +428,35 @@ include "accion/conexion.php";
                                  ?>
                             </select>
                         </div>
+
+                        <div class="col-lg-2">
+                            <label for="cantidad">Cantidad</label>
+                            <input type="number" class="form-control" name="cantidad" id="cantidad">
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="origen">Origen</label>
+                            <input type="text" class="form-control" name="origen" id="origen" onkeyup="mayusculas(this)">
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="ingresos_cliente">Precio</label>
+
+                            <div class="input-group mb-3">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="precio" id="precio" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
+                            </div>
+                        </div>
+                        <div class="col-lg-1">
+                            <label for="serializado">Incluye IVA</label>
+                            <input onchange="" id="incluye_iva" name="incluye_iva" value="si_iva" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="m" data-on="SI" data-off="NO">
+                        </div>
                     </div>
                 </div>
             </div>  
         </div>
-</div>
-
+    </div>
+-->
 
 </form>
 <br><br>
@@ -442,31 +468,8 @@ function mayusculas(e) {
     e.value = e.value.toUpperCase();
 }
 
-function visualizar(idusuario,lista)
-        {
-          //alert(m+"  "+q);
-          var xmlhttp;      
-            if (window.XMLHttpRequest)
-            {
-            xmlhttp=new XMLHttpRequest();
-            }
-          else
-            {
-            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-          xmlhttp.onreadystatechange=function()
-            {
-            if (xmlhttp.readyState==4 && xmlhttp.status==200)
-             {
-             document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
-             }
-            }
-
-          $("#my_modal_title").html("Sucursales permitidas a "+idusuario);  
-          $("#listamodal_sucursales").html(lista); 
-
-          $('#ver_sucursales').modal('show');
-        }
+document.getElementById('divzoom').style.zoom = "100%";
+document.getElementById('page-top').style.zoom = "80%";
 
 </script>
 

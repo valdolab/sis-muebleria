@@ -1,10 +1,12 @@
 //FUNCIONES USADAS POR EL SISTEMA
 
 //funcion para agregar mas referencias a los clientes
+var y = 0;
+var aux_x = 0;
 function mostrar_refs(x)
 {  
-    var campos_max = 12;   //max de 10 campos
-    if (x < campos_max) 
+    var campos_max = 11;   //max de 10 campos
+    if (y < campos_max) 
     {
         //agregar modal de las referencias
         $('#modalref').append('<div id="notas_referencias'+x+'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">\
@@ -54,31 +56,94 @@ function mostrar_refs(x)
                             </div>\
                         </div>\
             </div>\
+            <div class='flag_id'>\
+            <input type='number' name='idcard' id='idcard' value'"+x+"' readonly>\
+            </div>\
         </div>");
         x++;
+        y++;
+        aux_x = x;
     }
     $('#button_agre').remove();
     $('#button_agregar').append('<button id="button_agre" onclick="mostrar_refs('+x+');" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Añadir Referencia</button>');
-}
-
-function add_salida()
-{
-
-}
-
-function borrar_card(idcard)
-{
-    $('#borrador'+idcard).remove();
+    console.log("x:", x);
+    console.log("y:", y);
 }
 
 // Remover o div anterior
 $('#listas').on("click",".remover_campo",function(e) 
 {
     e.preventDefault();
-    $('#card_ref').remove();
-    //$(this).parent('div').remove();
-    x--;
+    var asd = $(this).parents("#card_ref div(.flag_id) input(#idcard)").val();
+
+    console.log(asd);
+    //luego todo el card
+    //$(this).parents("#card_ref").remove();
+
+    $('#button_agre').remove();
+    y--;
+    var flag = parseInt($('#contador_cards').val()) + 1;
+    if(flag == 0)
+    {
+        $('#button_agregar').append('<button id="button_agre" onclick="mostrar_refs('+aux_x+');" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Añadir Referencia</button>');
+    }
+    else
+    {
+        $('#button_agregar').append('<button id="button_agre" onclick="mostrar_refs('+flag+');" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Añadir Referencia</button>');
+    }
+    //disminuir contador de editar referencias en clientes
+    $('#contador_cards').val(flag-2);
 });
+
+//lo de ventas, añadir productos a salida o venta
+function add_salida()
+{
+    var add_new_producto_lista = '<div class="row">\
+        <div class="col-lg-1"></div>\
+        <div class="col-lg-10">\
+            <div class="card">\
+                <div class="card-body">\
+                    <div class="row">\
+                        <div class="col-lg-3">\
+                            <label for="identificador_pro">Identificador</label>\
+                            <select class="form-control js-example-data-array" id="identificador_pro" name="identificador_pro">\
+                            <option selected hidden></option>\
+                            </select>\
+                        </div>\
+                        <div class="col-lg-2">\
+                            <label for="cantidad">Cantidad</label>\
+                            <input type="number" class="form-control" name="cantidad" id="cantidad">\
+                        </div>\
+                        <div class="col-lg-2">\
+                            <label for="origen">Origen</label>\
+                            <input type="text" class="form-control" name="origen" id="origen" onkeyup="mayusculas(this)">\
+                        </div>\
+                        <div class="col-lg-2">\
+                            <label for="ingresos_cliente">Precio</label>\
+                            <div class="input-group mb-3">\
+                              <div class="input-group-prepend">\
+                                <span class="input-group-text">$</span>\
+                              </div>\
+                              <input name="precio" id="precio" type="number" class="form-control" aria-label="Monto en pesos mexicanos">\
+                            </div>\
+                        </div>\
+                        <div class="col-lg-1">\
+                            <label for="serializado">Incluye IVA</label>\
+                            <input onchange="" id="incluye_iva" name="incluye_iva" value="si_iva" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="m" data-on="SI" data-off="NO">\
+                        </div>\
+                        <div class="col-lg-1" align="right">\
+                                <a onClick=""><i style="color: red;" class="fas fa-trash-alt fa-2x"></i></a>\
+                            </div>\
+                    </div>\
+                </div>\
+            </div>\
+        </div>\
+    </div>';
+
+    $('#lista_salida').append(add_new_producto_lista);
+    //mostrar en formato boostrap el checkbox
+    $("input:last").bootstrapToggle();
+}
 
 function show_search_box()
 {
@@ -142,6 +207,10 @@ $('#btneditar_cliente').click (function(e) {
     $('#btneliminar_refs').removeAttr("style");
     $('#btnregresar').attr('onClick','preguntar_regresar()');
     $('#btnregresar').removeAttr("href");
+    //poner los atributos al boton de borrar cards referidos
+    $('#listas div a').attr('href','#');
+    $('#listas div a:not(.notas)').attr('class','remover_campo');
+    $('#listas div a:not(.notas) svg').attr('style','color: red;');
 });
 
 //mostrar conyugue

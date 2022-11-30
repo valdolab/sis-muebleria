@@ -819,11 +819,14 @@ if (!empty($_POST))
         <div id="listas">
             
         </div>
+        <input hidden type="number" name="contador_cards" id="contador_cards" value=-1 readonly>
 
         <div class="row">
             <div class="col-lg-12">
                 <div align="right">
-                    <button class="btn btn-primary" type="button" onclick="mostrar_refs(2)"><i class="fas fa-plus"></i> Añadir Referencia</button>
+                    <div id="button_agregar">
+                        <button id="button_agre" class="btn btn-primary" type="button" onclick="mostrar_refs(2)"><i class="fas fa-plus"></i> Añadir Referencia</button>
+                    </div>
                 </div>
             </div> 
         </div>

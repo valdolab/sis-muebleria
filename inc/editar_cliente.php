@@ -1011,6 +1011,7 @@ if (!empty($_POST))
         </div>
         <br>
 
+        <div id=modalref>
         <?php 
             for ($i=0; $i < $num_refs; $i++) 
             { 
@@ -1037,17 +1038,16 @@ if (!empty($_POST))
                 <?php      
             }
          ?>
-        <div id=modalref>
         </div>
         <!-- fin notas de cada referencia -->
 
+        <div id="listas">
         <?php 
             for ($i=0; $i < $num_refs; $i++) 
             {
                 $newidnota = $i + 1;
-                $id_notasrefs = "notas_referencias".$newidnota;
                 ?>
-                    <div class="card" id='borrador<?php echo $newidnota; ?>' >
+                    <div class="card" id='card_ref'>
                     <div class="card-body">
                             <h4 align="center"><strong>REFERENCIAS FAMILIARES/NO FAMILIARES</strong></h4>
                             <div class="row">
@@ -1058,7 +1058,7 @@ if (!empty($_POST))
                                 <div class="col-lg-2" align="center">
                                     <!-- aqui va a ir el boton para hacer las notas -->
                                     <label>Notas</label><br>
-                                    <a onclick="" data-toggle="modal" data-target="#notas_referencias<?php echo $newidnota; ?>" href="#"><i class="far fa-clipboard fa-4x"></i></a>
+                                    <a class="notas" data-toggle="modal" data-target="#notas_referencias<?php echo $newidnota; ?>" href="#"><i class="far fa-clipboard fa-4x"></i></a>
                                 </div>
                                 <div class="form-group col-lg-3">
                                     <label for="relacion_ref1">Relación</label>
@@ -1077,29 +1077,20 @@ if (!empty($_POST))
                                 <?php 
                                     if($newidnota >= 2)
                                     {
-                                        if($disabled_full == "disabled")
-                                        {
-                                            echo "<div class='col-lg-1' align='right'>
-                                                <a class='remover_campo'><i style='color: gray;' class='fas fa-trash-alt fa-2x'></i></a>
+                                        echo "<div class='col-lg-1' align='right'>
+                                                <a><i style='color: grey;' class='fas fa-trash-alt fa-2x'></i></a>
                                             </div>";
-                                        }
-                                        else
-                                        {
-                                            echo "<div class='col-lg-1' align='right'>
-                                                <a id='btneliminar_refs' style='pointer-events: none;' href='#referencias' onclick='borrar_card(".$newidnota.")' class='remover_campo'><i style='color: red;' class='fas fa-trash-alt fa-2x'></i></a>
-                                            </div>";
-                                        }
-                                        
                                     }
                                  ?>
                             </div>
                     </div>
+                    <input type='number' name='idcard' id='idcard' value='<?php echo $newidnota; ?>' readonly>
                 </div>
                 <?php 
             }
          ?>
-        <div id="listas">
         </div>
+        <input  type="number" name="contador_cards" id="contador_cards" value=<?php echo $num_refs ?> readonly>
 
         <div class="row">
             <div class="col-lg-12">
