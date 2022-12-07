@@ -2104,4 +2104,41 @@ if ($_POST['action'] == 'buscar_x_nombre_cliente')
     echo json_encode($result,JSON_UNESCAPED_UNICODE);
 }
 
+//para buscar los productos que existen y mostrarlos
+if ($_POST['action'] == 'selectAll_productos') 
+{
+  include "accion/conexion.php";
+  //eliminar todos los datos de Ext.-p de todos los productos, sin el where para BORRAR TODO
+  $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");
+  $result_producto = mysqli_num_rows($result);
+  if ($result_producto > 0) 
+  {
+     $opciones_producto = "<option selected hidden value=''></option>";
+     while($row = mysqli_fetch_assoc($result))
+     {
+       $opciones_producto = $opciones_producto."<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+     }
+     $data_producto = array("data_producto" => $opciones_producto);
+  }
+  else 
+  {
+    $data_producto = 0;
+  }
+  echo json_encode($data_producto,JSON_UNESCAPED_UNICODE);
+  exit;
+}
 
+//para buscar los precios del producto que seleciono
+if ($_POST['action'] == 'findPrecioProducto') 
+{
+  include "accion/conexion.php";
+  $idtipo_precio = $_POST['idtipo_precio'];
+  $idproducto = $_POST['idproducto'];
+  //eliminar todos los datos de Ext.-p de todos los productos, sin el where para BORRAR TODO
+  $result = mysqli_query($conexion,"SELECT idproducto,costo,costo_iva,costo_contado,costo_especial,costo_cr1,costo_cr2 FROM producto where idproducto = '$idproducto'");
+
+  $data_precios = mysqli_fetch_assoc($result);
+  
+  echo json_encode($data_precios,JSON_UNESCAPED_UNICODE);
+  exit;
+}

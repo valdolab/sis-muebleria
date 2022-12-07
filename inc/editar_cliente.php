@@ -1084,13 +1084,12 @@ if (!empty($_POST))
                                  ?>
                             </div>
                     </div>
-                    <input type='number' name='idcard' id='idcard' value='<?php echo $newidnota; ?>' readonly>
                 </div>
                 <?php 
             }
          ?>
         </div>
-        <input  type="number" name="contador_cards" id="contador_cards" value=<?php echo $num_refs ?> readonly>
+        <input hidden type="number" name="contador_cards" id="contador_cards" value=<?php echo $num_refs ?> readonly>
 
         <div class="row">
             <div class="col-lg-12">

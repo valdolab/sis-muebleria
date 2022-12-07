@@ -1,150 +1,6 @@
 //FUNCIONES USADAS POR EL SISTEMA
 
 //funcion para agregar mas referencias a los clientes
-var y = 0;
-var aux_x = 0;
-function mostrar_refs(x)
-{  
-    var campos_max = 11;   //max de 10 campos
-    if (y < campos_max) 
-    {
-        //agregar modal de las referencias
-        $('#modalref').append('<div id="notas_referencias'+x+'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">\
-            <div class="modal-dialog modal-lg" role="document">\
-                <div class="modal-content">\
-                    <div class="modal-header bg-secundary text-black">\
-                        <h5 class="modal-title" id="my-modal-title">Notas de la referencia</h5>\
-                        <button class="close" data-dismiss="modal" aria-label="Close">\
-                            <span aria-hidden="true">&times;</span>\
-                        </button>\
-                    </div>\
-                    <div class="modal-body">\
-                            <div class="form-group">\
-                                 <textarea class="form-control" name="notas_ref[]" title="Ingrese las notas requeridas" id="notas" placeholder="Ingrese las notas requeridas" maxlength="50000" style="height: 400px;"></textarea>\
-                            </div>\
-                    </div>\
-                </div>\
-            </div>\
-        </div>');
-
-        $('#listas').append("<div id='card_ref' class='card'>\
-                <div class='card-body'>\
-                        <div class='row'>\
-                            <div class='form-group col-lg-6'>\
-                                <label for='nombre_ref1'>Nombre Referencia</label>\
-                                <input type='text' class='form-control' name='nombre_ref[]' required>\
-                            </div>\
-                            <div class='col-lg-2' align='center'>\
-                            <label>Notas</label><br>\
-                                <a data-toggle='modal' data-target='#notas_referencias"+x+"' href='#'><i class='far fa-clipboard fa-4x'></i></a>\
-                            </div>\
-                            <div class='form-group col-lg-3'>\
-                                <label for='relacion_ref1'>Relación</label>\
-                                <input type='text' class='form-control' name='relacion_ref[]' required>\
-                            </div>\
-                            <div class='form-group col-lg-6'>\
-                                <label for='dom_ref1'>Domicilio Referencia</label>\
-                                <input type='text' class='form-control' name='dom_ref[]' required>\
-                            </div>\
-                            <div class='col-lg-2'></div>\
-                            <div class='form-group col-lg-3'>\
-                                <label for='tel_ref1'>Teléfono</label>\
-                                <input type='text' class='form-control' placeholder='exp. 9610000000' name='tel_ref[]' required >\
-                            </div>\
-                            <div class='col-lg-1' align='right'>\
-                                <a href='#' class='remover_campo'><i style='color: red;' class='fas fa-trash-alt fa-2x'></i></a>\
-                            </div>\
-                        </div>\
-            </div>\
-            <div class='flag_id'>\
-            <input type='number' name='idcard' id='idcard' value'"+x+"' readonly>\
-            </div>\
-        </div>");
-        x++;
-        y++;
-        aux_x = x;
-    }
-    $('#button_agre').remove();
-    $('#button_agregar').append('<button id="button_agre" onclick="mostrar_refs('+x+');" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Añadir Referencia</button>');
-    console.log("x:", x);
-    console.log("y:", y);
-}
-
-// Remover o div anterior
-$('#listas').on("click",".remover_campo",function(e) 
-{
-    e.preventDefault();
-    var asd = $(this).parents("#card_ref div(.flag_id) input(#idcard)").val();
-
-    console.log(asd);
-    //luego todo el card
-    //$(this).parents("#card_ref").remove();
-
-    $('#button_agre').remove();
-    y--;
-    var flag = parseInt($('#contador_cards').val()) + 1;
-    if(flag == 0)
-    {
-        $('#button_agregar').append('<button id="button_agre" onclick="mostrar_refs('+aux_x+');" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Añadir Referencia</button>');
-    }
-    else
-    {
-        $('#button_agregar').append('<button id="button_agre" onclick="mostrar_refs('+flag+');" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Añadir Referencia</button>');
-    }
-    //disminuir contador de editar referencias en clientes
-    $('#contador_cards').val(flag-2);
-});
-
-//lo de ventas, añadir productos a salida o venta
-function add_salida()
-{
-    var add_new_producto_lista = '<div class="row">\
-        <div class="col-lg-1"></div>\
-        <div class="col-lg-10">\
-            <div class="card">\
-                <div class="card-body">\
-                    <div class="row">\
-                        <div class="col-lg-3">\
-                            <label for="identificador_pro">Identificador</label>\
-                            <select class="form-control js-example-data-array" id="identificador_pro" name="identificador_pro">\
-                            <option selected hidden></option>\
-                            </select>\
-                        </div>\
-                        <div class="col-lg-2">\
-                            <label for="cantidad">Cantidad</label>\
-                            <input type="number" class="form-control" name="cantidad" id="cantidad">\
-                        </div>\
-                        <div class="col-lg-2">\
-                            <label for="origen">Origen</label>\
-                            <input type="text" class="form-control" name="origen" id="origen" onkeyup="mayusculas(this)">\
-                        </div>\
-                        <div class="col-lg-2">\
-                            <label for="ingresos_cliente">Precio</label>\
-                            <div class="input-group mb-3">\
-                              <div class="input-group-prepend">\
-                                <span class="input-group-text">$</span>\
-                              </div>\
-                              <input name="precio" id="precio" type="number" class="form-control" aria-label="Monto en pesos mexicanos">\
-                            </div>\
-                        </div>\
-                        <div class="col-lg-1">\
-                            <label for="serializado">Incluye IVA</label>\
-                            <input onchange="" id="incluye_iva" name="incluye_iva" value="si_iva" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="m" data-on="SI" data-off="NO">\
-                        </div>\
-                        <div class="col-lg-1" align="right">\
-                                <a onClick=""><i style="color: red;" class="fas fa-trash-alt fa-2x"></i></a>\
-                            </div>\
-                    </div>\
-                </div>\
-            </div>\
-        </div>\
-    </div>';
-
-    $('#lista_salida').append(add_new_producto_lista);
-    //mostrar en formato boostrap el checkbox
-    $("input:last").bootstrapToggle();
-}
-
 function show_search_box()
 {
     $('#tbl_productos').DataTable({
@@ -171,6 +27,13 @@ function show_search_box()
  });
 }
 
+function initializeSelect2(selectElementObj) 
+{
+    selectElementObj.select2({
+        theme: "bootstrap-5",
+    });
+}
+
 $(document).ready(function() 
 {
     $(".custom-file-input").on("change", function() {
@@ -179,7 +42,11 @@ $(document).ready(function()
 });
 
  //para el select2 multiple
- $('.js-example-basic-multiple').select2();
+ $('.js-example-basic-multiple').select2(
+    {
+        theme: "bootstrap-5",
+        //dropdownParent: $('#body-inner'),
+    });;
 
   //para el select2 de salidas
   $('.js-example-data-array').select2(
@@ -1625,6 +1492,183 @@ $('#idestado_civil').change(function() {
 //FIN DEL DOCUMENT READY
 });
 
+
+var y = 0;
+var aux_x = 0;
+function mostrar_refs(x)
+{  
+    var campos_max = 11;   //max de 10 campos
+    if (y < campos_max) 
+    {
+        //agregar modal de las referencias
+        $('#modalref').append('<div id="notas_referencias'+x+'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">\
+            <div class="modal-dialog modal-lg" role="document">\
+                <div class="modal-content">\
+                    <div class="modal-header bg-secundary text-black">\
+                        <h5 class="modal-title" id="my-modal-title">Notas de la referencia</h5>\
+                        <button class="close" data-dismiss="modal" aria-label="Close">\
+                            <span aria-hidden="true">&times;</span>\
+                        </button>\
+                    </div>\
+                    <div class="modal-body">\
+                            <div class="form-group">\
+                                 <textarea class="form-control" name="notas_ref[]" title="Ingrese las notas requeridas" id="notas" placeholder="Ingrese las notas requeridas" maxlength="50000" style="height: 400px;"></textarea>\
+                            </div>\
+                    </div>\
+                </div>\
+            </div>\
+        </div>');
+
+        $('#listas').append("<div id='card_ref' class='card'>\
+                <div class='card-body'>\
+                        <div class='row'>\
+                            <div class='form-group col-lg-6'>\
+                                <label for='nombre_ref1'>Nombre Referencia</label>\
+                                <input type='text' class='form-control' name='nombre_ref[]' required>\
+                            </div>\
+                            <div class='col-lg-2' align='center'>\
+                            <label>Notas</label><br>\
+                                <a data-toggle='modal' data-target='#notas_referencias"+x+"' href='#'><i class='far fa-clipboard fa-4x'></i></a>\
+                            </div>\
+                            <div class='form-group col-lg-3'>\
+                                <label for='relacion_ref1'>Relación</label>\
+                                <input type='text' class='form-control' name='relacion_ref[]' required>\
+                            </div>\
+                            <div class='form-group col-lg-6'>\
+                                <label for='dom_ref1'>Domicilio Referencia</label>\
+                                <input type='text' class='form-control' name='dom_ref[]' required>\
+                            </div>\
+                            <div class='col-lg-2'></div>\
+                            <div class='form-group col-lg-3'>\
+                                <label for='tel_ref1'>Teléfono</label>\
+                                <input type='text' class='form-control' placeholder='exp. 9610000000' name='tel_ref[]' required >\
+                            </div>\
+                            <div class='col-lg-1' align='right'>\
+                                <a href='#' class='remover_campo'><i style='color: red;' class='fas fa-trash-alt fa-2x'></i></a>\
+                            </div>\
+                        </div>\
+            </div>\
+        </div>");
+        x++;
+        y++;
+        aux_x = x;
+    }
+    $('#button_agre').remove();
+    $('#button_agregar').append('<button id="button_agre" onclick="mostrar_refs('+x+');" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Añadir Referencia</button>');
+    //console.log("x:", x);
+    //console.log("y:", y);
+}
+
+//CLIENTES
+// Remover o div anterior
+$('#listas').on("click",".remover_campo",function(e) 
+{
+    e.preventDefault();
+    //cuando se borra una referencia en editar cliente tiene bug porque quedan los modelas y entonces se cruzan las notas
+    //de mientras va a quedar así
+
+    //luego todo el card
+    $(this).parents("#card_ref").remove();
+
+    $('#button_agre').remove();
+    y--;
+    var flag = parseInt($('#contador_cards').val()) + 1;
+    if(flag == 0)
+    {
+        $('#button_agregar').append('<button id="button_agre" onclick="mostrar_refs('+aux_x+');" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Añadir Referencia</button>');
+    }
+    else
+    {
+        $('#button_agregar').append('<button id="button_agre" onclick="mostrar_refs('+flag+');" class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Añadir Referencia</button>');
+    }
+    //disminuir contador de editar referencias en clientes
+    $('#contador_cards').val(flag-2);
+});
+
+//inventarios SALIDAS
+//remover las cards de salidas con la funcion dinamica que NO será asi 
+/*
+$('#lista_salida').on("click",".remover_salida",function(e) 
+{
+    e.preventDefault();
+    $(this).parents("#card_salida").remove();
+});
+*/
+var cards_showed = 0;
+var disponibles = [1,2,3,4,5];
+function borrar_card_salida(idcard)
+{
+    $("#card_salida"+idcard).attr("hidden","hidden");
+    cards_showed = cards_showed - 1;
+    disponibles.push(idcard);
+    //console.log(disponibles);
+}
+
+//lo de ventas, añadir productos a salida o venta
+function add_salida()
+{
+    $('#btn_vender').removeAttr("disabled");
+    if(cards_showed < 5)
+    {
+        $('#card_salida'+disponibles[0]).removeAttr("hidden");
+        disponibles.shift();
+        cards_showed = cards_showed + 1;
+    }
+    //console.log(disponibles);
+    //si es dinamico por aqui va insetar todo el codigo del formulario
+    //el checkbox de si tiene iva o no
+    /*
+    <div class="col-lg-1">\
+        <label for="serializado">Incluye IVA</label>\
+        <input id="incluye_iva" name="incluye_iva[]" value="si_iva" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="m" data-on="SI" data-off="NO">\
+    </div>\
+    */
+    //se que no es lo adecuado, pero no es suficiente el tiempo para hacerlo como se debe, y va a funcionar de todas formas, lo que se hara será
+    //poner 5 posibles productos ya en html/php y solo ir mostrando o ocultando las cards cuando se necesite, enves de irlos generando dinamicamente
+    /*
+    //este codigo era para generando dinamicamente con jquery, pero tenia muchos bugs y complicaba las cosas
+    $('#lista_salida').append(add_new_producto_lista);
+    $('#btn_vender').removeAttr("disabled");
+    //mostrar en formato boostrap el checkbox
+    //$("input:last").bootstrapToggle();
+    //cargar los datos al select
+    var action = 'selectAll_productos';
+    $.ajax({
+        url: 'ajax.php',
+        type: "POST",
+        async: true,
+        data: {action:action},
+        success: function(response) {
+            //$('#prueba').html(response;
+            if (response == 0) 
+            {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocurrio un error, intente de nuevo!',
+                }).then((result) => {
+                if (result.isConfirmed){
+                    window.location.href = "inv_salidas.php";
+                    }
+                })   
+            }
+            else
+            {
+                //todo bien, cargar los datos
+                var data = $.parseJSON(response);
+                $(".identificadorpro").empty();
+                $(".identificadorpro").append(data.data_producto);
+                $(".identificadorpro").select2({theme: "bootstrap-5",});
+            }
+        },
+        error: function(error) 
+        {
+            //$('#prueba').val('error');
+        }
+   });     
+   */
+}
+
 //buscar por IDCliente
 //funcion para autocompletar cuando buscamos un cliente por ID o nombre
 //sentencia sql con nombre y ID: SELECT * FROM cliente WHERE nombre LIKE '%$nombre%'
@@ -1683,6 +1727,105 @@ $('#nom_cliente').on('select2:select', function (e)
         }
     }); 
 });
+
+var salida_costo = 0;
+var salida_costo_iva = 0;
+var salida_costo_contado = 0;
+var salida_costo_especial = 0;
+var salida_costo_cr1 = 0;
+var salida_costo_cr2 = 0;
+var precio_actual = 0;
+//poder precio cuando eleja que tipo de precio con base en el producto selecionado
+function mostrar_precios(id)
+{
+    var id_tipo_precio = $("#tipo_precio_"+id).val();
+    var id_producto = $("#identificador_pro_"+id).val();
+    let cantidad = $("#cantidad_"+id).val();
+
+    //console.log(id_tipo_precio);
+    //console.log(id);
+    //console.log(id_producto);
+
+    var action = 'findPrecioProducto';
+    $.ajax({
+        url: 'ajax.php',
+        type: "POST",
+        async: true,
+        data: {action:action,idproducto:id_producto,idtipo_precio:id_tipo_precio},
+        success: function(response) 
+        {
+            //$('#prueba').html(response);
+            if (response == 0) 
+            {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocurrio un error, intente de nuevo!',
+                }).then((result) => {
+                if (result.isConfirmed){
+                    window.location.href = "inv_salidas.php";
+                    }
+                })   
+            }
+            else
+            {
+                //todo bien, cargar los datos (precios)
+                var data = $.parseJSON(response);
+                //console.log(data.costo);
+                salida_costo = parseInt(data.costo)*cantidad;
+                salida_costo_iva = parseInt(data.costo_iva)*cantidad;
+                salida_costo_contado = parseInt(data.costo_contado)*cantidad;
+                salida_costo_especial = parseInt(data.costo_especial)*cantidad;
+                salida_costo_cr1 = parseInt(data.costo_cr1)*cantidad;
+                salida_costo_cr2 = parseInt(data.costo_cr2)*cantidad;
+
+                if(id_tipo_precio == "costo")
+                {
+                    $('#precio_'+id).val(salida_costo);
+                    precio_actual = salida_costo;
+                }
+                else if(id_tipo_precio == "costo_iva")
+                {
+                    $('#precio_'+id).val(salida_costo_iva);
+                    precio_actual = salida_costo_iva;
+                }
+                else if(id_tipo_precio == "costo_contado")
+                {
+                    $('#precio_'+id).val(salida_costo_contado);
+                    precio_actual = salida_costo_contado;
+                }
+                else if(id_tipo_precio == "costo_especial")
+                {
+                    $('#precio_'+id).val(salida_costo_especial);
+                    precio_actual = salida_costo_especial;
+                }
+                else if(id_tipo_precio == "costo_cr1")
+                {
+                    $('#precio_'+id).val(salida_costo_cr1);
+                    precio_actual = salida_costo_cr1;
+                }
+                else if(id_tipo_precio == "costo_cr2")
+                {
+                    $('#precio_'+id).val(salida_costo_cr2);
+                    precio_actual = salida_costo_cr2;
+                }
+            }
+        },
+        error: function(error) 
+        {
+            //$('#prueba').val('error');
+        }
+   }); 
+}
+
+//multiplicar cuando cambie cantidad
+function multiplicar_precio(id)
+{
+    let cantidad = $("#cantidad_"+id).val();
+    //console.log(precio_actual);
+    $('#precio_'+id).val(parseInt(precio_actual*cantidad));
+}
+
 /*
 $("#nom_cliente").autocomplete({
         minLength: 2,
@@ -2079,7 +2222,6 @@ $('#modalidad_pago').change(function(e)
         $('#dias_pago_semanal').removeAttr("disabled");
     }
 });
-
 /*esto ya no, porque ahora ya no se agregan modalidades de pago, estan predefinidas
 $('#modalidad_pago').change(function(e) 
 {
@@ -2114,7 +2256,7 @@ $('#modalidad_pago').change(function(e)
 });
 */
 
-//funsion para quitar options repetidos
+//funcion para quitar options repetidos
 function remove_repeated_option(idselect)
 {
     var code = {};
