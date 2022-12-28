@@ -682,20 +682,21 @@ if (!empty($_POST))
                     <h4 align="center"><strong>VIVIENDA</strong></h4>
                     <div class="row" onclick="mostrar_campo_renta()">
 
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg-2">
                             <label>Habita en casa:</label>
                         </div>
 
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg-2">
                             <div class="form-check">
-                              <input class="form-check-input" type="radio" name="tipo_vivienda_cliente" value="Propia" id="flexRadioDefault1c" checked>
+                              <input class="form-check-input" type="radio" name="tipo_vivienda_cliente" value="Propia" id="flexRadioDefault1c">
                               <label class="form-check-label" for="flexRadioDefault1c">
                                 Propia
                               </label>
                             </div>
                         </div>
 
-                        <div class="form-group col-lg-3">
+                        &nbsp;&nbsp;&nbsp;
+                        <div class="form-group col-lg-2">
                             <div class="form-check">
                               <input class="form-check-input" type="radio" name="tipo_vivienda_cliente" value="Familiares" id="flexRadioDefault3c">
                               <label class="form-check-label" for="flexRadioDefault3c">
@@ -704,7 +705,8 @@ if (!empty($_POST))
                             </div>
                         </div>
 
-                        <div class="form-group col-lg-3">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="form-group col-lg-2">
                             <div class="form-check">
                               <input class="form-check-input" type="radio" name="tipo_vivienda_cliente" value="Rentada" id="flexRadioDefault2c">
                               <label class="form-check-label" for="flexRadioDefault2c">
@@ -713,20 +715,92 @@ if (!empty($_POST))
                             </div>
                         </div>
                         <div class="col-lg-1"></div>
-                        <div class="col-lg-2">
-                            <label for="edad_residencia">Años de Residencia:</label>
-                        </div>
-                        <div class="form-group col-lg-2">
+
+                        <div class="form-group col-lg-3">
+                            <div>
+                                <label for="edad_residencia">Años de Residencia</label>
+                            </div>
                             <div class="row">
-                                <div class="col-md-8">
-                                    <input type="number" value="0" class="form-control" placeholder="" name="edad_residencia" id="edad_residencia" required> 
+                                <div class="col-md-6">
+                                    <input required type="number" class="form-control" placeholder="" name="edad_residencia" id="edad_residencia"> 
                                 </div>
                                 Años
                             </div>
-                        </div> 
-                        <div class="col-lg-1"></div>                       
+                        </div>                        
 
+                        <div class="form-group col-lg-4">
+                            <label for="ndependientes">N° de dependientes Económicos</label>
+                            <input required type="number" class="form-control" placeholder="" name="ndependientes" id="ndependientes">
+                        </div>
+                        <!--<div class="col-lg-1"></div>-->
+
+                        <div class="form-group col-lg-4" id="div_renta" hidden>
+                            <label for="renta_mensual">Renta Mensual</label>
+
+                            <div class="input-group mb-3">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input name="renta_mensual" id="renta_mensual" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
+                              <div class="input-group-append">
+                                <span class="input-group-text">.00</span>
+                              </div>
+                            </div>
+                            <!--<input type="text" name="renta_mensual" id="renta_mensual" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="" data-type="currency" placeholder="$10,000.00" class="form-control">-->
+                        </div>
+
+                    </div>
+            </div>
+        </div>
+        <!--
+        <div class="card">
+            <div class="card-body">
+                    <h4 align="center"><strong>VIVIENDA</strong></h4>
+                    <div class="row" onclick="mostrar_campo_renta()">
+
+                        <div class="form-group col-lg-2">
+                            <label>Habita en casa:</label>
+                        </div>
+
+                        <div class="form-group col-lg-2">
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="tipo_vivienda_cliente" value="Propia" id="flexRadioDefault1c" checked>
+                              <label class="form-check-label" for="flexRadioDefault1c">
+                                Propia
+                              </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-lg-2">
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="tipo_vivienda_cliente" value="Familiares" id="flexRadioDefault3c">
+                              <label class="form-check-label" for="flexRadioDefault3c">
+                                Familiares
+                              </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-lg-2">
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="tipo_vivienda_cliente" value="Rentada" id="flexRadioDefault2c">
+                              <label class="form-check-label" for="flexRadioDefault2c">
+                                Rentada
+                              </label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-1"></div>
                         <div class="col-lg-3">
+                            <label for="edad_residencia">Años de Residencia:</label>
+                        </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="number" value="0" class="form-control" placeholder="" name="edad_residencia" id="edad_residencia" required> 
+                                </div>
+                                Años
+                            </div>                    
+
+                        <div class="col-lg-4">
                             <label for="ndependientes">N° de dependientes Económicos:</label>
                         </div>
                         <div class="form-group col-lg-2">
@@ -734,12 +808,10 @@ if (!empty($_POST))
                                 <div class="col-md-8">
                                     <input type="number" value="0" class="form-control" placeholder="" name="ndependientes" id="ndependientes" required>
                                 </div>
-                                Años
                             </div>
 
                             
                         </div>
-                        <!--<div class="col-lg-1"></div>-->
 
                         <div class="form-group col-lg-4" id="div_renta" hidden>
                             <label for="renta_mensual">Renta Mensual</label>
@@ -753,12 +825,12 @@ if (!empty($_POST))
                                 <span class="input-group-text">.00</span>
                               </div>
                             </div>
-                            <!--<input type="text" name="renta_mensual" id="renta_mensual" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="" data-type="currency" placeholder="$10,000.00" class="form-control">-->
                         </div>
 
                     </div>
             </div>
         </div>
+            -->
         <br>
 
         <!-- notas de cada referencia en un array llamano notas[] -->

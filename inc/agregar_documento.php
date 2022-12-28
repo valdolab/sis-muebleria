@@ -89,7 +89,6 @@ if (!empty($_GET['msgdoc']))
                                 $sql_serie = mysqli_query($conexion,"SELECT valor_char from configuracion where configuracion = 'serie'");
                                 $serie_valor = mysqli_fetch_array($sql_serie);
                                 $num_serie = $serie_valor['valor_char'];
-
                              ?>
                             <input type="number" class="form-control" value="<?php echo $num_serie; ?>" placeholder="Ingrese Serie" name="serie" id="serie">
                         </div>

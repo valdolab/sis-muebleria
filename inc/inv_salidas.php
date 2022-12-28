@@ -179,14 +179,13 @@ include "accion/conexion.php";
         </div>
 
         <div align="right" class="col-lg-2">
-            <!-- <a data-toggle="modal" data-target="#nuevo_documento"  class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nuevo documento</a> -->
+            <a href="#" class="btn btn-primary" type="button" ><i class="fas fa-list"></i> Salidas realizadas</a>
         </div>
     </div>
 </div>
 </div>
 </div>
 
-<br>
 
 <form action="" method="post" autocomplete="on" id="formAdd_salida">
 <div class="col-lg-12">
@@ -203,9 +202,9 @@ include "accion/conexion.php";
                                 if (mysqli_num_rows($result) > 0) {  
                                   while($row = mysqli_fetch_assoc($result))
                                   {
-                                    if($_SESSION['id_usuario'] == $row["idusuario"])
+                                    if($_SESSION['iduser'] == $row["idusuario"])
                                     {
-                                        echo "<option value='".$row["idusuario"]."'>".$row["usuario_acceso"]."</option>";
+                                        echo "<option selected value='".$row["idusuario"]."'>".$row["usuario_acceso"]."</option>";
                                     }
                                     else
                                     {
@@ -330,7 +329,31 @@ include "accion/conexion.php";
 
                         <div class="form-group col-lg-2">
                             <label for="folio_venta">Folio de venta</label>
-                            <input type="text" class="form-control" name="folio_venta" id="folio_venta">
+                            <select id='folio_venta' name='folio_venta' class='form-control' readonly style="pointer-events:none;">
+                                <?php
+                                #codigo para la lista de documentos
+                                $result = mysqli_query($conexion,"SELECT iddocumento,name_documento,folio,serie,idsucursal FROM documento");                        
+                                if (mysqli_num_rows($result) > 0) 
+                                {
+                                  while($row = mysqli_fetch_assoc($result))
+                                  {
+                                    if($_SESSION['idsucursal'] == $row["idsucursal"])
+                                    {
+                                        echo "<option selected value='".$row["iddocumento"]."'>".$row["folio"]."-".$row["serie"]."</option>";
+                                        //convertir serie a numero
+                                        $num_serie = intval($row["serie"]);
+                                        $num_letra = $row["folio"];
+                                    }
+                                    else
+                                    {
+                                        echo "<option value='".$row["iddocumento"]."'>".$row["folio"]."-".$row["serie"]."</option>";
+                                    }
+                                  }
+                                }
+                                ?>
+                                <option value=""></option>
+                            </select> 
+                            <input hidden readonly value="<?php echo $num_serie; ?>" type="number" class="form-control" name="folio_venta_serie" id="folio_venta_serie">
                         </div>
                         
                         <div class="form-group col-lg-3">
@@ -377,48 +400,53 @@ include "accion/conexion.php";
                             </select> 
                         </div>
 
-                        <div class="form-group col-lg-1">
+                        <div class="form-group col-lg">
                             <label for="n_pagos">No. pagos</label>
-                            <input type="text" class="form-control" name="n_pagos" id="n_pagos">
+                            <input type="number" class="form-control" name="n_pagos" id="n_pagos" step="any">
                         </div>
 
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col-lg">
                             <label for="pago_parcial">Pago parcial</label>
-                            <input type="text" class="form-control" name="pago_parcial" id="pago_parcial">
+                            <input type="number" class="form-control" name="pago_parcial" id="pago_parcial" step="any">
                         </div>
 
                         <div class="form-group col-lg-2">
                             <label for="n_pagos">1er día de pago</label>
-                            <input type="date" class="form-control" name="n_pagos" id="n_pagos">
+                            <input type="date" class="form-control" name="primer_dia_pago" id="primer_dia_pago" required>
                         </div>
 
-                        <div class="form-group col-lg-2">
-                            <label for="dias_pago_semanal">Días de pago semanal</label>
+                        <div class="form-group col-lg">
+                            <label for="dias_pago_semanal">Semanal</label>
                             <select id='dias_pago_semanal' name='dias_pago_semanal' class='form-control' disabled required>
                                 <option selected hidden value=''>Seleccione una opción</option>
-                                <option value="lu">Lunes</option>
-                                <option value="ma">Martes</option>
-                                <option value="mi">Miercoles</option>
-                                <option value="ju">Jueves</option>
-                                <option value="vi">Viernes</option>
-                                <option value="sa">Sábado</option>
-                                <option value="do">Domingo</option>
+                                <option value="lunes">Lunes</option>
+                                <option value="martes">Martes</option>
+                                <option value="miercoles">Miercoles</option>
+                                <option value="jueves">Jueves</option>
+                                <option value="viernes">Viernes</option>
+                                <option value="sabado">Sábado</option>
+                                <option value="domingo">Domingo</option>
                             </select> 
                         </div>
 
                         <div class="form-group col-lg">
-                            <label for="dias_pago_quincenal">Día de pago quin</label>
+                            <label for="dias_pago_quincenal">Quincenal</label>
                             <input type="number" class="form-control" name="dias_pago_quincenal" id="dias_pago_quincenal" disabled required>
                         </div>
 
                         <div class="form-group col-lg">
-                            <label for="dias_pago_mensual">Día de pago mensual</label>
-                            <input type="number" class="form-control" name="dias_pago_mensual" id="dias_pago_mensual" disabled required>
+                            <label for="dias_pago_quincenal">Quincenal 2</label>
+                            <input type="number" class="form-control" name="dias_pago_quincenal_2" id="dias_pago_quincenal_2" disabled required>
                         </div>
 
                         <div class="form-group col-lg">
+                            <label for="dias_pago_mensual">Mensual</label>
+                            <input type="number" class="form-control" name="dias_pago_mensual" id="dias_pago_mensual" disabled required>
+                        </div>
+
+                        <div class="form-group col-lg-1">
                             <label for="dias_pago_mensual">Enganche</label>
-                            <input type="number" class="form-control" name="enganche_dado" id="enganche_dado" required>
+                            <input type="number" class="form-control" name="enganche_dado" id="enganche_dado" step="any">
                         </div>
 
                         <div align="right" class="form-group col-lg">
@@ -444,7 +472,7 @@ include "accion/conexion.php";
                         <div class="col-lg-3">
                             <label for="identificador_pro">Identificador</label>
                             <select class="form-control js-example-data-array identificadorpro" id="identificador_pro_1" name="identificador_pro_1">
-                            <option selected hidden></option>
+                            <option value=0 selected hidden></option>
                             <?php 
                                     #codigo para la lista de idclientes que se extraen de la base de datos
                                     $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");                        
@@ -469,9 +497,9 @@ include "accion/conexion.php";
                         <div class="col-lg-2">
                             <label for="tipo_precio">Tipo de precio</label>
                               <select onchange="mostrar_precios(1)" class="form-control" id="tipo_precio_1" name="tipo_precio_1">
-                                <option selected hidden></option>
-                                <option value="costo">Costo normal</option>
-                                <option value="costo_iva">Costo con iva</option>
+                                <option value=0 selected hidden></option>
+                                <!--<option value="costo">Costo normal</option>
+                                <option value="costo_iva">Costo con iva</option>-->
                                 <option value="costo_contado">Costo con iva contado</option>
                                 <option value="costo_especial">Costo con iva especial</option>
                                 <option value="costo_cr1">Costo con iva credito 1</option>
@@ -484,7 +512,7 @@ include "accion/conexion.php";
                               <div class="input-group-prepend">
                                 <span class="input-group-text">$</span>
                               </div>
-                              <input name="precio_1" id="precio_1" type="number" class="form-control" aria-label="Monto en pesos mexicanos">
+                              <input name="precio_1" id="precio_1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" step="any">
                             </div>
                         </div>
                         <div class="col-lg-1" align="right">
@@ -506,7 +534,7 @@ include "accion/conexion.php";
                         <div class="col-lg-3">
                             <label for="identificador_pro">Identificador</label>
                             <select class="form-control js-example-data-array identificadorpro" id="identificador_pro_2" name="identificador_pro_2">
-                            <option selected hidden></option>
+                            <option value=0 selected hidden></option>
                             <?php 
                                     #codigo para la lista de idclientes que se extraen de la base de datos
                                     $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");                        
@@ -522,7 +550,7 @@ include "accion/conexion.php";
                         </div>
                         <div class="col-lg-1">
                             <label for="cantidad">Cantidad</label>
-                            <input type="number" value=1 class="form-control" name="cantidad_2" id="cantidad_2">
+                            <input onchange="multiplicar_precio(2)" type="number" value=1 class="form-control" name="cantidad_2" id="cantidad_2">
                         </div>
                         <div class="col-lg-2">
                             <label for="origen">Origen</label>
@@ -530,10 +558,10 @@ include "accion/conexion.php";
                         </div>
                         <div class="col-lg-2">
                             <label for="tipo_precio">Tipo de precio</label>
-                              <select class="form-control" id="tipo_precio_2" name="tipo_precio_2">
-                                <option selected hidden></option>
-                                <option value="costo_normal">Costo normal</option>
-                                <option value="costo_iva">Costo con iva</option>
+                              <select onchange="mostrar_precios(2)" class="form-control" id="tipo_precio_2" name="tipo_precio_2">
+                                <option value=0 selected hidden></option>
+                                <!--<option value="costo">Costo normal</option>
+                                <option value="costo_iva">Costo con iva</option>-->
                                 <option value="costo_contado">Costo con iva contado</option>
                                 <option value="costo_especial">Costo con iva especial</option>
                                 <option value="costo_cr1">Costo con iva credito 1</option>
@@ -568,7 +596,7 @@ include "accion/conexion.php";
                         <div class="col-lg-3">
                             <label for="identificador_pro">Identificador</label>
                             <select class="form-control js-example-data-array identificadorpro" id="identificador_pro_3" name="identificador_pro_3">
-                            <option selected hidden></option>
+                            <option value=0 selected hidden></option>
                             <?php 
                                     #codigo para la lista de idclientes que se extraen de la base de datos
                                     $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");                        
@@ -584,7 +612,7 @@ include "accion/conexion.php";
                         </div>
                         <div class="col-lg-1">
                             <label for="cantidad">Cantidad</label>
-                            <input type="number" value=1 class="form-control" name="cantidad_3" id="cantidad_3">
+                            <input onchange="multiplicar_precio(3)" type="number" value=1 class="form-control" name="cantidad_3" id="cantidad_3">
                         </div>
                         <div class="col-lg-2">
                             <label for="origen">Origen</label>
@@ -592,10 +620,10 @@ include "accion/conexion.php";
                         </div>
                         <div class="col-lg-2">
                             <label for="tipo_precio">Tipo de precio</label>
-                              <select class="form-control" id="tipo_precio_3" name="tipo_precio_3">
-                                <option selected hidden></option>
-                                <option value="costo_normal">Costo normal</option>
-                                <option value="costo_iva">Costo con iva</option>
+                              <select onchange="mostrar_precios(3)" class="form-control" id="tipo_precio_3" name="tipo_precio_3">
+                                <option value=0 selected hidden></option>
+                                <!--<option value="costo">Costo normal</option>
+                                <option value="costo_iva">Costo con iva</option>-->
                                 <option value="costo_contado">Costo con iva contado</option>
                                 <option value="costo_especial">Costo con iva especial</option>
                                 <option value="costo_cr1">Costo con iva credito 1</option>
@@ -630,7 +658,7 @@ include "accion/conexion.php";
                         <div class="col-lg-3">
                             <label for="identificador_pro">Identificador</label>
                             <select class="form-control js-example-data-array identificadorpro" id="identificador_pro_4" name="identificador_pro_4">
-                            <option selected hidden></option>
+                            <option value=0 selected hidden></option>
                             <?php 
                                     #codigo para la lista de idclientes que se extraen de la base de datos
                                     $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");                        
@@ -646,7 +674,7 @@ include "accion/conexion.php";
                         </div>
                         <div class="col-lg-1">
                             <label for="cantidad">Cantidad</label>
-                            <input type="number" value=1 class="form-control" name="cantidad_4" id="cantidad_4">
+                            <input onchange="multiplicar_precio(4)" type="number" value=1 class="form-control" name="cantidad_4" id="cantidad_4">
                         </div>
                         <div class="col-lg-2">
                             <label for="origen">Origen</label>
@@ -654,10 +682,10 @@ include "accion/conexion.php";
                         </div>
                         <div class="col-lg-2">
                             <label for="tipo_precio">Tipo de precio</label>
-                              <select class="form-control" id="tipo_precio_4" name="tipo_precio_4">
-                                <option selected hidden></option>
-                                <option value="costo_normal">Costo normal</option>
-                                <option value="costo_iva">Costo con iva</option>
+                              <select onchange="mostrar_precios(4)" class="form-control" id="tipo_precio_4" name="tipo_precio_4">
+                                <option value=0 selected hidden></option>
+                                <!--<option value="costo">Costo normal</option>
+                                <option value="costo_iva">Costo con iva</option>-->
                                 <option value="costo_contado">Costo con iva contado</option>
                                 <option value="costo_especial">Costo con iva especial</option>
                                 <option value="costo_cr1">Costo con iva credito 1</option>
@@ -692,7 +720,7 @@ include "accion/conexion.php";
                         <div class="col-lg-3">
                             <label for="identificador_pro">Identificador</label>
                             <select class="form-control js-example-data-array identificadorpro" id="identificador_pro_5" name="identificador_pro_5">
-                            <option selected hidden></option>
+                            <option value=0 selected hidden></option>
                             <?php 
                                     #codigo para la lista de idclientes que se extraen de la base de datos
                                     $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");                        
@@ -708,7 +736,7 @@ include "accion/conexion.php";
                         </div>
                         <div class="col-lg-1">
                             <label for="cantidad">Cantidad</label>
-                            <input type="number" value=1 class="form-control" name="cantidad_5" id="cantidad_5">
+                            <input onchange="multiplicar_precio(5)" type="number" value=1 class="form-control" name="cantidad_5" id="cantidad_5">
                         </div>
                         <div class="col-lg-2">
                             <label for="origen">Origen</label>
@@ -716,10 +744,10 @@ include "accion/conexion.php";
                         </div>
                         <div class="col-lg-2">
                             <label for="tipo_precio">Tipo de precio</label>
-                              <select class="form-control" id="tipo_precio_5" name="tipo_precio_5">
-                                <option selected hidden></option>
-                                <option value="costo_normal">Costo normal</option>
-                                <option value="costo_iva">Costo con iva</option>
+                              <select onchange="mostrar_precios(5)" class="form-control" id="tipo_precio_5" name="tipo_precio_5">
+                                <option value=0 selected hidden></option>
+                                <!--<option value="costo">Costo normal</option>
+                                <option value="costo_iva">Costo con iva</option>-->
                                 <option value="costo_contado">Costo con iva contado</option>
                                 <option value="costo_especial">Costo con iva especial</option>
                                 <option value="costo_cr1">Costo con iva credito 1</option>
@@ -744,16 +772,67 @@ include "accion/conexion.php";
         </div>
     </div>
     <!-- fin card5 -->
+</div>
 
+<div id="costos_calculados" hidden>
+    <div class="row">
+        <div class="col-lg-9">
+            <!-- 
+            aqui va el costo calculado sin iva y sin descuento el primer subtotal
+            -->
+        </div>
+        <div class="col-lg-2" align="right">
+            <h4><strong id="subtotal1"></strong></h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9" align="right">
+            <h4>IVA</h4>
+        </div>
+        <div class="col-lg-2" align="right">
+            <h4><strong id="ivas"></strong></h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9" align="right">
+            <h4>SubTotal</h4>
+        </div>
+        <div class="col-lg-2" align="right">
+            <h4><strong id="subtotal2"></strong></h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9" align="right">
+            <h4>Descuento</h4>
+        </div>
+        <div class="col-lg-2" align="right">
+            <input id="descuento_venta" type="number" name="descuento_venta" class="form-control">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9" align="right">
+            <h3>TOTAL</h3>
+        </div>
+        <div class="col-lg-2" align="right" id="mostrar_total">
+            <h3><strong id="total_general"></strong></h3>
+        </div>
+    </div>
+    <input type="number" name="subtotal1_flag" id="subtotal1_flag" readonly hidden>
+    <input type="number" name="ivas_flag" id="ivas_flag" readonly hidden>
+    <input type="number" name="subtotal2_flag" id="subtotal2_flag" readonly hidden>
+    <input type="number" name="total_flag" id="total_flag" readonly hidden>
 </div>
 
 <div class="row">
     <div class="col-lg-1"></div>
-    <div class="form-group col-lg-10" align="right">
-        <button disabled id="btn_vender" type="submit" class="btn btn-block btn-primary"><i class="fas fa-cash-register"></i> Vender</a>
+    <div class="form-group col-lg-5">
+        <button id="btn_vender"  onclick="calcular_cuenta()" type="button" class="btn btn-block btn-primary" disabled><i class="fas fa-cash-register"></i> Calcular</button>
+    </div>
+    <div class="col-lg-5">
+        <button id="btn_haz_venta" disabled type="submit" class="btn btn-block btn-success"><i class="fas fa-money-check"></i> Vender</button>
     </div>
 </div>
-
+<input hidden readonly type="text" name="action" id="action" value="insert_salida_venta">
 </form>
 <br><br>
 

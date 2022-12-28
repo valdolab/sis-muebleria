@@ -200,7 +200,7 @@ include "accion/conexion.php";
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg text-black">
-                <h5 class="modal-title" id="my-modal-title">Agregar nuevo proveedor</h5>
+                <h5 class="modal-title" id="my-modal-title">Agregar proveedor</h5>
                 <button class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -217,13 +217,13 @@ include "accion/conexion.php";
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="correo">Teléfono</label>
-                                <input type="text" class="form-control" name="celProveedor" id="celProveedor" required maxlength="99">
+                                <input type="text" class="form-control" name="telProveedor" id="telProveedor" required maxlength="99">
                         </div>
                         </div>
                     </div>
 
-                    <input value="insert_proveedor" name="action" id="action" hidden>
-                    <input value="nuevo_proveedor" name="flagid_Proveedor" id="flagid_Proveedor" hidden>
+                    <input value="insert_proveedor" name="action" id="action" hidden readonly>
+                    <input value="nuevo_proveedor" name="flagid_Proveedor" id="flagid_Proveedor" hidden readonly>
                     <div align="right">
                         <input type="submit" value="Agregar" class="btn btn-primary">
                     </div>
@@ -254,16 +254,34 @@ include "accion/conexion.php";
 </div>
 </div>
 
-<br>
-
-<div class="row">
-<div class="col-lg-1"></div>
-<div class="col-lg-10">
+<form action="" method="post" autocomplete="on" id="formAdd_entrada">
+<div class="col-lg-12">
 <div class="card"> 
             <div class="card-body">
                     <div class="row">
-
-                        <div class="form-group col-lg-5">
+                        <div class="col-lg">
+                            <label for="Comprador">Comprador</label>
+                            <select class="form-control js-example-data-array" id="comprador" name="comprador">
+                                <?php
+                                #codigo para la lista de sucursales que se extraen de la base de datos
+                                $result = mysqli_query($conexion,"SELECT idusuario,usuario_acceso,nombre FROM usuario order by usuario_acceso desc");                        
+                                if (mysqli_num_rows($result) > 0) {  
+                                  while($row = mysqli_fetch_assoc($result))
+                                  {
+                                    if($_SESSION['iduser'] == $row["idusuario"])
+                                    {
+                                        echo "<option selected value='".$row["idusuario"]."'>".$row["usuario_acceso"]."</option>";
+                                    }
+                                    else
+                                    {
+                                        echo "<option value='".$row["idusuario"]."'>".$row["usuario_acceso"]."</option>";
+                                    }
+                                  }
+                                }
+                                ?>
+                              </select>
+                        </div>
+                        <div class="form-group col-lg-4">
                             <label for="nombre_aval">Proveedor</label>
                             <?php 
                                 if($_SESSION['rol'] == "SuperAdmin" or $_SESSION['rol'] == "Administrador")
@@ -283,7 +301,7 @@ include "accion/conexion.php";
                                     <?php 
                                 } 
                              ?>
-                                <select class="form-control" id="proveedor" name="proveedor" required>
+                                <select class="form-control js-example-data-array" id="proveedor" name="proveedor" required>
                                 <option selected hidden>Seleccione una opción</option>
                                 <?php
                                 $result = mysqli_query($conexion,"SELECT idproveedor,nombre_proveedor FROM proveedor");                        
@@ -299,17 +317,17 @@ include "accion/conexion.php";
 
                         <div class="form-group col-lg-2">
                             <label for="domicilio_aval">Teléfono</label>
-                            <input type="text" class="form-control" placeholder="exp. 9610000000" name="tel_cliente" id="tel_cliente" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+                            <input type="text" class="form-control" placeholder="exp. 9610000000" name="tel_proveedor" id="tel_proveedor" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
                         </div>
 
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg">
                             <label for="trabajo_aval">Fecha</label>
                             <input type="date" value="<?php echo date('Y-m-d'); ?>" class="form-control" placeholder="" name="fecha" id="fecha">
                         </div>
 
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col-lg-3">
                             <label for="folio_venta">Folio de compra</label>
-                            <input type="text" class="form-control" name="folio_venta" id="folio_venta">
+                            <input type="text" class="form-control" name="folio_compra" id="folio_compra">
                         </div>
                         
                         <div class="form-group col-lg-3">
@@ -355,8 +373,16 @@ include "accion/conexion.php";
                             #codigo para la lista de sucursales que se extraen de la base de datos
                             $result = mysqli_query($conexion,"SELECT idsucursales,sucursales FROM sucursales");                        
                             if (mysqli_num_rows($result) > 0) {  
-                              while($row = mysqli_fetch_assoc($result)){
-                              echo "<option value='".$row["idsucursales"]."'>".$row["sucursales"]."</option>";
+                              while($row = mysqli_fetch_assoc($result))
+                              {
+                                if($_SESSION['idsucursal'] == $row["idsucursales"])
+                                {
+                                    echo "<option selected value='".$row["idsucursales"]."'>".$row["sucursales"]."</option>";
+                                }
+                                else
+                                {
+                                    echo "<option value='".$row["idsucursales"]."'>".$row["sucursales"]."</option>";
+                                }
                               }
                             }
                             ?>                        
@@ -379,50 +405,394 @@ include "accion/conexion.php";
                           </select>
                         </div>
 
-                        <div class="form-group col-lg-1">
+                        <div class="form-group col-lg">
                             <label for="n_pagos">No. pagos</label>
-                            <input type="number" class="form-control" name="n_pagos" id="n_pagos" value="1">
+                            <input type="number" class="form-control" name="n_pagos_entrada" id="n_pagos_entrada" value="4" step="any">
                         </div>
 
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col-lg">
                             <label for="pago_parcial">Pago parcial</label>
-                            <input type="text" class="form-control" name="pago_parcial" id="pago_parcial">
+                            <input type="text" class="form-control" name="pago_parcial_entrada" id="pago_parcial_entrada" step="any">
                         </div>
 
                         <div align="right" class="form-group col-lg-2">
                             <br>
-                            <button class="btn btn-lg btn-primary" id="add_venta">Añadir</button>
+                            <button type="button" class="btn btn-lg btn-primary" id="add_compra" onclick="add_entrada()">Añadir</button>
                         </div>
 
                     </div>
             </div>
         </div>
     </div>
-</div>
 
-<br>
-
-<div class="row">
-    <div class="col-lg-1"></div>
-    <div class="col-lg-10">
-        <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-lg-10">
-                        
-                </div>
-
-                <div align="right" class="col-lg-2">
-                    <!-- <a data-toggle="modal" data-target="#nuevo_documento"  class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nuevo documento</a> -->
-                </div>
+<!-- modal para poner las series que quieres -->
+<div id="series" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg text-black">
+                <h5 class="modal-title" id="my-modal-title">Agregar series de los productos a comprar</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="on" id="formAdd_tipo_compra">
+                    <div class="row">
+                        <div class="col-lg-12" id="series_dinamico">
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-        </div>  
     </div>
 </div>
 
-<br><br>
+<!-- aqui va los añadidios dinamicos de las entradas -->
+<!-- ya no se hizo dinamicamente, lo que se muestra a continuacion NO ES UNA PRACTICA ADECUADA -->
+<!-- se hizo así por fines rapidos y practicos, ya no habia mucho tiempo, y funciona para el poco uso que tendra-->
+<!-- ya esta empezado lo de que sea dinamico, pero aun tiene varios bugs por arreglar, si tienen tiempo, haganlo bien, por si quieren intentar.... -->
+<div id="lista_entrada">
+    <!-- card1 -->
+    <div id="card_entrada1" class="row" hidden>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label for="identificador_pro">Identificador</label>
+                            <select class="form-control js-example-data-array" id="identificador_pro_1" name="identificador_pro_1">
+                            <option value=0 selected hidden></option>
+                            <?php 
+                                    #codigo para la lista de idclientes que se extraen de la base de datos
+                                    $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");                        
+                                    if (mysqli_num_rows($result) > 0) 
+                                    {  
+                                      while($row = mysqli_fetch_assoc($result))
+                                      {
+                                        echo "<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+                                      }
+                                    }
+                                 ?>
+                            </select>
+                        </div>
+                        <div class="col-lg-1">
+                            <label for="cantidad">Cantidad</label>
+                            <input onchange="multiplicar_precio_entrada(1)" type="number" value=1 class="form-control" name="cantidad_1" id="cantidad_1">
+                        </div>
+                        <div class="col-lg-3">
+                            
+                            <label for="origen">Serie</label>
+                            <div id="div_serie_1">
+                                <input type="text" class="form-control" name="serie_1" id="serie_1" onkeyup="mayusculas(this)"> 
+                            <!--
+                                <button type="button" data-toggle="modal" data-target="#series" class="form-group btn btn-primary">Cargar Series</button> 
+                            -->
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="precio">Precio</label>
+                            <div class="input-group mb-3">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input onkeyup="mostrar_pagos(1)" name="precio_1" id="precio_1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" step="any">
+                            </div>
+                        </div>
+                        <div class="col-lg" align="center">
+                            <label for="con_iva">¿IVA?</label>
+                            <input id="tiene_iva_1" name="tiene_iva_1" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="sm" data-on="SI" data-off="NO">
+                        </div>
+                        <div class="col-lg" align="right">
+                                <a href="#" onclick="borrar_card_entrada(1)"><i style="color: red;" class="fas fa-trash-alt fa-2x"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- fin card1 -->
+     <!-- card2 -->
+    <div id="card_entrada2" class="row" hidden>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label for="identificador_pro">Identificador</label>
+                            <select class="form-control js-example-data-array" id="identificador_pro_2" name="identificador_pro_2">
+                            <option value=0 selected hidden></option>
+                            <?php 
+                                    #codigo para la lista de idclientes que se extraen de la base de datos
+                                    $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");                        
+                                    if (mysqli_num_rows($result) > 0) 
+                                    {  
+                                      while($row = mysqli_fetch_assoc($result))
+                                      {
+                                        echo "<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+                                      }
+                                    }
+                                 ?>
+                            </select>
+                        </div>
+                        <div class="col-lg-1">
+                            <label for="cantidad">Cantidad</label>
+                            <input onchange="multiplicar_precio_entrada(2)" type="number" value=1 class="form-control" name="cantidad_1" id="cantidad_1">
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="origen">Serie</label>
+                            <input type="text" class="form-control" name="serie_2" id="serie_2" onkeyup="mayusculas(this)">
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="precio">Precio</label>
+                            <div class="input-group mb-3">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input onkeyup="mostrar_pagos(2)" name="precio_2" id="precio_2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" step="any">
+                            </div>
+                        </div>
+                        <div class="col-lg" align="center">
+                            <label for="con_iva">¿IVA?</label>
+                            <input id="tiene_iva_2" name="tiene_iva_2" value="si_iva_2" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="sm" data-on="SI" data-off="NO">
+                        </div>
+                        <div class="col-lg-1" align="right">
+                                <a href="#" onclick="borrar_card_entrada(2)"><i style="color: red;" class="fas fa-trash-alt fa-2x"></i></a>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- fin card2 -->
+     <!-- card3 -->
+    <div id="card_entrada3" class="row" hidden>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label for="identificador_pro">Identificador</label>
+                            <select class="form-control js-example-data-array" id="identificador_pro_3" name="identificador_pro_3">
+                            <option value=0 selected hidden></option>
+                            <?php 
+                                    #codigo para la lista de idclientes que se extraen de la base de datos
+                                    $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");                        
+                                    if (mysqli_num_rows($result) > 0) 
+                                    {  
+                                      while($row = mysqli_fetch_assoc($result))
+                                      {
+                                        echo "<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+                                      }
+                                    }
+                                 ?>
+                            </select>
+                        </div>
+                        <div class="col-lg-1">
+                            <label for="cantidad">Cantidad</label>
+                            <input onchange="multiplicar_precio_entrada(3)" type="number" value=1 class="form-control" name="cantidad_1" id="cantidad_1">
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="origen">Serie</label>
+                            <input type="text" class="form-control" name="serie_3" id="serie_3" onkeyup="mayusculas(this)">
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="precio">Precio</label>
+                            <div class="input-group mb-3">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input onkeyup="mostrar_pagos(3)" name="precio_3" id="precio_3" type="number" class="form-control" aria-label="Monto en pesos mexicanos" step="any">
+                            </div>
+                        </div>
+                        <div class="col-lg" align="center">
+                            <label for="con_iva">¿IVA?</label>
+                            <input id="tiene_iva_3" name="tiene_iva_3" value="si_iva_3" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="sm" data-on="SI" data-off="NO">
+                        </div>
+                        <div class="col-lg-1" align="right">
+                                <a href="#" onclick="borrar_card_entrada(3)"><i style="color: red;" class="fas fa-trash-alt fa-2x"></i></a>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- fin card3 -->
+     <!-- card4 -->
+    <div id="card_entrada4" class="row" hidden>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label for="identificador_pro">Identificador</label>
+                            <select class="form-control js-example-data-array" id="identificador_pro_4" name="identificador_pro_4">
+                            <option value=0 selected hidden></option>
+                            <?php 
+                                    #codigo para la lista de idclientes que se extraen de la base de datos
+                                    $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");                        
+                                    if (mysqli_num_rows($result) > 0) 
+                                    {  
+                                      while($row = mysqli_fetch_assoc($result))
+                                      {
+                                        echo "<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+                                      }
+                                    }
+                                 ?>
+                            </select>
+                        </div>
+                        <div class="col-lg-1">
+                            <label for="cantidad">Cantidad</label>
+                            <input onchange="multiplicar_precio_entrada(4)" type="number" value=1 class="form-control" name="cantidad_1" id="cantidad_1">
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="origen">Serie</label>
+                            <input type="text" class="form-control" name="serie_4" id="serie_4" onkeyup="mayusculas(this)">
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="precio">Precio</label>
+                            <div class="input-group mb-3">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input onkeyup="mostrar_pagos(4)" name="precio_4" id="precio_4" type="number" class="form-control" aria-label="Monto en pesos mexicanos" step="any">
+                            </div>
+                        </div>
+                        <div class="col-lg" align="center">
+                            <label for="con_iva">¿IVA?</label>
+                            <input id="tiene_iva_4" name="tiene_iva_4" value="si_iva_4" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="sm" data-on="SI" data-off="NO">
+                        </div>
+                        <div class="col-lg-1" align="right">
+                                <a href="#" onclick="borrar_card_entrada(4)"><i style="color: red;" class="fas fa-trash-alt fa-2x"></i></a>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- fin card4 -->
+     <!-- card5 -->
+    <div id="card_entrada5" class="row" hidden>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label for="identificador_pro">Identificador</label>
+                            <select class="form-control js-example-data-array" id="identificador_pro_5" name="identificador_pro_5">
+                            <option value=0 selected hidden></option>
+                            <?php 
+                                    #codigo para la lista de idclientes que se extraen de la base de datos
+                                    $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");                        
+                                    if (mysqli_num_rows($result) > 0) 
+                                    {  
+                                      while($row = mysqli_fetch_assoc($result))
+                                      {
+                                        echo "<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+                                      }
+                                    }
+                                 ?>
+                            </select>
+                        </div>
+                        <div class="col-lg-1">
+                            <label for="cantidad">Cantidad</label>
+                            <input onchange="multiplicar_precio_entrada(5)" type="number" value=1 class="form-control" name="cantidad_1" id="cantidad_1">
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="origen">Serie</label>
+                            <input type="text" class="form-control" name="serie_5" id="serie_5" onkeyup="mayusculas(this)">
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="precio">Precio</label>
+                            <div class="input-group mb-3">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                              </div>
+                              <input onkeyup="mostrar_pagos(5)" name="precio_5" id="precio_5" type="number" class="form-control" aria-label="Monto en pesos mexicanos" step="any">
+                            </div>
+                        </div>
+                        <div class="col-lg" align="center">
+                            <label for="con_iva">¿IVA?</label>
+                            <input id="tiene_iva_5" name="tiene_iva_5" value="si_iva_5" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" data-size="sm" data-on="SI" data-off="NO">
+                        </div>
+                        <div class="col-lg-1" align="right">
+                                <a href="#" onclick="borrar_card_entrada(5)"><i style="color: red;" class="fas fa-trash-alt fa-2x"></i></a>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- fin card5 -->
+</div>
 
+<div id="costos_calculados_entrada" hidden>
+    <div class="row">
+        <div class="col-lg-9">
+            <!-- 
+            aqui va el costo calculado sin iva y sin descuento el primer subtotal
+            -->
+        </div>
+        <div class="col-lg-2" align="right">
+            <h4><strong id="subtotal1"></strong></h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9" align="right">
+            <h4>IVA</h4>
+        </div>
+        <div class="col-lg-2" align="right">
+            <h4><strong id="ivas"></strong></h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9" align="right">
+            <h4>SubTotal</h4>
+        </div>
+        <div class="col-lg-2" align="right">
+            <h4><strong id="subtotal2"></strong></h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9" align="right">
+            <h4>Descuento</h4>
+        </div>
+        <div class="col-lg-2" align="right">
+            <input id="descuento_venta" type="number" name="descuento_venta" class="form-control">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9" align="right">
+            <h3>TOTAL</h3>
+        </div>
+        <div class="col-lg-2" align="right" id="mostrar_total">
+            <h3><strong id="total_general"></strong></h3>
+        </div>
+    </div>
+    <input type="number" name="subtotal1_flag" id="subtotal1_flag" readonly hidden>
+    <input type="number" name="ivas_flag" id="ivas_flag" readonly hidden>
+    <input type="number" name="subtotal2_flag" id="subtotal2_flag" readonly hidden>
+    <input type="number" name="total_flag" id="total_flag" readonly hidden>
+</div>
+
+<div class="row">
+    <div class="col-lg-1"></div>
+    <div class="form-group col-lg-5">
+        <button id="btn_comprar"  onclick="calcular_cuenta_entrada()" type="button" class="btn btn-block btn-primary" disabled><i class="fas fa-cash-register"></i> Calcular</button>
+    </div>
+    <div class="col-lg-5">
+        <button id="btn_haz_compra" disabled type="submit" class="btn btn-block btn-success"><i class="fas fa-money-check"></i> Comprar</button>
+    </div>
+</div>
+<input hidden readonly type="text" name="action" id="action" value="insert_entrada_compra">
+</form>
+
+
+<br><br>
 <script type="text/javascript">
 
 //funcion para poner mayusculas los inputs
@@ -430,31 +800,8 @@ function mayusculas(e) {
     e.value = e.value.toUpperCase();
 }
 
-function visualizar(idusuario,lista)
-        {
-          //alert(m+"  "+q);
-          var xmlhttp;      
-            if (window.XMLHttpRequest)
-            {
-            xmlhttp=new XMLHttpRequest();
-            }
-          else
-            {
-            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-          xmlhttp.onreadystatechange=function()
-            {
-            if (xmlhttp.readyState==4 && xmlhttp.status==200)
-             {
-             document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
-             }
-            }
-
-          $("#my_modal_title").html("Sucursales permitidas a "+idusuario);  
-          $("#listamodal_sucursales").html(lista); 
-
-          $('#ver_sucursales').modal('show');
-        }
+document.getElementById('divzoom').style.zoom = "100%";
+//document.getElementById('page-top').style.zoom = "80%";
 
 </script>
 

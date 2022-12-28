@@ -250,7 +250,7 @@ if (!empty($_POST))
                   {
                       $alert = '<div class="alert alert-danger" role="alert">
                               Pudo haber ocurrido un error al actualizar el cliente, verifique, actualize e intente de nuevo en caso de ser necesario.
-                          </div>';#.mysqli_error($conexion);
+                          </div>'.mysqli_error($conexion).$insert_correctly."a".$insert_correctly2."a".$elimino_cliente;
                   }
             }
             else if($editar_cliente_lim)

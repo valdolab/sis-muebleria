@@ -415,7 +415,105 @@ if ($_POST['action'] == 'insert_categoria')
           }
           //idcat -> $idcategoria
           $update_cat = mysqli_query($conexion, "UPDATE categoria set nombre = '$nombre_cat', tiene_subcat = $tiene_subcat, atr1 = ".(!empty($atr1) ? "'$atr1'" : "NULL").", atr2 = ".(!empty($atr2) ? "'$atr2'" : "NULL").", atr3 = ".(!empty($atr3) ? "'$atr3'" : "NULL").", atr4 = ".(!empty($atr4) ? "'$atr4'" : "NULL").", atr5 = ".(!empty($atr5) ? "'$atr5'" : "NULL").", contado = ".(!empty($contado) ? "$contado" : "NULL").", especial = ".($especial == null ? "NULL" : "$especial").", base_inicial_c1 = ".(!empty($base_inicial_c1) ? "$base_inicial_c1" : "NULL").", ganancia_inicial_c1 = ".(!empty($ganancia_inicial_c1) ? "$ganancia_inicial_c1" : "NULL").", rango_c1 = ".(!empty($rango_c1) ? "$rango_c1" : "NULL").", ganancia_subsecuente_c1 = ".(!empty($ganancia_subsecuente_c1) ? "$ganancia_subsecuente_c1" : "NULL").", limite_costo_c1 = ".(!empty($limite_costo_c1) ? "$limite_costo_c1" : "NULL").", base_inicial_c2 = ".(!empty($base_inicial_c2) ? "$base_inicial_c2" : "NULL").", ganancia_inicial_c2 = ".(!empty($ganancia_inicial_c2) ? "$ganancia_inicial_c2" : "NULL").", rango_c2 = ".(!empty($rango_c2) ? "$rango_c2" : "NULL").", ganancia_subsecuente_c2 = ".(!empty($ganancia_subsecuente_c2) ? "$ganancia_subsecuente_c2" : "NULL").", limite_costo_c2 = ".(!empty($limite_costo_c2) ? "$limite_costo_c2" : "NULL").", meses_pago = ".(!empty($mesespago) ? "$mesespago" : "NULL").", meses_garantia = ".(!empty($garantia) ? "$garantia" : "NULL").", enganche = ".(!empty($enganche) ? "$enganche" : "NULL")." WHERE idcategoria = '$idcategoria'");
-          if ($update_cat) 
+
+          //actualizar productos con base en los nuevos parametros de categoria
+          //ACTUALIZAR TODOS LOS PRODUCTOS QUE PERTENCEZCAN A ESTA CATEGORIA Y NO TENGA SUBCATEGORIA
+          if($tiene_subcat == 0) //no tiene subcategoria
+          {
+            $selcet_idproductos = mysqli_query($conexion, "SELECT idproducto,costo,costo_iva FROM producto where categoria = '$idcategoria'");
+            $resul_save_cost = 1;
+            while ($data = mysqli_fetch_assoc($selcet_idproductos)) 
+            {
+              $id_productos = $data['idproducto'];
+              //actualizar cada producto
+              //actualizamos el costo y calculamos nuevos costos de lo demas
+              //sacar la info de los parametros de subcat
+              $newcosto_iva = $data['costo_iva'];
+              $newcosto_contado = ceil($newcosto_iva + ($newcosto_iva*($contado/100)));
+              if($especial == null)
+              {
+                $newcosto_especial = null;
+              }
+              else
+              {
+                $newcosto_especial = ceil($newcosto_contado + ($newcosto_contado*($especial/100)));
+              }
+              //credito1 
+              $cr1 = 0;
+              if($newcosto_iva < $base_inicial_c1)
+              {
+                $cr1 = $ganancia_inicial_c1;
+              }
+              else if ($newcosto_iva < ($base_inicial_c1 + $rango_c1))
+              {
+                $cr1 = $ganancia_subsecuente_c1;
+              }
+              else
+              {
+                $costo_temp = $base_inicial_c1 + $rango_c1;//2100
+                $ganancia_temp = $ganancia_subsecuente_c1;// 80
+                while(true)
+                {
+                  $costo_temp = $costo_temp + $rango_c1;//2200,2300
+                  $ganancia_temp = $ganancia_temp - 1;//79,78
+                  //2250<2200, 2250<2300,   //2100<=10000,2200<=10000
+                  if(($newcosto_iva < $costo_temp) || ($costo_temp >= $limite_costo_c1))
+                  {
+                    $cr1 = $ganancia_temp;
+                    break;
+                  }
+                }
+              }
+              $newcosto_cr1 = ceil($newcosto_iva + ($newcosto_iva*($cr1/100)));
+
+              //credito2
+              $cr2 = 0;
+              if($newcosto_iva < $base_inicial_c2)
+              {
+                $cr2 = $ganancia_inicial_c2;
+              }
+              else if ($newcosto_iva < ($base_inicial_c2 + $rango_c2))
+              {
+                $cr2 = $ganancia_subsecuente_c2;
+              }
+              else
+              {
+                $costo_temp2 = $base_inicial_c2 + $rango_c2;//2100
+                $ganancia_temp2 = $ganancia_subsecuente_c2;// 80
+                while(true)
+                {
+                  $costo_temp2 = $costo_temp2 + $rango_c2;//2200,2300
+                  $ganancia_temp2 = $ganancia_temp2 - 1;//79,78
+                  //2250<2200, 2250<2300,   //2100<=10000,2200<=10000
+                  if(($newcosto_iva < $costo_temp2) || ($costo_temp2 >= $limite_costo_c2))
+                  {
+                    $cr2 = $ganancia_temp2;
+                    break;
+                  }
+                }
+              }
+              $newcosto_cr2 = ceil($newcosto_iva + ($newcosto_iva*($cr2/100)));
+              
+              $new_e_q = ($newcosto_iva/$mesespago);
+              if($new_e_q < 400)
+              {
+                $new_e_q = 400;
+              }
+              $new_e_q = ceil($new_e_q);
+              
+              $new_p1 = ($newcosto_cr1/$new_e_q)/2;
+              $new_p2 = ($newcosto_cr2/$new_e_q)/2;
+              $newcosto_enganche = ceil($newcosto_cr2*($enganche/100) + 100);
+              //guardamos en la base 
+              //fin calculo de nuevos costos, ahora actualizamos en el producto
+              $update_costos = mysqli_query($conexion, "UPDATE producto set costo_contado = $newcosto_contado, costo_especial = ".($newcosto_especial == null ? "NULL" : "$newcosto_especial").", costo_cr1 = $newcosto_cr1, costo_cr2 = $newcosto_cr2, costo_p1 = $new_p1, costo_p2 = $new_p2, costo_eq = $new_e_q, costo_enganche = $newcosto_enganche where idproducto = '$id_productos'");
+              if(!$update_costos)
+              {
+                $resul_save_cost = 0;
+              }
+            }
+          }
+          if ($update_cat and $resul_save_cost) 
           {
             $idcat = array("idcategoria" => $idcategoria);
             $categoria = array("categoria" => $nombre_cat);
@@ -651,7 +749,7 @@ if ($_POST['action'] == 'insert_subcategoria')
             }
             $newcosto_cr2 = ceil($newcosto_iva + ($newcosto_iva*($cr2/100)));
             
-            $new_e_q = ($newcosto_iva/$mesespago)/2;
+            $new_e_q = ($newcosto_iva/$mesespago);
             if($new_e_q < 400)
             {
               $new_e_q = 400;
@@ -660,9 +758,10 @@ if ($_POST['action'] == 'insert_subcategoria')
             
             $new_p1 = ($newcosto_cr1/$new_e_q)/2;
             $new_p2 = ($newcosto_cr2/$new_e_q)/2;
+            $newcosto_enganche = ceil($newcosto_cr2*($enganche/100) + 100);
             //guardamos en la base 
             //fin calculo de nuevos costos, ahora actualizamos en el producto
-            $update_costos = mysqli_query($conexion, "UPDATE producto set costo_contado = $newcosto_contado, costo_especial = ".($newcosto_especial == null ? "NULL" : "$newcosto_especial").", costo_cr1 = $newcosto_cr1, costo_cr2 = $newcosto_cr2, costo_p1 = $new_p1, costo_p2 = $new_p2, costo_eq = $new_e_q where idproducto = '$id_productos'");
+            $update_costos = mysqli_query($conexion, "UPDATE producto set costo_contado = $newcosto_contado, costo_especial = ".($newcosto_especial == null ? "NULL" : "$newcosto_especial").", costo_cr1 = $newcosto_cr1, costo_cr2 = $newcosto_cr2, costo_p1 = $new_p1, costo_p2 = $new_p2, costo_eq = $new_e_q, costo_enganche = $newcosto_enganche where idproducto = '$id_productos'");
             if(!$update_costos)
             {
               $resul_save_cost = 0;
@@ -888,68 +987,90 @@ if ($_POST['action'] == 'insert_edit_producto')
     }
     else
     { 
-        //editar producto
-        //entonces editamos el producto
-        $id_producto = $_POST['flagid_producto'];
-        $identificador = $_POST['identificador'];
-        $codigo_barras = $_POST['codigo_barras'];
-        $categoria_producto = $_POST['categoria_producto'];
-        if(isset($_POST['subcategoria_producto']))
+        //RECUERDA: IDENTIFICADOR NO ES EL ID DE PRODUCTO, el ID de producto es otro generado aleatoriamente
+        $identificador = $_POST['identificador']; //no es el ID, el id será id_producto de flagid_producto
+        $id_producto = $_POST['flagid_producto']; //ESTE ES EL ID de la tabla
+        //ver si no ya existe ese identificador que se quiere modificar
+        $find_id = mysqli_query($conexion, "SELECT count(idproducto) as num from producto where identificador = '$identificador'");
+        $si_existe_un_nombre_igual = (int) mysqli_fetch_assoc($find_id)['num'];
+        
+        $existe_identificador = mysqli_query($conexion, "SELECT identificador from producto where idproducto = '$id_producto'");
+        $es_igual_al_nombre_actual = 0;
+        if (mysqli_fetch_assoc($existe_identificador)['identificador'] == $identificador)
         {
-            $subcategoria_producto = $_POST['subcategoria_producto'];
+          $es_igual_al_nombre_actual = 1;
         }
-        else
-        {
-            $subcategoria_producto = 0;
-        }
-        //$subcategoria_producto = $_POST['subcategoria_producto'];
-        $descripcion = $_POST['descripcion'];
-        if (isset($_POST['serializado']))
-            {
-                $serializado = 1;
-            }
-            else
-            {
-                $serializado = 0;
-            }
-        $atr1_producto = $_POST['atr1_producto'];
-        $atr2_producto = $_POST['atr2_producto'];
-        $atr3_producto = $_POST['atr3_producto'];
-        $atr4_producto = $_POST['atr4_producto'];
-        $atr5_producto = $_POST['atr5_producto'];
-        $stock_min = $_POST['stock_min'];
-        $stock_max = $_POST['stock_max'];
-        $ext_p = $_POST['ext_p'];
-        $costo = $_POST['costo'];
-        $costo_iva = $_POST['costo_iva'];
-        $costo_contado = $_POST['costo_contado'];
-        if(isset($_POST['costo_especial']))
-        {
-            $costo_especial = $_POST['costo_especial'];
-        }
-        else
-        {   
-            $costo_especial = null;
-        }
-        $costo_cr1 = $_POST['costo_cr1'];
-        $costo_cr2 = $_POST['costo_cr2'];
-        $costo_p1 = $_POST['costo_p1'];
-        $costo_p2 = $_POST['costo_p2'];
-        $costo_eq = $_POST['costo_eq'];
-        $costo_enganche = $_POST['costo_enganche'];
 
-        $update_producto = mysqli_query($conexion, "UPDATE producto set identificador =  '$identificador', codigo_barras = ".(!empty($codigo_barras) ? "'$codigo_barras'" : "NULL").", categoria = '$categoria_producto', subcategoria = ".($subcategoria_producto!=0 ? "'$subcategoria_producto'" : "NULL").", descripcion = ".(!empty($descripcion) ? "'$descripcion'" : "NULL").", serializado = $serializado, atr1_producto = '$atr1_producto', atr2_producto = ".(!empty($atr2_producto) ? "'$atr2_producto'" : "NULL").", atr3_producto = ".(!empty($atr3_producto) ? "'$atr3_producto'" : "NULL").", atr4_producto = ".(!empty($atr4_producto) ? "'$atr4_producto'" : "NULL").", atr5_producto = ".(!empty($atr5_producto) ? "'$atr5_producto'" : "NULL").", stock_min = ".(!empty($stock_min) ? "'$stock_min'" : "NULL").", stock_max = ".(!empty($stock_max) ? "'$stock_max'" : "NULL").", ext_p = ".(!empty($ext_p) ? "'$ext_p'" : "NULL").", costo = $costo, costo_iva = $costo_iva, costo_contado = $costo_contado, costo_especial = ".(!empty($costo_especial) ? "$costo_especial" : "NULL").", costo_cr1 = $costo_cr1, costo_cr2 = $costo_cr2, costo_p1 = $costo_p1, costo_p2 = $costo_p2, costo_eq = $costo_eq, costo_enganche = $costo_enganche WHERE idproducto = '$id_producto'");
-        if ($update_producto) 
+        if($si_existe_un_nombre_igual > 0 and $es_igual_al_nombre_actual == 0)
         {
-            //edito bien
-            $producto_result = 3;
-            //$modal = "$('#mensaje_success').modal('show');";
+            //entonces ya hay uno, avisarle
+            $producto_result = 2;
+            //$modal = "$('#mensaje_repetido').modal('show');";
         }
         else
         {
-            $producto_result = 0;
-            //$modal = "$('#mensaje_error').modal('show');";
-            //echo mysqli_error($conexion);
+          //editar producto
+          //entonces editamos el producto
+          $codigo_barras = $_POST['codigo_barras'];
+          $categoria_producto = $_POST['categoria_producto'];
+          if(isset($_POST['subcategoria_producto']))
+          {
+              $subcategoria_producto = $_POST['subcategoria_producto'];
+          }
+          else
+          {
+              $subcategoria_producto = 0;
+          }
+          //$subcategoria_producto = $_POST['subcategoria_producto'];
+          $descripcion = $_POST['descripcion'];
+          if (isset($_POST['serializado']))
+              {
+                  $serializado = 1;
+              }
+              else
+              {
+                  $serializado = 0;
+              }
+          $atr1_producto = $_POST['atr1_producto'];
+          $atr2_producto = $_POST['atr2_producto'];
+          $atr3_producto = $_POST['atr3_producto'];
+          $atr4_producto = $_POST['atr4_producto'];
+          $atr5_producto = $_POST['atr5_producto'];
+          $stock_min = $_POST['stock_min'];
+          $stock_max = $_POST['stock_max'];
+          $ext_p = $_POST['ext_p'];
+          $costo = $_POST['costo'];
+          $costo_iva = $_POST['costo_iva'];
+          $costo_contado = $_POST['costo_contado'];
+          if(isset($_POST['costo_especial']))
+          {
+              $costo_especial = $_POST['costo_especial'];
+          }
+          else
+          {   
+              $costo_especial = null;
+          }
+          $costo_cr1 = $_POST['costo_cr1'];
+          $costo_cr2 = $_POST['costo_cr2'];
+          $costo_p1 = $_POST['costo_p1'];
+          $costo_p2 = $_POST['costo_p2'];
+          $costo_eq = $_POST['costo_eq'];
+          $costo_enganche = $_POST['costo_enganche'];
+
+          $update_producto = mysqli_query($conexion, "UPDATE producto set identificador =  '$identificador', codigo_barras = ".(!empty($codigo_barras) ? "'$codigo_barras'" : "NULL").", categoria = '$categoria_producto', subcategoria = ".($subcategoria_producto!=0 ? "'$subcategoria_producto'" : "NULL").", descripcion = ".(!empty($descripcion) ? "'$descripcion'" : "NULL").", serializado = $serializado, atr1_producto = '$atr1_producto', atr2_producto = ".(!empty($atr2_producto) ? "'$atr2_producto'" : "NULL").", atr3_producto = ".(!empty($atr3_producto) ? "'$atr3_producto'" : "NULL").", atr4_producto = ".(!empty($atr4_producto) ? "'$atr4_producto'" : "NULL").", atr5_producto = ".(!empty($atr5_producto) ? "'$atr5_producto'" : "NULL").", stock_min = ".(!empty($stock_min) ? "'$stock_min'" : "NULL").", stock_max = ".(!empty($stock_max) ? "'$stock_max'" : "NULL").", ext_p = ".(!empty($ext_p) ? "'$ext_p'" : "NULL").", costo = $costo, costo_iva = $costo_iva, costo_contado = $costo_contado, costo_especial = ".(!empty($costo_especial) ? "$costo_especial" : "NULL").", costo_cr1 = $costo_cr1, costo_cr2 = $costo_cr2, costo_p1 = $costo_p1, costo_p2 = $costo_p2, costo_eq = $costo_eq, costo_enganche = $costo_enganche WHERE idproducto = '$id_producto'");
+          if ($update_producto) 
+          {
+              //edito bien
+              $producto_result = 3;
+              //$modal = "$('#mensaje_success').modal('show');";
+          }
+          else
+          {
+              //edito mal
+              $producto_result = 0;
+              //$modal = "$('#mensaje_error').modal('show');";
+              //echo mysqli_error($conexion);
+          }
         }
     }
   }
@@ -1214,56 +1335,59 @@ if ($_POST['action'] == 'insert_proveedor')
   if (!empty($_POST['nuevoProveedor'])) 
   {
     $nuevo_proveedor = $_POST['nuevoProveedor'];
+    $telproveedor = $_POST['telProveedor'];
 
-    //verificar si ya existe ese tipo de venta
-    $find_id = mysqli_query($conexion, "SELECT idproveedor from proveedor where nombre_proveedor = '$nuevo_proveedor'");
-    if(mysqli_num_rows($find_id) > 0)
-    {
-      //entonces ya hay uno, avisarle
-      $resultProveedor = 2;
-      //$modal = "$('#mensaje_repetido').modal('show');";
-    }
-    else
-    {
-      //no es repetido
       $ban = $_POST['flagid_Proveedor'];
       if($ban == "nuevo_proveedor")
       {
-          //insertar nuevo tipo de venta
-          $resultIDProveedor= mysqli_query($conexion, "SELECT UUID() as idproveedor");
-          $uuid = mysqli_fetch_assoc($resultIDProveedor)['idproveedor'];
-          $insert_proveedor = mysqli_query($conexion, "INSERT INTO proveedor(idproveedor,nombre_proveedor) values ('$uuid','$nuevo_proveedor')");
-          if ($insert_proveedor) 
+          //verificar si ya existe ese proveedor
+          $find_id = mysqli_query($conexion, "SELECT idproveedor from proveedor where nombre_proveedor = '$nuevo_proveedor'");
+          if(mysqli_num_rows($find_id) > 0)
           {
-            //$resultVentaTipo = 1; 1-> insertar, 3->editar
-            $flag_action = array("flag_action" => 1);
-            $idproveedor = array("idproveedor" => $uuid);
-            $nombre_proveedor = array("nombre_proveedor" => $nuevo_proveedor);
-            $resultProveedor = $idproveedor + $nombre_proveedor + $flag_action;
-          } 
+            //entonces ya hay uno, avisarle
+            $resultProveedor = 2;
+            //$modal = "$('#mensaje_repetido').modal('show');";
+          }
           else
           {
-            $resultProveedor = 0;
-          }
+            //no es repetido
+            //insertar nuevo tipo de venta
+            $resultIDProveedor= mysqli_query($conexion, "SELECT UUID() as idproveedor");
+            $uuid = mysqli_fetch_assoc($resultIDProveedor)['idproveedor'];
+            $insert_proveedor = mysqli_query($conexion, "INSERT INTO proveedor(idproveedor,nombre_proveedor,tel_proveedor) values ('$uuid','$nuevo_proveedor','$telproveedor')");
+            if ($insert_proveedor) 
+            {
+              //$resultVentaTipo = 1; 1-> insertar, 3->editar
+              $flag_action = array("flag_action" => 1);
+              $idproveedor = array("idproveedor" => $uuid);
+              $nombre_proveedor = array("nombre_proveedor" => $nuevo_proveedor);
+              $tel_proveedor = array("tel_proveedor" => $telproveedor);
+              $resultProveedor = $idproveedor + $nombre_proveedor + $tel_proveedor + $flag_action;
+            } 
+            else
+            {
+              $resultProveedor = 0;
+            }
+          } 
       }
       else
       {
         //editar nuevo tipo de venta
         $id_proveedor = $ban;
-        $update_proveedor = mysqli_query($conexion, "UPDATE proveedor SET nombre_proveedor='$nuevo_proveedor' where idproveedor = '$id_proveedor'");
+        $update_proveedor = mysqli_query($conexion, "UPDATE proveedor SET nombre_proveedor='$nuevo_proveedor',tel_proveedor='$telproveedor' where idproveedor = '$id_proveedor'");
         if ($update_proveedor) 
         {
           $flag_action = array("flag_action" => 3);
           $idproveedor = array("idproveedor" => $id_proveedor);
           $nombre_proveedor = array("nombre_proveedor" => $nuevo_proveedor);
-          $resultProveedor = $idproveedor + $nombre_proveedor + $flag_action;
+          $tel_proveedor = array("tel_proveedor" => $telproveedor);
+          $resultProveedor = $idproveedor + $nombre_proveedor + $tel_proveedor + $flag_action;
         } 
         else
         {
           $resultProveedor = 0;
         }
       }
-    }
   }
   else
   {
@@ -1273,5 +1397,111 @@ if ($_POST['action'] == 'insert_proveedor')
   exit;
 }
 
+//para guardar la salida en la base de datos
+if ($_POST['action'] == 'insert_salida_venta') 
+{  
+  include "accion/conexion.php";
+  $vendedor = $_POST['vendedor'];
+  $id_cliente = $_POST['id_cliente'];
+  $fecha = $_POST['fecha'];
 
+  $folio_venta = $_POST['folio_venta'];
+  $folio_venta_serie = $_POST['folio_venta_serie'];
+
+  //para actualizar la tabla de documentos
+  $long_formato = 7;
+  $next_serie = $folio_venta_serie + 1;
+  $sizeno_serie = strlen(strval($next_serie));
+  $ceros = "";
+  for ($i=0; $i < $long_formato-$sizeno_serie; $i++) 
+  { 
+    $ceros = $ceros."0";
+  }
+  $next_str_folio_venta_serie = $ceros.strval($next_serie);
+
+
+  $tipo_venta = $_POST['tipo_venta'];
+  $modalidad_pago = $_POST['modalidad_pago'];
+  $n_pagos = $_POST['n_pagos'];
+  $pago_parcial = $_POST['pago_parcial'];
+  $primer_dia_pago = $_POST['primer_dia_pago'];
+  $dias_pago_semanal = (isset($_POST['dias_pago_semanal']) ? $_POST['dias_pago_semanal'] : NULL);
+  $dias_pago_quincenal = (isset($_POST['dias_pago_quincenal']) ? $_POST['dias_pago_quincenal'] : NULL);
+  $dias_pago_quincenal_2 = (isset($_POST['dias_pago_quincenal_2']) ? $_POST['dias_pago_quincenal_2'] : NULL);
+  $dias_pago_mensual = (isset($_POST['dias_pago_mensual']) ? $_POST['dias_pago_mensual'] : NULL);
+
+  $enganche_dado = $_POST['enganche_dado'];
+  $subtotal1 = $_POST['subtotal1_flag'];
+  $ivas = $_POST['ivas_flag'];
+  $subtotal2 = $_POST['subtotal2_flag'];
+  $descuento = (empty($_POST['descuento_venta']) ? 0 : $_POST['descuento_venta']);
+  $total_venta = $_POST['total_flag'];
+
+  //generamos id salida (la venta total)
+  $resultIDSalida= mysqli_query($conexion, "SELECT UUID() as idsalida");
+  $uuid_salida = mysqli_fetch_assoc($resultIDSalida)['idsalida'];
+  //insertamos salida general 
+  $insert_salida = mysqli_query($conexion, "INSERT INTO salida(idsalida, vendedor, cliente, fecha_salida, folio_venta, folio_venta_serie, tipo_venta, modalidad_pago, no_pagos, pago_parcial, per_dia_pago, dias_pago_semanal, dias_pago_quincenal, dias_pago_quincenal_2, dias_pago_mensual, enganche, subtotal1, iva, subtotal2, descuento, total_general) VALUES ('$uuid_salida','$vendedor','$id_cliente','$fecha','$folio_venta', '$folio_venta_serie','$tipo_venta','$modalidad_pago',".(!empty($n_pagos) ? "'$n_pagos'" : "NULL").",".(!empty($pago_parcial) ? "'$pago_parcial'" : "NULL").",".(!empty($primer_dia_pago) ? "'$primer_dia_pago'" : "NULL").",".(!empty($dias_pago_semanal) ? "'$dias_pago_semanal'" : "NULL").",".(!empty($dias_pago_quincenal) ? "'$dias_pago_quincenal'" : "NULL").", ".(!empty($dias_pago_quincenal_2) ? "'$dias_pago_quincenal_2'" : "NULL").",".(!empty($dias_pago_mensual) ? "'$dias_pago_mensual'" : "NULL").",'$enganche_dado','$subtotal1','$ivas','$subtotal2','$descuento','$total_venta')");
+
+  //incrementar el contador de la serie del folio
+  $update_serie_folio = mysqli_query($conexion, "UPDATE documento set serie = '$next_str_folio_venta_serie' where iddocumento = '$folio_venta'");
+
+  //valor de cada producto a ingresar
+  $id_producto = [];
+  $cantidad = [];
+  $origen = [];
+  $tipo_precio = [];
+  $precio = [];
+  $flag_control = 1;
+  for ($i=0; $i < 5; $i++) 
+  { 
+    $id_producto[$i] = $_POST['identificador_pro_'.($i+1)];
+    $cantidad[$i] = intval($_POST['cantidad_'.($i+1)]);
+    $origen[$i] = $_POST['origen_'.($i+1)];
+    $tipo_precio[$i] = $_POST['tipo_precio_'.($i+1)];
+    $precio[$i] = doubleval($_POST['precio_'.($i+1)]);
+
+    //calculamos el precio por unidad
+    $precio_unidad = $precio[$i]/$cantidad[$i];
+
+    //insertamos los productos en la tabla y lo asociamos a la salida
+    //generamos el id de salida_producto(cada producto vendido
+    $resultIDSalida_productos= mysqli_query($conexion, "SELECT UUID() as idsalida_productos");
+    $uuid_salida_productos = mysqli_fetch_assoc($resultIDSalida_productos)['idsalida_productos'];
+    $insert_salida_producto = mysqli_query($conexion, "INSERT INTO salida_productos(idsalida_producto, salida, producto, cantidad, origen, tipo_precio, precio_x_unidad, precio_total) VALUES ('$uuid_salida_productos','$uuid_salida','$id_producto[$i]','$cantidad[$i]','$origen[$i]','$tipo_precio[$i]','$precio_unidad','$precio[$i]')");
+    if(!$insert_salida_producto)
+    {
+      $flag_control = 0;
+    }
+  }
+  if($flag_control or $insert_salida)
+  {
+    //todo bien
+    $resultSalida = 1;
+  }
+  else
+  {
+    //hubo un error, no se donde, intentalo de nuevo we
+    $resultSalida = 0;
+  }
+
+  //$resultSalida = mysqli_error($conexion);
+  echo json_encode($resultSalida,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+//para guardar la entrada en la base de datos
+if ($_POST['action'] == 'insert_entrada_compra') 
+{
+  //guardar la entrada en la base de datos (la entrada general)
+  //entrada, entrada_productos (los productos individuales, su info) y 
+  //entrada_productos_serie (en caso de varias cantidades del mismo producto)
+  include "accion/conexion.php";
+  $comprador = $_POST['comprador'];
+  $idproveedor = $_POST['proveedor'];
+  $tel_proveedor $_POST['tel_proveedor'];
+  $fecha = $_POST['fecha'];
+  
+
+}
 

@@ -521,7 +521,7 @@ function deleteAll($dir) {
   if (!empty($_POST['proveedor'])) {
     $id_proveedor = $_POST['proveedor'];
 
-    $select_proveedor = mysqli_query($conexion, "SELECT idproveedor,nombre_proveedor from proveedor where idproveedor = '$id_proveedor'");
+    $select_proveedor = mysqli_query($conexion, "SELECT idproveedor,nombre_proveedor,tel_proveedor from proveedor where idproveedor = '$id_proveedor'");
     mysqli_close($conexion);
     $result = mysqli_num_rows($select_proveedor);
     $data_proveedor = '';
@@ -2135,10 +2135,24 @@ if ($_POST['action'] == 'findPrecioProducto')
   $idtipo_precio = $_POST['idtipo_precio'];
   $idproducto = $_POST['idproducto'];
   //eliminar todos los datos de Ext.-p de todos los productos, sin el where para BORRAR TODO
-  $result = mysqli_query($conexion,"SELECT idproducto,costo,costo_iva,costo_contado,costo_especial,costo_cr1,costo_cr2 FROM producto where idproducto = '$idproducto'");
+  $result = mysqli_query($conexion,"SELECT idproducto,costo,costo_iva,costo_contado,costo_especial,costo_cr1,costo_cr2,costo_p1,costo_p2,costo_eq,costo_enganche FROM producto where idproducto = '$idproducto'");
 
   $data_precios = mysqli_fetch_assoc($result);
   
   echo json_encode($data_precios,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+//para buscar el numero del proveedor
+if ($_POST['action'] == 'buscar_tel_proveedor') 
+{
+  include "accion/conexion.php";
+  $idproveedor = $_POST['idproveedor'];
+  //eliminar todos los datos de Ext.-p de todos los productos, sin el where para BORRAR TODO
+  $result = mysqli_query($conexion,"SELECT tel_proveedor from proveedor where idproveedor = '$idproveedor'");
+
+  $data_tel_p = mysqli_fetch_assoc($result);
+  
+  echo json_encode($data_tel_p,JSON_UNESCAPED_UNICODE);
   exit;
 }

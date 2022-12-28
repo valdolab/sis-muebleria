@@ -46,7 +46,7 @@ $(document).ready(function()
     {
         theme: "bootstrap-5",
         //dropdownParent: $('#body-inner'),
-    });;
+    });
 
   //para el select2 de salidas
   $('.js-example-data-array').select2(
@@ -700,6 +700,7 @@ $('#idestado_civil').change(function() {
     });
 
     //form para insertar e editar una subcategoria
+    //insert_subcategoria
     $("#formAdd_subcat").submit( function () {  
         // Prevent default posting of form - put here to work in case of errors
         event.preventDefault();
@@ -734,6 +735,15 @@ $('#idestado_civil').change(function() {
                                 window.location.href = "productos.php";
                             }
                         }) 
+                }
+                else if(response == 1)
+                {
+                    //repetido
+                    Swal.fire({
+                          icon: 'warning',
+                          title: '¡La subcategoria ya existe!',
+                          text: 'Favor de poner otro nombre para la nueva subcategoria'
+                        })
                 }
                 else
                 {
@@ -1384,6 +1394,121 @@ $('#idestado_civil').change(function() {
        return false;   
     });
 
+    //form para agregar las salidas de venta
+    $("#formAdd_salida").submit( function () 
+    {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
+           success: function(response)             
+           {
+                //$('#prueba').html(response);
+                if(response == 0)
+                {
+                    //error brutal
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, !intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //recargamos la pagina actual sin el POST
+                                window.location.href=window.location.href;
+                            }
+                        }) 
+                }
+                else
+                {
+                    //var data = $.parseJSON(response);
+                    //correcto
+                        Swal.fire({
+                              icon: 'success',
+                              title: '!Guardado!',
+                              text: '!Se guardo la venta!'
+                            }).then((result) => {
+                                if (result.isConfirmed){
+                                    window.location.href = "inv_almacenes.php";
+                                }
+                            }) 
+                }       
+           }
+       });   
+       return false;   
+    });
+
+    //form para agregar las entradas de compra
+    $("#formAdd_entrada").submit( function () 
+    {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
+           success: function(response)             
+           {
+                //$('#prueba').html(response);
+                if(response == 0)
+                {
+                    //error brutal
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, !intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //recargamos la pagina actual sin el POST
+                                window.location.href=window.location.href;
+                            }
+                        }) 
+                }
+                else
+                {
+                    //var data = $.parseJSON(response);
+                    //correcto
+                        Swal.fire({
+                              icon: 'success',
+                              title: '!Guardado!',
+                              text: '!Se guardo la compra!'
+                            }).then((result) => {
+                                if (result.isConfirmed){
+                                    window.location.href = "inv_almacenes.php";
+                                }
+                            }) 
+                }       
+           }
+       });   
+       return false;   
+    });
 
     //para las tablas que no son de productos
     $('#tbl').DataTable({
@@ -1404,7 +1529,7 @@ $('#idestado_civil').change(function() {
         "sFirst": "Primero",
         "sLast": "Último",
         "sNext": "Siguiente",
-        "sPrevious": "Anterior"
+        "sPrevious": "Anterior",
        },
       }
      });
@@ -1444,12 +1569,15 @@ $('#idestado_civil').change(function() {
       }
     });
 
-    //
+    //esto es para no permitir espacios en el identificador
+    //pero el final ya no lo quizo, como siempre ¬¬
+    /*
     $('#identificador').on('keypress', function(e) 
     {
         if (e.which == 32)
             return false;
     });
+    */
 
     $('#identificador').keyup(function(e)
     {
@@ -1480,7 +1608,7 @@ $('#idestado_civil').change(function() {
                     //todo mal, ya existe
                     $('#identificador').attr('class','form-control is-invalid');
                     $('#msg_validador').attr('class','invalid-feedback');
-                    $('#msg_validador').html('Este identificador ya esta en uso');
+                    $('#msg_validador').html('Este identificador ya está en uso');
                 }
             },
             error: function(error) {
@@ -1492,6 +1620,33 @@ $('#idestado_civil').change(function() {
 //FIN DEL DOCUMENT READY
 });
 
+//custom-select custom-select-sm
+//paginate_button 
+$(document).on('click', '.paginate_button', function () 
+{
+    // your function here
+    hide_costos();
+});
+$(document).on('click', '.custom-select', function () 
+{
+    // your function here
+    hide_costos();
+});
+$(document).on('click', '.sorting', function () 
+{
+    // your function here
+    hide_costos();
+});
+$(document).on('click', '.sorting_asc', function () 
+{
+    // your function here
+    hide_costos();
+});
+$(document).on('click', '.sorting_desc', function () 
+{
+    // your function here
+    hide_costos();
+});
 
 var y = 0;
 var aux_x = 0;
@@ -1601,7 +1756,21 @@ function borrar_card_salida(idcard)
     $("#card_salida"+idcard).attr("hidden","hidden");
     cards_showed = cards_showed - 1;
     disponibles.push(idcard);
+    //quitar los datos de los inputs 
+    $("#identificador_pro_"+idcard).val(0).trigger('change');
+    $("#cantidad_"+idcard).val(1);
+    $("#origen_"+idcard).val("");
+    $("#precio_"+idcard).val(0);
+    $("#tipo_precio_"+idcard).val(0);
     //console.log(disponibles);
+    costo_enganche[idcard-1] = 0;
+    enganche_calculado = 0;
+    for (var i = 0; i < costo_enganche.length; i++) 
+    {
+        enganche_calculado = enganche_calculado + costo_enganche[i];
+    }
+    $('#enganche_dado').val(enganche_calculado);
+
 }
 
 //lo de ventas, añadir productos a salida o venta
@@ -1734,17 +1903,19 @@ var salida_costo_contado = 0;
 var salida_costo_especial = 0;
 var salida_costo_cr1 = 0;
 var salida_costo_cr2 = 0;
-var precio_actual = 0;
+var precio_base = [0,0,0,0,0];
+var costo_enganche = [0,0,0,0,0];
+var enganche_calculado = 0;
 //poder precio cuando eleja que tipo de precio con base en el producto selecionado
 function mostrar_precios(id)
 {
-    var id_tipo_precio = $("#tipo_precio_"+id).val();
-    var id_producto = $("#identificador_pro_"+id).val();
+    let id_tipo_precio = $("#tipo_precio_"+id).val();
+    let id_producto = $("#identificador_pro_"+id).val();
     let cantidad = $("#cantidad_"+id).val();
 
     //console.log(id_tipo_precio);
     //console.log(id);
-    //console.log(id_producto);
+    //console.log(cantidad);
 
     var action = 'findPrecioProducto';
     $.ajax({
@@ -1772,42 +1943,77 @@ function mostrar_precios(id)
                 //todo bien, cargar los datos (precios)
                 var data = $.parseJSON(response);
                 //console.log(data.costo);
-                salida_costo = parseInt(data.costo)*cantidad;
-                salida_costo_iva = parseInt(data.costo_iva)*cantidad;
-                salida_costo_contado = parseInt(data.costo_contado)*cantidad;
-                salida_costo_especial = parseInt(data.costo_especial)*cantidad;
-                salida_costo_cr1 = parseInt(data.costo_cr1)*cantidad;
-                salida_costo_cr2 = parseInt(data.costo_cr2)*cantidad;
+                salida_costo = parseFloat(data.costo)*cantidad;
+                salida_costo_iva = parseFloat(data.costo_iva)*cantidad;
+                salida_costo_contado = parseFloat(data.costo_contado)*cantidad;
+                salida_costo_especial = parseFloat(data.costo_especial)*cantidad;
+                salida_costo_cr1 = parseFloat(data.costo_cr1)*cantidad;
+                salida_costo_cr2 = parseFloat(data.costo_cr2)*cantidad;
+                //para el no de pagos
+                let p1 = parseFloat(data.costo_p1);
+                let p2 = parseFloat(data.costo_p2);
+                let no_pago = 0;
 
                 if(id_tipo_precio == "costo")
                 {
-                    $('#precio_'+id).val(salida_costo);
+                    //precio base
+                    precio_base[id-1] = data.costo;
+                    //este incluye las cantidadas
                     precio_actual = salida_costo;
                 }
                 else if(id_tipo_precio == "costo_iva")
                 {
-                    $('#precio_'+id).val(salida_costo_iva);
+                    precio_base[id-1] = data.costo_iva;
                     precio_actual = salida_costo_iva;
                 }
                 else if(id_tipo_precio == "costo_contado")
                 {
-                    $('#precio_'+id).val(salida_costo_contado);
+                    precio_base[id-1] = data.costo_contado;
                     precio_actual = salida_costo_contado;
                 }
                 else if(id_tipo_precio == "costo_especial")
                 {
-                    $('#precio_'+id).val(salida_costo_especial);
+                    precio_base[id-1] = data.costo_especial;
                     precio_actual = salida_costo_especial;
                 }
                 else if(id_tipo_precio == "costo_cr1")
                 {
-                    $('#precio_'+id).val(salida_costo_cr1);
+                    precio_base[id-1] = data.costo_cr1;
                     precio_actual = salida_costo_cr1;
+                    no_pago = p1;
                 }
                 else if(id_tipo_precio == "costo_cr2")
                 {
-                    $('#precio_'+id).val(salida_costo_cr2);
+                    precio_base[id-1] = data.costo_cr2;
                     precio_actual = salida_costo_cr2;
+                    no_pago = p2;
+                }
+                $('#precio_'+id).val(precio_actual);
+                //mostrar el enganche de ese producto
+                costo_enganche[id-1] = parseFloat(data.costo_enganche);
+                for (var i = 0; i < costo_enganche.length; i++) 
+                {
+                    enganche_calculado = enganche_calculado + costo_enganche[i];
+                }
+                $('#enganche_dado').val(enganche_calculado);
+
+                //n de pagos y pago parcial
+                let pago_parcial = parseFloat(data.costo_eq);
+                let modalidad_pago = $('#modalidad_pago').val()
+                if(modalidad_pago == "semanal")
+                {
+                    $('#n_pagos').val((no_pago*4).toFixed(2));
+                    $('#pago_parcial').val((pago_parcial/2).toFixed(2));
+                }
+                else if(modalidad_pago == "quincenal")
+                {
+                    $('#n_pagos').val((no_pago*2).toFixed(2));
+                    $('#pago_parcial').val(pago_parcial.toFixed(2));
+                }
+                else if(modalidad_pago == "mensual")
+                {
+                    $('#n_pagos').val(no_pago.toFixed(2));
+                    $('#pago_parcial').val((pago_parcial*2).toFixed(2));
                 }
             }
         },
@@ -1822,61 +2028,243 @@ function mostrar_precios(id)
 function multiplicar_precio(id)
 {
     let cantidad = $("#cantidad_"+id).val();
-    //console.log(precio_actual);
-    $('#precio_'+id).val(parseInt(precio_actual*cantidad));
+    //console.log(precio_base);
+    $('#precio_'+id).val(parseInt(precio_base[id-1]*cantidad));
 }
 
-/*
-$("#nom_cliente").autocomplete({
-        minLength: 2,
-        source: function (request, response) {
-            var action = "buscar_x_nombre_cliente";
-            $.ajax({
-                url: "ajax.php",
-                type: "POST",
-                data: {action: action, buscar_nombre_cliente: request.term},
-                success: function (data) 
-                {
-                    var datas = $.parseJSON(data);
-                    var nombres = [];
-                    for(var i=0; i < datas.length; i++)
-                    {
-                        nombres.push(datas[i].nombre_cliente);
-                    }
-                    response(nombres);
-                }
-            });
-        },
-        select: function (event, ui) 
+Number.prototype.format = function(n, x) {
+    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+    return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
+};
+
+var total_venta_salida = 0;
+function calcular_cuenta()
+{
+    let id_tipo_precio = [];
+    let precios_siniva = [];
+    let ivas = [];
+    let precios_coniva = [];
+    let subtotal1 = 0;
+    let iva = 0;
+    let subtotal2 = 0;
+    for (let i = 1; i <= 5; i++) 
+    {
+        id_tipo_precio[i-1] = $("#tipo_precio_"+i).val();
+        if(id_tipo_precio[i-1] == "costo") //esto quiere decir que no trae el iva calculado
         {
-            $('#prueba').html(data); 
-            $("#idcliente").val(ui.item.idcliente);
-            $("#nom_cliente").val(ui.item.nombre_cliente);
-            $("#tel_cliente").val(ui.item.tel1_cliente);
+            //lo agregamos como es y ponemos en el array de ivas su iva calculado
+            let result = parseFloat($("#precio_"+i).val());
+            precios_siniva[i-1] = (isNaN(result) ? 0 : result);
+            ivas[i-1] = precios_siniva[i-1]*0.16;
+            precios_coniva[i-1] = precios_siniva[i-1] + ivas[i-1];
+        }
+        else
+        {
+            //ya trae el iva el precio, lo sacamos del precio y lo ponemos aparte en el array
+            let result = parseFloat($("#precio_"+i).val());
+            precios_siniva[i-1] = (isNaN(result) ? 0 : result/1.16);
+            ivas[i-1] = precios_siniva[i-1]*0.16;
+            precios_coniva[i-1] = precios_siniva[i-1] + ivas[i-1];
+        }
+        subtotal1 = subtotal1 + precios_siniva[i-1];
+        iva = iva + ivas[i-1];
+        subtotal2 = subtotal2 + precios_coniva[i-1];
+        //el descuento se calculara cuando vaya ingresando datos
+    }
+    total_venta_salida = subtotal2;
+    /*console.log(id_tipo_precio);
+    console.log(ivas);
+    console.log(precios_coniva);*/
+    //console.log(precios_siniva);
+    
+    //console.log(subtotal1);
+    //<?php echo "$".number_format($data['costo_contado'],2, '.', ','); ?>
+    $('#costos_calculados').removeAttr("hidden");
+    $('#subtotal1').html("$" + subtotal1.format(2,3));
+    $('#ivas').html("$" + iva.format(2,3));
+    $('#subtotal2').html("$" + subtotal2.format(2,3));
+    $('#total_general').html("$" + total_venta_salida.format(2,3));
+
+    //ponerlos en los inputs flags
+    $('#subtotal1_flag').val(subtotal1.toFixed(2));
+    $('#ivas_flag').val(iva.toFixed(2));
+    $('#subtotal2_flag').val(subtotal2.toFixed(2));
+    $('#total_flag').val(total_venta_salida.toFixed(2));
+
+    $('#btn_haz_venta').removeAttr('disabled');
+}
+
+$('#descuento_venta').keyup(function(e) 
+{
+    let result = parseFloat($(this).val());
+    var precio_descuento = (isNaN(result) ? 0 : result);
+    let total_venta_salida_temp = total_venta_salida - precio_descuento;
+    //console.log(total_venta_salida_temp);
+    $('#total_general').html('$'+total_venta_salida_temp.format(2,3));
+    $('#total_flag').val(total_venta_salida_temp.toFixed(2));
+});
+
+//funciones de ENTRADA
+var pago_parcial_entrada = 0;
+var pagos_parciales = [0,0,0,0,0];
+var precio_base_entrada = [0,0,0,0,0];
+function mostrar_pagos(id)
+{
+    let precio_entrada = parseFloat($('#precio_'+id).val());
+    precio_base_entrada[id-1] = precio_entrada;
+    //console.log(precio_entrada);
+    //calcular pago parcial de entrada
+    let no_pago_entrada =  parseFloat($('#n_pagos_entrada').val());
+    pagos_parciales[id-1] = precio_entrada/no_pago_entrada;
+    pago_parcial_entrada = 0;
+    for (var i = 0; i < pagos_parciales.length; i++) 
+    {
+        pago_parcial_entrada = pago_parcial_entrada + pagos_parciales[i];
+    }
+    //console.log(pagos_parciales);
+    $('#pago_parcial_entrada').val(pago_parcial_entrada);
+}
+
+function multiplicar_precio_entrada(id)
+{
+    let cantidad = $("#cantidad_"+id).val();
+    $('#precio_'+id).val(parseInt(precio_base_entrada[id-1]*cantidad));
+    if(cantidad <= 1)
+    {
+        $('#div_serie_'+id).html('<input type="text" class="form-control" name="serie_1" id="serie_1" onkeyup="mayusculas(this)">');
+    }
+    else
+    {
+        $('#div_serie_'+id).html('<button onClick="add_series('+cantidad+')" type="button" data-toggle="modal" data-target="#series" class="form-group btn btn-primary">Cargar Series</button>');
+    }
+}
+
+function add_series(cantidad)
+{
+    let serie_inputs = "";
+    for (var i = 0; i < cantidad; i++) 
+    {
+        serie_inputs = serie_inputs + '<div class="form-group">\
+                            <label for="correo">Serie '+(i+1)+'</label>\
+                            <input type="text" class="form-control" name="serie[]" id="serie[]" required maxlength="99">\
+                        </div>';
+    }
+    $('#series_dinamico').html(serie_inputs);
+}
+
+var cards_showed_entrada = 0;
+var disponibles_entrada = [1,2,3,4,5];
+function add_entrada() 
+{
+    $('#btn_comprar').removeAttr("disabled");
+    if(cards_showed_entrada < 5)
+    {
+        $('#card_entrada'+disponibles_entrada[0]).removeAttr("hidden");
+        disponibles_entrada.shift();
+        cards_showed_entrada = cards_showed_entrada + 1;
+    }
+}
+
+function borrar_card_entrada(idcard)
+{
+    $("#card_entrada"+idcard).attr("hidden","hidden");
+    cards_showed_entrada = cards_showed_entrada - 1;
+    disponibles_entrada.push(idcard);
+    //quitar los datos de los inputs 
+    $("#identificador_pro_"+idcard).val(0).trigger('change');
+    $("#cantidad_"+idcard).val(1);
+    $("#serie_"+idcard).val("");
+    $("#precio_"+idcard).val(0);
+    //console.log(disponibles);
+    precio_base_entrada[idcard-1] = 0;
+    pago_parcial_entrada = 0;
+    for (var i = 0; i < precio_base_entrada.length; i++) 
+    {
+        pago_parcial_entrada = pago_parcial_entrada + precio_base_entrada[i];
+    }
+    $('#pago_parcial_entrada').val(pago_parcial_entrada);
+}
+
+var total_compra_entrada = 0;
+function calcular_cuenta_entrada()
+{
+    let con_iva = [];
+    let precios_siniva = [];
+    let ivas = [];
+    let precios_coniva = [];
+    let subtotal1 = 0;
+    let iva = 0;
+    let subtotal2 = 0;
+
+    for (let i = 1; i <= 5; i++) 
+    {
+        con_iva[i-1] = document.getElementById('tiene_iva_'+i).checked;
+        if(con_iva[i-1] == false) //esto quiere decir que NO trae el iva calculado
+        {
+            //lo agregamos como es y ponemos en el array de ivas su iva calculado
+            let result = parseFloat($("#precio_"+i).val());
+            precios_siniva[i-1] = (isNaN(result) ? 0 : result);
+            ivas[i-1] = precios_siniva[i-1]*0.16;
+            precios_coniva[i-1] = precios_siniva[i-1] + ivas[i-1];
+        }
+        else
+        {
+            //ya trae el iva el precio, lo sacamos del precio y lo ponemos aparte en el array
+            let result = parseFloat($("#precio_"+i).val());
+            precios_siniva[i-1] = (isNaN(result) ? 0 : result/1.16);
+            ivas[i-1] = precios_siniva[i-1]*0.16;
+            precios_coniva[i-1] = precios_siniva[i-1] + ivas[i-1];
+        }
+        subtotal1 = subtotal1 + precios_siniva[i-1];
+        iva = iva + ivas[i-1];
+        subtotal2 = subtotal2 + precios_coniva[i-1];
+        //el descuento se calculara cuando vaya ingresando datos
+    }
+    total_compra_entrada = subtotal2;
+    /*console.log(id_tipo_precio);
+    console.log(ivas);
+    console.log(precios_coniva);*/
+    //console.log(precios_siniva);
+    
+    //console.log(subtotal1);
+    $('#costos_calculados_entrada').removeAttr("hidden");
+    $('#subtotal1').html("$" + subtotal1.format(2,3));
+    $('#ivas').html("$" + iva.format(2,3));
+    $('#subtotal2').html("$" + subtotal2.format(2,3));
+    $('#total_general').html("$" + total_compra_entrada.format(2,3));
+
+    //ponerlos en los inputs flags
+    $('#subtotal1_flag').val(subtotal1.toFixed(2));
+    $('#ivas_flag').val(iva.toFixed(2));
+    $('#subtotal2_flag').val(subtotal2.toFixed(2));
+    $('#total_flag').val(total_compra_entrada.toFixed(2));
+
+    $('#btn_haz_compra').removeAttr('disabled');
+}
+//FIN ENTRADA
+
+//de proveedor
+$('#proveedor').change(function(e) 
+{
+    e.preventDefault();
+    var id_proveedor = $(this).val();
+    var action = "buscar_tel_proveedor";
+        $.ajax({
+        url: "ajax.php",
+        type: "POST",
+        data: {action: action, idproveedor: id_proveedor},
+        success: function (response) 
+        {
+            //$('#prueba').html(response);
+            var data = $.parseJSON(response); 
+            //console.log(cliente);
+            $('#tel_proveedor').val(data.tel_proveedor);
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
         }
     });
-
-    minLength: 2,
-        source: function (request, response) {
-            var action = "buscar_x_nombre_cliente";
-            $.ajax({
-                url: "ajax.php",
-                type: "POST",
-                data: {action: action, buscar_nombre_cliente: request.term},
-                success: function (data) 
-                {
-                    var datas = $.parseJSON(data);
-                    var nombres = [];
-                    for(var i=0; i < datas.length; i++)
-                    {
-                        nombres.push(datas[i].nombre_cliente);
-                    }
-                    //$('#prueba').html(nombres); 
-                    response(nombres);
-                }
-            });
-        },
-*/
+});
 
 function hide_costos()
 {
@@ -2206,6 +2594,7 @@ $('#modalidad_pago').change(function(e)
         $('#dias_pago_semanal').val("default").change();
         $('#dias_pago_semanal').attr("disabled","disabled");
         $('#dias_pago_quincenal').attr("disabled","disabled");
+        $('#dias_pago_quincenal_2').attr("disabled","disabled");
         $('#dias_pago_mensual').removeAttr("disabled");
     }
     else if(idmodalidad_pago == "quincenal")
@@ -2214,11 +2603,13 @@ $('#modalidad_pago').change(function(e)
         $('#dias_pago_semanal').attr("disabled","disabled");
         $('#dias_pago_mensual').attr("disabled","disabled");
         $('#dias_pago_quincenal').removeAttr("disabled");
+        $('#dias_pago_quincenal_2').removeAttr("disabled");
     }
     else if(idmodalidad_pago == "semanal")
     {
         $('#dias_pago_mensual').attr("disabled","disabled");
         $('#dias_pago_quincenal').attr("disabled","disabled");
+        $('#dias_pago_quincenal_2').attr("disabled","disabled");
         $('#dias_pago_semanal').removeAttr("disabled");
     }
 });
@@ -2894,7 +3285,7 @@ $('#costo').keyup(function(e)
         }
         else
         {
-            var e_q = (costo_iva/meses_pago)/2;
+            var e_q = (costo_iva/meses_pago);
             if(e_q < 400)
             {
                 $('#costo_eq').val(400);
@@ -2906,7 +3297,7 @@ $('#costo').keyup(function(e)
             }
         }
         //p1
-        var p1 = (costo_cr1/e_q)/2;
+        var p1 = ((costo_cr1/e_q)/2).toFixed(2);
         if(isNaN(p1))
         {
             $('#costo_p1').val(0);
@@ -2916,7 +3307,7 @@ $('#costo').keyup(function(e)
             $('#costo_p1').val(p1);
         }
         //p2
-        var p2 = (costo_cr2/e_q)/2;
+        var p2 = ((costo_cr2/e_q)/2).toFixed(2);
         if(isNaN(p2))
         {
             $('#costo_p2').val(0);
@@ -4164,6 +4555,7 @@ function editar_proveedor(idproveedor)
               var data = $.parseJSON(response);
               $('#nuevoProveedor').val(data.nombre_proveedor);
               $('#flagid_Proveedor').val(data.idproveedor);
+              $('#telProveedor').val(data.tel_proveedor);
             }
         },
         error: function(error) {
@@ -4283,13 +4675,13 @@ function editar_producto(idproducto)
               $('#costo_especial').val(data.costo_especial);
               $('#costo_cr1').val(data.costo_cr1);
               $('#costo_cr2').val(data.costo_cr2);
-              $('#costo_p1').val(data.costo_p1);
-              $('#costo_p2').val(data.costo_p2);
+              $('#costo_p1').val((parseFloat(data.costo_p1)).toFixed(2));
+              $('#costo_p2').val((parseFloat(data.costo_p2)).toFixed(2));
               $('#costo_eq').val(data.costo_eq);
               $('#costo_enganche').val(data.costo_enganche);
               //quitamos bloqueo
               $('#atr1_producto,#atr2_producto,#atr3_producto,#atr4_producto,#atr5_producto').removeAttr('readonly');
-              $('#identificador').attr('readonly','readonly');
+              //$('#identificador').attr('readonly','readonly');
             }
         },
         error: function(error) {

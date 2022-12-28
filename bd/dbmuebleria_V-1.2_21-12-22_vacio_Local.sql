@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 04-07-2022 a las 00:24:07
+-- Tiempo de generación: 21-12-2022 a las 21:17:32
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -20,6 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `dbmuebleria`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `almacen`
+--
+
+DROP TABLE IF EXISTS `almacen`;
+CREATE TABLE IF NOT EXISTS `almacen` (
+  `idalmacen` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `sucursal` int(11) NOT NULL,
+  PRIMARY KEY (`idalmacen`),
+  KEY `pertenece` (`sucursal`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Truncar tablas antes de insertar `almacen`
+--
+
+TRUNCATE TABLE `almacen`;
 
 -- --------------------------------------------------------
 
@@ -56,6 +77,14 @@ CREATE TABLE IF NOT EXISTS `categoria` (
   PRIMARY KEY (`idcategoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Truncar tablas antes de insertar `categoria`
+--
+
+TRUNCATE TABLE `categoria`;
+--
+-- Volcado de datos para la tabla `categoria`
+--
 -- --------------------------------------------------------
 
 --
@@ -112,6 +141,39 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   KEY `se encuentra en` (`subzona`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Truncar tablas antes de insertar `cliente`
+--
+
+TRUNCATE TABLE `cliente`;
+--
+-- Volcado de datos para la tabla `cliente`
+--
+
+--
+-- Estructura de tabla para la tabla `compra_tipo`
+--
+
+DROP TABLE IF EXISTS `compra_tipo`;
+CREATE TABLE IF NOT EXISTS `compra_tipo` (
+  `idtipo_compra` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre_compra` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`idtipo_compra`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Truncar tablas antes de insertar `compra_tipo`
+--
+
+TRUNCATE TABLE `compra_tipo`;
+--
+-- Volcado de datos para la tabla `compra_tipo`
+--
+
+INSERT INTO `compra_tipo` (`idtipo_compra`, `nombre_compra`) VALUES
+('2c907098-53f8-11ed-9f62-d481d7c3a9ad', 'Credito'),
+('36ed5c19-53f8-11ed-9f62-d481d7c3a9ad', 'Contado');
+
 -- --------------------------------------------------------
 
 --
@@ -127,6 +189,11 @@ CREATE TABLE IF NOT EXISTS `configuracion` (
   PRIMARY KEY (`idconfiguracion`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Truncar tablas antes de insertar `configuracion`
+--
+
+TRUNCATE TABLE `configuracion`;
 --
 -- Volcado de datos para la tabla `configuracion`
 --
@@ -155,11 +222,43 @@ CREATE TABLE IF NOT EXISTS `documento` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
+-- Truncar tablas antes de insertar `documento`
+--
+
+TRUNCATE TABLE `documento`;
+--
 -- Volcado de datos para la tabla `documento`
 --
 
 INSERT INTO `documento` (`iddocumento`, `name_documento`, `folio`, `serie`, `idsucursal`, `estado`, `creado_en`) VALUES
 (1, 'NOTA DE VENTA', 'MAT', '0000001', 1, 1, '2022-03-29 06:17:20');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `modalidad_pago`
+--
+
+DROP TABLE IF EXISTS `modalidad_pago`;
+CREATE TABLE IF NOT EXISTS `modalidad_pago` (
+  `idmodalidad_pago` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre_modalidad` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`idmodalidad_pago`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Truncar tablas antes de insertar `modalidad_pago`
+--
+
+TRUNCATE TABLE `modalidad_pago`;
+--
+-- Volcado de datos para la tabla `modalidad_pago`
+--
+
+INSERT INTO `modalidad_pago` (`idmodalidad_pago`, `nombre_modalidad`) VALUES
+('2de9e123-53da-11ed-9f62-d481d7c3a9ad', 'Semanal'),
+('35217c59-53da-11ed-9f62-d481d7c3a9ad', 'Quincenal'),
+('45519ce0-53da-11ed-9f62-d481d7c3a9ad', 'Mensual');
 
 -- --------------------------------------------------------
 
@@ -176,6 +275,11 @@ CREATE TABLE IF NOT EXISTS `newnotificacion` (
   PRIMARY KEY (`idnotificaciones`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Truncar tablas antes de insertar `newnotificacion`
+--
+
+TRUNCATE TABLE `newnotificacion`;
 -- --------------------------------------------------------
 
 --
@@ -191,6 +295,11 @@ CREATE TABLE IF NOT EXISTS `notificaciones` (
   PRIMARY KEY (`idnotificaciones`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Truncar tablas antes de insertar `notificaciones`
+--
+
+TRUNCATE TABLE `notificaciones`;
 -- --------------------------------------------------------
 
 --
@@ -204,6 +313,11 @@ CREATE TABLE IF NOT EXISTS `permiso` (
   PRIMARY KEY (`idpermiso`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Truncar tablas antes de insertar `permiso`
+--
+
+TRUNCATE TABLE `permiso`;
 --
 -- Volcado de datos para la tabla `permiso`
 --
@@ -249,6 +363,11 @@ CREATE TABLE IF NOT EXISTS `permiso_usuario` (
   KEY `es el` (`permiso_idpermiso`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Truncar tablas antes de insertar `permiso_usuario`
+--
+
+TRUNCATE TABLE `permiso_usuario`;
 --
 -- Volcado de datos para la tabla `permiso_usuario`
 --
@@ -301,6 +420,41 @@ CREATE TABLE IF NOT EXISTS `producto` (
   KEY `es_subcategoria` (`subcategoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Truncar tablas antes de insertar `producto`
+--
+
+TRUNCATE TABLE `producto`;
+--
+-- Volcado de datos para la tabla `producto`
+--
+
+--
+-- Estructura de tabla para la tabla `proveedor`
+--
+
+DROP TABLE IF EXISTS `proveedor`;
+CREATE TABLE IF NOT EXISTS `proveedor` (
+  `idproveedor` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre_proveedor` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
+  `tel_proveedor` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`idproveedor`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Truncar tablas antes de insertar `proveedor`
+--
+
+TRUNCATE TABLE `proveedor`;
+--
+-- Volcado de datos para la tabla `proveedor`
+--
+
+INSERT INTO `proveedor` (`idproveedor`, `nombre_proveedor`, `tel_proveedor`) VALUES
+('20554dc8-53f8-11ed-9f62-d481d7c3a9ad', 'Proveedor 2', NULL),
+('751bd638-5883-11ed-9b0e-d481d7c3a9ad', 'Proveedor 3', NULL),
+('cf18e633-53f7-11ed-9f62-d481d7c3a9ad', 'Proveedor 1', '9611238765');
+
 -- --------------------------------------------------------
 
 --
@@ -316,6 +470,11 @@ CREATE TABLE IF NOT EXISTS `puesto` (
   PRIMARY KEY (`idpuesto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Truncar tablas antes de insertar `puesto`
+--
+
+TRUNCATE TABLE `puesto`;
 --
 -- Volcado de datos para la tabla `puesto`
 --
@@ -341,7 +500,97 @@ CREATE TABLE IF NOT EXISTS `referencias_cliente` (
   `idcliente` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`idreferencia`),
   KEY `pertenece_a_cliente` (`idcliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=308 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Truncar tablas antes de insertar `referencias_cliente`
+--
+
+TRUNCATE TABLE `referencias_cliente`;
+--
+-- Volcado de datos para la tabla `referencias_cliente`
+--
+
+--
+-- Estructura de tabla para la tabla `salida`
+--
+
+DROP TABLE IF EXISTS `salida`;
+CREATE TABLE IF NOT EXISTS `salida` (
+  `idsalida` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `vendedor` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `cliente` char(32) COLLATE utf8_spanish_ci NOT NULL,
+  `fecha_salida` date DEFAULT NULL,
+  `folio_venta` int(11) DEFAULT NULL,
+  `folio_venta_serie` int(11) DEFAULT NULL,
+  `tipo_venta` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `modalidad_pago` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
+  `no_pagos` int(11) DEFAULT '0',
+  `pago_parcial` int(11) DEFAULT '0',
+  `per_dia_pago` date DEFAULT NULL,
+  `dias_pago_semanal` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `dias_pago_quincenal` int(11) DEFAULT NULL,
+  `dias_pago_quincena_2` int(11) DEFAULT NULL,
+  `dias_pago_mensual` int(11) DEFAULT NULL,
+  `enganche` double NOT NULL DEFAULT '0',
+  `subtotal1` double NOT NULL,
+  `iva` double NOT NULL,
+  `subtotal2` double NOT NULL,
+  `descuento` double NOT NULL,
+  `total_general` double NOT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idsalida`),
+  KEY `venta_hecha_por` (`vendedor`),
+  KEY `vendido_a` (`cliente`),
+  KEY `tipo_de_venta` (`tipo_venta`),
+  KEY `es del folio` (`folio_venta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Truncar tablas antes de insertar `salida`
+--
+
+TRUNCATE TABLE `salida`;
+--
+-- Volcado de datos para la tabla `salida`
+--
+
+INSERT INTO `salida` (`idsalida`, `vendedor`, `cliente`, `fecha_salida`, `folio_venta`, `folio_venta_serie`, `tipo_venta`, `modalidad_pago`, `no_pagos`, `pago_parcial`, `per_dia_pago`, `dias_pago_semanal`, `dias_pago_quincenal`, `dias_pago_quincena_2`, `dias_pago_mensual`, `enganche`, `subtotal1`, `iva`, `subtotal2`, `descuento`, `total_general`, `creado_en`) VALUES
+('74323317-80bd-11ed-a6b6-d481d7c3a9ad', '0a96aada-bd56-11ec-b09f-asjg75jfl123', 'a87ff679a2f3e71d9181a67b7542122c', '2022-12-20', 1, 1, '2651952b-2977-11ed-a437-d481d7c3a9ad', 'semanal', NULL, NULL, '2022-12-19', 'lunes', NULL, NULL, NULL, 987, 7800, 1248, 9048, 48, 9000, '2022-12-20 23:24:33');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `salida_productos`
+--
+
+DROP TABLE IF EXISTS `salida_productos`;
+CREATE TABLE IF NOT EXISTS `salida_productos` (
+  `idsalida_producto` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `salida` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `producto` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `cantidad` int(11) NOT NULL DEFAULT '1',
+  `origen` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `tipo_precio` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
+  `precio_x_unidad` double NOT NULL,
+  `precio_total` double NOT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idsalida_producto`),
+  KEY `pertenece_a_salida` (`salida`),
+  KEY `es_el_producto` (`producto`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Truncar tablas antes de insertar `salida_productos`
+--
+
+TRUNCATE TABLE `salida_productos`;
+--
+-- Volcado de datos para la tabla `salida_productos`
+--
+
+INSERT INTO `salida_productos` (`idsalida_producto`, `salida`, `producto`, `cantidad`, `origen`, `tipo_precio`, `precio_x_unidad`, `precio_total`, `creado_en`) VALUES
+('7432f7c3-80bd-11ed-a6b6-d481d7c3a9ad', '74323317-80bd-11ed-a6b6-d481d7c3a9ad', '2482928a-083a-11ed-8a78-feed01260033', 1, '', 'costo_cr1', 9048, 9048, '2022-12-20 23:24:33');
 
 -- --------------------------------------------------------
 
@@ -379,6 +628,14 @@ CREATE TABLE IF NOT EXISTS `subcategoria` (
   KEY `pertenece_a_la_categoria` (`categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Truncar tablas antes de insertar `subcategoria`
+--
+
+TRUNCATE TABLE `subcategoria`;
+--
+-- Volcado de datos para la tabla `subcategoria`
+--
 -- --------------------------------------------------------
 
 --
@@ -396,15 +653,13 @@ CREATE TABLE IF NOT EXISTS `subzonas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Volcado de datos para la tabla `subzonas`
+-- Truncar tablas antes de insertar `subzonas`
 --
 
-INSERT INTO `subzonas` (`idsubzona`, `subzona`, `idzona`, `creado_en`) VALUES
-('lkmhlgok-6yth-hyhj-98xz-yujkasndjash', 'subzona de galecio', '378hinek-bd10-asdd-6yyh-d481d723r4ed', '2022-03-29 06:16:55'),
-('yohrio96-vfgt-23nm-6765-84i34hi883dl', 'Subzona Tuxtla', 'a3e3dasd-bd10-hyhj-6765-2182783dpoas', '2022-03-29 06:16:55');
-
--- --------------------------------------------------------
-
+TRUNCATE TABLE `subzonas`;
+--
+-- Volcado de datos para la tabla `subzonas`
+--
 --
 -- Estructura de tabla para la tabla `sucursales`
 --
@@ -422,6 +677,11 @@ CREATE TABLE IF NOT EXISTS `sucursales` (
   KEY `es de tipo` (`tipo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Truncar tablas antes de insertar `sucursales`
+--
+
+TRUNCATE TABLE `sucursales`;
 --
 -- Volcado de datos para la tabla `sucursales`
 --
@@ -443,8 +703,13 @@ CREATE TABLE IF NOT EXISTS `sucursal_usuario` (
   PRIMARY KEY (`idsucursal_usuario`),
   KEY `asignado a` (`sucursal_idsucursales`),
   KEY `tiene acceso a` (`sucursal_idusuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Truncar tablas antes de insertar `sucursal_usuario`
+--
+
+TRUNCATE TABLE `sucursal_usuario`;
 --
 -- Volcado de datos para la tabla `sucursal_usuario`
 --
@@ -466,6 +731,11 @@ CREATE TABLE IF NOT EXISTS `tipo` (
   PRIMARY KEY (`idtipo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Truncar tablas antes de insertar `tipo`
+--
+
+TRUNCATE TABLE `tipo`;
 --
 -- Volcado de datos para la tabla `tipo`
 --
@@ -494,8 +764,13 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   PRIMARY KEY (`idusuario`),
   KEY `tiene el puesto` (`puesto`),
   KEY `no_user` (`no_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Tabla para manejar los usuarios del sistema';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Tabla para manejar los usuarios del sistema';
 
+--
+-- Truncar tablas antes de insertar `usuario`
+--
+
+TRUNCATE TABLE `usuario`;
 --
 -- Volcado de datos para la tabla `usuario`
 --
@@ -503,6 +778,33 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 INSERT INTO `usuario` (`idusuario`, `usuario_acceso`, `nombre`, `pass`, `rol`, `puesto`, `estado`, `superadmin`, `no_user`, `creado_en`) VALUES
 ('0a96aada-bd56-11ec-b09f-asjg75jfl123', 'IGERAG', 'Ruben Aguilar González', '81df10368e0655e4801b66269fd8b973', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 2, '2022-03-29 05:39:17'),
 ('0a96aada-bd56-11ec-b09f-asjg75jfl382', 'Luis', 'Luis Augusto Von Duben Aquino', 'c44688b5061756b3cca2b86c016a1535', 'SuperAdmin', '6e3f32fa-bd10-11ec-a5db-d481d723r4ed', 1, 1, 1, '2022-03-29 05:39:17');
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `venta_tipo`
+--
+
+DROP TABLE IF EXISTS `venta_tipo`;
+CREATE TABLE IF NOT EXISTS `venta_tipo` (
+  `idtipo_venta` char(36) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre_venta` varchar(100) CHARACTER SET utf32 COLLATE utf32_spanish_ci NOT NULL,
+  PRIMARY KEY (`idtipo_venta`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Truncar tablas antes de insertar `venta_tipo`
+--
+
+TRUNCATE TABLE `venta_tipo`;
+--
+-- Volcado de datos para la tabla `venta_tipo`
+--
+
+INSERT INTO `venta_tipo` (`idtipo_venta`, `nombre_venta`) VALUES
+('2651952b-2977-11ed-a437-d481d7c3a9ad', 'Credito'),
+('38f8be92-2979-11ed-a437-d481d7c3a9ad', 'PayJoy'),
+('462c4a06-2977-11ed-a437-d481d7c3a9ad', 'Contado'),
+('e4f5e2d7-5884-11ed-9b0e-d481d7c3a9ad', 'Apartado');
 
 -- --------------------------------------------------------
 
@@ -519,16 +821,23 @@ CREATE TABLE IF NOT EXISTS `zonas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Volcado de datos para la tabla `zonas`
+-- Truncar tablas antes de insertar `zonas`
 --
 
-INSERT INTO `zonas` (`idzona`, `zona`, `creado_en`) VALUES
-('378hinek-bd10-asdd-6yyh-d481d723r4ed', 'GALECIO', '2022-03-29 06:16:25'),
-('a3e3dasd-bd10-hyhj-6765-2182783dpoas', 'TUXTLA', '2022-03-29 06:16:25');
+TRUNCATE TABLE `zonas`;
+--
+-- Volcado de datos para la tabla `zonas`
+--
 
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `almacen`
+--
+ALTER TABLE `almacen`
+  ADD CONSTRAINT `pertence a almacen` FOREIGN KEY (`sucursal`) REFERENCES `sucursales` (`idsucursales`);
 
 --
 -- Filtros para la tabla `cliente`
@@ -562,6 +871,22 @@ ALTER TABLE `producto`
 --
 ALTER TABLE `referencias_cliente`
   ADD CONSTRAINT `pertenece_a_cliente` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`);
+
+--
+-- Filtros para la tabla `salida`
+--
+ALTER TABLE `salida`
+  ADD CONSTRAINT `es del folio` FOREIGN KEY (`folio_venta`) REFERENCES `documento` (`iddocumento`),
+  ADD CONSTRAINT `tipo_de_venta` FOREIGN KEY (`tipo_venta`) REFERENCES `venta_tipo` (`idtipo_venta`),
+  ADD CONSTRAINT `vendido_a` FOREIGN KEY (`cliente`) REFERENCES `cliente` (`idcliente`),
+  ADD CONSTRAINT `venta_hecha_por` FOREIGN KEY (`vendedor`) REFERENCES `usuario` (`idusuario`);
+
+--
+-- Filtros para la tabla `salida_productos`
+--
+ALTER TABLE `salida_productos`
+  ADD CONSTRAINT `es_el_producto` FOREIGN KEY (`producto`) REFERENCES `producto` (`idproducto`),
+  ADD CONSTRAINT `pertenece_a_salida` FOREIGN KEY (`salida`) REFERENCES `salida` (`idsalida`);
 
 --
 -- Filtros para la tabla `subcategoria`

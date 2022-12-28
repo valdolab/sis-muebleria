@@ -432,7 +432,7 @@ include "accion/conexion.php";
                         </div>
 
                         <div class="form-group col-lg">
-                            <label for="mesespago">Meses de pago:</label>
+                            <label for="mesespago">Quincenas de pago:</label>
                             <input name="mesespago" id="mesespago" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                         <div class="form-group col-lg">
@@ -669,7 +669,7 @@ include "accion/conexion.php";
                         </div>
                         
                         <div class="form-group col-lg">
-                            <label for="mesespago">Meses de pago:</label>
+                            <label for="mesespago">Quincenas de pago:</label>
                             <input name="mesespago_sub" id="mesespago_sub" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required>
                         </div>
                         <div class="form-group col-lg">
@@ -986,11 +986,11 @@ include "accion/conexion.php";
                         </div>
                         <div class="form-group col">
                             <label for="p1">P1:</label>
-                              <input name="costo_p1" id="costo_p1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required readonly>
+                              <input name="costo_p1" id="costo_p1" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required readonly step="any">
                         </div>
                         <div class="form-group col">
                             <label for="p2">P2:</label>
-                              <input name="costo_p2" id="costo_p2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required readonly>
+                              <input name="costo_p2" id="costo_p2" type="number" class="form-control" aria-label="Monto en pesos mexicanos" required readonly step="any">
                         </div>
                         <div class="form-group col-lg">
                             <label for="costo_enganche">ENG:</label>
