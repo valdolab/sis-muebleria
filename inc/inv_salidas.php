@@ -328,35 +328,31 @@ include "accion/conexion.php";
                         </div>
 
                         <div class="form-group col-lg-2">
-                            <label for="folio_venta">Folio de venta</label>
-                            <select id='folio_venta' name='folio_venta' class='form-control' readonly style="pointer-events:none;">
+                            <label for="tipo_documento">Tipo documento</label>
+                            <select id='tipo_documento' name='tipo_documento' class='form-control'>
+                                <option selected hidden value="0">Seleccione un documento</option>
                                 <?php
                                 #codigo para la lista de documentos
-                                $result = mysqli_query($conexion,"SELECT iddocumento,name_documento,folio,serie,idsucursal FROM documento");                        
+                                $id_sucursal = $_SESSION['idsucursal'];
+                                $result = mysqli_query($conexion,"SELECT iddocumento,name_documento,folio,serie,idsucursal FROM documento where idsucursal = '$id_sucursal'");                        
                                 if (mysqli_num_rows($result) > 0) 
                                 {
                                   while($row = mysqli_fetch_assoc($result))
                                   {
-                                    if($_SESSION['idsucursal'] == $row["idsucursal"])
-                                    {
-                                        echo "<option selected value='".$row["iddocumento"]."'>".$row["folio"]."-".$row["serie"]."</option>";
-                                        //convertir serie a numero
-                                        $num_serie = intval($row["serie"]);
-                                        $num_letra = $row["folio"];
-                                    }
-                                    else
-                                    {
-                                        echo "<option value='".$row["iddocumento"]."'>".$row["folio"]."-".$row["serie"]."</option>";
-                                    }
+                                    echo "<option value='".$row["iddocumento"]."' data-folio='".$row["folio"]."' data-serie='".$row["serie"]."'>".$row["name_documento"]."</option>";
                                   }
                                 }
                                 ?>
-                                <option value=""></option>
                             </select> 
-                            <input hidden readonly value="<?php echo $num_serie; ?>" type="number" class="form-control" name="folio_venta_serie" id="folio_venta_serie">
+                        </div>
+
+                        <div class="form-group col-lg-2">
+                            <label for="folio_venta">Folio de venta</label>
+                            <input readonly type="text" class="form-control" name="folio_venta" id="folio_venta">
+                            <input hidden readonly type="number" name="folio_venta_serie" id="folio_venta_serie">
                         </div>
                         
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg-2">
                             <label for="tipo_venta">Tipo de venta</label>
                             <?php 
                                 if($_SESSION['rol'] == "SuperAdmin" or $_SESSION['rol'] == "Administrador")
@@ -390,7 +386,7 @@ include "accion/conexion.php";
                             </select> 
                         </div>
 
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg-2">
                             <label for="puesto_aval">Modalidad de pagos</label>
                             <select id='modalidad_pago' name='modalidad_pago' class='form-control' required>
                                 <option selected hidden value=''>Seleccione una modalidad</option>
@@ -471,16 +467,20 @@ include "accion/conexion.php";
                     <div class="row">
                         <div class="col-lg-3">
                             <label for="identificador_pro">Identificador</label>
-                            <select class="form-control js-example-data-array identificadorpro" id="identificador_pro_1" name="identificador_pro_1">
+                            <select class="form-control js-example-data-array identificadorpro" id="identificador_pro_1" name="identificador_pro_1" onchange="cargar_series(1)">
                             <option value=0 selected hidden></option>
                             <?php 
+                                    #solo mostrar los productos que tengan stock
                                     #codigo para la lista de idclientes que se extraen de la base de datos
-                                    $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");                        
+                                    $result = mysqli_query($conexion,"SELECT idproducto,identificador,en_stock FROM producto order by identificador");                        
                                     if (mysqli_num_rows($result) > 0) 
                                     {  
                                       while($row = mysqli_fetch_assoc($result))
                                       {
-                                        echo "<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+                                        if($row["en_stock"] >= 1)
+                                        {
+                                            echo "<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+                                        }
                                       }
                                     }
                                  ?>
@@ -492,7 +492,11 @@ include "accion/conexion.php";
                         </div>
                         <div class="col-lg-2">
                             <label for="origen">Origen</label>
-                            <input type="text" class="form-control" name="origen_1" id="origen_1" onkeyup="mayusculas(this)">
+                            <!--<input type="text" class="form-control" name="origen_1" id="origen_1" onkeyup="mayusculas(this)"> -->
+                            <select class="form-control js-example-data-array" id="origen_1" name="origen_1">
+                            <option value=0 selected hidden></option>
+                            </select>
+
                         </div>
                         <div class="col-lg-2">
                             <label for="tipo_precio">Tipo de precio</label>
@@ -536,13 +540,17 @@ include "accion/conexion.php";
                             <select class="form-control js-example-data-array identificadorpro" id="identificador_pro_2" name="identificador_pro_2">
                             <option value=0 selected hidden></option>
                             <?php 
+                                    #solo mostrar los productos que tengan stock
                                     #codigo para la lista de idclientes que se extraen de la base de datos
-                                    $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");                        
+                                    $result = mysqli_query($conexion,"SELECT idproducto,identificador,en_stock FROM producto order by identificador");                        
                                     if (mysqli_num_rows($result) > 0) 
                                     {  
                                       while($row = mysqli_fetch_assoc($result))
                                       {
-                                        echo "<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+                                        if($row["en_stock"] >= 1)
+                                        {
+                                            echo "<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+                                        }
                                       }
                                     }
                                  ?>
@@ -598,13 +606,17 @@ include "accion/conexion.php";
                             <select class="form-control js-example-data-array identificadorpro" id="identificador_pro_3" name="identificador_pro_3">
                             <option value=0 selected hidden></option>
                             <?php 
+                                    #solo mostrar los productos que tengan stock
                                     #codigo para la lista de idclientes que se extraen de la base de datos
-                                    $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");                        
+                                    $result = mysqli_query($conexion,"SELECT idproducto,identificador,en_stock FROM producto order by identificador");                        
                                     if (mysqli_num_rows($result) > 0) 
                                     {  
                                       while($row = mysqli_fetch_assoc($result))
                                       {
-                                        echo "<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+                                        if($row["en_stock"] >= 1)
+                                        {
+                                            echo "<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+                                        }
                                       }
                                     }
                                  ?>
@@ -660,13 +672,17 @@ include "accion/conexion.php";
                             <select class="form-control js-example-data-array identificadorpro" id="identificador_pro_4" name="identificador_pro_4">
                             <option value=0 selected hidden></option>
                             <?php 
+                                    #solo mostrar los productos que tengan stock
                                     #codigo para la lista de idclientes que se extraen de la base de datos
-                                    $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");                        
+                                    $result = mysqli_query($conexion,"SELECT idproducto,identificador,en_stock FROM producto order by identificador");                        
                                     if (mysqli_num_rows($result) > 0) 
                                     {  
                                       while($row = mysqli_fetch_assoc($result))
                                       {
-                                        echo "<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+                                        if($row["en_stock"] >= 1)
+                                        {
+                                            echo "<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+                                        }
                                       }
                                     }
                                  ?>
@@ -722,13 +738,17 @@ include "accion/conexion.php";
                             <select class="form-control js-example-data-array identificadorpro" id="identificador_pro_5" name="identificador_pro_5">
                             <option value=0 selected hidden></option>
                             <?php 
+                                    #solo mostrar los productos que tengan stock
                                     #codigo para la lista de idclientes que se extraen de la base de datos
-                                    $result = mysqli_query($conexion,"SELECT idproducto,identificador FROM producto order by identificador");                        
+                                    $result = mysqli_query($conexion,"SELECT idproducto,identificador,en_stock FROM producto order by identificador");                        
                                     if (mysqli_num_rows($result) > 0) 
                                     {  
                                       while($row = mysqli_fetch_assoc($result))
                                       {
-                                        echo "<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+                                        if($row["en_stock"] >= 1)
+                                        {
+                                            echo "<option value='".$row["idproducto"]."'>".$row["identificador"]."</option>";
+                                        }
                                       }
                                     }
                                  ?>

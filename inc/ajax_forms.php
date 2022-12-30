@@ -1405,8 +1405,9 @@ if ($_POST['action'] == 'insert_salida_venta')
   $id_cliente = $_POST['id_cliente'];
   $fecha = $_POST['fecha'];
 
+  $id_documento = $_POST['tipo_documento'];
   $folio_venta = $_POST['folio_venta'];
-  $folio_venta_serie = $_POST['folio_venta_serie'];
+  $folio_venta_serie = intval($_POST['folio_venta_serie']);
 
   //para actualizar la tabla de documentos
   $long_formato = 7;
@@ -1441,10 +1442,10 @@ if ($_POST['action'] == 'insert_salida_venta')
   $resultIDSalida= mysqli_query($conexion, "SELECT UUID() as idsalida");
   $uuid_salida = mysqli_fetch_assoc($resultIDSalida)['idsalida'];
   //insertamos salida general 
-  $insert_salida = mysqli_query($conexion, "INSERT INTO salida(idsalida, vendedor, cliente, fecha_salida, folio_venta, folio_venta_serie, tipo_venta, modalidad_pago, no_pagos, pago_parcial, per_dia_pago, dias_pago_semanal, dias_pago_quincenal, dias_pago_quincenal_2, dias_pago_mensual, enganche, subtotal1, iva, subtotal2, descuento, total_general) VALUES ('$uuid_salida','$vendedor','$id_cliente','$fecha','$folio_venta', '$folio_venta_serie','$tipo_venta','$modalidad_pago',".(!empty($n_pagos) ? "'$n_pagos'" : "NULL").",".(!empty($pago_parcial) ? "'$pago_parcial'" : "NULL").",".(!empty($primer_dia_pago) ? "'$primer_dia_pago'" : "NULL").",".(!empty($dias_pago_semanal) ? "'$dias_pago_semanal'" : "NULL").",".(!empty($dias_pago_quincenal) ? "'$dias_pago_quincenal'" : "NULL").", ".(!empty($dias_pago_quincenal_2) ? "'$dias_pago_quincenal_2'" : "NULL").",".(!empty($dias_pago_mensual) ? "'$dias_pago_mensual'" : "NULL").",'$enganche_dado','$subtotal1','$ivas','$subtotal2','$descuento','$total_venta')");
+  $insert_salida = mysqli_query($conexion, "INSERT INTO salida(idsalida, vendedor, cliente, fecha_salida, documento, folio_venta, folio_venta_serie, tipo_venta, modalidad_pago, no_pagos, pago_parcial, per_dia_pago, dias_pago_semanal, dias_pago_quincenal, dias_pago_quincenal_2, dias_pago_mensual, enganche, subtotal1, iva, subtotal2, descuento, total_general) VALUES ('$uuid_salida','$vendedor','$id_cliente','$fecha','$id_documento','$folio_venta','$folio_venta_serie','$tipo_venta','$modalidad_pago',".(!empty($n_pagos) ? "'$n_pagos'" : "NULL").",".(!empty($pago_parcial) ? "'$pago_parcial'" : "NULL").",".(!empty($primer_dia_pago) ? "'$primer_dia_pago'" : "NULL").",".(!empty($dias_pago_semanal) ? "'$dias_pago_semanal'" : "NULL").",".(!empty($dias_pago_quincenal) ? "'$dias_pago_quincenal'" : "NULL").", ".(!empty($dias_pago_quincenal_2) ? "'$dias_pago_quincenal_2'" : "NULL").",".(!empty($dias_pago_mensual) ? "'$dias_pago_mensual'" : "NULL").",'$enganche_dado','$subtotal1','$ivas','$subtotal2','$descuento','$total_venta')");
 
   //incrementar el contador de la serie del folio
-  $update_serie_folio = mysqli_query($conexion, "UPDATE documento set serie = '$next_str_folio_venta_serie' where iddocumento = '$folio_venta'");
+  $update_serie_folio = mysqli_query($conexion, "UPDATE documento set serie = '$next_str_folio_venta_serie' where iddocumento = '$id_documento'");
 
   //valor de cada producto a ingresar
   $id_producto = [];
@@ -1455,23 +1456,29 @@ if ($_POST['action'] == 'insert_salida_venta')
   $flag_control = 1;
   for ($i=0; $i < 5; $i++) 
   { 
-    $id_producto[$i] = $_POST['identificador_pro_'.($i+1)];
-    $cantidad[$i] = intval($_POST['cantidad_'.($i+1)]);
-    $origen[$i] = $_POST['origen_'.($i+1)];
-    $tipo_precio[$i] = $_POST['tipo_precio_'.($i+1)];
-    $precio[$i] = doubleval($_POST['precio_'.($i+1)]);
-
-    //calculamos el precio por unidad
-    $precio_unidad = $precio[$i]/$cantidad[$i];
-
-    //insertamos los productos en la tabla y lo asociamos a la salida
-    //generamos el id de salida_producto(cada producto vendido
-    $resultIDSalida_productos= mysqli_query($conexion, "SELECT UUID() as idsalida_productos");
-    $uuid_salida_productos = mysqli_fetch_assoc($resultIDSalida_productos)['idsalida_productos'];
-    $insert_salida_producto = mysqli_query($conexion, "INSERT INTO salida_productos(idsalida_producto, salida, producto, cantidad, origen, tipo_precio, precio_x_unidad, precio_total) VALUES ('$uuid_salida_productos','$uuid_salida','$id_producto[$i]','$cantidad[$i]','$origen[$i]','$tipo_precio[$i]','$precio_unidad','$precio[$i]')");
-    if(!$insert_salida_producto)
+    if(!empty($_POST['identificador_pro_'.($i+1)]))
     {
-      $flag_control = 0;
+      $id_producto[$i] = $_POST['identificador_pro_'.($i+1)];
+      $cantidad[$i] = intval($_POST['cantidad_'.($i+1)]);
+      $origen[$i] = $_POST['origen_'.($i+1)];
+      $tipo_precio[$i] = $_POST['tipo_precio_'.($i+1)];
+      $precio[$i] = doubleval($_POST['precio_'.($i+1)]);
+
+      //calculamos el precio por unidad
+      $precio_unidad = $precio[$i]/$cantidad[$i];
+
+      //insertamos los productos en la tabla y lo asociamos a la salida
+      //generamos el id de salida_producto(cada producto vendido
+      $resultIDSalida_productos= mysqli_query($conexion, "SELECT UUID() as idsalida_productos");
+      $uuid_salida_productos = mysqli_fetch_assoc($resultIDSalida_productos)['idsalida_productos'];
+      $insert_salida_producto = mysqli_query($conexion, "INSERT INTO salida_productos(idsalida_producto, salida, producto, cantidad, origen, tipo_precio, precio_x_unidad, precio_total) VALUES ('$uuid_salida_productos','$uuid_salida','$id_producto[$i]','$cantidad[$i]','$origen[$i]','$tipo_precio[$i]','$precio_unidad','$precio[$i]')");
+      if(!$insert_salida_producto)
+      {
+        $flag_control = 0;
+      }
+      //QUITAR DEL STOCK, reducir la cantidad que haya disponible, si da negativo, ni modos, que no deberia
+
+
     }
   }
   if($flag_control or $insert_salida)
@@ -1498,10 +1505,107 @@ if ($_POST['action'] == 'insert_entrada_compra')
   //entrada_productos_serie (en caso de varias cantidades del mismo producto)
   include "accion/conexion.php";
   $comprador = $_POST['comprador'];
-  $idproveedor = $_POST['proveedor'];
-  $tel_proveedor $_POST['tel_proveedor'];
-  $fecha = $_POST['fecha'];
-  
+  $idproveedor = $_POST['proveedor_entrada'];
+  $tel_proveedor = $_POST['tel_proveedor_entrada'];
+  $fecha = $_POST['fecha_entrada'];
+  $folio_compra = $_POST['folio_compra'];
+  $tipo_compra = $_POST['tipo_compra'];
+  $sucursal = $_POST['sucursal'];
+  $almacen = $_POST['almacen'];
+  $n_pagos = $_POST['n_pagos_entrada'];
+  $pago_parcial = $_POST['pago_parcial_entrada'];
+  //los precios o costos generados
+  $subtotal1 = $_POST['subtotal1_flag'];
+  $ivas = $_POST['ivas_flag'];
+  $subtotal2 = $_POST['subtotal2_flag'];
+  $descuento = (empty($_POST['descuento_compra']) ? 0 : $_POST['descuento_compra']);
+  $total_compra = $_POST['total_flag'];
+  //guardamos la entrada
+  $resultIDEntrada= mysqli_query($conexion, "SELECT UUID() as identrada");
+  $uuid_entrada = mysqli_fetch_assoc($resultIDEntrada)['identrada'];
+  //insertamos salida general 
+  $insert_entrada = mysqli_query($conexion, "INSERT INTO entrada(identrada, comprador, proveedor, tel_proveedor, fecha, folio_compra, tipo_compra, sucursal, almacen, no_pagos, pago_parcial, subtotal1, iva, subtotal2, descuento, total) VALUES ('$uuid_entrada','$comprador','$idproveedor','$tel_proveedor','$fecha', '$folio_compra','$tipo_compra','$sucursal','$almacen',".(!empty($n_pagos) ? "'$n_pagos'" : "NULL").",".(!empty($pago_parcial) ? "'$pago_parcial'" : "NULL").",'$subtotal1','$ivas','$subtotal2','$descuento','$total_compra')");
+  //ahora guardamos los productos que entraron
+  //valor de cada producto a ingresar
+  $id_producto = [];
+  $cantidad = [];
+  $serie = [];
+  $precio = [];
+  $flag_control = 1;
+  for ($i=0; $i < 5; $i++) 
+  { 
+    if(!empty($_POST['identificador_pro_'.($i+1)]))
+    {
+      $id_producto[$i] = $_POST['identificador_pro_'.($i+1)];
+      $cantidad[$i] = intval($_POST['cantidad_'.($i+1)]);
+      $serie[$i] = (isset($_POST['serie_'.($i+1)]) ? $_POST['serie_'.($i+1)] : NULL);
+      $precio[$i] = $_POST['precio_'.($i+1)];
+      $producto_serializado = intval($_POST['flag_producto_serie_'.($i+1)]);
+      if (isset($_POST['tiene_iva_'.($i+1)]))
+      {
+        $tiene_iva[$i] = 1;
+        //si tienen iva los precios
+        $precio_total_iva = $precio[$i];
+        $precio_total = $precio[$i]/1.16;
+        $precio_unidad = $precio_total/$cantidad[$i];
+        $precio_unidad_iva = $precio_total_iva/$cantidad[$i];
+      }
+      else
+      {
+        $tiene_iva[$i] = 0;
+        //no tienen iva los precios, la variable precio es el precio sin IVA, no se hace nada más, precio = precio
+        //solo calcular el precio ya con su iva
+        $precio_total_iva = $precio[$i]*1.16;
+        $precio_total = $precio[$i];
+        //calculamos el precio por unidad
+        $precio_unidad = $precio_total/$cantidad[$i];
+        $precio_unidad_iva = $precio_total_iva/$cantidad[$i];
+      }
+      //ahora vemos si hay mas de 1 cantidad y es serializado, si sí habra que guardar todas las series
+      //generamos el id de salida_producto(cada producto vendido
+      $resultIDEntrada_productos= mysqli_query($conexion, "SELECT UUID() as identrada_productos");
+      $uuid_entrada_productos = mysqli_fetch_assoc($resultIDEntrada_productos)['identrada_productos'];
+      $insert_entrada_producto = mysqli_query($conexion, "INSERT INTO entrada_productos(identrada_producto, entrada,producto,cantidad,precio_x_unidad,precio_total,precio_x_unidad_iva,precio_total_iva, con_iva) VALUES ('$uuid_entrada_productos','$uuid_entrada','$id_producto[$i]','$cantidad[$i]','$precio_unidad','$precio_total','$precio_unidad_iva','$precio_total_iva','$tiene_iva[$i]')");
+      
+      if($producto_serializado == 1)
+      {
+        //insertamos todas las series de esa entrada_productos
+        $series = $_POST['series_'.($i+1)];
+        $size_series = sizeof($series);
+        for ($j=0; $j < $size_series; $j++) 
+        { 
+          //insertar cada serie, 1 o hasta infinito
+          $resultIDEntrada_productos_serie= mysqli_query($conexion, "SELECT UUID() as identrada_productos_serie");
+          $uuid_entrada_productos_serie = mysqli_fetch_assoc($resultIDEntrada_productos_serie)['identrada_productos_serie'];
+          $insert_series = mysqli_query($conexion, "INSERT INTO entrada_productos_serie(identrada_producto_serie,entrada_productos,entrada,producto,serie) VALUES ('$uuid_entrada_productos_serie','$uuid_entrada_productos','$uuid_entrada','$id_producto[$i]','$series[$j]')");
+          if (!$insert_series) 
+          {
+            $flag_control = 0;
+          }
+        }
+      }
+      //ADD EN STOCK, generamos el stock de muebleria y actualizamos el en_stock
+      $select_stock = mysqli_query($conexion, "SELECT en_stock from producto where idproducto = '$id_producto[$i]'");
+      $stock_corriente = intval(mysqli_fetch_assoc($select_stock)['en_stock']);
+      $stock_de_esta_compra = $cantidad[$i];
+      $stock_total = $stock_de_esta_compra + $stock_corriente;
+      $update_stock = mysqli_query($conexion, "UPDATE producto set en_stock = '$stock_total' where idproducto = '$id_producto[$i]'");
+    }
+  }
 
+  if($flag_control or $insert_entrada)
+  {
+    //todo bien
+    $resultEntrada = 1;
+  }
+  else
+  {
+    //hubo un error, no se donde, intentalo de nuevo we
+    $resultEntrada = 0;
+  }
+
+  $resultEntrada = mysqli_error($conexion);
+  echo json_encode($resultEntrada,JSON_UNESCAPED_UNICODE);
+  exit;
 }
 

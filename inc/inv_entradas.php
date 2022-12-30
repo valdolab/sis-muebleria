@@ -237,7 +237,6 @@ include "accion/conexion.php";
 </div>
 
 <div class="col-lg-12">
-
 <div class="card">
 <div class="card-body">
     <div class="row">
@@ -254,7 +253,7 @@ include "accion/conexion.php";
 </div>
 </div>
 
-<form action="" method="post" autocomplete="on" id="formAdd_entrada">
+<form method="post" autocomplete="on" id="formAdd_entrada">
 <div class="col-lg-12">
 <div class="card"> 
             <div class="card-body">
@@ -295,14 +294,14 @@ include "accion/conexion.php";
                                 else
                                 {
                                     ?>
-                                    <button disabled="disabled" title="Agregar nueva zona" class="btn btn-primary btn-xs" type="button"><i class="fas fa-plus"></i></button>
-                                    <button disabled title="editar zona" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
-                                    <button disabled title="Eliminar zona" class="btn btn-danger btn-xs" type="button"><i class="fas fa-trash"></i></button>
+                                    <button disabled="disabled" title="Agregar nueva proveedor" class="btn btn-primary btn-xs" type="button"><i class="fas fa-plus"></i></button>
+                                    <button disabled title="editar proveedor" class="btn btn-success btn-xs" type="button" href="#" ><i class="fas fa-edit"></i></button>
+                                    <button disabled title="Eliminar proveedor" class="btn btn-danger btn-xs" type="button"><i class="fas fa-trash"></i></button>
                                     <?php 
                                 } 
                              ?>
-                                <select class="form-control js-example-data-array" id="proveedor" name="proveedor" required>
-                                <option selected hidden>Seleccione una opción</option>
+                                <select class="form-control js-example-data-array" id="proveedor_entrada" name="proveedor_entrada" required>
+                                <option selected hidden></option>
                                 <?php
                                 $result = mysqli_query($conexion,"SELECT idproveedor,nombre_proveedor FROM proveedor");                        
                                 if (mysqli_num_rows($result) > 0) {  
@@ -315,19 +314,19 @@ include "accion/conexion.php";
                             </select>
                         </div>
 
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col-lg">
                             <label for="domicilio_aval">Teléfono</label>
-                            <input type="text" class="form-control" placeholder="exp. 9610000000" name="tel_proveedor" id="tel_proveedor" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+                            <input type="text" class="form-control" placeholder="exp. 9610000000" name="tel_proveedor_entrada" id="tel_proveedor_entrada" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
                         </div>
 
                         <div class="form-group col-lg">
                             <label for="trabajo_aval">Fecha</label>
-                            <input type="date" value="<?php echo date('Y-m-d'); ?>" class="form-control" placeholder="" name="fecha" id="fecha">
+                            <input type="date" value="<?php echo date('Y-m-d'); ?>" class="form-control" placeholder="" name="fecha_entrada" id="fecha_entrada">
                         </div>
 
                         <div class="form-group col-lg-3">
                             <label for="folio_venta">Folio de compra</label>
-                            <input type="text" class="form-control" name="folio_compra" id="folio_compra">
+                            <input type="text" class="form-control" name="folio_compra" id="folio_compra" onkeyup="mayusculas(this)">
                         </div>
                         
                         <div class="form-group col-lg-3">
@@ -389,7 +388,7 @@ include "accion/conexion.php";
                           </select>
                         </div>
 
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col-lg">
                           <label>Almacen</label>
                           <select class="form-control" id="almacen" name="almacen" required>
                             <option id="opAlmacen" value="" hidden selected>Seleccione una opción</option>
@@ -415,7 +414,7 @@ include "accion/conexion.php";
                             <input type="text" class="form-control" name="pago_parcial_entrada" id="pago_parcial_entrada" step="any">
                         </div>
 
-                        <div align="right" class="form-group col-lg-2">
+                        <div align="right" class="form-group col-lg">
                             <br>
                             <button type="button" class="btn btn-lg btn-primary" id="add_compra" onclick="add_entrada()">Añadir</button>
                         </div>
@@ -426,26 +425,10 @@ include "accion/conexion.php";
     </div>
 
 <!-- modal para poner las series que quieres -->
-<div id="series" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg text-black">
-                <h5 class="modal-title" id="my-modal-title">Agregar series de los productos a comprar</h5>
-                <button class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="" method="post" autocomplete="on" id="formAdd_tipo_compra">
-                    <div class="row">
-                        <div class="col-lg-12" id="series_dinamico">
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+<div id="series_modales">
 </div>
+                        
+
 
 <!-- aqui va los añadidios dinamicos de las entradas -->
 <!-- ya no se hizo dinamicamente, lo que se muestra a continuacion NO ES UNA PRACTICA ADECUADA -->
@@ -461,7 +444,7 @@ include "accion/conexion.php";
                     <div class="row">
                         <div class="col-lg-4">
                             <label for="identificador_pro">Identificador</label>
-                            <select class="form-control js-example-data-array" id="identificador_pro_1" name="identificador_pro_1">
+                            <select class="form-control js-example-data-array" id="identificador_pro_1" name="identificador_pro_1" onchange="es_serializado(1)">
                             <option value=0 selected hidden></option>
                             <?php 
                                     #codigo para la lista de idclientes que se extraen de la base de datos
@@ -483,12 +466,13 @@ include "accion/conexion.php";
                         <div class="col-lg-3">
                             
                             <label for="origen">Serie</label>
-                            <div id="div_serie_1">
-                                <input type="text" class="form-control" name="serie_1" id="serie_1" onkeyup="mayusculas(this)"> 
+                            <fieldset id="div_serie_1" disabled>
+                                <input type="text" class="form-control" name="series_1[]" id="series_1[]" onkeyup="mayusculas(this)"> 
                             <!--
                                 <button type="button" data-toggle="modal" data-target="#series" class="form-group btn btn-primary">Cargar Series</button> 
                             -->
-                            </div>
+                            </fieldset>
+                            <input hidden readonly value="0" type="number" name="flag_producto_serie_1" id="flag_producto_serie_1">
                         </div>
                         <div class="col-lg-2">
                             <label for="precio">Precio</label>
@@ -521,7 +505,7 @@ include "accion/conexion.php";
                     <div class="row">
                         <div class="col-lg-4">
                             <label for="identificador_pro">Identificador</label>
-                            <select class="form-control js-example-data-array" id="identificador_pro_2" name="identificador_pro_2">
+                            <select class="form-control js-example-data-array" id="identificador_pro_2" name="identificador_pro_2" onchange="es_serializado(2)">
                             <option value=0 selected hidden></option>
                             <?php 
                                     #codigo para la lista de idclientes que se extraen de la base de datos
@@ -538,11 +522,17 @@ include "accion/conexion.php";
                         </div>
                         <div class="col-lg-1">
                             <label for="cantidad">Cantidad</label>
-                            <input onchange="multiplicar_precio_entrada(2)" type="number" value=1 class="form-control" name="cantidad_1" id="cantidad_1">
+                            <input onchange="multiplicar_precio_entrada(2)" type="number" value=1 class="form-control" name="cantidad_2" id="cantidad_2">
                         </div>
                         <div class="col-lg-3">
                             <label for="origen">Serie</label>
-                            <input type="text" class="form-control" name="serie_2" id="serie_2" onkeyup="mayusculas(this)">
+                            <fieldset id="div_serie_2" disabled>
+                                <input type="text" class="form-control" name="series_2[]" id="series_2[]" onkeyup="mayusculas(this)"> 
+                            <!--
+                                <button type="button" data-toggle="modal" data-target="#series" class="form-group btn btn-primary">Cargar Series</button> 
+                            -->
+                            </fieldset>
+                            <input hidden readonly value="0" type="number" name="flag_producto_serie_2" id="flag_producto_serie_2">
                         </div>
                         <div class="col-lg-2">
                             <label for="precio">Precio</label>
@@ -575,7 +565,7 @@ include "accion/conexion.php";
                     <div class="row">
                         <div class="col-lg-4">
                             <label for="identificador_pro">Identificador</label>
-                            <select class="form-control js-example-data-array" id="identificador_pro_3" name="identificador_pro_3">
+                            <select class="form-control js-example-data-array" id="identificador_pro_3" name="identificador_pro_3" onchange="es_serializado(3)">
                             <option value=0 selected hidden></option>
                             <?php 
                                     #codigo para la lista de idclientes que se extraen de la base de datos
@@ -592,11 +582,17 @@ include "accion/conexion.php";
                         </div>
                         <div class="col-lg-1">
                             <label for="cantidad">Cantidad</label>
-                            <input onchange="multiplicar_precio_entrada(3)" type="number" value=1 class="form-control" name="cantidad_1" id="cantidad_1">
+                            <input onchange="multiplicar_precio_entrada(3)" type="number" value=1 class="form-control" name="cantidad_3" id="cantidad_3">
                         </div>
                         <div class="col-lg-3">
                             <label for="origen">Serie</label>
-                            <input type="text" class="form-control" name="serie_3" id="serie_3" onkeyup="mayusculas(this)">
+                            <fieldset id="div_serie_3" disabled>
+                                <input type="text" class="form-control" name="series_3[]" id="series_3[]" onkeyup="mayusculas(this)"> 
+                            <!--
+                                <button type="button" data-toggle="modal" data-target="#series" class="form-group btn btn-primary">Cargar Series</button> 
+                            -->
+                            </fieldset>
+                            <input hidden readonly value="0" type="number" name="flag_producto_serie_3" id="flag_producto_serie_3">
                         </div>
                         <div class="col-lg-2">
                             <label for="precio">Precio</label>
@@ -629,7 +625,7 @@ include "accion/conexion.php";
                     <div class="row">
                         <div class="col-lg-4">
                             <label for="identificador_pro">Identificador</label>
-                            <select class="form-control js-example-data-array" id="identificador_pro_4" name="identificador_pro_4">
+                            <select class="form-control js-example-data-array" id="identificador_pro_4" name="identificador_pro_4" onchange="es_serializado(4)">
                             <option value=0 selected hidden></option>
                             <?php 
                                     #codigo para la lista de idclientes que se extraen de la base de datos
@@ -646,11 +642,17 @@ include "accion/conexion.php";
                         </div>
                         <div class="col-lg-1">
                             <label for="cantidad">Cantidad</label>
-                            <input onchange="multiplicar_precio_entrada(4)" type="number" value=1 class="form-control" name="cantidad_1" id="cantidad_1">
+                            <input onchange="multiplicar_precio_entrada(4)" type="number" value=1 class="form-control" name="cantidad_4" id="cantidad_4">
                         </div>
                         <div class="col-lg-3">
                             <label for="origen">Serie</label>
-                            <input type="text" class="form-control" name="serie_4" id="serie_4" onkeyup="mayusculas(this)">
+                            <fieldset id="div_serie_4" disabled>
+                                <input type="text" class="form-control" name="series_4[]" id="series_4[]" onkeyup="mayusculas(this)"> 
+                            <!--
+                                <button type="button" data-toggle="modal" data-target="#series" class="form-group btn btn-primary">Cargar Series</button> 
+                            -->
+                            </fieldset>
+                            <input hidden readonly value="0" type="number" name="flag_producto_serie_4" id="flag_producto_serie_4">
                         </div>
                         <div class="col-lg-2">
                             <label for="precio">Precio</label>
@@ -683,7 +685,7 @@ include "accion/conexion.php";
                     <div class="row">
                         <div class="col-lg-4">
                             <label for="identificador_pro">Identificador</label>
-                            <select class="form-control js-example-data-array" id="identificador_pro_5" name="identificador_pro_5">
+                            <select class="form-control js-example-data-array" id="identificador_pro_5" name="identificador_pro_5" onchange="es_serializado(5)">
                             <option value=0 selected hidden></option>
                             <?php 
                                     #codigo para la lista de idclientes que se extraen de la base de datos
@@ -700,11 +702,17 @@ include "accion/conexion.php";
                         </div>
                         <div class="col-lg-1">
                             <label for="cantidad">Cantidad</label>
-                            <input onchange="multiplicar_precio_entrada(5)" type="number" value=1 class="form-control" name="cantidad_1" id="cantidad_1">
+                            <input onchange="multiplicar_precio_entrada(5)" type="number" value=1 class="form-control" name="cantidad_5" id="cantidad_5">
                         </div>
                         <div class="col-lg-3">
                             <label for="origen">Serie</label>
-                            <input type="text" class="form-control" name="serie_5" id="serie_5" onkeyup="mayusculas(this)">
+                            <fieldset id="div_serie_5" disabled>
+                                <input type="text" class="form-control" name="series_5[]" id="series_5[]" onkeyup="mayusculas(this)"> 
+                            <!--
+                                <button type="button" data-toggle="modal" data-target="#series" class="form-group btn btn-primary">Cargar Series</button> 
+                            -->
+                            </fieldset>
+                            <input hidden readonly value="0" type="number" name="flag_producto_serie_5" id="flag_producto_serie_5">
                         </div>
                         <div class="col-lg-2">
                             <label for="precio">Precio</label>
@@ -762,7 +770,7 @@ include "accion/conexion.php";
             <h4>Descuento</h4>
         </div>
         <div class="col-lg-2" align="right">
-            <input id="descuento_venta" type="number" name="descuento_venta" class="form-control">
+            <input id="descuento_compra" type="number" name="descuento_compra" class="form-control">
         </div>
     </div>
     <div class="row">

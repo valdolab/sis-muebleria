@@ -2156,3 +2156,35 @@ if ($_POST['action'] == 'buscar_tel_proveedor')
   echo json_encode($data_tel_p,JSON_UNESCAPED_UNICODE);
   exit;
 }
+
+//para saber si es serializado o no
+if ($_POST['action'] == 'buscar_si_es_serializado') 
+{
+  include "accion/conexion.php";
+  $idproducto = $_POST['idproducto'];
+  //eliminar todos los datos de Ext.-p de todos los productos, sin el where para BORRAR TODO
+  $result = mysqli_query($conexion,"SELECT serializado from producto where idproducto = '$idproducto'");
+  $es_serializado = (int) mysqli_fetch_assoc($result)['serializado'];
+  
+  echo json_encode($es_serializado,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+//para buscar las series
+if ($_POST['action'] == 'buscar_series_del_producto') 
+{
+  include "accion/conexion.php";
+  $idproducto = $_POST['idproducto'];
+  $result = mysqli_query($conexion,"SELECT identrada_producto_serie,serie FROM entrada_productos_serie where producto = '$idproducto' order by serie");
+  $opciones_serie = "<option selected hidden value='0'></option>";
+     while($row = mysqli_fetch_assoc($result))
+     {
+       $select_folio = mysqli_query($conexion,"SELECT entrada_productos_serie.serie,entrada.folio_compra AS folio from entrada_productos_serie INNER JOIN entrada on entrada_productos_serie.entrada = entrada.identrada WHERE entrada_productos_serie.producto = '$idproducto' AND entrada_productos_serie.identrada_producto_serie = '$row[identrada_producto_serie]' order by entrada_productos_serie.serie");
+       $folio = mysqli_fetch_assoc($select_folio)['folio'];
+       $opciones_serie = $opciones_serie."<option value='".$row["identrada_producto_serie"]."'>".$folio.'-'.$row["serie"]."</option>";
+     }
+     $data_series = array("series" => $opciones_serie);
+  
+  echo json_encode($data_series,JSON_UNESCAPED_UNICODE);
+  exit;
+}

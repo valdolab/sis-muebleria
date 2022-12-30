@@ -1418,7 +1418,7 @@ $('#idestado_civil').change(function() {
            },
            success: function(response)             
            {
-                //$('#prueba').html(response);
+                $('#prueba').html(response);
                 if(response == 0)
                 {
                     //error brutal
@@ -1476,7 +1476,7 @@ $('#idestado_civil').change(function() {
            },
            success: function(response)             
            {
-                //$('#prueba').html(response);
+                $('#prueba').html(response);
                 if(response == 0)
                 {
                     //error brutal
@@ -1838,6 +1838,18 @@ function add_salida()
    */
 }
 
+//para mostrar el folio de venta
+$('#tipo_documento').change(function(e) 
+{
+    e.preventDefault();
+    let documento = $(this);
+    let iddocumento = documento.val();
+    let folio = documento.find(':selected').data("folio");
+    let serie = documento.find(':selected').data("serie");
+    $('#folio_venta').val(folio+'-'+serie);
+    $('#folio_venta_serie').val(parseInt(serie));
+});
+
 //buscar por IDCliente
 //funcion para autocompletar cuando buscamos un cliente por ID o nombre
 //sentencia sql con nombre y ID: SELECT * FROM cliente WHERE nombre LIKE '%$nombre%'
@@ -2094,6 +2106,27 @@ function calcular_cuenta()
     $('#btn_haz_venta').removeAttr('disabled');
 }
 
+function cargar_series(id)
+{
+    let id_producto = $('#identificador_pro_'+id).val();
+    var action = "buscar_series_del_producto";
+        $.ajax({
+        url: "ajax.php",
+        type: "POST",
+        data: {action: action, idproducto: id_producto},
+        success: function (response) 
+        {
+            //$('#prueba').html(response);
+            var data = $.parseJSON(response); 
+            $('#origen_'+id).append(data.series);
+            $('#origen_'+id).trigger('change');          
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+    }); 
+}
+
 $('#descuento_venta').keyup(function(e) 
 {
     let result = parseFloat($(this).val());
@@ -2135,21 +2168,29 @@ function multiplicar_precio_entrada(id)
     }
     else
     {
-        $('#div_serie_'+id).html('<button onClick="add_series('+cantidad+')" type="button" data-toggle="modal" data-target="#series" class="form-group btn btn-primary">Cargar Series</button>');
+        $('#div_serie_'+id).html('<button type="button" data-toggle="modal" data-target="#series'+id+'" class="form-group btn btn-primary">Cargar Series</button>');
+        let serie_inputs = '<div id="series'+id+'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">\
+        <div class="modal-dialog" role="document">\
+            <div class="modal-content">\
+                <div class="modal-header bg text-black">\
+                    <h5 class="modal-title" id="my-modal-title">Agregar series de los productos a comprar</h5>\
+                    <button class="close" data-dismiss="modal" aria-label="Close">\
+                        <span aria-hidden="true">&times;</span>\
+                    </button>\
+                </div>\
+                <div class="modal-body">\
+                    <div class="row">\
+                    <div class="col-lg-12">';
+        for (var i = 0; i < cantidad; i++) 
+        {
+            serie_inputs = serie_inputs + '<div class="form-group">\
+                                <label for="correo">Serie '+(i+1)+'</label>\
+                                <input type="text" class="form-control" name="series_'+id+'[]" id="series_'+id+'[]" required maxlength="99">\
+                            </div>';
+        }
+        serie_inputs = serie_inputs + '</div></div></div></div></div></div>';
+        $('#series_modales').append(serie_inputs);
     }
-}
-
-function add_series(cantidad)
-{
-    let serie_inputs = "";
-    for (var i = 0; i < cantidad; i++) 
-    {
-        serie_inputs = serie_inputs + '<div class="form-group">\
-                            <label for="correo">Serie '+(i+1)+'</label>\
-                            <input type="text" class="form-control" name="serie[]" id="serie[]" required maxlength="99">\
-                        </div>';
-    }
-    $('#series_dinamico').html(serie_inputs);
 }
 
 var cards_showed_entrada = 0;
@@ -2241,10 +2282,49 @@ function calcular_cuenta_entrada()
 
     $('#btn_haz_compra').removeAttr('disabled');
 }
+
+$('#descuento_compra').keyup(function(e) 
+{
+    let result = parseFloat($(this).val());
+    var precio_descuento = (isNaN(result) ? 0 : result);
+    let total_compra_entrada_temp = total_compra_entrada - precio_descuento;
+    //console.log(total_venta_salida_temp);
+    $('#total_general').html('$'+total_compra_entrada_temp.format(2,3));
+    $('#total_flag').val(total_compra_entrada_temp.toFixed(2));
+});
+
+function es_serializado(id)
+{
+    let producto = $('#identificador_pro_'+id).val();
+    var action = "buscar_si_es_serializado";
+        $.ajax({
+        url: "ajax.php",
+        type: "POST",
+        data: {action: action, idproducto: producto},
+        success: function (response) 
+        {
+            //$('#prueba').html(response);
+            if(response == 1) //si es serializado
+            {
+                $('#div_serie_'+id).removeAttr('disabled');
+                $('#flag_producto_serie_'+id).val(1);
+            }
+            else
+            {
+                //no es serializado
+                $('#div_serie_'+id).attr('disabled','disabled');
+                $('#flag_producto_serie_'+id).val(0);
+            }
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+    });
+}
 //FIN ENTRADA
 
 //de proveedor
-$('#proveedor').change(function(e) 
+$('#proveedor_entrada').change(function(e) 
 {
     e.preventDefault();
     var id_proveedor = $(this).val();
@@ -2258,7 +2338,7 @@ $('#proveedor').change(function(e)
             //$('#prueba').html(response);
             var data = $.parseJSON(response); 
             //console.log(cliente);
-            $('#tel_proveedor').val(data.tel_proveedor);
+            $('#tel_proveedor_entrada').val(data.tel_proveedor);
         },
         error: function(error) {
             //$('#prueba').val('error');
@@ -2518,7 +2598,7 @@ $('#tipo_compra').change(function(e)
 });
 
 //funcion para crear el boton de elimnar y editar de los tipos de venta
-$('#proveedor').change(function(e) 
+$('#proveedor_entrada').change(function(e) 
 {
     e.preventDefault();
     var idproveedor = $(this).val();
