@@ -1450,17 +1450,17 @@ if ($_POST['action'] == 'insert_salida_venta')
   //valor de cada producto a ingresar
   $id_producto = [];
   $cantidad = [];
-  $origen = [];
   $tipo_precio = [];
   $precio = [];
   $flag_control = 1;
+  $flag_update_stock = 0;
   for ($i=0; $i < 5; $i++) 
   { 
     if(!empty($_POST['identificador_pro_'.($i+1)]))
     {
       $id_producto[$i] = $_POST['identificador_pro_'.($i+1)];
       $cantidad[$i] = intval($_POST['cantidad_'.($i+1)]);
-      $origen[$i] = $_POST['origen_'.($i+1)];
+      $origen = $_POST['origen_'.($i+1)];
       $tipo_precio[$i] = $_POST['tipo_precio_'.($i+1)];
       $precio[$i] = doubleval($_POST['precio_'.($i+1)]);
 
@@ -1471,17 +1471,64 @@ if ($_POST['action'] == 'insert_salida_venta')
       //generamos el id de salida_producto(cada producto vendido
       $resultIDSalida_productos= mysqli_query($conexion, "SELECT UUID() as idsalida_productos");
       $uuid_salida_productos = mysqli_fetch_assoc($resultIDSalida_productos)['idsalida_productos'];
-      $insert_salida_producto = mysqli_query($conexion, "INSERT INTO salida_productos(idsalida_producto, salida, producto, cantidad, origen, tipo_precio, precio_x_unidad, precio_total) VALUES ('$uuid_salida_productos','$uuid_salida','$id_producto[$i]','$cantidad[$i]','$origen[$i]','$tipo_precio[$i]','$precio_unidad','$precio[$i]')");
+      $insert_salida_producto = mysqli_query($conexion, "INSERT INTO salida_productos(idsalida_producto, salida, producto, cantidad, tipo_precio, precio_x_unidad, precio_total) VALUES ('$uuid_salida_productos','$uuid_salida','$id_producto[$i]','$cantidad[$i]','$tipo_precio[$i]','$precio_unidad','$precio[$i]')");
       if(!$insert_salida_producto)
       {
         $flag_control = 0;
       }
-      //QUITAR DEL STOCK, reducir la cantidad que haya disponible, si da negativo, ni modos, que no deberia
-
-
+      //ahora insertamos cada serie de los productos sacados
+      if($cantidad[$i] == 1)
+      {
+        $resultIDSalida_origen= mysqli_query($conexion, "SELECT UUID() as idsalida_productos_origen");
+        $uuid_salida_origen = mysqli_fetch_assoc($resultIDSalida_origen)['idsalida_productos_origen'];
+        $insert_series = mysqli_query($conexion, "INSERT INTO salida_productos_origen(idsalida_producto_origen, salida_productos, salida, producto, serie_origen) VALUES ('$uuid_salida_origen','$uuid_salida_productos','$uuid_salida','$id_producto[$i]','$origen')");
+        if($insert_series) 
+        {
+          //poner esa serie como vendida
+          $update_serie = mysqli_query($conexion, "UPDATE entrada_productos_serie set vendido = 1 where identrada_producto_serie = '$origen'");
+        }
+        else
+        {
+          $flag_control = 0;
+        }
+      }
+      else if($cantidad[$i] > 1)
+      {
+        //es mas de uno
+        $origen_array = $_POST['origen_multi_'.($i+1)];
+        $size_series = $cantidad[$i];
+        for ($j=0; $j < $size_series; $j++) 
+        { 
+          //insertar cada serie
+          $resultIDSalida_origen= mysqli_query($conexion, "SELECT UUID() as idsalida_productos_origen");
+          $uuid_salida_origen = mysqli_fetch_assoc($resultIDSalida_origen)['idsalida_productos_origen'];
+          $insert_series = mysqli_query($conexion, "INSERT INTO salida_productos_origen(idsalida_producto_origen, salida_productos, salida, producto, serie_origen) VALUES ('$uuid_salida_origen','$uuid_salida_productos','$uuid_salida','$id_producto[$i]','$origen_array[$j]')");
+          if($insert_series)
+          {
+            //poner esa serie como vendida
+            $update_serie = mysqli_query($conexion, "UPDATE entrada_productos_serie set vendido = 1 where identrada_producto_serie = '$origen_array[$j]'");
+          } 
+          else
+          {
+            $flag_control = 0;
+          }
+        }
+      }
+      if($flag_control or $insert_salida)
+      {
+        //QUITAR DEL STOCK, reducir la cantidad que haya disponible, si da negativo, ni modos, que no deberia
+        //ponerlos en la tabla de series, para saber cuanto salieron, y de ahi mostrarlo
+        $select_stock = mysqli_query($conexion, "SELECT en_stock from producto where idproducto = '$id_producto[$i]'");
+        $stock_corriente = intval(mysqli_fetch_assoc($select_stock)['en_stock']);
+        $stock_de_esta_venta = $cantidad[$i];
+        $stock_total = $stock_corriente - $stock_de_esta_venta;
+        $update_stock = mysqli_query($conexion, "UPDATE producto set en_stock = '$stock_total' where idproducto = '$id_producto[$i]'");
+        $flag_update_stock = 1;
+      }
     }
   }
-  if($flag_control or $insert_salida)
+
+  if($flag_control == 1 or !$insert_salida or $flag_update_stock == 1)
   {
     //todo bien
     $resultSalida = 1;
@@ -1565,35 +1612,62 @@ if ($_POST['action'] == 'insert_entrada_compra')
       //generamos el id de salida_producto(cada producto vendido
       $resultIDEntrada_productos= mysqli_query($conexion, "SELECT UUID() as identrada_productos");
       $uuid_entrada_productos = mysqli_fetch_assoc($resultIDEntrada_productos)['identrada_productos'];
-      $insert_entrada_producto = mysqli_query($conexion, "INSERT INTO entrada_productos(identrada_producto, entrada,producto,cantidad,precio_x_unidad,precio_total,precio_x_unidad_iva,precio_total_iva, con_iva) VALUES ('$uuid_entrada_productos','$uuid_entrada','$id_producto[$i]','$cantidad[$i]','$precio_unidad','$precio_total','$precio_unidad_iva','$precio_total_iva','$tiene_iva[$i]')");
+      $insert_entrada_producto = mysqli_query($conexion, "INSERT INTO entrada_productos(identrada_producto, entrada,producto,cantidad,precio_x_unidad,precio_total,precio_x_unidad_iva,precio_total_iva, con_iva, almacen_actual) VALUES ('$uuid_entrada_productos','$uuid_entrada','$id_producto[$i]','$cantidad[$i]','$precio_unidad','$precio_total','$precio_unidad_iva','$precio_total_iva','$tiene_iva[$i]','$almacen')");
       
-      if($producto_serializado == 1)
+      //insertamos todas las series de esa entrada_productos
+      $resultIDEntrada_productos_serie= mysqli_query($conexion, "SELECT UUID() as identrada_productos_serie");
+      $uuid_entrada_productos_serie = mysqli_fetch_assoc($resultIDEntrada_productos_serie)['identrada_productos_serie'];
+      if($cantidad[$i] == 1)
       {
-        //insertamos todas las series de esa entrada_productos
-        $series = $_POST['series_'.($i+1)];
-        $size_series = sizeof($series);
+        $serie_valor = NULL;
+        if($producto_serializado == 1)
+        {
+          $serie_valor = $serie[$i];
+        }
+        $insert_series = mysqli_query($conexion, "INSERT INTO entrada_productos_serie(identrada_producto_serie,entrada_productos,entrada,producto,serie) VALUES ('$uuid_entrada_productos_serie','$uuid_entrada_productos','$uuid_entrada','$id_producto[$i]',".(!empty($serie_valor) ? "'$serie_valor'" : "NULL").")");
+        if (!$insert_series) 
+        {
+          $flag_control = 0;
+        }
+      }
+      else if($cantidad[$i] > 1)
+      {
+        //es mas de uno
+        $series_array = $_POST['series_modal_'.($i+1)];
+        $size_series = $cantidad[$i];
+        $serie_valor = NULL;
+        if($producto_serializado == 1)
+        {
+          $serie_valor = $series_array;
+        }
         for ($j=0; $j < $size_series; $j++) 
         { 
-          //insertar cada serie, 1 o hasta infinito
+          //insertar cada serie
           $resultIDEntrada_productos_serie= mysqli_query($conexion, "SELECT UUID() as identrada_productos_serie");
           $uuid_entrada_productos_serie = mysqli_fetch_assoc($resultIDEntrada_productos_serie)['identrada_productos_serie'];
-          $insert_series = mysqli_query($conexion, "INSERT INTO entrada_productos_serie(identrada_producto_serie,entrada_productos,entrada,producto,serie) VALUES ('$uuid_entrada_productos_serie','$uuid_entrada_productos','$uuid_entrada','$id_producto[$i]','$series[$j]')");
+          $insert_series = mysqli_query($conexion, "INSERT INTO entrada_productos_serie(identrada_producto_serie,entrada_productos,entrada,producto,serie) VALUES ('$uuid_entrada_productos_serie','$uuid_entrada_productos','$uuid_entrada','$id_producto[$i]',".(!empty($serie_valor) ? "'$serie_valor[$j]'" : "NULL").")");
           if (!$insert_series) 
           {
             $flag_control = 0;
           }
         }
       }
-      //ADD EN STOCK, generamos el stock de muebleria y actualizamos el en_stock
-      $select_stock = mysqli_query($conexion, "SELECT en_stock from producto where idproducto = '$id_producto[$i]'");
-      $stock_corriente = intval(mysqli_fetch_assoc($select_stock)['en_stock']);
-      $stock_de_esta_compra = $cantidad[$i];
-      $stock_total = $stock_de_esta_compra + $stock_corriente;
-      $update_stock = mysqli_query($conexion, "UPDATE producto set en_stock = '$stock_total' where idproducto = '$id_producto[$i]'");
+
+      $flag_update_stock = 0;
+      if($flag_control or $insert_salida)
+      {
+        //ADD EN STOCK, generamos el stock de muebleria y actualizamos el en_stock
+        $select_stock = mysqli_query($conexion, "SELECT en_stock from producto where idproducto = '$id_producto[$i]'");
+        $stock_corriente = intval(mysqli_fetch_assoc($select_stock)['en_stock']);
+        $stock_de_esta_compra = $cantidad[$i];
+        $stock_total = $stock_de_esta_compra + $stock_corriente;
+        $update_stock = mysqli_query($conexion, "UPDATE producto set en_stock = '$stock_total' where idproducto = '$id_producto[$i]'");
+        $flag_update_stock = 1;
+      }
     }
   }
 
-  if($flag_control or $insert_entrada)
+  if($flag_control == 1 or !$insert_entrada or $flag_update_stock == 1)
   {
     //todo bien
     $resultEntrada = 1;

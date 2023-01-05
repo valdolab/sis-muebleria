@@ -510,6 +510,110 @@ if (!empty($_POST))
     </div>
 </div>
 
+<!-- modal de las compras que hizo el cliente -->
+<div id="ver_compras" class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg text-black">
+                <h4 class="modal-title" id="my-modal-title">Compras del cliente</h4>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="on" id="formEdit_subzona">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="table-responsive">
+                                <table class="table" id="tbl">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Folio</th>
+                                            <th>Tipo Precio</th>
+                                            <th>Mod pago</th>
+                                            <th>1er día</th>
+                                            <th>Enga</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Uni</th>
+                                            <th>TOTAL</th>
+                                            <th>Productos</th>
+                                            <th>Origen</th>
+                                            <th>Estatus</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $query = mysqli_query($conexion, "SELECT folio_venta, modalidad_pago, per_dia_pago, enganche, salida.total_general, salida_productos.precio_total, salida.activo, salida_productos.cantidad, salida_productos.tipo_precio, salida_productos.precio_x_unidad, salida_productos.idsalida_producto, producto.identificador, entrada_productos_serie.serie, entrada.folio_compra from salida INNER JOIN salida_productos on salida_productos.salida = salida.idsalida INNER JOIN producto on producto.idproducto = salida_productos.producto INNER JOIN salida_productos_origen on salida_productos_origen.salida_productos = salida_productos.idsalida_producto INNER JOIN entrada_productos_serie on entrada_productos_serie.identrada_producto_serie = salida_productos_origen.serie_origen INNER JOIN entrada on entrada.identrada = entrada_productos_serie.entrada where salida.cliente = '$id_cliente' AND salida.borrado_logico = 0 GROUP by producto.identificador");
+                                        $result = mysqli_num_rows($query);
+
+                                        if ($result > 0) 
+                                        {
+                                            $total_general_cliente = 0;
+                                            while ($data = mysqli_fetch_assoc($query)) 
+                                            {
+                                                $total_general_cliente = $total_general_cliente + $data['precio_total'];
+                                                if ($data['activo'] == 1) {
+                                                    $estado = '<span class="badge badge-pill badge-success">Activo</span>';
+                                                } else {
+                                                    $estado = '<span class="badge badge-pill badge-danger">Suspendido</span>';
+                                                }
+                                                if($data['cantidad'] > 1)
+                                                {   
+                                                    $id_salida_producto = $data['idsalida_producto'];
+                                                    $query_series = mysqli_query($conexion, "SELECT entrada_productos_serie.serie, entrada.folio_compra from entrada_productos_serie INNER JOIN entrada on entrada.identrada = entrada_productos_serie.entrada INNER JOIN salida_productos_origen on salida_productos_origen.serie_origen = entrada_productos_serie.identrada_producto_serie where salida_productos_origen.salida_productos = '$id_salida_producto' order by entrada.folio_compra");
+
+                                                    $series = "";
+                                                    while ($data_series = mysqli_fetch_assoc($query_series)) 
+                                                    {
+                                                        $series = $series.$data_series['folio_compra']."-".$data_series['serie'];
+                                                        $series = $series."<br>";       
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    $series = $data['folio_compra']."-".$data['serie'];
+                                                }
+
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo $data['folio_venta']; ?></td>
+                                                    <td><?php echo $data['tipo_precio']; ?></td>
+                                                    <td><?php echo $data['modalidad_pago']; ?></td>
+                                                    <td><?php echo $data['per_dia_pago'];  ?></td>
+                                                    <td><?php echo $data['enganche']; ?></td>
+                                                    <td><?php echo $data['cantidad']; ?></td>
+                                                    <td><?php echo $data['precio_x_unidad']; ?></td>
+                                                    <td><?php echo $data['precio_total']; ?></td>
+                                                    <td><?php echo $data['identificador']; ?></td>
+                                                    <td><?php echo $series; ?></td>
+                                                    <td><?php echo $estado; ?></td>
+                                                </tr>
+                                        <?php 
+                                            }
+                                        } 
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <?php 
+                                if ($result > 0) 
+                                {
+                                    echo "<h2>TOTAL: ".number_format($total_general_cliente,2,'.',',')."</h2>";
+                                }
+                             ?>
+                        </div>
+                    </div>
+
+                    <input value="edit_subzona" name="action" id="action" hidden>
+                    <div align="right">
+                        <input type="submit" value="Agregar" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 <div class="row">
@@ -521,6 +625,7 @@ if (!empty($_POST))
                 </div>
                 <div class="col-lg-6" align="right">
                         <input name="bandera" id="bandera" value="newcliente" hidden>
+                        <button data-toggle="modal" data-target="#ver_compras" title="Ver las compras relizadas por el cliente" id="btn_ver_compras_hechas" type="button" class="btn btn-info btn-lg"> <i class="fas fa-eye"></i> Ver compras</button>
                         <a id="btnregresar" href="clientes.php" type="button" class="btn btn-secondary btn-lg">Regresar</a>
                         <?php 
                             if($editar_cliente_full)

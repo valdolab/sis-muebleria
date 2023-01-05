@@ -174,12 +174,12 @@ include "accion/conexion.php";
 <div class="card-body">
     <div class="row">
         <div class="col-lg-10">
-            <h2><strong>SALIDAS</strong></h2>
+            <h3><strong>SALIDAS</strong></h3>
             <!--<input type="" name="prueba" id="prueba">-->
         </div>
 
         <div align="right" class="col-lg-2">
-            <a href="#" class="btn btn-primary" type="button" ><i class="fas fa-list"></i> Salidas realizadas</a>
+            <a href="lista_salidas.php" class="btn btn-primary" type="button" ><i class="fas fa-list"></i> Salidas realizadas</a>
         </div>
     </div>
 </div>
@@ -329,7 +329,7 @@ include "accion/conexion.php";
 
                         <div class="form-group col-lg-2">
                             <label for="tipo_documento">Tipo documento</label>
-                            <select id='tipo_documento' name='tipo_documento' class='form-control'>
+                            <select id='tipo_documento' name='tipo_documento' class='form-control' required>
                                 <option selected hidden value="0">Seleccione un documento</option>
                                 <?php
                                 #codigo para la lista de documentos
@@ -490,12 +490,20 @@ include "accion/conexion.php";
                             <label for="cantidad">Cantidad</label>
                             <input onchange="multiplicar_precio(1)" type="number" value=1 class="form-control" name="cantidad_1" id="cantidad_1">
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-3">
                             <label for="origen">Origen</label>
                             <!--<input type="text" class="form-control" name="origen_1" id="origen_1" onkeyup="mayusculas(this)"> -->
-                            <select class="form-control js-example-data-array" id="origen_1" name="origen_1">
-                            <option value=0 selected hidden></option>
-                            </select>
+
+                            <div id="divorigen_1">
+                                <select class="form-control js-example-data-array" id="origen_1" name="origen_1">
+                                    <option value=0 selected hidden></option>
+                                </select>
+                            </div>
+
+                            <div id="divorigen_multi_1" hidden>
+                                <select class="form-control js-example-basic-multiple" id="origen_multi_1" name="origen_multi_1[]" multiple="multiple">
+                                </select>
+                            </div>
 
                         </div>
                         <div class="col-lg-2">
@@ -537,7 +545,7 @@ include "accion/conexion.php";
                     <div class="row">
                         <div class="col-lg-3">
                             <label for="identificador_pro">Identificador</label>
-                            <select class="form-control js-example-data-array identificadorpro" id="identificador_pro_2" name="identificador_pro_2">
+                            <select class="form-control js-example-data-array identificadorpro" id="identificador_pro_2" name="identificador_pro_2"  onchange="cargar_series(2)">
                             <option value=0 selected hidden></option>
                             <?php 
                                     #solo mostrar los productos que tengan stock
@@ -560,9 +568,19 @@ include "accion/conexion.php";
                             <label for="cantidad">Cantidad</label>
                             <input onchange="multiplicar_precio(2)" type="number" value=1 class="form-control" name="cantidad_2" id="cantidad_2">
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-3">
                             <label for="origen">Origen</label>
-                            <input type="text" class="form-control" name="origen_2" id="origen_2" onkeyup="mayusculas(this)">
+                            <!--<input type="text" class="form-control" name="origen_1" id="origen_1" onkeyup="mayusculas(this)"> -->
+                            <div id="divorigen_2">
+                                <select class="form-control js-example-data-array" id="origen_2" name="origen_2">
+                                    <option value=0 selected hidden></option>
+                                </select>
+                            </div>
+
+                            <div id="divorigen_multi_2" hidden>
+                                <select class="form-control js-example-basic-multiple" id="origen_multi_2" name="origen_multi_2[]" multiple="multiple">
+                                </select>
+                            </div>
                         </div>
                         <div class="col-lg-2">
                             <label for="tipo_precio">Tipo de precio</label>
@@ -626,9 +644,18 @@ include "accion/conexion.php";
                             <label for="cantidad">Cantidad</label>
                             <input onchange="multiplicar_precio(3)" type="number" value=1 class="form-control" name="cantidad_3" id="cantidad_3">
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-3">
                             <label for="origen">Origen</label>
-                            <input type="text" class="form-control" name="origen_3" id="origen_3" onkeyup="mayusculas(this)">
+                            <div id="divorigen_3">
+                                <select class="form-control js-example-data-array" id="origen_3" name="origen_3">
+                                    <option value=0 selected hidden></option>
+                                </select>
+                            </div>
+
+                            <div id="divorigen_multi_3" hidden>
+                                <select class="form-control js-example-basic-multiple" id="origen_multi_3" name="origen_multi_3[]" multiple="multiple">
+                                </select>
+                            </div>
                         </div>
                         <div class="col-lg-2">
                             <label for="tipo_precio">Tipo de precio</label>
@@ -692,9 +719,18 @@ include "accion/conexion.php";
                             <label for="cantidad">Cantidad</label>
                             <input onchange="multiplicar_precio(4)" type="number" value=1 class="form-control" name="cantidad_4" id="cantidad_4">
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-3">
                             <label for="origen">Origen</label>
-                            <input type="text" class="form-control" name="origen_4" id="origen_4" onkeyup="mayusculas(this)">
+                            <div id="divorigen_4">
+                                <select class="form-control js-example-data-array" id="origen_4" name="origen_4">
+                                    <option value=0 selected hidden></option>
+                                </select>
+                            </div>
+
+                            <div id="divorigen_multi_4" hidden>
+                                <select class="form-control js-example-basic-multiple" id="origen_multi_4" name="origen_multi_4[]" multiple="multiple">
+                                </select>
+                            </div>
                         </div>
                         <div class="col-lg-2">
                             <label for="tipo_precio">Tipo de precio</label>
@@ -758,9 +794,18 @@ include "accion/conexion.php";
                             <label for="cantidad">Cantidad</label>
                             <input onchange="multiplicar_precio(5)" type="number" value=1 class="form-control" name="cantidad_5" id="cantidad_5">
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-3">
                             <label for="origen">Origen</label>
-                            <input type="text" class="form-control" name="origen_5" id="origen_5" onkeyup="mayusculas(this)">
+                            <div id="divorigen_5">
+                                <select class="form-control js-example-data-array" id="origen_5" name="origen_5">
+                                    <option value=0 selected hidden></option>
+                                </select>
+                            </div>
+
+                            <div id="divorigen_multi_5" hidden>
+                                <select class="form-control js-example-basic-multiple" id="origen_multi_5" name="origen_multi_5[]" multiple="multiple">
+                                </select>
+                            </div>
                         </div>
                         <div class="col-lg-2">
                             <label for="tipo_precio">Tipo de precio</label>

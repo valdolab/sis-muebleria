@@ -6,8 +6,9 @@ if (empty($_SESSION['active'])) {
 }
 include "functions.php";
 include "accion/conexion.php";
+//poner llaves foraneas en 0 
+//$sql_key_foreign = mysqli_query($conexion, "SET FOREIGN_KEY_CHECKS=0");
 // datos Empresa
-
 $idsucursal = $_SESSION['idsucursal'];
 $iduser = $_SESSION['iduser'];
 $query2 = mysqli_query($conexion, "SELECT sucursales from sucursales where idsucursales = $idsucursal");

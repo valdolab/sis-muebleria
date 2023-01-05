@@ -1418,7 +1418,7 @@ $('#idestado_civil').change(function() {
            },
            success: function(response)             
            {
-                $('#prueba').html(response);
+                //$('#prueba').html(response);
                 if(response == 0)
                 {
                     //error brutal
@@ -1476,7 +1476,7 @@ $('#idestado_civil').change(function() {
            },
            success: function(response)             
            {
-                $('#prueba').html(response);
+                //$('#prueba').html(response);
                 if(response == 0)
                 {
                     //error brutal
@@ -1616,6 +1616,8 @@ $('#idestado_civil').change(function() {
             }
        });  
     });
+
+
 
 //FIN DEL DOCUMENT READY
 });
@@ -2042,6 +2044,22 @@ function multiplicar_precio(id)
     let cantidad = $("#cantidad_"+id).val();
     //console.log(precio_base);
     $('#precio_'+id).val(parseInt(precio_base[id-1]*cantidad));
+    //si es mas de uno hacer el select multiple y poner la cantidad minima y maxima
+    if(cantidad > 1)
+    {
+        $('#divorigen_'+id).attr('hidden','hidden');
+        $('#divorigen_multi_'+id).removeAttr('hidden');
+        $('#origen_multi_'+id).select2({
+            theme: "bootstrap-5",
+            minimumSelectionLength: cantidad,
+            maximumSelectionLength: cantidad,
+        });
+    }
+    else
+    {
+        $('#divorigen_'+id).removeAttr('hidden');
+        $('#divorigen_multi_'+id).attr('hidden','hidden');
+    }
 }
 
 Number.prototype.format = function(n, x) {
@@ -2118,8 +2136,14 @@ function cargar_series(id)
         {
             //$('#prueba').html(response);
             var data = $.parseJSON(response); 
+            //primero el multi sin la opcion vacia
+            $('#origen_multi_'+id).empty();
+            $('#origen_multi_'+id).append(data.series);
+            $('#origen_multi_'+id).trigger('change');
+            $('#origen_'+id).empty();
             $('#origen_'+id).append(data.series);
-            $('#origen_'+id).trigger('change');          
+            $('#origen_'+id).trigger('change');    
+                
         },
         error: function(error) {
             //$('#prueba').val('error');
@@ -2185,7 +2209,7 @@ function multiplicar_precio_entrada(id)
         {
             serie_inputs = serie_inputs + '<div class="form-group">\
                                 <label for="correo">Serie '+(i+1)+'</label>\
-                                <input type="text" class="form-control" name="series_'+id+'[]" id="series_'+id+'[]" required maxlength="99">\
+                                <input type="text" class="form-control" name="series_modal_'+id+'[]" id="series_modal_'+id+'[]" maxlength="99">\
                             </div>';
         }
         serie_inputs = serie_inputs + '</div></div></div></div></div></div>';
@@ -2320,6 +2344,113 @@ function es_serializado(id)
             //$('#prueba').val('error');
         }
     });
+}
+
+function eliminar_entrada(entrada)
+{
+    //por el momento no va afuncionar eliminar entradas, solo lo quita de la tabla pero hay que restar inventario y eso y esta cabron
+    Swal.fire({
+            title: '¿Esta seguro de eliminar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'SI, Eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'eliminar_entrada';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action, identrada:entrada},
+                  success: function(response) {
+                    //$('#prueba').val(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "lista_entradas.php";
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Eliminado!',
+                          'Se elimino correctamente!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "lista_entradas.php";
+                            }
+                        })
+                    }
+                    
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });      
+              }
+        })
+}
+
+function suspender_entrada(entrada) 
+{
+    Swal.fire({
+            title: '¿Esta seguro de susupender?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, suspender!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'suspender_entrada';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action, identrada:entrada},
+                  success: function(response) {
+                    //$('#prueba').val(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "lista_entradas.php";
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Suspendido!',
+                          'Se suspendio correctamente!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "lista_entradas.php";
+                            }
+                        })
+                    }
+                    
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });      
+              }
+        })
 }
 //FIN ENTRADA
 

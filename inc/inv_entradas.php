@@ -241,12 +241,12 @@ include "accion/conexion.php";
 <div class="card-body">
     <div class="row">
         <div class="col-lg-10">
-            <h2><strong>ENTRADAS</strong></h2>
+            <h3><strong>ENTRADAS</strong></h3>
             <!--<input type="" name="prueba" id="prueba">-->
         </div>
 
         <div align="right" class="col-lg-2">
-            <!-- <a data-toggle="modal" data-target="#nuevo_documento"  class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nuevo documento</a> -->
+            <a href="lista_entradas.php" class="btn btn-primary" type="button" ><i class="fas fa-list"></i> Entradas realizadas</a>
         </div>
     </div>
 </div>
@@ -467,7 +467,7 @@ include "accion/conexion.php";
                             
                             <label for="origen">Serie</label>
                             <fieldset id="div_serie_1" disabled>
-                                <input type="text" class="form-control" name="series_1[]" id="series_1[]" onkeyup="mayusculas(this)"> 
+                                <input type="text" class="form-control" name="serie_1" id="serie_1" onkeyup="mayusculas(this)"> 
                             <!--
                                 <button type="button" data-toggle="modal" data-target="#series" class="form-group btn btn-primary">Cargar Series</button> 
                             -->
@@ -527,7 +527,7 @@ include "accion/conexion.php";
                         <div class="col-lg-3">
                             <label for="origen">Serie</label>
                             <fieldset id="div_serie_2" disabled>
-                                <input type="text" class="form-control" name="series_2[]" id="series_2[]" onkeyup="mayusculas(this)"> 
+                                <input type="text" class="form-control" name="serie_2" id="serie_2" onkeyup="mayusculas(this)"> 
                             <!--
                                 <button type="button" data-toggle="modal" data-target="#series" class="form-group btn btn-primary">Cargar Series</button> 
                             -->
@@ -587,7 +587,7 @@ include "accion/conexion.php";
                         <div class="col-lg-3">
                             <label for="origen">Serie</label>
                             <fieldset id="div_serie_3" disabled>
-                                <input type="text" class="form-control" name="series_3[]" id="series_3[]" onkeyup="mayusculas(this)"> 
+                                <input type="text" class="form-control" name="serie_3" id="serie_3" onkeyup="mayusculas(this)"> 
                             <!--
                                 <button type="button" data-toggle="modal" data-target="#series" class="form-group btn btn-primary">Cargar Series</button> 
                             -->
@@ -647,7 +647,7 @@ include "accion/conexion.php";
                         <div class="col-lg-3">
                             <label for="origen">Serie</label>
                             <fieldset id="div_serie_4" disabled>
-                                <input type="text" class="form-control" name="series_4[]" id="series_4[]" onkeyup="mayusculas(this)"> 
+                                <input type="text" class="form-control" name="serie_4" id="serie_4" onkeyup="mayusculas(this)"> 
                             <!--
                                 <button type="button" data-toggle="modal" data-target="#series" class="form-group btn btn-primary">Cargar Series</button> 
                             -->
@@ -707,7 +707,7 @@ include "accion/conexion.php";
                         <div class="col-lg-3">
                             <label for="origen">Serie</label>
                             <fieldset id="div_serie_5" disabled>
-                                <input type="text" class="form-control" name="series_5[]" id="series_5[]" onkeyup="mayusculas(this)"> 
+                                <input type="text" class="form-control" name="serie_5" id="serie_5" onkeyup="mayusculas(this)"> 
                             <!--
                                 <button type="button" data-toggle="modal" data-target="#series" class="form-group btn btn-primary">Cargar Series</button> 
                             -->

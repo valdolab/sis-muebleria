@@ -81,16 +81,64 @@ include "accion/conexion.php";
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 <h4><strong>Valor total de la mercancía</strong></h4>
                             </div>
+                            <?php 
+                                $sql = mysqli_query($conexion, "SELECT sum(total) as total from entrada");
+                                $costo_real = floatval(mysqli_fetch_assoc($sql)['total']);
+                                //con puros INNER JOIN
+                                //SELECT entrada.total from entrada INNER JOIN entrada_productos_serie on entrada_productos_serie.entrada = entrada.identrada INNER JOIN salida_productos_origen on salida_productos_origen.serie_origen = entrada_productos_serie.identrada_producto_serie
+                                $sql = mysqli_query($conexion, "SELECT sum(entrada.total) as total_sacados from entrada where entrada.identrada in (SELECT entrada_productos_serie.entrada from entrada_productos_serie INNER JOIN salida_productos_origen on salida_productos_origen.serie_origen = entrada_productos_serie.identrada_producto_serie)");
+                                $costo_real_e = floatval(mysqli_fetch_assoc($sql)['total_sacados']);
+                                $costo_real = $costo_real - $costo_real_e;
 
+                                $sql = mysqli_query($conexion, "SELECT sum(costo_iva) as total_con_iva, sum(costo_contado) as total_contado, sum(costo_especial) as total_especial, sum(costo_cr1) as total_cr1, sum(costo_cr2) as total_cr2 from producto INNER JOIN entrada_productos on entrada_productos.producto = producto.idproducto");
+                                $costos_entrada = mysqli_fetch_assoc($sql);
+                                $costo_e = floatval($costos_entrada['total_con_iva']);
+                                $especial_e = floatval($costos_entrada['total_contado']);
+                                $contado_e = floatval($costos_entrada['total_especial']);
+                                $cr1_e = floatval($costos_entrada['total_cr1']);
+                                $cr2_e = floatval($costos_entrada['total_cr2']);
+
+                                $sql_e = mysqli_query($conexion, "SELECT sum(costo_iva) as total_con_iva, sum(costo_contado) as total_contado, sum(costo_especial) as total_especial, sum(costo_cr1) as total_cr1, sum(costo_cr2) as total_cr2 from producto INNER JOIN salida_productos on salida_productos.producto = producto.idproducto");
+                                $costos_salida = mysqli_fetch_assoc($sql_e);
+                                $costo = floatval($costos_salida['total_con_iva']);
+                                $especial = floatval($costos_salida['total_contado']);
+                                $contado = floatval($costos_salida['total_especial']);
+                                $cr1 = floatval($costos_salida['total_cr1']);
+                                $cr2 = floatval($costos_salida['total_cr2']);
+                                //restamos
+                                $costo = $costo_e - $costo;
+                                $especial = $especial_e - $especial;
+                                $contado = $contado_e - $contado;
+                                $cr1 = $cr1_e - $cr1;
+                                $cr2 = $cr2_e - $cr2;
+                             ?>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                Costo:
                                 <br>
-                                <h2 align="center">$24,000</h2>
+                                <div class="row">
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-4">
+                                        <h2 align="center"> <strong>Costo:</strong> <?php echo "$".number_format($costo,2,'.',','); ?></h2>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <h2 align="center"> <strong>Costo real:</strong> <?php echo "$".number_format($costo_real,2,'.',','); ?></h2>
+                                    </div>
+                                </div>
                                 <br>
-                                <br>
-                                Contado:
-                                <br>
-                                <h2 align="center">$44,000</h2>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <h3 align="center"> <strong>Contado:</strong> <?php echo "$".number_format($contado,0,'.',','); ?></h3>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <h3 align="center"> <strong>Especial:</strong> <?php echo "$".number_format($especial,0,'.',','); ?></h3>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <h3 align="center"> <strong>CR1:</strong> <?php echo "$".number_format($cr1,0,'.',','); ?></h3>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <h3 align="center"> <strong>CR2:</strong> <?php echo "$".number_format($cr2,0,'.',','); ?></h3>
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -152,48 +200,80 @@ include "accion/conexion.php";
     <table class="table" id="tbl">
         <thead class="thead-light">
             <tr>
-                <th>Categoría</th>
-                <th>Subcategoría</th>
-                <th>Modelo</th>
+                <th>Fecha</th>
+                <th>Proveedor</th>
+                <th>Tel Proveedor</th>
                 <th>Sucursal</th>
-                <th>Almacén</th>
-                <th>Stock M</th>
-                <th>Costo + IVA</th>
-                <th>Costo contado</th>
-                <th>Costo cr1</th>
+                <th>Almácen</th>
+                <th>Productos</th>
+                <th>Folio+Serie</th>
+                <th>Stock.M</th>
+                <th>Costo U. IVA</th>
+                <th>Total IVA</th>
+                <th>Costo U. Real</th>
+                <th>Total Real</th>
                 <th width="10">Trans</th>
                 <!-- <th style="text-align: center;">Herramientas</th> -->
             </tr>
         </thead>
         <tbody>
+            <?php
+            //SELECT identrada, comprador, entrada.tel_proveedor, fecha, folio_compra, entrada.sucursal, almacen, no_pagos, pago_parcial, subtotal1, iva, subtotal2, descuento, total, activo, proveedor.nombre_proveedor as proveedor, compra_tipo.nombre_compra as tipo_compra, almacen.nombre as almacen, sucursales.sucursales as sucursal, producto.identificador, entrada_productos.cantidad, entrada_productos_serie.serie, producto.idproducto FROM entrada INNER JOIN proveedor on proveedor.idproveedor = entrada.proveedor INNER JOIN compra_tipo on compra_tipo.idtipo_compra = entrada.tipo_compra INNER JOIN almacen on almacen.idalmacen = entrada.almacen INNER JOIN sucursales on sucursales.idsucursales = entrada.sucursal INNER JOIN entrada_productos on entrada_productos.entrada = entrada.identrada INNER JOIN producto on producto.idproducto = entrada_productos.producto INNER JOIN entrada_productos_serie on entrada_productos_serie.entrada_productos = entrada_productos.identrada_producto where borrado_logico = 0 AND entrada.activo = 1 order by entrada.activo
+            $query = mysqli_query($conexion, "SELECT identrada_producto, entrada, producto.identificador, producto.idproducto, sum(cantidad) as cantidad, sum(precio_x_unidad) as precio_x_unidad, sum(precio_total) as precio_total, sum(precio_x_unidad_iva) as precio_x_unidad_iva, sum(precio_total_iva) as precio_total_iva, con_iva, almacen_actual, almacen.nombre as almacen, entrada.fecha, entrada.activo, entrada.folio_compra, entrada.tel_proveedor, proveedor.nombre_proveedor, sucursales.sucursales FROM entrada_productos INNER JOIN producto on producto.idproducto = entrada_productos.producto INNER JOIN almacen on almacen.idalmacen = entrada_productos.almacen_actual INNER JOIN entrada on entrada.identrada = entrada_productos.entrada INNER JOIN proveedor on proveedor.idproveedor = entrada.proveedor INNER JOIN sucursales on sucursales.idsucursales = entrada.sucursal GROUP by producto.idproducto");
+            $result = mysqli_num_rows($query);
+            if ($result > 0) 
+            {
+                while ($data = mysqli_fetch_assoc($query)) 
+                {
+                    if ($data['activo'] == 1) {
+                        $estado = '<span class="badge badge-pill badge-success">Activo</span>';
+                    } else {
+                        $estado = '<span class="badge badge-pill badge-danger">Suspendido</span>';
+                    }
+                    $identrada_producto = $data['identrada_producto'];
+                    
+                    $id_producto = $data['idproducto'];
+                    $query_stock = mysqli_query($conexion, "SELECT en_stock from producto where idproducto = '$id_producto'");
+                    $en_stock = floatval(mysqli_fetch_assoc($query_stock)['en_stock']);
+                    $precio_unidad = $data['precio_x_unidad_iva'];
+                    if($data['cantidad'] == 1)
+                    {
+                        $total_real = $data['precio_total_iva'];
+                        $query_serie = mysqli_query($conexion, "SELECT entrada_productos_serie.serie as serie from entrada_productos_serie where entrada_productos = '$identrada_producto'");
+                        $serie = mysqli_fetch_assoc($query_serie)['serie'];
+                        $series = $data['folio_compra']."-".$serie;
+                        //calcular precio a costo de la tabla productos
+                        $query_costos = mysqli_query($conexion, "SELECT costo_iva, costo_contado, costo_especial, costo_cr1, costo_cr2 from producto where idproducto = '$id_producto'");
+                        $costo_tabla = mysqli_fetch_assoc($query_costos)['costo_iva'];
+                    }
+                    else
+                    {
+                       //SELECT costo_iva from producto where idproducto = '929893e5-0839-11ed-8a78-feed01260033'
+                       //$query_series = mysqli_query($conexion, "");
+
+                    }
+                    ?>
                     <tr>
-                        <td>Linea blanca</td>
-                        <td>Lavadora</td>
-                        <td>asd</td>
-                        <td>TODAS</td>
-                        <td>TODAS</td>
-                        <td>6</td>
-                        <td>$6,000</td>
-                        <td>$12,000</td>
-                        <td>$12,000</td>
+                        <td><?php echo $data['fecha']; ?></td>
+                        <td><?php echo $data['nombre_proveedor']; ?></td>
+                        <td><?php echo $data['tel_proveedor']; ?></td>
+                        <td><?php echo $data['sucursales'];  ?></td>
+                        <td><?php echo $data['almacen']; ?></td>
+                        <td><?php echo $data['identificador']; ?></td>
+                        <td><?php echo $series; ?></td>
+                        <td><?php echo $en_stock ?></td>
+                        <td><?php echo "$".number_format($costo_tabla,2,'.',','); ?></td>
+                        <td><?php echo "$".number_format($costo_tabla*$en_stock,2,'.',','); ?></td>
+                        <td><?php echo "$".number_format($precio_unidad,2,'.',','); ?></td>
+                        <td><?php echo "$".number_format($total_real,2,'.',','); ?></td>
                         <td width="10" align="center">
                                 <button onClick='eliminar_inventario()' class='btn btn-primary btn-sm' type='submit'><i style='color: white;' class='fas fa-exchange-alt'></i></button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>Linea blanca</td>
-                        <td>Lavadora</td>
-                        <td>asd2</td>
-                        <td>TODAS</td>
-                        <td>TODAS</td>
-                        <td>6</td>
-                        <td>$6,000</td>
-                        <td>$12,000</td>
-                        <td>$12,000</td>
-                        <td width="10" align="center">
-                                <button onClick='eliminar_inventario()' class='btn btn-primary btn-sm' type='submit'><i style='color: white;' class='fas fa-exchange-alt'></i></button>
-                        </td>
-                    </tr>
+            <?php 
+                }
+            } 
+            ?>
         </tbody>
     </table>
 </div>

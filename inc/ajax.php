@@ -2175,8 +2175,9 @@ if ($_POST['action'] == 'buscar_series_del_producto')
 {
   include "accion/conexion.php";
   $idproducto = $_POST['idproducto'];
-  $result = mysqli_query($conexion,"SELECT identrada_producto_serie,serie FROM entrada_productos_serie where producto = '$idproducto' order by serie");
-  $opciones_serie = "<option selected hidden value='0'></option>";
+  $result = mysqli_query($conexion,"SELECT identrada_producto_serie,serie FROM entrada_productos_serie where producto = '$idproducto' AND vendido = 0 order by serie");
+  //$opciones_serie = "<option selected hidden value='0'></option>";
+  $opciones_serie = "";
      while($row = mysqli_fetch_assoc($result))
      {
        $select_folio = mysqli_query($conexion,"SELECT entrada_productos_serie.serie,entrada.folio_compra AS folio from entrada_productos_serie INNER JOIN entrada on entrada_productos_serie.entrada = entrada.identrada WHERE entrada_productos_serie.producto = '$idproducto' AND entrada_productos_serie.identrada_producto_serie = '$row[identrada_producto_serie]' order by entrada_productos_serie.serie");
@@ -2186,5 +2187,45 @@ if ($_POST['action'] == 'buscar_series_del_producto')
      $data_series = array("series" => $opciones_serie);
   
   echo json_encode($data_series,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+//eliminado logico de entrada, por ahora no se va a usar, faltaria restar del inventario y esta muy cabron eso
+if ($_POST['action'] == 'eliminar_entrada') 
+{
+  include "accion/conexion.php";
+  $identrada = $_POST['identrada'];
+  //eliminar todos los datos de Ext.-p de todos los productos, sin el where para BORRAR TODO
+  $result = mysqli_query($conexion,"UPDATE entrada set borrado_logico = 1 where identrada = '$identrada'");
+  if($result)
+  {
+    $borro_entrada = 1;
+  }
+  else
+  {
+    $borro_entrada = 0;
+  }
+  
+  echo json_encode($borro_entrada,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+
+if ($_POST['action'] == 'suspender_entrada') 
+{
+  include "accion/conexion.php";
+  $identrada = $_POST['identrada'];
+  //eliminar todos los datos de Ext.-p de todos los productos, sin el where para BORRAR TODO
+  $result = mysqli_query($conexion,"UPDATE entrada set activo = 0 where identrada = '$identrada'");
+  if($result)
+  {
+    $borro_entrada = 1;
+  }
+  else
+  {
+    $borro_entrada = 0;
+  }
+  
+  echo json_encode($borro_entrada,JSON_UNESCAPED_UNICODE);
   exit;
 }
