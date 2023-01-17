@@ -264,7 +264,7 @@ include "accion/conexion.php";
 
                         <div class="form-group col-lg-2">
                             <label for="domicilio_aval">Teléfono</label>
-                            <input type="text" class="form-control" placeholder="exp. 9610000000" name="tel_cliente" id="tel_cliente" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+                            <input disabled type="text" class="form-control" placeholder="exp. 9610000000" name="tel_cliente" id="tel_cliente" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
                         </div>
 
                         <div class="form-group col-lg-3">
@@ -288,7 +288,7 @@ include "accion/conexion.php";
                                     <?php 
                                 } 
                              ?>
-                            <select class="form-control" id="zona" name="zona" required>
+                            <select disabled class="form-control" id="zona" name="zona">
                                 <option selected hidden>Seleccione una opción</option>
                                 <?php
                                 #codigo para la lista de sucursales que se extraen de la base de datos
@@ -322,7 +322,7 @@ include "accion/conexion.php";
                                 } 
                              ?>
 
-                            <select id='subzona' name='subzona' class='form-control' required>
+                            <select disabled id='subzona' name='subzona' class='form-control'>
                                 <option selected hidden value=''>Seleccione una colonia (subzona)</option>
                             </select> 
                         </div>
@@ -413,7 +413,7 @@ include "accion/conexion.php";
 
                         <div class="form-group col-lg">
                             <label for="dias_pago_semanal">Semanal</label>
-                            <select id='dias_pago_semanal' name='dias_pago_semanal' class='form-control' disabled required>
+                            <select id='dias_pago_semanal' name='dias_pago_semanal' class='form-control' disabled>
                                 <option selected hidden value=''>Seleccione una opción</option>
                                 <option value="lunes">Lunes</option>
                                 <option value="martes">Martes</option>
@@ -427,17 +427,17 @@ include "accion/conexion.php";
 
                         <div class="form-group col-lg">
                             <label for="dias_pago_quincenal">Quincenal</label>
-                            <input type="number" class="form-control" name="dias_pago_quincenal" id="dias_pago_quincenal" disabled required>
+                            <input type="number" class="form-control" name="dias_pago_quincenal" id="dias_pago_quincenal" disabled>
                         </div>
 
                         <div class="form-group col-lg">
                             <label for="dias_pago_quincenal">Quincenal 2</label>
-                            <input type="number" class="form-control" name="dias_pago_quincenal_2" id="dias_pago_quincenal_2" disabled required>
+                            <input type="number" class="form-control" name="dias_pago_quincenal_2" id="dias_pago_quincenal_2" disabled>
                         </div>
 
                         <div class="form-group col-lg">
                             <label for="dias_pago_mensual">Mensual</label>
-                            <input type="number" class="form-control" name="dias_pago_mensual" id="dias_pago_mensual" disabled required>
+                            <input type="number" class="form-control" name="dias_pago_mensual" id="dias_pago_mensual" disabled>
                         </div>
 
                         <div class="form-group col-lg-1">
@@ -511,11 +511,11 @@ include "accion/conexion.php";
                               <select onchange="mostrar_precios(1)" class="form-control" id="tipo_precio_1" name="tipo_precio_1">
                                 <option value=0 selected hidden></option>
                                 <!--<option value="costo">Costo normal</option>
-                                <option value="costo_iva">Costo con iva</option>-->
-                                <option value="costo_contado">Costo con iva contado</option>
-                                <option value="costo_especial">Costo con iva especial</option>
-                                <option value="costo_cr1">Costo con iva credito 1</option>
-                                <option value="costo_cr2">Costo con iva credito 2</option>
+                                <option value="costo_iva">Costo </option>-->
+                                <option value="costo_contado">Costo contado</option>
+                                <option value="costo_especial">Costo especial</option>
+                                <option value="costo_cr1">Costo credito 1</option>
+                                <option value="costo_cr2">Costo credito 2</option>
                               </select>
                         </div>
                         <div class="col-lg-2">
@@ -587,11 +587,11 @@ include "accion/conexion.php";
                               <select onchange="mostrar_precios(2)" class="form-control" id="tipo_precio_2" name="tipo_precio_2">
                                 <option value=0 selected hidden></option>
                                 <!--<option value="costo">Costo normal</option>
-                                <option value="costo_iva">Costo con iva</option>-->
-                                <option value="costo_contado">Costo con iva contado</option>
-                                <option value="costo_especial">Costo con iva especial</option>
-                                <option value="costo_cr1">Costo con iva credito 1</option>
-                                <option value="costo_cr2">Costo con iva credito 2</option>
+                                <option value="costo_iva">Costo </option>-->
+                                <option value="costo_contado">Costo contado</option>
+                                <option value="costo_especial">Costo especial</option>
+                                <option value="costo_cr1">Costo credito 1</option>
+                                <option value="costo_cr2">Costo credito 2</option>
                               </select>
                         </div>
                         <div class="col-lg-2">
@@ -662,11 +662,11 @@ include "accion/conexion.php";
                               <select onchange="mostrar_precios(3)" class="form-control" id="tipo_precio_3" name="tipo_precio_3">
                                 <option value=0 selected hidden></option>
                                 <!--<option value="costo">Costo normal</option>
-                                <option value="costo_iva">Costo con iva</option>-->
-                                <option value="costo_contado">Costo con iva contado</option>
-                                <option value="costo_especial">Costo con iva especial</option>
-                                <option value="costo_cr1">Costo con iva credito 1</option>
-                                <option value="costo_cr2">Costo con iva credito 2</option>
+                                <option value="costo_iva">Costo </option>-->
+                                <option value="costo_contado">Costo contado</option>
+                                <option value="costo_especial">Costo especial</option>
+                                <option value="costo_cr1">Costo credito 1</option>
+                                <option value="costo_cr2">Costo credito 2</option>
                               </select>
                         </div>
                         <div class="col-lg-2">
@@ -737,11 +737,11 @@ include "accion/conexion.php";
                               <select onchange="mostrar_precios(4)" class="form-control" id="tipo_precio_4" name="tipo_precio_4">
                                 <option value=0 selected hidden></option>
                                 <!--<option value="costo">Costo normal</option>
-                                <option value="costo_iva">Costo con iva</option>-->
-                                <option value="costo_contado">Costo con iva contado</option>
-                                <option value="costo_especial">Costo con iva especial</option>
-                                <option value="costo_cr1">Costo con iva credito 1</option>
-                                <option value="costo_cr2">Costo con iva credito 2</option>
+                                <option value="costo_iva">Costo </option>-->
+                                <option value="costo_contado">Costo contado</option>
+                                <option value="costo_especial">Costo especial</option>
+                                <option value="costo_cr1">Costo credito 1</option>
+                                <option value="costo_cr2">Costo credito 2</option>
                               </select>
                         </div>
                         <div class="col-lg-2">
@@ -812,11 +812,11 @@ include "accion/conexion.php";
                               <select onchange="mostrar_precios(5)" class="form-control" id="tipo_precio_5" name="tipo_precio_5">
                                 <option value=0 selected hidden></option>
                                 <!--<option value="costo">Costo normal</option>
-                                <option value="costo_iva">Costo con iva</option>-->
-                                <option value="costo_contado">Costo con iva contado</option>
-                                <option value="costo_especial">Costo con iva especial</option>
-                                <option value="costo_cr1">Costo con iva credito 1</option>
-                                <option value="costo_cr2">Costo con iva credito 2</option>
+                                <option value="costo_iva">Costo </option>-->
+                                <option value="costo_contado">Costo contado</option>
+                                <option value="costo_especial">Costo especial</option>
+                                <option value="costo_cr1">Costo credito 1</option>
+                                <option value="costo_cr2">Costo credito 2</option>
                               </select>
                         </div>
                         <div class="col-lg-2">
@@ -891,7 +891,7 @@ include "accion/conexion.php";
 <div class="row">
     <div class="col-lg-1"></div>
     <div class="form-group col-lg-5">
-        <button id="btn_vender"  onclick="calcular_cuenta()" type="button" class="btn btn-block btn-primary" disabled><i class="fas fa-cash-register"></i> Calcular</button>
+        <button id="btn_vender"  onclick="calcular_cuenta(0)" type="button" class="btn btn-block btn-primary" disabled><i class="fas fa-cash-register"></i> Calcular</button>
     </div>
     <div class="col-lg-5">
         <button id="btn_haz_venta" disabled type="submit" class="btn btn-block btn-success"><i class="fas fa-money-check"></i> Vender</button>

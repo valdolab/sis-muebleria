@@ -7,6 +7,7 @@ function show_search_box()
   "columnDefs": [{
    "targets": 0
   }],
+  "pageLength": 50,
   language: {
    "sProcessing": "Procesando...",
    "sLengthMenu": "Mostrar _MENU_ resultados",
@@ -1025,6 +1026,62 @@ $('#idestado_civil').change(function() {
        return false;   
     });
 
+    //form para transferir producto a un nuevo almacen
+    $("#formTrans_almacen").submit( function () 
+    {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
+           success: function(response)             
+           {
+                //$('#prueba').html(response);
+                if(response == 0)
+                {
+                    //error
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, !intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "inv_almacenes.php";
+                            }
+                        }) 
+                }
+                else if(response == 1)
+                {
+                    //correcto
+                    Swal.fire({
+                          icon: 'success',
+                          title: '!Guardado!',
+                          text: '!El producto se movio de almacén correctamete!'
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "inv_almacenes.php";
+                            }
+                        }) 
+                } 
+           }
+       });   
+       return false;   
+    });
+
     //form para agregar un tipo de venta
     $("#formAdd_tipo_venta").submit( function () 
     {  
@@ -1435,6 +1492,66 @@ $('#idestado_civil').change(function() {
                 }
                 else
                 {
+                    var data = $.parseJSON(response);
+                    //correcto
+                        Swal.fire({
+                              icon: 'success',
+                              title: '!Guardado!',
+                              text: '!Se guardo la venta!'
+                            }).then((result) => {
+                                if (result.isConfirmed){
+                                    //window.location.href = "inv_almacenes.php";
+                                    let pagina = "inv_editar_salidas.php?id="+data.idsalida;
+                                    window.location.href = pagina;
+                                }
+                            }) 
+                }       
+           }
+       });   
+       return false;   
+    });
+
+    //form para editar las salidas de venta
+    $("#formEdit_salida").submit( function () 
+    {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
+           success: function(response)             
+           {
+                //$('#prueba').html(response);
+                if(response == 0)
+                {
+                    //error brutal
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, !intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //recargamos la pagina actual sin el POST
+                                window.location.href=window.location.href;
+                            }
+                        }) 
+                }
+                else
+                {
                     //var data = $.parseJSON(response);
                     //correcto
                         Swal.fire({
@@ -1515,6 +1632,55 @@ $('#idestado_civil').change(function() {
       "columnDefs": [{
        "targets": 0
       }],
+      "pageLength": 50,
+      language: {
+       "sProcessing": "Procesando...",
+       "sLengthMenu": "Mostrar _MENU_ resultados",
+       "sZeroRecords": "No se encontraron resultados",
+       "sEmptyTable": "Ningún dato disponible en esta tabla",
+       "sInfo": "Mostrando resultados _START_-_END_ de  _TOTAL_",
+       "sInfoEmpty": "Mostrando resultados del 0 al 0 de un total de 0 registros",
+       "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+       "sSearch": "Buscar:",
+       "sLoadingRecords": "Cargando...",
+       "oPaginate": {
+        "sFirst": "Primero",
+        "sLast": "Último",
+        "sNext": "Siguiente",
+        "sPrevious": "Anterior",
+       },
+      }
+     });
+
+        $('#tbl_ideal').DataTable({
+      "columnDefs": [{
+       "targets": 0
+      }],
+      "pageLength": 50,
+      language: {
+       "sProcessing": "Procesando...",
+       "sLengthMenu": "Mostrar _MENU_ resultados",
+       "sZeroRecords": "No se encontraron resultados",
+       "sEmptyTable": "Ningún dato disponible en esta tabla",
+       "sInfo": "Mostrando resultados _START_-_END_ de  _TOTAL_",
+       "sInfoEmpty": "Mostrando resultados del 0 al 0 de un total de 0 registros",
+       "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+       "sSearch": "Buscar:",
+       "sLoadingRecords": "Cargando...",
+       "oPaginate": {
+        "sFirst": "Primero",
+        "sLast": "Último",
+        "sNext": "Siguiente",
+        "sPrevious": "Anterior",
+       },
+      }
+     });
+
+    $('#tbl_real').DataTable({
+      "columnDefs": [{
+       "targets": 0
+      }],
+      "pageLength": 50,
       language: {
        "sProcessing": "Procesando...",
        "sLengthMenu": "Mostrar _MENU_ resultados",
@@ -1911,6 +2077,76 @@ $('#nom_cliente').on('select2:select', function (e)
     }); 
 });
 
+
+//FUNCIONES DE SALIDAS
+function suspender_salida(salida) 
+{
+    Swal.fire({
+            title: '¿Esta seguro de susupender?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, suspender!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'suspender_salida';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action, idsalida:salida},
+                  success: function(response) {
+                    //$('#prueba').val(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "lista_salidas.php";
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Suspendido!',
+                          'Se suspendio correctamente!',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                window.location.href = "lista_salidas.php";
+                            }
+                        })
+                    }
+                    
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });      
+              }
+        })
+}
+
+function editar_salida(num_cards) 
+{
+    $('#form_edit_salida').removeAttr('disabled');
+    $('#vendedor').removeAttr('disabled');
+    $('#id_cliente').removeAttr('disabled');
+    $('#nom_cliente').removeAttr('disabled');
+    for (var i = 0; i < num_cards; i++) 
+    {
+        $('#identificador_pro_'+(i+1)).removeAttr('disabled');
+        $('#origen_'+(i+1)).removeAttr('disabled');
+        $('#origen_multi_'+(i+1)).removeAttr('disabled');
+    }
+
+}
+
 var salida_costo = 0;
 var salida_costo_iva = 0;
 var salida_costo_contado = 0;
@@ -2005,11 +2241,14 @@ function mostrar_precios(id)
                 $('#precio_'+id).val(precio_actual);
                 //mostrar el enganche de ese producto
                 costo_enganche[id-1] = parseFloat(data.costo_enganche);
+                console.log(costo_enganche);
+                enganche_calculado = 0;
                 for (var i = 0; i < costo_enganche.length; i++) 
                 {
                     enganche_calculado = enganche_calculado + costo_enganche[i];
                 }
                 $('#enganche_dado').val(enganche_calculado);
+                console.log(enganche_calculado);
 
                 //n de pagos y pago parcial
                 let pago_parcial = parseFloat(data.costo_eq);
@@ -2068,7 +2307,7 @@ Number.prototype.format = function(n, x) {
 };
 
 var total_venta_salida = 0;
-function calcular_cuenta()
+function calcular_cuenta(es_editar)
 {
     let id_tipo_precio = [];
     let precios_siniva = [];
@@ -2096,12 +2335,24 @@ function calcular_cuenta()
             ivas[i-1] = precios_siniva[i-1]*0.16;
             precios_coniva[i-1] = precios_siniva[i-1] + ivas[i-1];
         }
-        subtotal1 = subtotal1 + precios_siniva[i-1];
-        iva = iva + ivas[i-1];
-        subtotal2 = subtotal2 + precios_coniva[i-1];
+        if(es_editar == 1)
+        {
+            let cantidad = $('#cantidad_'+i).val();
+            //console.log(cantidad);
+            subtotal1 = subtotal1 + (precios_siniva[i-1]*cantidad);
+            iva = iva + (ivas[i-1]*cantidad);
+            subtotal2 = subtotal2 + (precios_coniva[i-1]*cantidad);
+        }
+        else
+        {
+            subtotal1 = subtotal1 + precios_siniva[i-1];
+            iva = iva + ivas[i-1];
+            subtotal2 = subtotal2 + precios_coniva[i-1];
+        }
         //el descuento se calculara cuando vaya ingresando datos
     }
-    total_venta_salida = subtotal2;
+    let descuento = $('#descuento_venta').val();
+    total_venta_salida = subtotal2 - descuento;
     /*console.log(id_tipo_precio);
     console.log(ivas);
     console.log(precios_coniva);*/
@@ -2161,6 +2412,31 @@ $('#descuento_venta').keyup(function(e)
     $('#total_flag').val(total_venta_salida_temp.toFixed(2));
 });
 
+function transferir_almacen(idproducto)
+{
+    var action = 'SelectAlmacen';
+    $.ajax({
+        url: 'ajax.php',
+        type: "POST",
+        async: true,
+        data: {action:action,producto:idproducto},
+        success: function(response) {
+            //$('#prueba').val(response);
+            if (response != 0) 
+            {
+              $('#idproducto_trans').val(idproducto);
+              var data = $.parseJSON(response);
+              $('#name_producto_transferir').val(data.name_producto);
+              $('#serie_trans').empty();
+              $('#serie_trans').append(data.series);
+            }
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+   });  
+}
+
 //funciones de ENTRADA
 var pago_parcial_entrada = 0;
 var pagos_parciales = [0,0,0,0,0];
@@ -2185,7 +2461,7 @@ function mostrar_pagos(id)
 function multiplicar_precio_entrada(id)
 {
     let cantidad = $("#cantidad_"+id).val();
-    $('#precio_'+id).val(parseInt(precio_base_entrada[id-1]*cantidad));
+    //$('#precio_'+id).val(parseInt(precio_base_entrada[id-1]*cantidad));
     if(cantidad <= 1)
     {
         $('#div_serie_'+id).html('<input type="text" class="form-control" name="serie_1" id="serie_1" onkeyup="mayusculas(this)">');
@@ -2263,12 +2539,13 @@ function calcular_cuenta_entrada()
 
     for (let i = 1; i <= 5; i++) 
     {
+        let cantidad = $("#cantidad_"+i).val();
         con_iva[i-1] = document.getElementById('tiene_iva_'+i).checked;
         if(con_iva[i-1] == false) //esto quiere decir que NO trae el iva calculado
         {
             //lo agregamos como es y ponemos en el array de ivas su iva calculado
             let result = parseFloat($("#precio_"+i).val());
-            precios_siniva[i-1] = (isNaN(result) ? 0 : result);
+            precios_siniva[i-1] = (isNaN(result) ? 0 : result*cantidad);
             ivas[i-1] = precios_siniva[i-1]*0.16;
             precios_coniva[i-1] = precios_siniva[i-1] + ivas[i-1];
         }
@@ -2276,7 +2553,7 @@ function calcular_cuenta_entrada()
         {
             //ya trae el iva el precio, lo sacamos del precio y lo ponemos aparte en el array
             let result = parseFloat($("#precio_"+i).val());
-            precios_siniva[i-1] = (isNaN(result) ? 0 : result/1.16);
+            precios_siniva[i-1] = (isNaN(result) ? 0 : (result*cantidad)/1.16);
             ivas[i-1] = precios_siniva[i-1]*0.16;
             precios_coniva[i-1] = precios_siniva[i-1] + ivas[i-1];
         }

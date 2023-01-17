@@ -2210,7 +2210,6 @@ if ($_POST['action'] == 'eliminar_entrada')
   exit;
 }
 
-
 if ($_POST['action'] == 'suspender_entrada') 
 {
   include "accion/conexion.php";
@@ -2229,3 +2228,51 @@ if ($_POST['action'] == 'suspender_entrada')
   echo json_encode($borro_entrada,JSON_UNESCAPED_UNICODE);
   exit;
 }
+
+if ($_POST['action'] == 'suspender_salida') 
+{
+  include "accion/conexion.php";
+  $idsalida = $_POST['idsalida'];
+  //eliminar todos los datos de Ext.-p de todos los productos, sin el where para BORRAR TODO
+  $result = mysqli_query($conexion,"UPDATE salida set activo = 0 where idsalida = '$idsalida'");
+  if($result)
+  {
+    $borro_salida = 1;
+  }
+  else
+  {
+    $borro_salida = 0;
+  }
+  
+  echo json_encode($borro_salida,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+//para transferir almacen
+if ($_POST['action'] == 'SelectAlmacen') 
+{
+  include "accion/conexion.php";
+  $idproducto = $_POST['producto'];
+  
+  $result = mysqli_query($conexion,"SELECT identrada_producto_serie,serie FROM entrada_productos_serie where producto = '$idproducto' AND vendido = 0 order by serie");
+  //$opciones_serie = "<option selected hidden value='0'></option>";
+  $opciones_serie = "";
+     while($row = mysqli_fetch_assoc($result))
+     {
+       $select_folio = mysqli_query($conexion,"SELECT entrada_productos_serie.serie,entrada.folio_compra AS folio from entrada_productos_serie INNER JOIN entrada on entrada_productos_serie.entrada = entrada.identrada WHERE entrada_productos_serie.producto = '$idproducto' AND entrada_productos_serie.identrada_producto_serie = '$row[identrada_producto_serie]' order by entrada_productos_serie.serie");
+       $folio = mysqli_fetch_assoc($select_folio)['folio'];
+       $opciones_serie = $opciones_serie."<option value='".$row["identrada_producto_serie"]."'>".$folio.'-'.$row["serie"]."</option>";
+     }
+
+     $result_name_p = mysqli_query($conexion,"SELECT identificador from producto where idproducto = '$idproducto'");
+     $name_producto = mysqli_fetch_assoc($result_name_p)['identificador'];
+
+     $data_series = array("series" => $opciones_serie);
+     $identificador = array("name_producto" => $name_producto);
+     $resultTransAlmacen = $data_series + $identificador;
+
+  
+  echo json_encode($resultTransAlmacen,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+

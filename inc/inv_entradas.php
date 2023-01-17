@@ -326,7 +326,7 @@ include "accion/conexion.php";
 
                         <div class="form-group col-lg-3">
                             <label for="folio_venta">Folio de compra</label>
-                            <input type="text" class="form-control" name="folio_compra" id="folio_compra" onkeyup="mayusculas(this)">
+                            <input type="text" class="form-control" name="folio_compra" id="folio_compra" onkeyup="mayusculas(this)" required>
                         </div>
                         
                         <div class="form-group col-lg-3">

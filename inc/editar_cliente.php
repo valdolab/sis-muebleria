@@ -606,7 +606,6 @@ if (!empty($_POST))
 
                     <input value="edit_subzona" name="action" id="action" hidden>
                     <div align="right">
-                        <input type="submit" value="Agregar" class="btn btn-primary">
                     </div>
                 </form>
             </div>

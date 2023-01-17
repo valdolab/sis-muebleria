@@ -112,11 +112,11 @@
 		</a>
 		<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="pagetemp.php">Ventas</a>
+				<a class="collapse-item" href="lista_entradas.php">Ventas</a>
 				<?php 
 					if($nueva_venta)
 					{
-						echo '<a class="collapse-item" href="pagetemp.php">Nueva venta</a>';
+						echo '<a class="collapse-item" href="inv_entradas.php">Nueva venta</a>';
 					}
 				 ?>
 			</div>
@@ -137,7 +137,7 @@
 				<?php 
 					if($compras)
 					{
-						echo '<a class="collapse-item" href="pagetemp.php">Compras</a>';
+						//echo '<a class="collapse-item" href="pagetemp.php">Compras</a>';
 					}
 				 ?>
 			</div>
@@ -189,7 +189,9 @@
 	</li>
 <?php } ?>
 
+
 <?php if ($proveedor) { ?>
+<!--
 	<li class="nav-item">
 		<a class="nav-link collapsed text-dark" href="#" data-toggle="collapse" data-target="#collapseProveedor" aria-expanded="true" aria-controls="collapseUtilities">
 			<i class="fas fa-hospital"></i>
@@ -207,7 +209,9 @@
 			</div>
 		</div>
 	</li>
+	-->
 <?php } ?>
+
 
 	<?php if ($configuracion) { ?>
 

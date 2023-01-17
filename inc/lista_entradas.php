@@ -11,13 +11,17 @@ include "accion/conexion.php";
 <div class="card">
 <div class="card-body">
     <div class="row">
-        <div class="col-lg-10">
-            <h4><strong>LISTA DE ENTRADAS</strong></h4>
+        <div class="col-lg-6">
+            <h2><strong>LISTA DE ENTRADAS</strong></h2>
             <!--<input type="" name="prueba" id="prueba">-->
         </div>
 
-        <div align="right" class="col-lg-2">
-            <!-- <a data-toggle="modal" data-target="#nuevo_documento"  class="btn btn-primary" type="button" ><i class="fas fa-plus"></i> Nuevo documento</a> -->
+        <div align="right" class="col-lg-6">
+            <?php 
+                $query_t = mysqli_query($conexion, "SELECT sum(total) as total from entrada");
+                $total_total = mysqli_fetch_assoc($query_t)['total'];
+             ?>
+            <h3><strong>Total:</strong></h3><h2><?php echo "$".number_format($total_total,2,'.',','); ?></h2>
         </div>
     </div>
 </div>
@@ -31,6 +35,7 @@ include "accion/conexion.php";
     <table class="table" id="tbl">
         <thead class="thead-light">
             <tr>
+                <th width="70">Fecha</th>
                 <th>Proveedor</th>
                 <th>Tel. Proveedor</th>
                 <th>Folio</th>
@@ -44,7 +49,6 @@ include "accion/conexion.php";
                 <th>IVA</th>
                 <th>Descuento</th>
                 <th>TOTAL</th>
-                <th width="70">Fecha</th>
                 <th>Estatus</th>
                 <th style="text-align: center;">Herramientas</th>
             </tr>
@@ -59,7 +63,7 @@ include "accion/conexion.php";
                 while ($data = mysqli_fetch_assoc($query)) 
                 {
                     $identrada = $data['identrada'];
-                    $num_prod = mysqli_query($conexion, "SELECT count(identrada_producto) as num from entrada_productos where entrada = '$identrada'");
+                    $num_prod = mysqli_query($conexion, "SELECT sum(cantidad) as num from entrada_productos where entrada = '$identrada'");
                     $num_productos_de_esa_entrada = mysqli_fetch_assoc($num_prod)['num'];
 
                     $identrada = $data['identrada'];
@@ -69,6 +73,7 @@ include "accion/conexion.php";
                         $estado = '<span class="badge badge-pill badge-danger">Suspendido</span>';
                     }?>
                     <tr>
+                        <td><?php echo $data['fecha']; ?></td>
                         <td><?php echo $data['proveedor']; ?></td>
                         <td><?php echo $data['tel_proveedor']; ?></td>
                         <td><?php echo $data['folio_compra']; ?></td>
@@ -77,12 +82,11 @@ include "accion/conexion.php";
                         <td><?php echo $data['almacen']; ?></td>
                         <td><?php echo $num_productos_de_esa_entrada; ?></td>
                         <td><?php echo $data['no_pagos']; ?></td>
-                        <td><?php echo $data['pago_parcial']; ?></td>
-                        <td><?php echo $data['subtotal1']; ?></td>
-                        <td><?php echo $data['iva']; ?></td>
-                        <td><?php echo $data['descuento']; ?></td>
-                        <td><?php echo $data['total']; ?></td>
-                        <td><?php echo $data['fecha']; ?></td>
+                        <td><?php echo "$".number_format($data['pago_parcial'],2,'.',','); ?></td>
+                        <td><?php echo "$".number_format($data['subtotal1'],2,'.',','); ?></td>
+                        <td><?php echo "$".number_format($data['iva'],2,'.',','); ?></td>
+                        <td><?php echo "$".number_format($data['descuento'],2,'.',','); ?></td>
+                        <td><?php echo "$".number_format($data['total'],2,'.',','); ?></td>
                         <td><?php echo $estado ?></td>
                         <td align="center">
                                 <a href="" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
