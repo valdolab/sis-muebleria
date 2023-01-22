@@ -107,6 +107,66 @@ else
 </div>
 -->
 
+<div id="nueva_modaliadad_pago" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Movimiento</h3>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="on" id="formAdd_modalidad_pago_actual">
+                    <div class="row">
+                        <div class="col-lg">
+                            <label for="modalidad_pago_actual">Modalidad de pagos</label>
+                            <select id='modalidad_pago_actual' name='modalidad_pago_actual' class='form-control' required>
+                                <option selected hidden value=''>Seleccione una modalidad</option>
+                                <option value='semanal'>Semanal</option>
+                                <option value='quincenal'>Quincenal</option>
+                                <option value='mensual'>Mensual</option>
+                            </select> 
+                        </div>
+                        <div class="col-lg">
+                            <label for="dias_pago_semanal">Semanal</label>
+                                    <select id='dias_pago_semanal_actual' name='dias_pago_semanal_actual' class='form-control' disabled>
+                                        <option selected hidden value=''>Seleccione una opción</option>
+                                        <option value="lunes">Lunes</option>
+                                        <option value="martes">Martes</option>
+                                        <option value="miercoles">Miercoles</option>
+                                        <option value="jueves">Jueves</option>
+                                        <option value="viernes">Viernes</option>
+                                        <option value="sabado">Sábado</option>
+                                        <option value="domingo">Domingo</option>
+                                    </select> 
+                        </div>
+                        <div class="col-lg">
+                                    <label for="dias_pago_quincenal">Quincenal</label>
+                                    <input type="number" class="form-control" name="dias_pago_quincenal_actual" id="dias_pago_quincenal_actual" disabled>
+                        </div>
+                        <div class="col-lg">
+                                    <label for="dias_pago_quincenal">Quincenal 2</label>
+                                    <input type="number" class="form-control" name="dias_pago_quincenal_2_actual" id="dias_pago_quincenal_2_actual" disabled>
+                        </div>
+                        <div class="col-lg">
+                                    <label for="dias_pago_mensual">Mensual</label>
+                                    <input type="number" class="form-control" name="dias_pago_mensual_actual" id="dias_pago_mensual_actual" disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <input value="<?php echo $id_salida; ?>" name="flag_id_salida" id="flag_id_salida"  readonly>
+                    <input value="nueva_modaliadad_pago_actual" name="flag_id_modaliadad_pago_actual" id="flag_id_modaliadad_pago_actual"  readonly>
+                    <input value="insert_edit_modalidad_pago_actual" name="action" id="action"  readonly>
+                    <div align="right">
+                        <input type="submit" value="Agregar" class="btn btn-lg btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="haz_movimiento" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -117,12 +177,12 @@ else
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" autocomplete="on" id="formTrans_almacen">
+                <form action="" method="post" autocomplete="on" id="formAdd_movimiento">
                     <div class="row">
                         <div class="col-lg">
                           <div class="form-group">
                             <label for="correo">Fecha:</label>
-                            <input type="date" name="fecha_abono" id="fecha_abono" class="form-control">
+                            <input type="date" name="fecha_abono" id="fecha_abono" class="form-control" value="<?php echo date("Y-m-d"); ?>">
                         </div>  
                         </div>
                         <div class="col-lg">
@@ -145,7 +205,9 @@ else
                         </div>
                     </div>
                     <br>
-                    <input value="insert_edit_movimiento" name="action" id="action" hidden>
+                    <input value="<?php echo $id_salida; ?>" name="flag_id_salida" id="flag_id_salida"  readonly>
+                    <input value="nuevo_movimiento" name="flag_id_movimiento" id="flag_id_movimiento"  readonly>
+                    <input value="insert_edit_movimiento" name="action" id="action"  readonly>
                     <div align="right">
                         <input type="submit" value="Agregar" class="btn btn-lg btn-primary">
                     </div>
@@ -596,7 +658,7 @@ else
 
                         <div class="form-group col-lg-2">
                             <label for="puesto_aval">Modalidad de pagos</label>
-                            <select id='modalidad_pago' name='modalidad_pago' class='form-control' required>
+                            <select id='modalidad_pago' name='modalidad_pago' class='form-control' required disabled>
                                 <option selected hidden value=''>Seleccione una modalidad</option>
                                 <?php 
                                     if($up_modalidad == "semanal")
@@ -657,7 +719,7 @@ else
                                 else
                                 {
                                     ?>
-                                    <select id='dias_pago_semanal' name='dias_pago_semanal' class='form-control'>
+                                    <select id='dias_pago_semanal' name='dias_pago_semanal' class='form-control' disabled>
                                         <option selected hidden value=''>Seleccione una opción</option>
                                     <?php 
                                         if($up_dias_pago_semanal == "lunes")
@@ -746,7 +808,7 @@ else
                                 }
                                 else
                                 {
-                                    echo '<input type="number" class="form-control" name="dias_pago_quincenal" id="dias_pago_quincenal" value="'.$up_dias_pago_quincenal.'">';
+                                    echo '<input type="number" class="form-control" name="dias_pago_quincenal" id="dias_pago_quincenal" disabled value="'.$up_dias_pago_quincenal.'">';
                                 }
                              ?>
                         </div>
@@ -760,7 +822,7 @@ else
                                 }
                                 else
                                 {
-                                    echo '<input type="number" class="form-control" name="dias_pago_quincenal_2" id="dias_pago_quincenal_2" value="'.$up_dias_pago_quincenal_2.'">';
+                                    echo '<input type="number" class="form-control" name="dias_pago_quincenal_2" id="dias_pago_quincenal_2" disabled value="'.$up_dias_pago_quincenal_2.'">';
                                 }
                              ?>
                         </div>
@@ -774,7 +836,7 @@ else
                                 }
                                 else
                                 {
-                                    echo '<input type="number" class="form-control" name="dias_pago_mensual" id="dias_pago_mensual" value="'.$up_dias_pago_mensual.'">';
+                                    echo '<input type="number" class="form-control" name="dias_pago_mensual" id="dias_pago_mensual" disabled value="'.$up_dias_pago_mensual.'">';
                                 }
                              ?>
                         </div>
@@ -1145,7 +1207,7 @@ else
                     <!--<input type="" name="prueba" id="prueba">-->
                 </div>
 
-                <div class="col-lg-2">
+                <div class="col-lg-1">
                     <?php 
                         if($up_activo)
                         {
@@ -1153,11 +1215,11 @@ else
                         }
                         else
                         {
-                            echo '<h3><span class="badge badge-pill badge-warning">SUSPENDIDO</span></h3>';
+                            echo '<h3><span class="badge badge-pill badge-danger">SUSPENDIDO</span></h3>';
                         }
                      ?>
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-4">
                     <?php 
                             if ($up_nivel_salida == 0)
                             {
@@ -1186,8 +1248,9 @@ else
                      ?> 
                 </div>
 
-                <div align="right" class="col-lg-2">
-                    <a onclick="" data-toggle="modal" data-target="#haz_movimiento" class="btn btn-primary" type="button" ><i class="fas fa-edit"></i> Realizar movimiento</a>
+                <div align="right" class="col-lg-4">
+                    <a data-toggle="modal" data-target="#nueva_modaliadad_pago" class="btn btn-primary" type="button" ><i class="fas fa-edit"></i> Actualizar Modalidad de pago</a>
+                    <a onclick="nuevo_movimiento()" data-toggle="modal" data-target="#haz_movimiento" class="btn btn-primary" type="button" ><i class="fas fa-edit"></i> Realizar movimiento</a>
                 </div>
             </div>
         </div>
@@ -1212,6 +1275,9 @@ else
                         </thead>
                         <tbody>
                             <?php 
+                            //array to save all the dates in the ideal pay dates
+                            $fechas_ideales = [$up_fecha];
+                            $f = 1;
                                 $new_total = $up_total_general - $up_enganche;
                                 echo "<tr>
                                         <td>1</td>
@@ -1243,21 +1309,48 @@ else
                                         <td>$0</td>
                                         <td>"."$".number_format($new_total,0,'.',',')."</td>
                                     </tr>";
+                                    $fechas_ideales[$f] = $new_fecha;
+                                    $f = $f + 1;
                                     if($up_modalidad == "mensual")
                                     {
-                                        $new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 month'));
+                                        //up_dias_pago_mensual
+                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 month'));
+                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
+
+                                        if(intval($dia) <= intval($up_dias_pago_mensual)-10)
+                                        {
+                                            $new_fecha = $anio."-".strval(intval($mes))."-".$up_dias_pago_mensual;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
+                                        else
+                                        {
+                                            $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_mensual;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
                                     }
                                     else if($up_modalidad == "quincenal")
                                     {
-                                        $new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 2 weeks'));
+                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 2 weeks'));
+                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
+                                        if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
+                                        {
+                                            $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_quincenal;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
+                                        else
+                                        {
+                                            $new_fecha = $anio."-".strval(intval($mes))."-".$up_dias_pago_quincenal_2;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
                                     }
                                     else if($up_modalidad == "semanal")
                                     {
                                         $new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 week'));
                                     }
-                                    
                                 }
                             }
+                            //echo $dia;
+                            print_r($fechas_ideales);
                         ?>
                         </tbody>
                     </table>
@@ -1279,21 +1372,167 @@ else
                         </thead>
                         <tbody>
                         <?php 
-                            $query_movimientos = mysqli_query($conexion,"SELECT idmovimiento, salida, fecha, abono, descuento, recargo, saldo_al_momento FROM movimiento WHERE salida = '$id_salida'");
+                            $query_movimientos = mysqli_query($conexion,"SELECT idmovimiento, salida, fecha, abono, descuento, recargo, saldo_al_momento FROM movimiento WHERE salida = '$id_salida' order by fecha,creado_en ASC");
                             $c = 1;
+                            $f = 0;
+                            $columna = "";
+                            $size_fechas = sizeof($fechas_ideales);
+
+                            $cs = "";
+                            $fechas = "";
+                            $abonos = "";
+                            $descuentos = "";
+                            $recargos = "";
+                            $saldos_al_momento = "";
+                            $btns_editar = "";
+                            $flag_control = 0;
                             while($row = mysqli_fetch_assoc($query_movimientos))
                             {
-                                echo '<tr>
+                                if($row['fecha'] >= $fechas_ideales[$f] and $row['fecha'] < $fechas_ideales[$f+1])
+                                {
+                                    $cs = $c."<br>";
+                                    $fechas = $fechas.date("d/m/Y", strtotime($row['fecha']))."<br>";
+                                    $abonos = $abonos.'$'.number_format($row['abono'],0,'.',',')."<br>";
+                                    $descuentos = $descuentos.'$'.number_format($row['descuento'],0,'.',',')."<br>";
+                                    $recargos = $recargos.'$'.number_format($row['recargo'],0,'.',',')."<br>";
+                                    $saldos_al_momento = $saldos_al_momento.'$'.number_format($row['saldo_al_momento'],0,'.',',')."<br>";
+                                    $btns_editar = $btns_editar.'<button onclick="editar_movimiento(\''.$row['idmovimiento'].'\')" data-toggle="modal" data-target="#haz_movimiento" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>'."<br>";
+
+                                    $flag_control = 1;                              
+                                }   
+                                else
+                                {   
+                                    //antes que todo imprimimos como esta y hacemos cambio
+                                    if($flag_control == 0)
+                                    {
+                                        $columna = $columna.'<tr>
                                         <td>'.$c.'</td>
                                         <td>'.date("d/m/Y", strtotime($row['fecha'])).'</td>
                                         <td>'.'$'.number_format($row['abono'],0,'.',',').'</td>
                                         <td>'.'$'.number_format($row['descuento'],0,'.',',').'</td>
                                         <td>'.'$'.number_format($row['recargo'],0,'.',',').'</td>
                                         <td>'.'$'.number_format($row['saldo_al_momento'],0,'.',',').'</td>
-                                        <td><a "onclick="editar_movimiento(\''.$row['idmovimiento'].'\')" data-toggle="modal" data-target="#haz_movimiento" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a></td>
-                                    </tr>'; 
-                                $c = $c + 1;
+                                        <td><button onclick="editar_movimiento(\''.$row['idmovimiento'].'\')" data-toggle="modal" data-target="#haz_movimiento" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button></td>
+                                        </tr>';
+                                    }
+                                    else
+                                    {
+                                        $columna = $columna.'<tr>
+                                        <td>'.$cs.'</td>
+                                        <td>'.$fechas.'</td>
+                                        <td>'.$abonos.'</td>
+                                        <td>'.$descuentos.'</td>
+                                        <td>'.$recargos.'</td>
+                                        <td>'.$saldos_al_momento.'</td>
+                                        <td>'.$btns_editar.'</td>
+                                        </tr>';                                        
+                                        $flag_control = 0;
+                                        $cs = "";
+                                        $fechas = "";
+                                        $abonos = "";
+                                        $descuentos = "";
+                                        $recargos = "";
+                                        $saldos_al_momento = "";
+                                        $btns_editar = "";
+                                    }
+
+                                    $f = $f + 1;
+                                    $c = $c + 1;
+                                    if($row['fecha'] >= $fechas_ideales[$f+1])
+                                    {
+                                        //ya no hay nada en ese rango
+                                        //echo $c." ".$row['fecha']." ".$fechas_ideales[$f+1];
+                                        //echo "<br>";
+                                        //hay que guardar los vacios en la bd
+                                        $fecha_aux = date("Y-m-d", strtotime($fechas_ideales[$f+1]. ' - 1 day'));
+                                        $resultIDmovimiento= mysqli_query($conexion, "SELECT UUID() as idmovimiento");
+                                        $uuid_movimiento = mysqli_fetch_assoc($resultIDmovimiento)['idmovimiento'];
+                                        $insert_mov = mysqli_query($conexion,"INSERT INTO movimiento(idmovimiento, salida, fecha, abono, descuento, recargo, saldo_al_momento) VALUES ('$uuid_movimiento','$id_salida', '$fecha_aux','0','0','0','$saldo_al_momento_vacio')");
+
+                                        $columna = $columna.'<tr>
+                                        <td>'.$c.'</td>
+                                        <td>'.date("d/m/Y", strtotime($fecha_aux)).'</td>
+                                        <td>'.'$'.number_format(0,0,'.',',').'</td>
+                                        <td>'.'$'.number_format(0,0,'.',',').'</td>
+                                        <td>'.'$'.number_format(0,0,'.',',').'</td>
+                                        <td>'.'$'.number_format($saldo_al_momento_vacio,0,'.',',').'</td>
+                                        <td><button onclick="editar_movimiento(\''.$uuid_movimiento.'\')" data-toggle="modal" data-target="#haz_movimiento" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button></td>
+                                        </tr>'; 
+                                        $c = $c + 1;
+                                    }
+
+                                    //cerrar columna y abrir nueva con los datos que hay cargados ahorita
+                                    //este es cada que se cambia
+                                    $cs = $c."<br>";
+                                    $fechas = $fechas.date("d/m/Y", strtotime($row['fecha']))."<br>";
+                                    $abonos = $abonos.'$'.number_format($row['abono'],0,'.',',')."<br>";
+                                    $descuentos = $descuentos.'$'.number_format($row['descuento'],0,'.',',')."<br>";
+                                    $recargos = $recargos.'$'.number_format($row['recargo'],0,'.',',')."<br>";
+                                    $saldos_al_momento = $saldos_al_momento.'$'.number_format($row['saldo_al_momento'],0,'.',',')."<br>";
+                                    $btns_editar = $btns_editar.'<button onclick="editar_movimiento(\''.$row['idmovimiento'].'\')" data-toggle="modal" data-target="#haz_movimiento" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>'."<br>";
+
+
+                                    /*$columna = $columna.'<tr>
+                                        <td>'.$c.'</td>
+                                        <td>'.date("d/m/Y", strtotime($row['fecha'])).'</td>
+                                        <td>'.'$'.number_format($row['abono'],0,'.',',').'</td>
+                                        <td>'.'$'.number_format($row['descuento'],0,'.',',').'</td>
+                                        <td>'.'$'.number_format($row['recargo'],0,'.',',').'</td>
+                                        <td>'.'$'.number_format($row['saldo_al_momento'],0,'.',',').'</td>
+                                        <td><button onclick="editar_movimiento(\''.$row['idmovimiento'].'\')" data-toggle="modal" data-target="#haz_movimiento" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button></td>
+                                        </tr>';*/
+
+                                }
+                                $saldo_al_momento_vacio = $row['saldo_al_momento'];
+
+
+                                //esto es para cuando se pasa aun mas de lo esperado, ir sumando nuevos rangos
+                                if($f >= $size_fechas-1)
+                                {
+                                    //ir agregando al array las nuevas fechas, por atrasarse más de lo ideal
+                                    $new_fecha = $fechas_ideales[$f];
+                                    //////// ir agregando las fechas
+                                    if($up_modalidad == "mensual")
+                                    {
+                                        //up_dias_pago_mensual
+                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 month'));
+                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
+
+                                        if(intval($dia) <= intval($up_dias_pago_mensual)-10)
+                                        {
+                                            $new_fecha = $anio."-".strval(intval($mes))."-".$up_dias_pago_mensual;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
+                                        else
+                                        {
+                                            $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_mensual;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
+                                    }
+                                    else if($up_modalidad == "quincenal")
+                                    {
+                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 2 weeks'));
+                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
+                                        if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
+                                        {
+                                            $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_quincenal;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
+                                        else
+                                        {
+                                            $new_fecha = $anio."-".strval(intval($mes))."-".$up_dias_pago_quincenal_2;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
+                                    }
+                                    else if($up_modalidad == "semanal")
+                                    {
+                                        $new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 week'));
+                                    }
+                                    //add to array
+                                    array_push($fechas_ideales, $fechas_ideales);
+                                }
                             }
+                            echo $columna;
                         ?>
                         </tbody>
                     </table>

@@ -6,7 +6,7 @@
       <span>Copyright &copy; Muebleria Compra Facil <?php echo date("Y"); ?></span>
       <br>
       <br>
-      <span>Ver 1.2</span>
+      <span>Ver 1.3</span>
     </div>
   </div>
 </footer>

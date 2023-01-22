@@ -2276,3 +2276,17 @@ if ($_POST['action'] == 'SelectAlmacen')
   exit;
 }
 
+//para editar el movimiento
+if ($_POST['action'] == 'SelectMovimiento') 
+{
+  include "accion/conexion.php";
+  $idmovimiento = $_POST['movimiento'];
+  //eliminar todos los datos de Ext.-p de todos los productos, sin el where para BORRAR TODO
+  $result = mysqli_query($conexion,"SELECT fecha, abono, descuento, recargo, saldo_al_momento from movimiento where idmovimiento = '$idmovimiento'");
+
+  $data_mov = mysqli_fetch_assoc($result);
+  
+  echo json_encode($data_mov,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+

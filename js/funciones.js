@@ -1117,7 +1117,7 @@ $('#idestado_civil').change(function() {
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //recargamos la pagina actual sin el POST
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                             }
                         }) 
                 }
@@ -1210,7 +1210,7 @@ $('#idestado_civil').change(function() {
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //recargamos la pagina actual sin el POST
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                             }
                         }) 
                 }
@@ -1302,7 +1302,7 @@ $('#idestado_civil').change(function() {
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //recargamos la pagina actual sin el POST
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                             }
                         }) 
                 }
@@ -1394,7 +1394,7 @@ $('#idestado_civil').change(function() {
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //recargamos la pagina actual sin el POST
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                             }
                         }) 
                 }
@@ -1451,6 +1451,65 @@ $('#idestado_civil').change(function() {
        return false;   
     });
 
+    //form para agregar y editar movimiento
+    $("#formAdd_movimiento").submit( function () 
+    {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
+           success: function(response)             
+           {
+                //$('#prueba').html(response);
+                if(response == 0)
+                {
+                    //error brutal
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, !intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //recargamos la pagina actual sin el POST
+                                document.location.reload(true);
+                            }
+                        }) 
+                }
+                else
+                {
+                    //correcto
+                        Swal.fire({
+                              icon: 'success',
+                              title: '!Guardado!',
+                              text: '!Se guardo el movimiento!'
+                            }).then((result) => {
+                                if (result.isConfirmed){
+                                    document.location.reload(true);
+                                    //let pagina = "inv_editar_salidas.php?id="+data.idsalida;
+                                    //window.location.href = pagina;
+                                }
+                            }) 
+                }       
+           }
+       });   
+       return false;   
+    });
+
     //form para agregar las salidas de venta
     $("#formAdd_salida").submit( function () 
     {  
@@ -1486,7 +1545,7 @@ $('#idestado_civil').change(function() {
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //recargamos la pagina actual sin el POST
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                             }
                         }) 
                 }
@@ -1546,7 +1605,7 @@ $('#idestado_civil').change(function() {
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //recargamos la pagina actual sin el POST
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                             }
                         }) 
                 }
@@ -1604,7 +1663,7 @@ $('#idestado_civil').change(function() {
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //recargamos la pagina actual sin el POST
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                             }
                         }) 
                 }
@@ -2248,7 +2307,7 @@ function mostrar_precios(id)
                     enganche_calculado = enganche_calculado + costo_enganche[i];
                 }
                 $('#enganche_dado').val(enganche_calculado);
-                console.log(enganche_calculado);
+                //console.log(enganche_calculado);
 
                 //n de pagos y pago parcial
                 let pago_parcial = parseFloat(data.costo_eq);
@@ -3101,6 +3160,37 @@ $('#modalidad_pago').change(function(e)
         $('#dias_pago_semanal').removeAttr("disabled");
     }
 });
+
+$('#modalidad_pago_actual').change(function(e) 
+{
+    e.preventDefault();
+    var idmodalidad_pago = $(this).val();
+    //console.log(idmodalidad_pago);
+    if (idmodalidad_pago == "mensual")
+    {
+        $('#dias_pago_semanal_actual').val("default").change();
+        $('#dias_pago_semanal_actual').attr("disabled","disabled");
+        $('#dias_pago_quincenal_actual').attr("disabled","disabled");
+        $('#dias_pago_quincenal_2_actual').attr("disabled","disabled");
+        $('#dias_pago_mensual_actual').removeAttr("disabled");
+    }
+    else if(idmodalidad_pago == "quincenal")
+    {
+        $('#dias_pago_semanal_actual').val("default").change();
+        $('#dias_pago_semanal_actual').attr("disabled","disabled");
+        $('#dias_pago_mensual_actual').attr("disabled","disabled");
+        $('#dias_pago_quincenal_actual').removeAttr("disabled");
+        $('#dias_pago_quincenal_2_actual').removeAttr("disabled");
+    }
+    else if(idmodalidad_pago == "semanal")
+    {
+        $('#dias_pago_mensual_actual').attr("disabled","disabled");
+        $('#dias_pago_quincenal_actual').attr("disabled","disabled");
+        $('#dias_pago_quincenal_2_actual').attr("disabled","disabled");
+        $('#dias_pago_semanal_actual').removeAttr("disabled");
+    }
+});
+
 /*esto ya no, porque ahora ya no se agregan modalidades de pago, estan predefinidas
 $('#modalidad_pago').change(function(e) 
 {
@@ -4257,7 +4347,8 @@ function eliminar_puesto(idpuesto)
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                //document.location.reload(true);
+                                document.location.reload(true);
                             }
                         })   
                     }
@@ -4338,7 +4429,7 @@ function eliminar_zona(idzona)
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                             }
                         })   
                     }
@@ -4407,7 +4498,7 @@ function eliminar_subzona(idsubzona)
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                             }
                         })   
                     }
@@ -4499,7 +4590,7 @@ function eliminar_tipo(idtipo)
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                                 //$("#tipo option[value='"+idtipo+"']").remove();
                             }
                         })   
@@ -4513,7 +4604,7 @@ function eliminar_tipo(idtipo)
                         ).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                //window.location.href=window.location.href;
+                                //document.location.reload(true);
                                 $("#tipo option[value='"+idtipo+"']").remove();
                             }
                         })
@@ -4582,7 +4673,7 @@ function eliminar_categoria(idcategoria)
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                             }
                         })   
                     }
@@ -4700,7 +4791,7 @@ function eliminar_subcategoria(idsubcategoria)
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                             }
                         })   
                     }
@@ -4834,7 +4925,7 @@ function eliminar_tipo_venta(idtipo_venta)
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                                 //$("#tipo option[value='"+idtipo+"']").remove();
                             }
                         })   
@@ -4848,7 +4939,7 @@ function eliminar_tipo_venta(idtipo_venta)
                         ).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                //window.location.href=window.location.href;
+                                //document.location.reload(true);
                                 $("#tipo_venta option[value='"+idtipo_venta+"']").remove();
                             }
                         })
@@ -4917,7 +5008,7 @@ function eliminar_modalidad_pago(idmodalidad_pago)
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                                 //$("#tipo option[value='"+idtipo+"']").remove();
                             }
                         })   
@@ -4931,7 +5022,7 @@ function eliminar_modalidad_pago(idmodalidad_pago)
                         ).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                //window.location.href=window.location.href;
+                                //document.location.reload(true);
                                 $("#modalidad_pago option[value='"+idmodalidad_pago+"']").remove();
                             }
                         })
@@ -4999,7 +5090,7 @@ function eliminar_tipo_compra(idtipo_compra)
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                                 //$("#tipo option[value='"+idtipo+"']").remove();
                             }
                         })   
@@ -5082,7 +5173,7 @@ function eliminar_proveedor(idproveedor)
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                                 //$("#tipo option[value='"+idtipo+"']").remove();
                             }
                         })   
@@ -5108,6 +5199,32 @@ function eliminar_proveedor(idproveedor)
                 });      
               }
         })
+}
+
+function editar_movimiento(idmovimiento)
+{
+    var action = 'SelectMovimiento';
+    $.ajax({
+        url: 'ajax.php',
+        type: "POST",
+        async: true,
+        data: {action:action,movimiento:idmovimiento},
+        success: function(response) {
+            //$('#prueba').html(response);
+            if (response != 0) 
+            {
+              var data = $.parseJSON(response);
+              $('#flag_id_movimiento').val(idmovimiento);
+              $('#fecha_abono').val(data.fecha);
+              $('#abono_hecho').val(data.abono);
+              $('#descuento_hecho').val(data.descuento);
+              $('#recargo').val(data.recargo);
+            }
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+   });
 }
 
 
@@ -5208,7 +5325,7 @@ function eliminar_producto(idproducto)
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                             }
                         })   
                     }
@@ -5221,7 +5338,7 @@ function eliminar_producto(idproducto)
                         ).then((result) => {
                             if (result.isConfirmed){
                                 //con esto actualizamos todos los select de la pagina
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                             }
                         })
                     }
@@ -5286,6 +5403,24 @@ function nuevo_proveedor()
     $("#nuevoProveedor").val('');
 }
 
+function nuevo_movimiento()
+{
+    $('#flag_id_movimiento').val('nuevo_movimiento');
+    $("#abono_hecho, #descuento_hecho, #recargo").val('');
+    $("#fecha_abono").val(formatDate(new Date()));
+}
+
+function formatDate(date) {
+  return [
+    date.getFullYear(),
+    padTo2Digits(date.getMonth() + 1),
+    padTo2Digits(date.getDate()),
+  ].join('-');
+}
+
+function padTo2Digits(num) {
+  return num.toString().padStart(2, '0');
+}
 
 //====
 function mostrar_img(idproducto,url_img,si_img)
@@ -5342,7 +5477,7 @@ function borrar_img(url_img)
                         }).then((result) => {
                             if (result.isConfirmed){
                                 //con esto recargamos la pagina sin el POST DATA
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                             }
                         })   
                     }
@@ -5355,7 +5490,7 @@ function borrar_img(url_img)
                         ).then((result) => {
                             if (result.isConfirmed){
                                 //con esto actualizamos todos los select de la pagina
-                                window.location.href=window.location.href;
+                                document.location.reload(true);
                             }
                         })
                     }

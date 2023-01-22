@@ -1889,4 +1889,69 @@ if ($_POST['action'] == 'edit_salida_venta')
   exit;
 }
 
+//para editar o insertar un nuevo movimiento
+if ($_POST['action'] == 'insert_edit_movimiento') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['fecha_abono'])) 
+  {
+    $fecha = $_POST['fecha_abono'];
+    $abono = (isset($_POST['abono_hecho']) ? floatval($_POST['abono_hecho']) : 0);
+    $descuento = (isset($_POST['descuento_hecho']) ? floatval($_POST['descuento_hecho']) : 0); 
+    $recargo = (isset($_POST['recargo']) ? floatval($_POST['recargo']) : 0); 
+    $id_salida = $_POST['flag_id_salida']; 
 
+      $ban = $_POST['flag_id_movimiento'];
+      if($ban == "nuevo_movimiento")
+      {
+        $query_total = mysqli_query($conexion,"SELECT saldo_al_momento from movimiento where salida = '$id_salida' order by creado_en DESC LIMIT 1");
+        $saldo_al_momento = floatval(mysqli_fetch_assoc($query_total)['saldo_al_momento']);
+        
+        if($saldo_al_momento == 0)
+        {
+          $query_total2 = mysqli_query($conexion,"SELECT total_general from salida where idsalida = '$id_salida'");
+          $saldo_al_momento = floatval(mysqli_fetch_assoc($query_total2)['total_general']);
+        }
+
+        $saldo_actual = $saldo_al_momento - $abono - $descuento + $recargo;
+        $resultIDmovimiento= mysqli_query($conexion, "SELECT UUID() as idmovimiento");
+        $uuid_movimiento = mysqli_fetch_assoc($resultIDmovimiento)['idmovimiento'];
+        $insert_mov = mysqli_query($conexion,"INSERT INTO movimiento(idmovimiento, salida, fecha, abono, descuento, recargo, saldo_al_momento) VALUES ('$uuid_movimiento','$id_salida','$fecha','$abono','$descuento','$recargo','$saldo_actual')");
+            if ($insert_mov) 
+            {
+              //$resultVentaTipo = 1; 1-> insertar, 3->editar
+              $resultMov = 1;
+            } 
+            else
+            {
+              $resultMov = 0;
+            }
+      }
+      else
+      {
+        //editar nuevo tipo de venta
+        $id_movimiento = $ban;
+        $query_total = mysqli_query($conexion,"SELECT saldo_al_momento from movimiento where salida = '$id_salida' order by creado_en DESC LIMIT 1,1");
+        $saldo_al_momento = floatval(mysqli_fetch_assoc($query_total)['saldo_al_momento']);
+
+        $saldo_actual = $saldo_al_momento - $abono - $descuento + $recargo;
+        $update_mov = mysqli_query($conexion,"UPDATE movimiento SET fecha = '$fecha', abono = '$abono', descuento = '$descuento', recargo = '$recargo', saldo_al_momento = '$saldo_actual' WHERE idmovimiento = '$id_movimiento'");
+        if ($update_mov) 
+        {
+          $resultMov = 1;
+        } 
+        else
+        {
+          $resultMov = 0;
+        }
+      }
+  }
+  else
+  {
+    $resultMov = 0;
+  }
+
+  //$resultMov = mysqli_error($conexion);
+  echo json_encode($resultMov,JSON_UNESCAPED_UNICODE);
+  exit;
+}
