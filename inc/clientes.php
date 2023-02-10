@@ -96,7 +96,7 @@ include "accion/conexion.php";
                             }
                             if ($data['nivel_apto'] == 3)
                             {
-                                $estado = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-primary">'.$data['nivel_apto'].'</span></h5></div>';
+                                $estado = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-success">'.$data['nivel_apto'].'</span></h5></div>';
                             }
                             if ($data['nivel_apto'] == 4)
                             {
@@ -104,7 +104,7 @@ include "accion/conexion.php";
                             }
                             if ($data['nivel_apto'] == 5)
                             {
-                                $estado = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-success">'.$data['nivel_apto'].'</span></h5></div>';
+                                $estado = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-primary">'.$data['nivel_apto'].'</span></h5></div>';
                             }
                         } 
                         else 

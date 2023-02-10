@@ -2276,7 +2276,7 @@ if ($_POST['action'] == 'SelectAlmacen')
   exit;
 }
 
-//para editar el movimiento
+//para editar el movimiento, EN PROCESO
 if ($_POST['action'] == 'SelectMovimiento') 
 {
   include "accion/conexion.php";
@@ -2287,6 +2287,50 @@ if ($_POST['action'] == 'SelectMovimiento')
   $data_mov = mysqli_fetch_assoc($result);
   
   echo json_encode($data_mov,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+//para sacar los datos para el forecasting
+if ($_POST['action'] == 'forecasting') 
+{
+  include "accion/conexion.php";
+  $fecha_inicio = $_POST['fecha_inicio'];
+  $fecha_fin = $_POST['fecha_fin'];
+  $en_posesion = $_POST['en_posesion'];
+  $cobrador = $_POST['cobrador'];
+
+  //LA UNICA FORMA ES CALCULAR LAS FEHCAS DE PAGO DE CADA SALIDA ENTRE LAS FECHAS INDICADAS Y HOY, como se hace en la tabla de historial, para de ahi ir calculando cuando se espera cobrar
+  
+
+  //ESTO ES PARA EL MENSUAL
+  $query_mensual = mysqli_query($conexion,"SELECT idsalida,no_pagos,pago_parcial,per_dia_pago,dias_pago_mensual,enganche,total_general,nivel_salida FROM salida where modalidad_pago = 'mensual' AND activo = 1 AND per_dia_pago >= '$fecha_inicio'");
+  if(mysqli_num_rows($query_mensual) > 0)
+  {
+   $total_forecast_mensual = 0;
+   while ($row = mysqli_fetch_assoc($query_mensual)) 
+    {
+      $idsalida = $row['idsalida'];
+      $query_mov = mysqli_query($conexion, "SELECT saldo_al_momento FROM movimiento WHERE salida = '$idsalida' order by creado_en DESC limit 1");
+      $debe_al_momento = floatval(mysqli_fetch_assoc($query_mov)['saldo_al_momento']);
+      $cobrar_mensual = $debe_al_momento;
+      if($debe_al_momento < $row['pago_parcial'])
+      {
+        $cobrar_mensual = $row['pago_parcial'];
+      }
+      list($anio_i, $mes_i, $dia_i) = explode("-", $fecha_inicio);
+      list($anio_f, $mes_f, $dia_f) = explode("-", $fecha_fin);
+      if($row['dias_pago_mensual'] >= $dia_i and $row['dias_pago_mensual'] <= $dia_f)
+      {
+        $total_forecast_mensual = $total_forecast_mensual + $cobrar_mensual;
+      }
+    }   
+  }
+  
+
+
+  $data_forecast = $total_forecast_mensual;
+  //$data_forecast = mysqli_error($conexion);
+  echo json_encode($data_forecast,JSON_UNESCAPED_UNICODE);
   exit;
 }
 

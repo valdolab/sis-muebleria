@@ -1955,3 +1955,5 @@ if ($_POST['action'] == 'insert_edit_movimiento')
   echo json_encode($resultMov,JSON_UNESCAPED_UNICODE);
   exit;
 }
+
+

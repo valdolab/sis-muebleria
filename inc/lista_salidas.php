@@ -21,7 +21,8 @@ include "accion/conexion.php";
                 $query_t = mysqli_query($conexion, "SELECT sum(total_general) as total from salida");
                 $total_total = mysqli_fetch_assoc($query_t)['total'];
              ?>
-            <h3><strong>Total:</strong><h2><?php echo "$".number_format($total_total,2,'.',','); ?></h2></h3>
+            <!--<h3><strong>Total:</strong><h2><?php echo "$".number_format($total_total,2,'.',','); ?></h2></h3>-->
+            <a href="pronostico.php" class="btn btn-primary" type="button" ><i class="fas fa-chart-line"></i> Pronóstico de cobranza</a>
         </div>
     </div>
 </div>

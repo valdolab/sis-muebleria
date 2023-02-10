@@ -55,63 +55,215 @@ else
     } 
 }
 
+function actualizar_fechas($f, $size_fechas, $fechas_ideales, $up_dias_pago_mensual, $up_dias_pago_quincenal, $up_dias_pago_quincenal_2, $up_modalidad)
+{
+    //esto es para cuando se pasa aun mas de lo esperado, ir sumando nuevos rangos
+                                if($f+1 >= $size_fechas-1)
+                                {
+                                    //ir agregando al array las nuevas fechas, por atrasarse más de lo ideal
+                                    $new_fecha = $fechas_ideales[$size_fechas-1];
+                                    //////// ir agregando las fechas
+                                    if($up_modalidad == "mensual")
+                                    {
+                                        //up_dias_pago_mensual
+                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 month'));
+                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
+
+                                        if(intval($dia) <= intval($up_dias_pago_mensual)-10)
+                                        {
+                                            $new_fecha = $anio."-".$mes."-".$up_dias_pago_mensual;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
+                                        else
+                                        {
+                                            if(intval($mes) == 12)
+                                            {
+                                                $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_mensual;
+                                                $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                            }
+                                            else
+                                            {
+                                                $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_mensual;
+                                                $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                            }
+                                        }
+                                    }
+                                    else if($up_modalidad == "quincenal")
+                                    {
+                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 2 weeks'));
+                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
+                                        if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
+                                        {
+                                            $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_quincenal;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
+                                        else
+                                        {
+                                            $new_fecha = $anio."-".$mes."-".$up_dias_pago_quincenal_2;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
+                                    }
+                                    else if($up_modalidad == "semanal")
+                                    {
+                                        $new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 week'));
+                                    }
+                                    //add to array
+                                    array_push($fechas_ideales, $new_fecha);
+                                }
+    return $fechas_ideales;
+}
+
+function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_dias_pago_quincenal, $up_dias_pago_quincenal_2, $up_modalidad, $hoy)
+{
+    //esto es para cuando se pasa aun mas de lo esperado, ir sumando nuevos rangos
+    while (True) 
+    {
+        $size_fechas = sizeof($fechas_ideales);
+                                if($hoy >= $fechas_ideales[$size_fechas-1])
+                                {
+                                    //ir agregando al array las nuevas fechas, por atrasarse más de lo ideal
+                                    $new_fecha = $fechas_ideales[$size_fechas-1];
+                                    //////// ir agregando las fechas
+                                    if($up_modalidad == "mensual")
+                                    {
+                                        //up_dias_pago_mensual
+                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 month'));
+                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
+                                        if(intval($dia) <= intval($up_dias_pago_mensual)-10)
+                                        {
+                                            $new_fecha = $anio."-".$mes."-".$up_dias_pago_mensual;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
+                                        else
+                                        {
+                                            if(intval($mes) == 12)
+                                            {
+                                                $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_mensual;
+                                                $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                            }
+                                            else
+                                            {
+                                                $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_mensual;
+                                                $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                            }
+                                        }
+                                    }
+                                    else if($up_modalidad == "quincenal")
+                                    {
+                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 2 weeks'));
+                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
+                                        if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
+                                        {
+                                            $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_quincenal;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
+                                        else
+                                        {
+                                            $new_fecha = $anio."-".$mes."-".$up_dias_pago_quincenal_2;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
+                                    }
+                                    else if($up_modalidad == "semanal")
+                                    {
+                                        $new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 week'));
+                                    }
+                                    //add to array
+                                    array_push($fechas_ideales, $new_fecha);
+                                }
+                                else
+                                {
+                                    break;
+                                }   
+    }    
+    return $fechas_ideales;
+}                     
+
 ?>
 
-<!--
-<div id="edit_movimiento" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+<div id="vendedores" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Editar Movimiento</h3>
+                <h3 class="modal-title">Asignaciones</h3>
                 <button class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" autocomplete="on" id="formTrans_almacen">
+                <form action="" method="post" autocomplete="on" id="formAdd_vendedores_a_cargo">
                     <div class="row">
                         <div class="col-lg">
-                          <div class="form-group">
-                            <label for="correo">Fecha:</label>
-                            <input type="date" name="edit_fecha_abono" id="edit_fecha_abono" class="form-control" value="<?php echo date('2023-02-15'); ?>" >
-                        </div>  
+                            <label for="persona_a_cargo">Persona a cargo</label>
+                            <select id='persona_a_cargo' name='persona_a_cargo' class='form-control' required>
+                                <option selected hidden value=''>Seleccione un usuario</option>
+                                <?php 
+                                $result = mysqli_query($conexion,"SELECT idusuario,usuario_acceso,nombre FROM usuario order by usuario_acceso desc");                        
+                                if (mysqli_num_rows($result) > 0) 
+                                {  
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<option value='".$row["idusuario"]."'>".$row["usuario_acceso"]."</option>";
+                                    }
+                                }
+                                ?>
+                            </select> 
                         </div>
                         <div class="col-lg">
-                          <div class="form-group">
-                            <label for="correo">Abono:</label>
-                            <input type="number" name="edit_abono_hecho" id="edit_abono_hecho" class="form-control" value="400">
-                        </div>  
-                        </div>
-                        <div class="col-lg">
-                          <div class="form-group">
-                            <label for="correo">Descuento:</label>
-                            <input type="number" name="edit_descuento_hecho" id="edit_descuento_hecho" class="form-control" value="0">
-                        </div>  
-                        </div>
-                        <div class="col-lg">
-                          <div class="form-group">
-                            <label for="correo">Recargo:</label>
-                            <input type="number" name="edit_recargo" id="edit_recargo" class="form-control" value="100">
-                        </div>  
+                            <label for="vendedor_venta">Cobrador designado</label>
+                                    <select id='vendedor_venta' name='vendedor_venta' class='form-control'>
+                                        <option selected hidden value=''>Seleccione una opción</option>
+                                        <?php 
+                                            $result = mysqli_query($conexion,"SELECT idusuario,usuario_acceso,nombre FROM usuario order by usuario_acceso desc");                        
+                                            if (mysqli_num_rows($result) > 0) {  
+                                              while($row = mysqli_fetch_assoc($result))
+                                              {
+                                                if($up_vendedor== $row["idusuario"])
+                                                {
+                                                    echo "<option selected value='".$row["idusuario"]."'>".$row["usuario_acceso"]."</option>";
+                                                }
+                                                else
+                                                {
+                                                    echo "<option value='".$row["idusuario"]."'>".$row["usuario_acceso"]."</option>";
+                                                }
+                                              }
+                                            }
+                                            ?>
+                                    </select> 
                         </div>
                     </div>
                     <br>
-                    <input value="editar_movimiento" name="action" id="action" hidden>
+                    <input value="<?php echo $id_salida; ?>" name="flag_id_salida" id="flag_id_salida"  readonly>
+                    <?php 
+                        $result = mysqli_query($conexion,"SELECT idsalida_usuarios_a_cargo from salida_usuarios_a_cargo where salida = '$id_salida'"); 
+                        if(mysqli_num_rows($result) == 0)
+                        {
+                            echo '<input value="nueva_personas_a_cargo" name="flag_id_persona_a_cargo" id="flag_id_persona_a_cargo" readonly>';
+                        }
+                        else
+                        {
+                            $idsalida_usuarios_a_cargo = mysqli_fetch_assoc($result)['idsalida_usuarios_a_cargo'];
+                            echo '<input value="'.$idsalida_usuarios_a_cargo.'" name="flag_id_persona_a_cargo" id="flag_id_persona_a_cargo" readonly>';
+                        }
+                     ?>
+                    <input value="insert_edit_personas_a_cargo" name="action" id="action"  readonly>
                     <div align="right">
-                        <input type="submit" value="Editar" class="btn btn-lg btn-primary">
+                        <input type="submit" value="Agregar" class="btn btn-lg btn-primary">
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
--->
+
+<!-- aqui van los atrasos, solo sera mostrar toda la info de los atrasos -->
+
+
 
 <div id="nueva_modaliadad_pago" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Movimiento</h3>
+                <h3 class="modal-title">Nuevo acuerdo</h3>
                 <button class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -142,6 +294,13 @@ else
                                     </select> 
                         </div>
                         <div class="col-lg">
+                                    <label for="dias_pago_mensual">Mensual</label>
+                                    <input type="number" class="form-control" name="dias_pago_mensual_actual" id="dias_pago_mensual_actual" disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg">
                                     <label for="dias_pago_quincenal">Quincenal</label>
                                     <input type="number" class="form-control" name="dias_pago_quincenal_actual" id="dias_pago_quincenal_actual" disabled>
                         </div>
@@ -150,8 +309,8 @@ else
                                     <input type="number" class="form-control" name="dias_pago_quincenal_2_actual" id="dias_pago_quincenal_2_actual" disabled>
                         </div>
                         <div class="col-lg">
-                                    <label for="dias_pago_mensual">Mensual</label>
-                                    <input type="number" class="form-control" name="dias_pago_mensual_actual" id="dias_pago_mensual_actual" disabled>
+                                    <label for="dias_pago_mensual">Nuevo pago</label>
+                                    <input type="number" class="form-control" name="nuevo_pago" id="nuevo_pago">
                         </div>
                     </div>
                     <br>
@@ -1206,12 +1365,20 @@ else
                     <h3><strong>HISTORIAL DE ABONOS</strong></h3>
                     <!--<input type="" name="prueba" id="prueba">-->
                 </div>
-
-                <div class="col-lg-1">
+                <div class="col-lg-2">
                     <?php 
                         if($up_activo)
                         {
-                            echo '<h3><span class="badge badge-pill badge-success">ACTIVO</span></h3>';
+                            $query_nivel_sal_aux = mysqli_query($conexion, "SELECT saldo_al_momento FROM movimiento WHERE salida = '$id_salida' order by creado_en DESC LIMIT 1");
+                            $debe_al_momento_aux = floatval(mysqli_fetch_assoc($query_nivel_sal_aux)['saldo_al_momento']);
+                            if($debe_al_momento_aux == 0 and mysqli_num_rows($query_nivel_sal_aux) != 0)
+                            {
+                                echo '<h3><span class="badge badge-pill badge-primary">PAGADO</span></h3>';
+                            }
+                            else
+                            {
+                                echo '<h3><span class="badge badge-pill badge-success">ACTIVO</span></h3>';
+                            }
                         }
                         else
                         {
@@ -1219,36 +1386,192 @@ else
                         }
                      ?>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-2">
                     <?php 
-                            if ($up_nivel_salida == 0)
+                    
+                        //tambien para la tabla ideal que se mostrara más abajo
+                        $tabla_credito_ideal = "";
+                            //array to save all the dates in the ideal pay dates
+                            $ultimo_pago_liquidacion = 0;
+                            $fecha_liquidacion_ideal = 0;
+                            $fechas_ideales = [$up_fecha];
+                            $f = 1;
+                                $new_total = $up_total_general - $up_enganche;
+                                $tabla_credito_ideal = $tabla_credito_ideal."<tr>
+                                        <td>1</td>
+                                        <td>".date("d/m/Y", strtotime($up_fecha))."</td>
+                                        <td>"."$".number_format($up_enganche,0,'.',',')."</td>
+                                        <td>"."$".number_format($up_descuento,0,'.',',')."</td>
+                                        <td>$0</td>
+                                        <td>"."$".number_format($new_total,0,'.',',')."</td>
+                                    </tr>";
+
+                                $no_pagos_int = ceil($up_no_pagos);
+                                //$up_total_general
+                            $new_pago_parcial = $up_pago_parcial;
+                            $new_fecha = $up_per_dia_pago;
+                            for ($i=1; $i < $no_pagos_int; $i++) 
+                            { 
+                                if($new_pago_parcial > $new_total)
+                                {   
+                                    $new_pago_parcial = $new_total;
+                                }
+                                $new_total = $new_total - $new_pago_parcial;
+                                $ultimo_pago_liquidacion = $new_pago_parcial;
+                                $fecha_liquidacion_ideal = $new_fecha;
+                                if($new_pago_parcial != 0)
+                                {
+                                    $tabla_credito_ideal = $tabla_credito_ideal."<tr>
+                                        <td>".($i+1)."</td>
+                                        <td>".date("d/m/Y", strtotime($new_fecha))."</td>
+                                        <td>"."$".number_format($new_pago_parcial,0,'.',',')."</td>
+                                        <td>"."$".number_format(0,0,'.',',')."</td>
+                                        <td>$0</td>
+                                        <td>"."$".number_format($new_total,0,'.',',')."</td>
+                                    </tr>";
+                                    $fechas_ideales[$f] = $new_fecha;
+                                    $f = $f + 1;
+                                    if($up_modalidad == "mensual")
+                                    {
+                                        //up_dias_pago_mensual
+                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 month'));
+                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
+                                        if(intval($dia) <= intval($up_dias_pago_mensual)-10)
+                                        {
+                                            $new_fecha = $anio."-".strval(intval($mes))."-".$up_dias_pago_mensual;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
+                                        else
+                                        {
+                                            if(intval($mes) == 12)
+                                            {
+                                                $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_mensual;
+                                                $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                            }
+                                            else
+                                            {
+                                                $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_mensual;
+                                                $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                            }
+                                        }
+                                    }
+                                    else if($up_modalidad == "quincenal")
+                                    {
+                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 2 weeks'));
+                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
+                                        if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
+                                        {
+                                            $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_quincenal;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
+                                        else
+                                        {
+                                            $new_fecha = $anio."-".strval(intval($mes))."-".$up_dias_pago_quincenal_2;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                        }
+                                    }
+                                    else if($up_modalidad == "semanal")
+                                    {
+                                        $new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 week'));
+                                    }
+                                }
+                            }
+
+                            //esto es para lo del nivel, calculamos con lo ya calculado
+                            //calculamos su nivel con la regla
+                            $query_nivel_sal = mysqli_query($conexion, "SELECT saldo_al_momento FROM movimiento WHERE salida = '$id_salida' order by creado_en DESC LIMIT 1");
+                            $debe_al_momento = floatval(mysqli_fetch_assoc($query_nivel_sal)['saldo_al_momento']);
+                            //$hoy = date("Y-m-d");
+                            $hoy = date('2023-03-20');
+
+                            $j = 1;
+                            $size_fechas = sizeof($fechas_ideales);
+                            $total_ideal = $up_enganche;
+                            while ($hoy > $fechas_ideales[$j]) 
+                            {
+                                $total_ideal = $total_ideal + $up_pago_parcial;
+
+                                if($j >= $size_fechas)
+                                {
+                                    break;
+                                }
+                                $j = $j + 1;
+                            }
+
+                            $total_pagado = $up_total_general - $debe_al_momento;
+                            $diff_totalPagado_ideal = $total_ideal - $total_pagado;
+                            if($up_modalidad == "mensual")
+                            {
+                                $dias_atraso_aux = round(($diff_totalPagado_ideal*30)/$up_pago_parcial, 2);
+                                $periodo_atraso = round($dias_atraso_aux/30,2);
+                            }
+                            else if($up_modalidad == "quincenal")
+                            {
+                                $dias_atraso_aux = round(($diff_totalPagado_ideal*15)/$up_pago_parcial, 2);
+                                $periodo_atraso = round($dias_atraso_aux/15,2);
+                            }
+                            else if($up_modalidad == "semanal")
+                            {
+                                $dias_atraso_aux = round(($diff_totalPagado_ideal*7)/$up_pago_parcial, 2);
+                                $periodo_atraso = round($dias_atraso_aux/7,2);
+                            }
+
+                            $nivel_actual_salida = 0;
+                            if($dias_atraso_aux <= 0)
+                            {
+                                $nivel_actual_salida = 5;
+                            }
+                            else if($dias_atraso_aux < 15)
+                            {
+                                $nivel_actual_salida = 4;
+                            }
+                            else if($dias_atraso_aux < 30)
+                            {
+                                $nivel_actual_salida = 3;
+                            }
+                            else if($dias_atraso_aux < 60)
+                            {
+                                $nivel_actual_salida = 2;
+                            }
+                            else if($dias_atraso_aux >= 60)
+                            {
+                                $nivel_actual_salida = 1;
+                            }
+
+                            //insertar en la bd, actualizar la tabla salida
+
+                            //imprimir niveles
+                            if ($nivel_actual_salida == 0)
                             {
                                 echo '<h4>Nivel de la cuenta: &nbsp; <span class="badge badge-pill badge-secondary"><h3>0</h3></span></h4>';
                             }
-                            if ($up_nivel_salida == 1)
+                            if ($nivel_actual_salida == 1)
                             {
-                                echo '<h4>Nivel de la cuenta: &nbsp; <span class="badge badge-pill badge-dark"><h3>1</h3></span></h4>';
+                                echo '<h4>Nivel de la cuenta: &nbsp; <span class="badge badge-pill badge-dark" style="background-color: #FF7A33;"><h3>1</h3></span></h4>';
                             }
-                            if ($up_nivel_salida  == 2)
+                            if ($nivel_actual_salida  == 2)
                             {
                                 echo '<h4>Nivel de la cuenta: &nbsp; <span class="badge badge-pill badge-warning"><h3>2</h3></span></h4>';
                             }
-                            if ($up_nivel_salida  == 3)
+                            if ($nivel_actual_salida  == 3)
                             {
-                                echo '<h4>Nivel de la cuenta: &nbsp; <span class="badge badge-pill badge-primary"><h3>3</h3></span></h4>';
+                                echo '<h4>Nivel de la cuenta: &nbsp; <span class="badge badge-pill badge-success"><h3>3</h3></span></h4>';
                             }
-                            if ($up_nivel_salida  == 4)
+                            if ($nivel_actual_salida  == 4)
                             {
                                 echo '<h4>Nivel de la cuenta: &nbsp; <span class="badge badge-pill badge-info"><h3>4</h3></span></h4>';
                             }
-                            if ($up_nivel_salida  == 5)
+                            if ($nivel_actual_salida  == 5)
                             {
-                                echo '<h4>Nivel de la cuenta: &nbsp; <span class="badge badge-pill badge-success"><h3>5</h3></span></h4>';
+                                echo '<h4>Nivel de la cuenta: &nbsp; <span class="badge badge-pill badge-primary"><h4>5</h4></span></h4>';
                             }
+                            
                      ?> 
                 </div>
 
-                <div align="right" class="col-lg-4">
+                <div align="right" class="col-lg-5">
+                    <a data-toggle="modal" data-target="#vendedores" class="btn btn-primary" type="button" ><i class="fas fa-users"></i> Asignación</a>
+                    <a data-toggle="modal" data-target="#atrasos" class="btn btn-primary" type="button" ><i class="fas fa-list"></i> Atrasos</a>
                     <a data-toggle="modal" data-target="#nueva_modaliadad_pago" class="btn btn-primary" type="button" ><i class="fas fa-edit"></i> Actualizar Modalidad de pago</a>
                     <a onclick="nuevo_movimiento()" data-toggle="modal" data-target="#haz_movimiento" class="btn btn-primary" type="button" ><i class="fas fa-edit"></i> Realizar movimiento</a>
                 </div>
@@ -1274,84 +1597,11 @@ else
                             </tr>
                         </thead>
                         <tbody>
-                            <?php 
-                            //array to save all the dates in the ideal pay dates
-                            $fechas_ideales = [$up_fecha];
-                            $f = 1;
-                                $new_total = $up_total_general - $up_enganche;
-                                echo "<tr>
-                                        <td>1</td>
-                                        <td>".date("d/m/Y", strtotime($up_fecha))."</td>
-                                        <td>"."$".number_format($up_enganche,0,'.',',')."</td>
-                                        <td>"."$".number_format($up_descuento,0,'.',',')."</td>
-                                        <td>$0</td>
-                                        <td>"."$".number_format($new_total,0,'.',',')."</td>
-                                    </tr>";
-
-                                $no_pagos_int = ceil($up_no_pagos);
-                                //$up_total_general
-                            $new_pago_parcial = $up_pago_parcial;
-                            $new_fecha = $up_per_dia_pago;
-                            for ($i=1; $i < $no_pagos_int; $i++) 
-                            { 
-                                if($new_pago_parcial > $new_total)
-                                {   
-                                    $new_pago_parcial = $new_total;
-                                }
-                                $new_total = $new_total - $new_pago_parcial;
-                                if($new_pago_parcial != 0)
-                                {
-                                    echo "<tr>
-                                        <td>".($i+1)."</td>
-                                        <td>".date("d/m/Y", strtotime($new_fecha))."</td>
-                                        <td>"."$".number_format($new_pago_parcial,0,'.',',')."</td>
-                                        <td>"."$".number_format(0,0,'.',',')."</td>
-                                        <td>$0</td>
-                                        <td>"."$".number_format($new_total,0,'.',',')."</td>
-                                    </tr>";
-                                    $fechas_ideales[$f] = $new_fecha;
-                                    $f = $f + 1;
-                                    if($up_modalidad == "mensual")
-                                    {
-                                        //up_dias_pago_mensual
-                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 month'));
-                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
-
-                                        if(intval($dia) <= intval($up_dias_pago_mensual)-10)
-                                        {
-                                            $new_fecha = $anio."-".strval(intval($mes))."-".$up_dias_pago_mensual;
-                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                        }
-                                        else
-                                        {
-                                            $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_mensual;
-                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                        }
-                                    }
-                                    else if($up_modalidad == "quincenal")
-                                    {
-                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 2 weeks'));
-                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
-                                        if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
-                                        {
-                                            $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_quincenal;
-                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                        }
-                                        else
-                                        {
-                                            $new_fecha = $anio."-".strval(intval($mes))."-".$up_dias_pago_quincenal_2;
-                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                        }
-                                    }
-                                    else if($up_modalidad == "semanal")
-                                    {
-                                        $new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 week'));
-                                    }
-                                }
-                            }
-                            //echo $dia;
-                            print_r($fechas_ideales);
-                        ?>
+                            <?php
+                                //ya se calculo y genero arriba, solo se imprime 
+                                echo $tabla_credito_ideal;
+                                //print_r($fechas_ideales);
+                            ?>
                         </tbody>
                     </table>
                 </div>
@@ -1372,11 +1622,92 @@ else
                         </thead>
                         <tbody>
                         <?php 
+                            //checamos si hoy ya vencioeron algunos pagos, si si, agregarlos a bd con 0 de abono
+                            //$hoy = date('Y-m-d');
+                            $hoy = date('2023-03-20');
+                            //print_r($pagos_parciales);
+                            $fechas_ideales = actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_dias_pago_quincenal, $up_dias_pago_quincenal_2, $up_modalidad, $hoy);
+                            //print_r($fechas_ideales);
+                            $size_fechas = sizeof($fechas_ideales);
+                            
+                            $f = 0; 
+                            for ($i=0; $i < $size_fechas-1; $i++)
+                            {
+                                if($fechas_ideales[$i+1] < $hoy)
+                                {
+                                    $key = $i + 1;
+                                    $query_mov_chequeo = mysqli_query($conexion,"SELECT count(idmovimiento) num, sum(abono) as saldo_total_pagado FROM movimiento WHERE salida = '$id_salida' and fecha >= '$fechas_ideales[$i]' and fecha < '$fechas_ideales[$key]' order by fecha, creado_en ASC");
+                                    $data_mov = mysqli_fetch_assoc($query_mov_chequeo);
+                                    $n_mov = $data_mov['num'];
+                                    $saldo_pagado = $data_mov['saldo_total_pagado'];
+                                    //echo $n_mov;
+                                    //echo "<br>";
+                                    //echo $saldo_pagado;
+                                    $query_total_acomulado = mysqli_query($conexion, "SELECT saldo_al_momento from movimiento where salida = '$id_salida' order by creado_en DESC LIMIT 1");
+                                    if(mysqli_num_rows($query_total_acomulado) > 0)
+                                    {
+                                        $saldos_que_debe = floatval(mysqli_fetch_assoc($query_total_acomulado)['saldo_al_momento']);
+                                    }
+                                    else
+                                    {
+                                        $query_saldos_al_momento_vacio_1 = mysqli_query($conexion, "SELECT total_general from salida where idsalida = '$id_salida'");
+                                        $saldos_que_debe = floatval(mysqli_fetch_assoc($query_saldos_al_momento_vacio_1)['total_general']);
+                                    }
+
+                                    if($n_mov == 0)
+                                    {
+                                        $fecha_aux_1 = date("Y-m-d", strtotime($fechas_ideales[$i+1]. ' - 1 day'));
+                                        $resultIDmovimiento_1 = mysqli_query($conexion, "SELECT UUID() as idmovimiento");
+                                        $uuid_movimiento_1 = mysqli_fetch_assoc($resultIDmovimiento_1)['idmovimiento'];
+                                        $insert_mov_1 = mysqli_query($conexion,"INSERT INTO movimiento(idmovimiento, salida, fecha, abono, descuento, recargo, saldo_al_momento) VALUES ('$uuid_movimiento_1','$id_salida', '$fecha_aux_1','0','0','0','$saldos_que_debe')");
+                                    }
+
+                                    //no tiene ni un movimiento en esa fecha, entonces poner atraso completo
+                                    $new_pago_parcial = $up_pago_parcial;
+                                    if($new_pago_parcial > $saldos_que_debe)
+                                    {   
+                                        $new_pago_parcial = $saldos_que_debe;
+                                    }
+                                    if($saldo_pagado < $new_pago_parcial)
+                                    {
+                                        //le falto por pagar, aunque sea 1 peso
+                                        $le_falto = $new_pago_parcial - $saldo_pagado;
+                                        $fecha_inicio_atraso = $fechas_ideales[$i+1];
+
+                                        $atraso_existente = mysqli_query($conexion, "SELECT idmovimiento_atraso from movimiento_atrasos where fecha_inicio = '$fecha_inicio_atraso'");
+                                        if(mysqli_num_rows($atraso_existente) == 0)
+                                        {
+                                            $periodo_atraso = round($le_falto/$up_pago_parcial, 2);
+                                            if($up_modalidad == "mensual")
+                                            {
+                                                $dias_atraso = round(($le_falto*30)/$up_pago_parcial, 2);
+                                            }
+                                            else if($up_modalidad == "quincenal")
+                                            {
+                                                $dias_atraso = round(($le_falto*15)/$up_pago_parcial, 2);
+                                            }
+                                            else if($up_modalidad == "semanal")
+                                            {
+                                                $dias_atraso = round(($le_falto*7)/$up_pago_parcial, 2);
+                                            }
+
+                                            //poner los atrasos
+                                            $resultIDatraso = mysqli_query($conexion, "SELECT UUID() as idmovimiento_atraso");
+                                            $uuid_mov_atraso = mysqli_fetch_assoc($resultIDatraso)['idmovimiento_atraso'];
+                                            $insert_mov_atraso = mysqli_query($conexion,"INSERT INTO movimiento_atrasos(idmovimiento_atraso, salida, tipo_periodo_atraso, periodo_atraso, dias_atraso, base_atraso, debe_atrasado, fecha_inicio) VALUES ('$uuid_mov_atraso','$id_salida','$up_modalidad','$periodo_atraso','$dias_atraso','$up_pago_parcial','$le_falto','$fecha_inicio_atraso')");
+                                        }
+                                        //echo mysqli_error($conexion);
+                                    }
+
+                                }
+                            }
+
+                            //////////// eso es para mostrar la tabla
                             $query_movimientos = mysqli_query($conexion,"SELECT idmovimiento, salida, fecha, abono, descuento, recargo, saldo_al_momento FROM movimiento WHERE salida = '$id_salida' order by fecha,creado_en ASC");
                             $c = 1;
                             $f = 0;
                             $columna = "";
-                            $size_fechas = sizeof($fechas_ideales);
+                            //$size_fechas = sizeof($fechas_ideales);
 
                             $cs = "";
                             $fechas = "";
@@ -1397,7 +1728,6 @@ else
                                     $recargos = $recargos.'$'.number_format($row['recargo'],0,'.',',')."<br>";
                                     $saldos_al_momento = $saldos_al_momento.'$'.number_format($row['saldo_al_momento'],0,'.',',')."<br>";
                                     $btns_editar = $btns_editar.'<button onclick="editar_movimiento(\''.$row['idmovimiento'].'\')" data-toggle="modal" data-target="#haz_movimiento" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>'."<br>";
-
                                     $flag_control = 1;                              
                                 }   
                                 else
@@ -1470,69 +1800,26 @@ else
                                     $recargos = $recargos.'$'.number_format($row['recargo'],0,'.',',')."<br>";
                                     $saldos_al_momento = $saldos_al_momento.'$'.number_format($row['saldo_al_momento'],0,'.',',')."<br>";
                                     $btns_editar = $btns_editar.'<button onclick="editar_movimiento(\''.$row['idmovimiento'].'\')" data-toggle="modal" data-target="#haz_movimiento" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>'."<br>";
-
-
-                                    /*$columna = $columna.'<tr>
-                                        <td>'.$c.'</td>
-                                        <td>'.date("d/m/Y", strtotime($row['fecha'])).'</td>
-                                        <td>'.'$'.number_format($row['abono'],0,'.',',').'</td>
-                                        <td>'.'$'.number_format($row['descuento'],0,'.',',').'</td>
-                                        <td>'.'$'.number_format($row['recargo'],0,'.',',').'</td>
-                                        <td>'.'$'.number_format($row['saldo_al_momento'],0,'.',',').'</td>
-                                        <td><button onclick="editar_movimiento(\''.$row['idmovimiento'].'\')" data-toggle="modal" data-target="#haz_movimiento" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button></td>
-                                        </tr>';*/
-
+                                    $flag_control = 1;   
                                 }
                                 $saldo_al_momento_vacio = $row['saldo_al_momento'];
-
-
-                                //esto es para cuando se pasa aun mas de lo esperado, ir sumando nuevos rangos
-                                if($f >= $size_fechas-1)
-                                {
-                                    //ir agregando al array las nuevas fechas, por atrasarse más de lo ideal
-                                    $new_fecha = $fechas_ideales[$f];
-                                    //////// ir agregando las fechas
-                                    if($up_modalidad == "mensual")
-                                    {
-                                        //up_dias_pago_mensual
-                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 month'));
-                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
-
-                                        if(intval($dia) <= intval($up_dias_pago_mensual)-10)
-                                        {
-                                            $new_fecha = $anio."-".strval(intval($mes))."-".$up_dias_pago_mensual;
-                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                        }
-                                        else
-                                        {
-                                            $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_mensual;
-                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                        }
-                                    }
-                                    else if($up_modalidad == "quincenal")
-                                    {
-                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 2 weeks'));
-                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
-                                        if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
-                                        {
-                                            $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_quincenal;
-                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                        }
-                                        else
-                                        {
-                                            $new_fecha = $anio."-".strval(intval($mes))."-".$up_dias_pago_quincenal_2;
-                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                        }
-                                    }
-                                    else if($up_modalidad == "semanal")
-                                    {
-                                        $new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 week'));
-                                    }
-                                    //add to array
-                                    array_push($fechas_ideales, $fechas_ideales);
-                                }
+                                $size_fechas = sizeof($fechas_ideales);
+                                $fechas_ideales = actualizar_fechas($f, $size_fechas, $fechas_ideales, $up_dias_pago_mensual, $up_dias_pago_quincenal, $up_dias_pago_quincenal_2, $up_modalidad);
+                                //array_push($fechas_ideales, $next_fecha);
+                                ///
                             }
+                            //print_r($fechas_ideales);
+                            $columna = $columna.'<tr>
+                                        <td>'.$cs.'</td>
+                                        <td>'.$fechas.'</td>
+                                        <td>'.$abonos.'</td>
+                                        <td>'.$descuentos.'</td>
+                                        <td>'.$recargos.'</td>
+                                        <td>'.$saldos_al_momento.'</td>
+                                        <td>'.$btns_editar.'</td>
+                                        </tr>';  
                             echo $columna;
+                            
                         ?>
                         </tbody>
                     </table>
@@ -1543,6 +1830,34 @@ else
         </div>
     </div>
 
+<!-- modal para ver atrasos -->
+<div id="atrasos" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Detalle de atrasos</h3>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" autocomplete="on" id="formAdd_movimiento">
+                    <div class="row">
+                        <div class="col-lg-4" align="center">
+                           <h4>Días de atraso: <strong><?php echo $dias_atraso_aux; ?></strong></h4> 
+                        </div>
+                        <div class="col-lg-4" align="center">
+                           <h4>Pagos de atraso: <strong><?php echo $periodo_atraso; ?></strong></h4> 
+                        </div>
+                        <div class="col-lg-4" align="center">
+                           <h4>Debe: <strong><?php echo $diff_totalPagado_ideal; ?></strong></h4> 
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
 

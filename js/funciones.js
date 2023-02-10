@@ -1686,6 +1686,55 @@ $('#idestado_civil').change(function() {
        return false;   
     });
 
+    //form para hacer el forecasting
+    $("#formCompute_forecast").submit( function () 
+    {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        let fecha_inicio = $('#fecha_inicio').val();
+        let fecha_fin = $('#fecha_fin').val();
+        let en_posesion = $('#posesion').val();
+        let cobrador = $('#cobrador').val();
+        
+        var action = 'forecasting';
+        $.ajax({
+            url: 'ajax.php',
+            type: "POST",
+            async: true,
+            data: {action:action,fecha_inicio:fecha_inicio,fecha_fin:fecha_fin,en_posesion:en_posesion,cobrador:cobrador},
+            success: function(response) {
+                $('#prueba').html(response);
+                if (response == 0) 
+                {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Ocurrio un error, intente de nuevo!',
+                    }).then((result) => {
+                    if (result.isConfirmed){
+                        window.location.href = "pronostico.php";
+                        }
+                    })   
+                }
+                else if(response == 2)
+                {
+                    //decir que en ese intervalo o configuracion no hay datos
+
+                }
+                else if(response == 1)
+                {
+                    //correcto, mostrar la info
+
+                }
+            },
+            error: function(error) {
+                //$('#prueba').val('error');
+            }
+       });  
+
+       return false;   
+    });
+
     //para las tablas que no son de productos
     $('#tbl').DataTable({
       "columnDefs": [{
@@ -2300,7 +2349,7 @@ function mostrar_precios(id)
                 $('#precio_'+id).val(precio_actual);
                 //mostrar el enganche de ese producto
                 costo_enganche[id-1] = parseFloat(data.costo_enganche);
-                console.log(costo_enganche);
+                //console.log(costo_enganche);
                 enganche_calculado = 0;
                 for (var i = 0; i < costo_enganche.length; i++) 
                 {
@@ -2316,6 +2365,7 @@ function mostrar_precios(id)
                 {
                     $('#n_pagos').val((no_pago*4).toFixed(2));
                     $('#pago_parcial').val((pago_parcial/2).toFixed(2));
+                    //console.log(no_pago*4);
                 }
                 else if(modalidad_pago == "quincenal")
                 {
@@ -2470,6 +2520,68 @@ $('#descuento_venta').keyup(function(e)
     $('#total_general').html('$'+total_venta_salida_temp.format(2,3));
     $('#total_flag').val(total_venta_salida_temp.toFixed(2));
 });
+
+$('#descuento_venta').change(function(e) 
+{
+    let result = parseFloat($(this).val());
+    var precio_descuento = (isNaN(result) ? 0 : result);
+    let total_venta_salida_temp = total_venta_salida - precio_descuento;
+    //console.log(total_venta_salida_temp);
+    $('#total_general').html('$'+total_venta_salida_temp.format(2,3));
+    $('#total_flag').val(total_venta_salida_temp.toFixed(2));
+});
+
+//para el numero de pagos, calcular siempre el proporcional
+$('#n_pagos').keyup(function(e) 
+{
+    let result = parseFloat($(this).val());
+    let no_pago_k = (isNaN(result) ? 0 : result);
+    let new_pago_parcial = 0;
+    if(no_pago_k != 0)
+    {
+        new_pago_parcial = total_venta_salida/no_pago_k;
+    }
+    $('#pago_parcial').val(new_pago_parcial.toFixed(2));
+    //console.log(new_pago_parcial);
+});
+
+$('#n_pagos').change(function(e) 
+{
+    let result = parseFloat($(this).val());
+    let no_pago_k = (isNaN(result) ? 0 : result);
+    let new_pago_parcial = 0;
+    if(no_pago_k != 0)
+    {
+        new_pago_parcial = total_venta_salida/no_pago_k;
+    }
+    $('#pago_parcial').val(new_pago_parcial.toFixed(2));
+});
+
+$('#pago_parcial').keyup(function(e) 
+{
+    let result = parseFloat($(this).val());
+    let pago_parcial_k = (isNaN(result) ? 0 : result);
+    let new_no_pago = 0;
+    if(pago_parcial_k != 0)
+    {
+        new_no_pago = total_venta_salida/pago_parcial_k;
+    }
+    $('#n_pagos').val(new_no_pago.toFixed(2));
+    //console.log(new_no_pago);
+});
+
+$('#pago_parcial').change(function(e) 
+{
+    let result = parseFloat($(this).val());
+    let pago_parcial_k = (isNaN(result) ? 0 : result);
+    let new_no_pago = 0;
+    if(pago_parcial_k != 0)
+    {
+        new_no_pago = total_venta_salida/pago_parcial_k;
+    }
+    $('#n_pagos').val(new_no_pago.toFixed(2));
+});
+
 
 function transferir_almacen(idproducto)
 {
@@ -3863,6 +3975,8 @@ $('#costo').keyup(function(e)
         }
         else
         {
+            //nueva formula
+            //(costo_iva-enganche+(cr_2*0.03))/meses_pago <- redondear al siguiente multiplico de 5
             var e_q = (costo_iva/meses_pago);
             if(e_q < 400)
             {
@@ -3875,6 +3989,8 @@ $('#costo').keyup(function(e)
             }
         }
         //p1
+        //nueva formaula
+        //redondear al siguiente 0.5
         var p1 = ((costo_cr1/e_q)/2).toFixed(2);
         if(isNaN(p1))
         {
@@ -5738,6 +5854,7 @@ function asignar_matriz(idsucursal)
               }
         })
 }
+
 
 
 //FIN DE FUNCIONES USADAS
