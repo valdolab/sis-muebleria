@@ -1956,4 +1956,105 @@ if ($_POST['action'] == 'insert_edit_movimiento')
   exit;
 }
 
+#funcion para insertar y editar personas a cargo y vendedores a las salidas
+if ($_POST['action'] == 'insert_edit_personas_a_cargo') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['persona_a_cargo'])) 
+  {
+    $persona_a_cargo = $_POST['persona_a_cargo'];
+    $vendedor_venta = $_POST['vendedor_venta'];
+    $id_salida = $_POST['flag_id_salida'];
+    $id_persona_a_cargo = $_POST['flag_id_persona_a_cargo'];
+
+    if($id_persona_a_cargo == "nueva_personas_a_cargo")
+    {
+      //insertar
+      $resultIDP_cargo = mysqli_query($conexion, "SELECT UUID() as idsalida_usuarios_a_cargo");
+      $uuid_p_cargo = mysqli_fetch_assoc($resultIDP_cargo)['idsalida_usuarios_a_cargo'];
+      $insert_p_cargo = mysqli_query($conexion, "INSERT INTO salida_usuarios_a_cargo(idsalida_usuarios_a_cargo,salida,usuario_admin_a_cargo,vendedor_a_cargo) VALUES ('$uuid_p_cargo','$id_salida','$persona_a_cargo','$vendedor_venta')");
+      if ($insert_p_cargo) 
+      {
+        $resultP_cargo = 1;
+      } 
+      else
+      {
+        $resultP_cargo = 0;
+      }
+    }
+    else
+    {
+      //editar
+      $edit_p_cargo = mysqli_query($conexion, "UPDATE salida_usuarios_a_cargo set usuario_admin_a_cargo = '$persona_a_cargo', vendedor_a_cargo = '$vendedor_venta' WHERE idsalida_usuarios_a_cargo = '$id_persona_a_cargo'");
+      if ($edit_p_cargo) 
+      {
+        $resultP_cargo = 1;
+      } 
+      else
+      {
+        $resultP_cargo = 0;
+      }
+    }
+  }
+  else
+  {
+    $resultP_cargo = 0;
+  }
+
+  echo json_encode($resultP_cargo,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+#funcion para insertar y editar los acuerdos
+if ($_POST['action'] == 'insert_edit_acuerdo') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['flag_id_salida'])) 
+  {
+    $modalidad_pago_actual = $_POST['modalidad_pago_actual'];
+    $dias_pago_semanal_actual = (isset($_POST['dias_pago_semanal_actual']) ? $_POST['dias_pago_semanal_actual'] : NULL);
+    $dias_pago_mensual_actual = (isset($_POST['dias_pago_mensual_actual']) ? $_POST['dias_pago_mensual_actual'] : NULL);
+    $dias_pago_quincenal_actual = (isset($_POST['dias_pago_quincenal_actual']) ? $_POST['dias_pago_quincenal_actual'] : NULL);
+    $dias_pago_quincenal_2_actual = (isset($_POST['dias_pago_quincenal_2_actual']) ? $_POST['dias_pago_quincenal_2_actual'] : NULL);
+    $nuevo_pago = $_POST['nuevo_pago'];
+    $id_salida = $_POST['flag_id_salida'];
+    $flag_id_acuerdo = $_POST['flag_id_acuerdo'];
+
+    if($flag_id_acuerdo == "nuevo_acuerdo")
+    {
+      //insertar
+      $resultIDacuerdo = mysqli_query($conexion, "SELECT UUID() as idacuerdo");
+      $uuid_acuerdo = mysqli_fetch_assoc($resultIDacuerdo)['idacuerdo'];
+      $insert_acuerdo = mysqli_query($conexion, "INSERT INTO salida_acuerdo(idsalida_acuerdo, salida, modalidad_actual, dia_semanal, dia_quincenal, dia_quincenal_2, dia_mensual, nuevo_pago) VALUES ('$uuid_acuerdo','$id_salida','$modalidad_pago_actual',".(!empty($dias_pago_semanal_actual) ? "'$dias_pago_semanal_actual'" : "NULL").",".(!empty($dias_pago_quincenal_actual) ? "'$dias_pago_quincenal_actual'" : "NULL").",".(!empty($dias_pago_quincenal_2_actual) ? "'$dias_pago_quincenal_2_actual'" : "NULL").",".(!empty($dias_pago_mensual_actual) ? "'$dias_pago_mensual_actual'" : "NULL").",'$nuevo_pago')");
+      if ($insert_acuerdo) 
+      {
+        $result_acuerdo = 1;
+      } 
+      else
+      {
+        $result_acuerdo = 0;
+      }
+    }
+    else
+    {
+      //editar
+      $edit_acuerdo= mysqli_query($conexion, "UPDATE salida_acuerdo SET modalidad_actual = '$modalidad_pago_actual', dia_semanal = ".(!empty($dias_pago_semanal_actual) ? "'$dias_pago_semanal_actual'" : "NULL").", dia_quincenal = ".(!empty($dias_pago_quincenal_actual) ? "'$dias_pago_quincenal_actual'" : "NULL").", dia_quincenal_2 = ".(!empty($dias_pago_quincenal_2_actual) ? "'$dias_pago_quincenal_2_actual'" : "NULL").", dia_mensual = ".(!empty($dias_pago_mensual_actual) ? "'$dias_pago_mensual_actual'" : "NULL").", nuevo_pago = '$nuevo_pago' WHERE idsalida_acuerdo = '$flag_id_acuerdo'");
+      if ($edit_acuerdo) 
+      {
+        $result_acuerdo = 1;
+      } 
+      else
+      {
+        $result_acuerdo = 0;
+      }
+    }
+  }
+  else
+  {
+    $result_acuerdo = 0;
+  }
+
+  echo json_encode($result_acuerdo,JSON_UNESCAPED_UNICODE);
+  exit;
+}
 

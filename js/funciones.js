@@ -1619,7 +1619,7 @@ $('#idestado_civil').change(function() {
                               text: '!Se guardo la venta!'
                             }).then((result) => {
                                 if (result.isConfirmed){
-                                    window.location.href = "inv_almacenes.php";
+                                    document.location.reload(true);
                                 }
                             }) 
                 }       
@@ -1678,6 +1678,122 @@ $('#idestado_civil').change(function() {
                             }).then((result) => {
                                 if (result.isConfirmed){
                                     window.location.href = "inv_almacenes.php";
+                                }
+                            }) 
+                }       
+           }
+       });   
+       return false;   
+    });
+
+    //form para agregar y editar personas y vendores a cargo
+    $("#formAdd_vendedores_a_cargo").submit( function () 
+    {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
+           success: function(response)             
+           {
+                //$('#prueba').html(response);
+                if(response == 0)
+                {
+                    //error brutal
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, !intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //recargamos la pagina actual sin el POST
+                                document.location.reload(true);
+                            }
+                        }) 
+                }
+                else
+                {
+                    //var data = $.parseJSON(response);
+                    //correcto
+                        Swal.fire({
+                              icon: 'success',
+                              title: '!Guardado!',
+                              text: '!Se guardo exitosamente!'
+                            }).then((result) => {
+                                if (result.isConfirmed){
+                                    document.location.reload(true);
+                                }
+                            }) 
+                }       
+           }
+       });   
+       return false;   
+    });
+
+    //form para insertar y editar acuerdos
+    $("#formAdd_acuerdo").submit( function () 
+    {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
+           success: function(response)             
+           {
+                //$('#prueba').html(response);
+                if(response == 0)
+                {
+                    //error brutal
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, !intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //recargamos la pagina actual sin el POST
+                                document.location.reload(true);
+                            }
+                        }) 
+                }
+                else
+                {
+                    //var data = $.parseJSON(response);
+                    //correcto
+                        Swal.fire({
+                              icon: 'success',
+                              title: '!Guardado!',
+                              text: '!Se guardo exitosamente!'
+                            }).then((result) => {
+                                if (result.isConfirmed){
+                                    document.location.reload(true);
                                 }
                             }) 
                 }       
@@ -2191,6 +2307,7 @@ function suspender_salida(salida)
 {
     Swal.fire({
             title: '¿Esta seguro de susupender?',
+            text: 'Si está suspendido se activará',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -2221,8 +2338,8 @@ function suspender_salida(salida)
                     else
                     {
                         Swal.fire(
-                          'Suspendido!',
-                          'Se suspendio correctamente!',
+                          'Correcto!',
+                          'Acción ejecutada correctamente!',
                           'success'
                         ).then((result) => {
                             if (result.isConfirmed){
@@ -2852,6 +2969,7 @@ function suspender_entrada(entrada)
 {
     Swal.fire({
             title: '¿Esta seguro de susupender?',
+            text: 'Si está suspendido se activará',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -5537,6 +5655,7 @@ function formatDate(date) {
 function padTo2Digits(num) {
   return num.toString().padStart(2, '0');
 }
+
 
 //====
 function mostrar_img(idproducto,url_img,si_img)

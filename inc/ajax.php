@@ -2215,7 +2215,7 @@ if ($_POST['action'] == 'suspender_entrada')
   include "accion/conexion.php";
   $identrada = $_POST['identrada'];
   //eliminar todos los datos de Ext.-p de todos los productos, sin el where para BORRAR TODO
-  $result = mysqli_query($conexion,"UPDATE entrada set activo = 0 where identrada = '$identrada'");
+  $result = mysqli_query($conexion,"UPDATE entrada set entrada.activo = (select num from (select (entrada.activo^1) as num from entrada where entrada.identrada = '$identrada') as temptable) where entrada.identrada = '$identrada'");
   if($result)
   {
     $borro_entrada = 1;
@@ -2234,7 +2234,7 @@ if ($_POST['action'] == 'suspender_salida')
   include "accion/conexion.php";
   $idsalida = $_POST['idsalida'];
   //eliminar todos los datos de Ext.-p de todos los productos, sin el where para BORRAR TODO
-  $result = mysqli_query($conexion,"UPDATE salida set activo = 0 where idsalida = '$idsalida'");
+  $result = mysqli_query($conexion,"UPDATE salida set salida.activo = (select num from (select (salida.activo^1) as num from salida where salida.idsalida = '$idsalida') as temptable) where salida.idsalida = '$idsalida'");
   if($result)
   {
     $borro_salida = 1;

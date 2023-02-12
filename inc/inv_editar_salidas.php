@@ -197,12 +197,26 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                             <select id='persona_a_cargo' name='persona_a_cargo' class='form-control' required>
                                 <option selected hidden value=''>Seleccione un usuario</option>
                                 <?php 
+                                $result_temp = mysqli_query($conexion,"SELECT usuario_admin_a_cargo FROM salida_usuarios_a_cargo where salida = '$id_salida'"); 
+                                $id_a_cargo = "0";
+                                if(mysqli_num_rows($result_temp) != 0)
+                                {
+                                    $id_a_cargo = mysqli_fetch_assoc($result_temp)['usuario_admin_a_cargo'];
+                                }
+
                                 $result = mysqli_query($conexion,"SELECT idusuario,usuario_acceso,nombre FROM usuario order by usuario_acceso desc");                        
                                 if (mysqli_num_rows($result) > 0) 
                                 {  
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<option value='".$row["idusuario"]."'>".$row["usuario_acceso"]."</option>";
+                                        if($id_a_cargo == $row["idusuario"])
+                                        {
+                                            echo "<option selected value='".$row["idusuario"]."'>".$row["usuario_acceso"]."</option>";
+                                        }
+                                        else
+                                        {
+                                            echo "<option value='".$row["idusuario"]."'>".$row["usuario_acceso"]."</option>";
+                                        }
                                     }
                                 }
                                 ?>
@@ -213,11 +227,19 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                                     <select id='vendedor_venta' name='vendedor_venta' class='form-control'>
                                         <option selected hidden value=''>Seleccione una opción</option>
                                         <?php 
+                                            $result_temp = mysqli_query($conexion,"SELECT vendedor_a_cargo FROM salida_usuarios_a_cargo where salida = '$id_salida'"); 
+                                            $id_a_cargo = "0";
+                                            $up_vendedor_aux = $up_vendedor;
+                                            if(mysqli_num_rows($result_temp) != 0)
+                                            {
+                                                $up_vendedor_aux = mysqli_fetch_assoc($result_temp)['vendedor_a_cargo'];
+                                            }
+
                                             $result = mysqli_query($conexion,"SELECT idusuario,usuario_acceso,nombre FROM usuario order by usuario_acceso desc");                        
                                             if (mysqli_num_rows($result) > 0) {  
                                               while($row = mysqli_fetch_assoc($result))
                                               {
-                                                if($up_vendedor== $row["idusuario"])
+                                                if($up_vendedor_aux == $row["idusuario"])
                                                 {
                                                     echo "<option selected value='".$row["idusuario"]."'>".$row["usuario_acceso"]."</option>";
                                                 }
@@ -232,20 +254,20 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                         </div>
                     </div>
                     <br>
-                    <input value="<?php echo $id_salida; ?>" name="flag_id_salida" id="flag_id_salida"  readonly>
+                    <input hidden value="<?php echo $id_salida; ?>" name="flag_id_salida" id="flag_id_salida"  readonly>
                     <?php 
                         $result = mysqli_query($conexion,"SELECT idsalida_usuarios_a_cargo from salida_usuarios_a_cargo where salida = '$id_salida'"); 
                         if(mysqli_num_rows($result) == 0)
                         {
-                            echo '<input value="nueva_personas_a_cargo" name="flag_id_persona_a_cargo" id="flag_id_persona_a_cargo" readonly>';
+                            echo '<input hidden value="nueva_personas_a_cargo" name="flag_id_persona_a_cargo" id="flag_id_persona_a_cargo" readonly>';
                         }
                         else
                         {
                             $idsalida_usuarios_a_cargo = mysqli_fetch_assoc($result)['idsalida_usuarios_a_cargo'];
-                            echo '<input value="'.$idsalida_usuarios_a_cargo.'" name="flag_id_persona_a_cargo" id="flag_id_persona_a_cargo" readonly>';
+                            echo '<input hidden value="'.$idsalida_usuarios_a_cargo.'" name="flag_id_persona_a_cargo" id="flag_id_persona_a_cargo" readonly>';
                         }
                      ?>
-                    <input value="insert_edit_personas_a_cargo" name="action" id="action"  readonly>
+                    <input hidden value="insert_edit_personas_a_cargo" name="action" id="action"  readonly>
                     <div align="right">
                         <input type="submit" value="Agregar" class="btn btn-lg btn-primary">
                     </div>
@@ -263,27 +285,153 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Nuevo acuerdo</h3>
+                <h3 class="modal-title">Acuerdo actual</h3>
                 <button class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <?php 
+                $query_acuerdo = mysqli_query($conexion,"SELECT idsalida_acuerdo, modalidad_actual, dia_semanal, dia_quincenal, dia_quincenal_2, dia_mensual, nuevo_pago FROM salida_acuerdo WHERE salida = '$id_salida'");
+                $datos_acuerdo = 0;
+                if(mysqli_num_rows($query_acuerdo) != 0)
+                {
+                    $datos_acuerdo = mysqli_fetch_assoc($query_acuerdo);
+                }
+             ?>
             <div class="modal-body">
-                <form action="" method="post" autocomplete="on" id="formAdd_modalidad_pago_actual">
+                <form action="" method="post" autocomplete="on" id="formAdd_acuerdo">
                     <div class="row">
                         <div class="col-lg">
                             <label for="modalidad_pago_actual">Modalidad de pagos</label>
                             <select id='modalidad_pago_actual' name='modalidad_pago_actual' class='form-control' required>
                                 <option selected hidden value=''>Seleccione una modalidad</option>
-                                <option value='semanal'>Semanal</option>
-                                <option value='quincenal'>Quincenal</option>
-                                <option value='mensual'>Mensual</option>
+                                <?php 
+                                    if($datos_acuerdo != 0)
+                                    {
+                                        if($datos_acuerdo['modalidad_actual'] == "semanal")
+                                        {
+                                            echo "<option selected value='semanal'>Semanal</option>
+                                                    <option value='quincenal'>Quincenal</option>
+                                                    <option value='mensual'>Mensual</option>";
+                                        }
+                                        else if($datos_acuerdo['modalidad_actual'] == "quincenal")
+                                        {
+                                            echo "<option value='semanal'>Semanal</option>
+                                                    <option selected value='quincenal'>Quincenal</option>
+                                                    <option value='mensual'>Mensual</option>";
+                                        }
+                                        else
+                                        {
+                                            echo "<option value='semanal'>Semanal</option>
+                                                    <option value='quincenal'>Quincenal</option>
+                                                    <option selected value='mensual'>Mensual</option>";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        echo "<option value='semanal'>Semanal</option>
+                                                    <option value='quincenal'>Quincenal</option>
+                                                    <option value='mensual'>Mensual</option>";
+                                    }
+                                 ?>
                             </select> 
                         </div>
                         <div class="col-lg">
                             <label for="dias_pago_semanal">Semanal</label>
-                                    <select id='dias_pago_semanal_actual' name='dias_pago_semanal_actual' class='form-control' disabled>
-                                        <option selected hidden value=''>Seleccione una opción</option>
+                                <?php
+                                if($datos_acuerdo != 0)
+                                {
+                                    if($datos_acuerdo['modalidad_actual'] == "semanal")
+                                    {
+                                        if($datos_acuerdo['dia_semanal'] == "lunes")
+                                        {
+                                            echo '<select id="dias_pago_semanal_actual" name="dias_pago_semanal_actual" class="form-control">
+                                            <option selected value="lunes">Lunes</option>
+                                            <option value="martes">Martes</option>
+                                            <option value="miercoles">Miercoles</option>
+                                            <option value="jueves">Jueves</option>
+                                            <option value="viernes">Viernes</option>
+                                            <option value="sabado">Sábado</option>
+                                            <option value="domingo">Domingo</option>
+                                            </select> ';
+                                        }
+                                        else if($datos_acuerdo['dia_semanal'] == "martes")
+                                        {
+                                            echo '<select id="dias_pago_semanal_actual" name="dias_pago_semanal_actual" class="form-control">
+                                            <option value="lunes">Lunes</option>
+                                            <option selected value="martes">Martes</option>
+                                            <option value="miercoles">Miercoles</option>
+                                            <option value="jueves">Jueves</option>
+                                            <option value="viernes">Viernes</option>
+                                            <option value="sabado">Sábado</option>
+                                            <option value="domingo">Domingo</option>
+                                            </select> ';
+                                        }
+                                        else if($datos_acuerdo['dia_semanal'] == "miercoles")
+                                        {
+                                            echo '<select id="dias_pago_semanal_actual" name="dias_pago_semanal_actual" class="form-control">
+                                            <option value="lunes">Lunes</option>
+                                            <option value="martes">Martes</option>
+                                            <option selected value="miercoles">Miercoles</option>
+                                            <option value="jueves">Jueves</option>
+                                            <option value="viernes">Viernes</option>
+                                            <option value="sabado">Sábado</option>
+                                            <option value="domingo">Domingo</option>
+                                            </select> ';
+                                        }
+                                        else if($datos_acuerdo['dia_semanal'] == "jueves")
+                                        {
+                                            echo '<select id="dias_pago_semanal_actual" name="dias_pago_semanal_actual" class="form-control">
+                                            <option value="lunes">Lunes</option>
+                                            <option value="martes">Martes</option>
+                                            <option value="miercoles">Miercoles</option>
+                                            <option selected value="jueves">Jueves</option>
+                                            <option value="viernes">Viernes</option>
+                                            <option value="sabado">Sábado</option>
+                                            <option value="domingo">Domingo</option>
+                                            </select> ';
+                                        }
+                                        else if($datos_acuerdo['dia_semanal'] == "viernes")
+                                        {
+                                            echo '<select id="dias_pago_semanal_actual" name="dias_pago_semanal_actual" class="form-control">
+                                            <option value="lunes">Lunes</option>
+                                            <option value="martes">Martes</option>
+                                            <option value="miercoles">Miercoles</option>
+                                            <option value="jueves">Jueves</option>
+                                            <option selected value="viernes">Viernes</option>
+                                            <option value="sabado">Sábado</option>
+                                            <option value="domingo">Domingo</option>
+                                            </select> ';
+                                        }
+                                        else if($datos_acuerdo['dia_semanal'] == "sabado")
+                                        {
+                                            echo '<select id="dias_pago_semanal_actual" name="dias_pago_semanal_actual" class="form-control">
+                                            <option value="lunes">Lunes</option>
+                                            <option value="martes">Martes</option>
+                                            <option value="miercoles">Miercoles</option>
+                                            <option value="jueves">Jueves</option>
+                                            <option value="viernes">Viernes</option>
+                                            <option selected value="sabado">Sábado</option>
+                                            <option value="domingo">Domingo</option>
+                                            </select> ';
+                                        }
+                                        else if($datos_acuerdo['dia_semanal'] == "domingo")
+                                        {
+                                            echo '<select id="dias_pago_semanal_actual" name="dias_pago_semanal_actual" class="form-control">
+                                            <option value="lunes">Lunes</option>
+                                            <option value="martes">Martes</option>
+                                            <option value="miercoles">Miercoles</option>
+                                            <option value="jueves">Jueves</option>
+                                            <option value="viernes">Viernes</option>
+                                            <option value="sabado">Sábado</option>
+                                            <option selected value="domingo">Domingo</option>
+                                            </select> ';
+                                        }
+                                    }
+                                    else
+                                    {
+                                        echo '<select id="dias_pago_semanal_actual" name="dias_pago_semanal_actual" class="form-control" disabled>
+                                        <option selected hidden value="">Seleccione una opción</option>
                                         <option value="lunes">Lunes</option>
                                         <option value="martes">Martes</option>
                                         <option value="miercoles">Miercoles</option>
@@ -291,32 +439,97 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                                         <option value="viernes">Viernes</option>
                                         <option value="sabado">Sábado</option>
                                         <option value="domingo">Domingo</option>
-                                    </select> 
+                                        </select> ';
+                                    }
+                                }
+                                else
+                                {
+                                    echo '<select id="dias_pago_semanal_actual" name="dias_pago_semanal_actual" class="form-control" disabled>
+                                        <option selected hidden value="">Seleccione una opción</option>
+                                        <option value="lunes">Lunes</option>
+                                        <option value="martes">Martes</option>
+                                        <option value="miercoles">Miercoles</option>
+                                        <option value="jueves">Jueves</option>
+                                        <option value="viernes">Viernes</option>
+                                        <option value="sabado">Sábado</option>
+                                        <option value="domingo">Domingo</option>
+                                        </select> ';
+                                }
+
+                                 ?>
+                                    
                         </div>
                         <div class="col-lg">
-                                    <label for="dias_pago_mensual">Mensual</label>
-                                    <input type="number" class="form-control" name="dias_pago_mensual_actual" id="dias_pago_mensual_actual" disabled>
+                            <label for="dias_pago_mensual">Mensual</label>
+                            <?php 
+                                if($datos_acuerdo != 0 and $datos_acuerdo['modalidad_actual'] == "mensual")
+                                {
+                                    echo '<input type="number" class="form-control" name="dias_pago_mensual_actual" id="dias_pago_mensual_actual" value="'.$datos_acuerdo['dia_mensual'].'">';
+                                }
+                                else
+                                {
+                                    echo '<input type="number" class="form-control" name="dias_pago_mensual_actual" id="dias_pago_mensual_actual" disabled>';
+                                }
+                             ?>
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-lg">
-                                    <label for="dias_pago_quincenal">Quincenal</label>
-                                    <input type="number" class="form-control" name="dias_pago_quincenal_actual" id="dias_pago_quincenal_actual" disabled>
+                            <label for="dias_pago_quincenal">Quincenal</label>
+                            <?php 
+                                if($datos_acuerdo != 0 and $datos_acuerdo['modalidad_actual'] == "quincenal")
+                                {
+                                    echo '<input type="number" class="form-control" name="dias_pago_quincenal_actual" id="dias_pago_quincenal_actual" value="'.$datos_acuerdo['dia_quincenal'].'">';
+                                }
+                                else
+                                {
+                                    echo '<input type="number" class="form-control" name="dias_pago_quincenal_actual" id="dias_pago_quincenal_actual" disabled>';
+                                }
+                             ?>
                         </div>
                         <div class="col-lg">
-                                    <label for="dias_pago_quincenal">Quincenal 2</label>
-                                    <input type="number" class="form-control" name="dias_pago_quincenal_2_actual" id="dias_pago_quincenal_2_actual" disabled>
+                            <label for="dias_pago_quincenal">Quincenal 2</label>
+                            <?php 
+                            if($datos_acuerdo != 0 and $datos_acuerdo['modalidad_actual'] == "quincenal")
+                                {
+                                    echo '<input type="number" class="form-control" name="dias_pago_quincenal_2_actual" id="dias_pago_quincenal_2_actual" value="'.$datos_acuerdo['dia_quincenal_2'].'">';
+                                }
+                                else
+                                {
+                                    echo '<input type="number" class="form-control" name="dias_pago_quincenal_2_actual" id="dias_pago_quincenal_2_actual" disabled>';
+                                }
+                             ?>
                         </div>
                         <div class="col-lg">
-                                    <label for="dias_pago_mensual">Nuevo pago</label>
-                                    <input type="number" class="form-control" name="nuevo_pago" id="nuevo_pago">
+                            <label for="dias_pago_mensual">Nuevo pago</label>
+                            <?php 
+                            if($datos_acuerdo != 0)
+                                {
+                                    echo '<input type="number" class="form-control" name="nuevo_pago" id="nuevo_pago" value = "'.$datos_acuerdo['nuevo_pago'].'">';
+                                }
+                                else
+                                {
+                                    echo '<input type="number" class="form-control" name="nuevo_pago" id="nuevo_pago">';
+                                }
+                             ?>
                         </div>
                     </div>
                     <br>
-                    <input value="<?php echo $id_salida; ?>" name="flag_id_salida" id="flag_id_salida"  readonly>
-                    <input value="nueva_modaliadad_pago_actual" name="flag_id_modaliadad_pago_actual" id="flag_id_modaliadad_pago_actual"  readonly>
-                    <input value="insert_edit_modalidad_pago_actual" name="action" id="action"  readonly>
+                    <input hidden value="<?php echo $id_salida; ?>" name="flag_id_salida" id="flag_id_salida"  readonly>
+                    <?php 
+                        $result = mysqli_query($conexion,"SELECT idsalida_acuerdo from salida_acuerdo where salida = '$id_salida'"); 
+                        if(mysqli_num_rows($result) == 0)
+                        {
+                            echo '<input hidden value="nuevo_acuerdo" name="flag_id_acuerdo" id="flag_id_acuerdo"  readonly>';
+                        }
+                        else
+                        {
+                            $idsalida_acuerdo = mysqli_fetch_assoc($result)['idsalida_acuerdo'];
+                            echo '<input hidden value="'.$idsalida_acuerdo.'" name="flag_id_acuerdo" id="flag_id_acuerdo"  readonly>';
+                        }
+                     ?>
+                    <input hidden value="insert_edit_acuerdo" name="action" id="action"  readonly>
                     <div align="right">
                         <input type="submit" value="Agregar" class="btn btn-lg btn-primary">
                     </div>
@@ -364,9 +577,9 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                         </div>
                     </div>
                     <br>
-                    <input value="<?php echo $id_salida; ?>" name="flag_id_salida" id="flag_id_salida"  readonly>
-                    <input value="nuevo_movimiento" name="flag_id_movimiento" id="flag_id_movimiento"  readonly>
-                    <input value="insert_edit_movimiento" name="action" id="action"  readonly>
+                    <input hidden value="<?php echo $id_salida; ?>" name="flag_id_salida" id="flag_id_salida"  readonly>
+                    <input hidden value="nuevo_movimiento" name="flag_id_movimiento" id="flag_id_movimiento"  readonly>
+                    <input hidden value="insert_edit_movimiento" name="action" id="action"  readonly>
                     <div align="right">
                         <input type="submit" value="Agregar" class="btn btn-lg btn-primary">
                     </div>
@@ -1348,7 +1561,7 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
         <button id="btn_vender"  onclick="calcular_cuenta(1)" type="button" class="btn btn-block btn-primary"><i class="fas fa-cash-register"></i> Calcular</button>
     </div>
     <div class="col-lg-5">
-        <button id="btn_haz_venta" type="submit" class="btn btn-block btn-success"><i class="fas fa-money-check"></i> Actualizar</button>
+        <button disabled id="btn_haz_venta" type="submit" class="btn btn-block btn-success"><i class="fas fa-money-check"></i> Actualizar</button>
     </div>
 </div>
 <input hidden readonly type="text" name="action" id="action" value="edit_salida_venta">
@@ -1572,7 +1785,7 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                 <div align="right" class="col-lg-5">
                     <a data-toggle="modal" data-target="#vendedores" class="btn btn-primary" type="button" ><i class="fas fa-users"></i> Asignación</a>
                     <a data-toggle="modal" data-target="#atrasos" class="btn btn-primary" type="button" ><i class="fas fa-list"></i> Atrasos</a>
-                    <a data-toggle="modal" data-target="#nueva_modaliadad_pago" class="btn btn-primary" type="button" ><i class="fas fa-edit"></i> Actualizar Modalidad de pago</a>
+                    <a data-toggle="modal" data-target="#nueva_modaliadad_pago" class="btn btn-primary" type="button" ><i class="fas fa-edit"></i> Actualizar acuerdos</a>
                     <a onclick="nuevo_movimiento()" data-toggle="modal" data-target="#haz_movimiento" class="btn btn-primary" type="button" ><i class="fas fa-edit"></i> Realizar movimiento</a>
                 </div>
             </div>
@@ -1850,7 +2063,7 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                            <h4>Pagos de atraso: <strong><?php echo $periodo_atraso; ?></strong></h4> 
                         </div>
                         <div class="col-lg-4" align="center">
-                           <h4>Debe: <strong><?php echo $diff_totalPagado_ideal; ?></strong></h4> 
+                           <h4>Debe atrasado: <strong><?php echo $diff_totalPagado_ideal; ?></strong></h4> 
                         </div>
                     </div>
                 </form>
