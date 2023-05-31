@@ -1929,14 +1929,36 @@ if ($_POST['action'] == 'insert_edit_movimiento')
       }
       else
       {
-        //editar nuevo tipo de venta
+        //editar movimiento
         $id_movimiento = $ban;
         $query_total = mysqli_query($conexion,"SELECT saldo_al_momento from movimiento where salida = '$id_salida' order by creado_en DESC LIMIT 1,1");
         $saldo_al_momento = floatval(mysqli_fetch_assoc($query_total)['saldo_al_momento']);
 
         $saldo_actual = $saldo_al_momento - $abono - $descuento + $recargo;
         $update_mov = mysqli_query($conexion,"UPDATE movimiento SET fecha = '$fecha', abono = '$abono', descuento = '$descuento', recargo = '$recargo', saldo_al_momento = '$saldo_actual' WHERE idmovimiento = '$id_movimiento'");
-        if ($update_mov) 
+        
+        #updates the rest of the movimientos
+        /*
+        UPDATE movimiento AS m1
+        SET m1.saldo_al_momento = '13273'
+        WHERE m1.idmovimiento IN (
+          SELECT m2.idmovimiento
+          FROM (
+            SELECT idmovimiento
+            FROM movimiento
+            WHERE fecha > (
+              SELECT fecha
+              FROM movimiento
+              WHERE idmovimiento = '939fa5ae-f671-11ed-a3f7-d481d7c3a9ad'
+            )                       
+            AND salida = 'd24f6016-f66b-11ed-a3f7-d481d7c3a9ad'
+          ) AS m2
+        )
+        */
+
+        $update_mov_rest = mysqli_query($conexion,"UPDATE movimiento AS m1 SET m1.saldo_al_momento = '$saldo_actual' WHERE m1.idmovimiento IN (SELECT m2.idmovimiento FROM (SELECT idmovimiento FROM movimiento WHERE fecha > (SELECT fecha FROM movimiento WHERE idmovimiento = '$id_movimiento') AND salida = '$id_salida') AS m2)");
+
+        if ($update_mov and $update_mov_rest) 
         {
           $resultMov = 1;
         } 

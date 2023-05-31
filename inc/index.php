@@ -9,6 +9,11 @@ $query_clientes = mysqli_query($conexion, "SELECT COUNT(idcliente) as num_client
 $result_cli = mysqli_fetch_array($query_clientes)['num_clientes'];
 $query_producto = mysqli_query($conexion, "SELECT COUNT(idproducto) as num_producto FROM producto");
 $result_pro = mysqli_fetch_array($query_producto)['num_producto'];
+$query_salida = mysqli_query($conexion, "SELECT COUNT(idsalida) as num_salida FROM salida");
+$result_salidas = mysqli_fetch_array($query_salida)['num_salida'];
+$query_entrada = mysqli_query($conexion, "SELECT COUNT(identrada) as num_entrada FROM entrada");
+$result_entradas = mysqli_fetch_array($query_entrada)['num_entrada'];
+
 #$query_productos = mysqli_query($conexion, "SELECT COUNT(idusuario) as num_productos FROM usuario");
 #$query_ventas = mysqli_query($conexion, "SELECT COUNT(idusuario) as num_ventas FROM usuario");
 
@@ -94,7 +99,7 @@ $result_pro = mysqli_fetch_array($query_producto)['num_producto'];
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
 							<div class="text-xs font-weight-bold text-success text-uppercase mb-1">Ventas (salidas)</div>
-							<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo 0; ?></div>
+							<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $result_salidas; ?></div>
 						</div>
 						<div class="col-auto">
 							<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -110,7 +115,7 @@ $result_pro = mysqli_fetch_array($query_producto)['num_producto'];
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
 							<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Compras (entradas)</div>
-							<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo 0; ?></div>
+							<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $result_entradas; ?></div>
 						</div>
 						<div class="col-auto">
 							<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>

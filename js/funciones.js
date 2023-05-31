@@ -5461,6 +5461,61 @@ function editar_movimiento(idmovimiento)
    });
 }
 
+//eliminar_movimiento
+function eliminar_movimiento(idmovimiento)
+{
+    Swal.fire({
+            title: '¿Esta seguro de eliminar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var action = 'eliminarMovimiento';
+                $.ajax({
+                  url: 'ajax.php',
+                  type: "POST",
+                  async: true,
+                  data: {action:action,movimiento:idmovimiento},
+                  success: function(response) {
+                    //$('#prueba').val(response);
+                    if (response == 0) 
+                    {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto recargamos la pagina sin el POST DATA
+                                document.location.reload(true);
+                            }
+                        })   
+                    }
+                    else
+                    {
+                        Swal.fire(
+                          'Eliminado!',
+                          'Se elimino correctamente',
+                          'success'
+                        ).then((result) => {
+                            if (result.isConfirmed){
+                                //con esto actualizamos todos los select de la pagina
+                                document.location.reload(true);
+                            }
+                        })
+                    }
+                  },
+                  error: function(error) {
+                    //$('#prueba').val('error');
+                  }
+                });      
+              }
+        })
+}
+
 
 //=== PRODUCTO
 //funcion para mostrar los datos de producto y poner editarlo

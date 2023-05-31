@@ -2276,7 +2276,7 @@ if ($_POST['action'] == 'SelectAlmacen')
   exit;
 }
 
-//para editar el movimiento, EN PROCESO
+//para editar el movimiento
 if ($_POST['action'] == 'SelectMovimiento') 
 {
   include "accion/conexion.php";
@@ -2287,6 +2287,23 @@ if ($_POST['action'] == 'SelectMovimiento')
   $data_mov = mysqli_fetch_assoc($result);
   
   echo json_encode($data_mov,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+//para eliminar el movimiento
+if ($_POST['action'] == 'eliminarMovimiento') 
+{
+  include "accion/conexion.php";
+  $idmovimiento = $_POST['movimiento'];
+  //eliminar todos los datos de Ext.-p de todos los productos, sin el where para BORRAR TODO
+  $query_mov = mysqli_query($conexion, "DELETE FROM movimiento WHERE idmovimiento = '$idmovimiento'");
+
+    if ($query_mov) {
+      $elimino_mov = 1;
+    }else {
+      $elimino_mov = 0;
+    }
+  echo json_encode($elimino_mov,JSON_UNESCAPED_UNICODE);
   exit;
 }
 

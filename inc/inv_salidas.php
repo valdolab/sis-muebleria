@@ -413,7 +413,7 @@ include "accion/conexion.php";
 
                         <div class="form-group col-lg">
                             <label for="dias_pago_semanal">Semanal</label>
-                            <select id='dias_pago_semanal' name='dias_pago_semanal' class='form-control' disabled>
+                            <select id='dias_pago_semanal' name='dias_pago_semanal' class='form-control' disabled required>
                                 <option selected hidden value=''>Seleccione una opción</option>
                                 <option value="lunes">Lunes</option>
                                 <option value="martes">Martes</option>
@@ -427,17 +427,17 @@ include "accion/conexion.php";
 
                         <div class="form-group col-lg">
                             <label for="dias_pago_quincenal">Quincenal</label>
-                            <input type="number" class="form-control" name="dias_pago_quincenal" id="dias_pago_quincenal" disabled>
+                            <input type="number" class="form-control" name="dias_pago_quincenal" id="dias_pago_quincenal" disabled required>
                         </div>
 
                         <div class="form-group col-lg">
                             <label for="dias_pago_quincenal">Quincenal 2</label>
-                            <input type="number" class="form-control" name="dias_pago_quincenal_2" id="dias_pago_quincenal_2" disabled>
+                            <input type="number" class="form-control" name="dias_pago_quincenal_2" id="dias_pago_quincenal_2" disabled required>
                         </div>
 
                         <div class="form-group col-lg">
                             <label for="dias_pago_mensual">Mensual</label>
-                            <input type="number" class="form-control" name="dias_pago_mensual" id="dias_pago_mensual" disabled>
+                            <input type="number" class="form-control" name="dias_pago_mensual" id="dias_pago_mensual" disabled required>
                         </div>
 
                         <div class="form-group col-lg-1">
