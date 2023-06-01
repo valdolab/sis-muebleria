@@ -6,6 +6,35 @@ include "accion/conexion.php";
 
 ?>
 
+<div id="detalles_salida" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-secundary text-black">
+                        <h5 class="modal-title" id="my-modal-title">Notas de la salida &nbsp;</h5> <h5 style="font-weight: bold;" class="modal-title" id="folio_nota_salida"></h5>
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form action="" method="post" id="formAdd_nota_salida" autocomplete="on">
+                            <div class="form-group">
+                                 <textarea class="form-control" name="nota_salida" title="Ingrese las notas requeridas" id="nota_salida" placeholder="Ingrese las notas requeridas" maxlength="50000" style="height: 400px;"></textarea>
+                            </div>
+
+                            <input value="insert_edit_nota_salida" name="action" id="action" hidden readonly>
+                            <!-- el id salida se pone mediante java script -->
+                            <input value="aqui_va_id_salida" name="flag_id_salida" id="flag_id_salida" hidden readonly>
+                            <div align="right">
+                                <input id="btn_nota_salida" type="submit" class="btn btn-primary" value="Guardar">
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
 <div class="col-lg-12">
 
 <div class="card">
@@ -100,6 +129,7 @@ include "accion/conexion.php";
                             }
 
                     $idsalida = $data['idsalida'];
+                    $folio_venta = $data['folio_venta'];
                     if ($data['activo'] == 1) {
                         $estado = '<span class="badge badge-pill badge-success">Activo</span>';
                     } else {
@@ -119,7 +149,7 @@ include "accion/conexion.php";
                         <td align="center">
                                 <a href="inv_editar_salidas.php?id=<?php echo $idsalida; ?>" class="btn btn-success btn-sm"><i class='fas fa-edit'></i></a>
                                 <button onClick='suspender_salida("<?php echo $idsalida; ?>")' class='btn btn-warning btn-sm' type='submit'><i style='color: white;' class='fas fa-power-off'></i></button>
-                                <!--<button onClick='eliminar_entrada("<?php echo $identrada; ?>")' class='btn btn-danger btn-sm' type='submit'><i style='color: white;' class='fas fa-trash-alt'></i></button>-->
+                                <button data-toggle="modal" data-target="#detalles_salida" onClick='show_message_salida("<?php echo $idsalida; ?>","<?php echo $folio_venta; ?>")' class='btn btn-info btn-sm' type='submit'><i style='color: white;' class='fas fa-clipboard-list'></i></button>
                         </td>
                     </tr>
             <?php 

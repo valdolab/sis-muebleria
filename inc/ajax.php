@@ -2248,6 +2248,20 @@ if ($_POST['action'] == 'suspender_salida')
   exit;
 }
 
+//para mostrar el mensaje de las notas de salida
+if ($_POST['action'] == 'buscar_nota_salida') 
+{
+  include "accion/conexion.php";
+  $idsalida = $_POST['idsalida'];
+  //eliminar todos los datos de Ext.-p de todos los productos, sin el where para BORRAR TODO
+  $result = mysqli_query($conexion,"SELECT nota_salida from salida where idsalida = '$idsalida'");
+  
+  $data_nota_salida = mysqli_fetch_assoc($result);
+  
+  echo json_encode($data_nota_salida,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
 //para transferir almacen
 if ($_POST['action'] == 'SelectAlmacen') 
 {

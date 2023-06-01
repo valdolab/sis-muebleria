@@ -1628,6 +1628,66 @@ $('#idestado_civil').change(function() {
        return false;   
     });
 
+    //agregar y editar notas de la salida
+    //form para agregar y editar movimiento
+    $("#formAdd_nota_salida").submit( function () 
+    {  
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+        $.ajax({                        
+           type: 'POST',                 
+           url: 'ajax_forms.php',                     
+           data: $(this).serialize(),
+           beforeSend: function() 
+           {
+                Swal.fire({
+                          title: 'Cargando...',
+                          text: 'Espere un momento, lo estamos procesando',
+                          imageUrl: "../img/cargando.gif",
+                          imageHeight: 150, 
+                          imageWidth: 150, 
+                          showConfirmButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false
+                        }); 
+           },
+           success: function(response)             
+           {
+                //$('#prueba').html(response);
+                if(response == 0)
+                {
+                    //error brutal
+                    Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Ocurrio un error, !intente de nuevo!',
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                //recargamos la pagina actual sin el POST
+                                document.location.reload(true);
+                            }
+                        }) 
+                }
+                else
+                {
+                    //correcto
+                        Swal.fire({
+                              icon: 'success',
+                              title: '!Guardado!',
+                              text: '!Se guardo el movimiento!'
+                            }).then((result) => {
+                                if (result.isConfirmed){
+                                    document.location.reload(true);
+                                    //let pagina = "inv_editar_salidas.php?id="+data.idsalida;
+                                    //window.location.href = pagina;
+                                }
+                            }) 
+                }       
+           }
+       });   
+       return false;   
+    });
+
     //form para agregar las entradas de compra
     $("#formAdd_entrada").submit( function () 
     {  
@@ -2372,6 +2432,31 @@ function editar_salida(num_cards)
 
 }
 
+function show_message_salida(idsalida, folio_salida)
+{
+    $('#flag_id_salida').val(idsalida);
+    $('#folio_nota_salida').html(folio_salida);
+    //show
+    var action = "buscar_nota_salida";
+        $.ajax({
+        url: "ajax.php",
+        type: "POST",
+        data: {action: action, idsalida: idsalida},
+        success: function (response) 
+        {
+            //console.log(response);
+            var data = $.parseJSON(response); 
+            //console.log(cliente);
+            $('#nota_salida').val(data.nota_salida);
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+    });
+}
+
+
+//--------
 var salida_costo = 0;
 var salida_costo_iva = 0;
 var salida_costo_contado = 0;

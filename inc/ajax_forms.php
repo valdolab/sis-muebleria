@@ -1555,6 +1555,32 @@ if ($_POST['action'] == 'insert_salida_venta')
   exit;
 }
 
+//esto es para agregar editar nota de salida
+if ($_POST['action'] == 'insert_edit_nota_salida') 
+{  
+  include "accion/conexion.php";
+  if (!empty($_POST['flag_id_salida'])) 
+  {
+      $idsalida = $_POST['flag_id_salida'];
+      $nota = $_POST['nota_salida'];
+      $insert_nota_sal = mysqli_query($conexion, "UPDATE salida set nota_salida = '$nota' where idsalida = '$idsalida'");
+              if ($insert_nota_sal) 
+              {
+                  $resultInsertNotaSalida = 1;
+              } 
+              else
+              {
+                $resultInsertNotaSalida = 0;
+              }
+  }
+  else
+  {
+    $resultInsertNotaSalida = 0;
+  }
+  echo json_encode($resultInsertNotaSalida,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
 //para guardar la entrada en la base de datos
 if ($_POST['action'] == 'insert_entrada_compra') 
 {
