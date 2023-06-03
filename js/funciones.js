@@ -2612,6 +2612,35 @@ function multiplicar_precio(id)
     }
 }
 
+//funcion para mostrar los inputs de las series completas
+function cargar_datos_serie_real_salida(id) 
+{
+    let origen = $("#origen_"+id).val();
+    let origen_multi = $("#origen_multi_"+id).val();
+    let cantidad = $("#cantidad_"+id).val();
+
+    let origen_text = $('#origen_'+id+' option:selected').text();
+    let origen_multi_text = $('#origen_multi_'+id+' option:selected').text();
+    console.log(origen_multi_text);
+    let response = "";
+
+    if(cantidad == 1)
+    {
+        response = '<tr>\
+                            <td>qwe</td>\
+                            <td><input type="text" class="form-control" name="serie_completa_1" id="serie_completa_1" maxlength="99">\
+                            <input type="text" value=""  readonly name="id_salida_serie_origen" id="id_salida_serie_origen" maxlength="99">\
+                            </td>\
+                        </tr>';
+    }
+    else if(cantidad > 1)
+    {
+
+    }
+
+    $('#div_serie_completa').html(response);
+}
+
 Number.prototype.format = function(n, x) {
     var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
     return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');

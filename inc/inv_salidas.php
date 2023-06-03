@@ -457,6 +457,41 @@ include "accion/conexion.php";
 <!-- ya no se hizo dinamicamente, lo que se muestra a continuacion NO ES UNA PRACTICA ADECUADA -->
 <!-- se hizo así por fines rapidos y practicos, ya no habia mucho tiempo, y funciona para el poco uso que tendra-->
 <!-- ya esta empezado lo de que sea dinamico, pero aun tiene varios bugs por arreglar, si tienen tiempo, haganlo bien, por si quieren intentar.... -->
+
+<!-- modal de las series reales -->
+<div id="add_series_completas" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg text-black">
+                <h5 class="modal-title" id="my-modal-title">Agregar series</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <table class="table" id="tbl">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Serie</th>
+                                <th>Serie completa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="div_serie_completa">
+
+                            <!-- for para agregar cada columna de cada serie que selecccione -->
+
+                        </tbody>
+                    </table>
+
+                    <br>
+                    <input value="insert_serie_completa" name="action" id="action" hidden>
+                    
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div id="lista_salida">
     <!-- card1 -->
     <div id="card_salida1" class="row" hidden>
@@ -490,7 +525,7 @@ include "accion/conexion.php";
                             <label for="cantidad">Cantidad</label>
                             <input onchange="multiplicar_precio(1)" type="number" value=1 class="form-control" name="cantidad_1" id="cantidad_1">
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <label for="origen">Origen</label>
                             <!--<input type="text" class="form-control" name="origen_1" id="origen_1" onkeyup="mayusculas(this)"> -->
 
@@ -506,6 +541,13 @@ include "accion/conexion.php";
                             </div>
 
                         </div>
+
+                        <!-- series reales -->
+                        <div class="col-lg">
+                            <label>Series</label>
+                            <button data-toggle="modal" data-target="#add_series_completas" onclick="cargar_datos_serie_real_salida(1)" class="btn btn-md btn-primary" type="button" ><i class="fas fa-plus"></i> Añadir</button>                           
+                        </div>
+
                         <div class="col-lg-2">
                             <label for="tipo_precio">Tipo de precio</label>
                               <select onchange="mostrar_precios(1)" class="form-control" id="tipo_precio_1" name="tipo_precio_1">
