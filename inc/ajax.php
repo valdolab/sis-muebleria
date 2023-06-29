@@ -2365,3 +2365,26 @@ if ($_POST['action'] == 'forecasting')
   exit;
 }
 
+//para eliminar el movimiento
+if ($_POST['action'] == 'select_serie_completa') 
+{
+  include "accion/conexion.php";
+  $idsalida_producto = $_POST['idsalida_producto'];
+  $id = $_POST['id'];
+  //eliminar todos los datos de Ext.-p de todos los productos, sin el where para BORRAR TODO
+  $query_select_sal = mysqli_query($conexion, "SELECT salida_productos_origen.idsalida_producto_origen, salida_productos_origen.serie_completa, entrada.folio_compra from salida_productos_origen inner join entrada_productos_serie on salida_productos_origen.serie_origen = entrada_productos_serie.identrada_producto_serie inner join entrada on entrada_productos_serie.entrada = entrada.identrada where salida_productos_origen.salida_productos = '$idsalida_producto'");
+
+    $result_tabla = "";
+    while ($data = mysqli_fetch_assoc($query_select_sal)) 
+    {
+      $result_tabla = $result_tabla.'<tr><td>'.$data['folio_compra'].'-'.'</td><td><input disabled type="text" class="form-control" name="serie_multi_completa_'.$id.'[]" id="serie_multi_completa_'.$id.'[]" maxlength="99" value="'.$data['serie_completa'].'"><input hidden type="text" value="'.$data['idsalida_producto_origen'].'" readonly name="id_salida_multi_serie_origen_'.$id.'[]" id="id_salida_multi_serie_origen_'.$id.'[]" maxlength="99"></td></tr>';
+
+    }
+
+    $cadenaTabla = array("cadenaTabla" => $result_tabla);
+    $resultTabla = $cadenaTabla;
+
+  echo json_encode($resultTabla,JSON_UNESCAPED_UNICODE);
+  exit;
+}
+

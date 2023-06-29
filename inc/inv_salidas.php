@@ -459,37 +459,146 @@ include "accion/conexion.php";
 <!-- ya esta empezado lo de que sea dinamico, pero aun tiene varios bugs por arreglar, si tienen tiempo, haganlo bien, por si quieren intentar.... -->
 
 <!-- modal de las series reales -->
-<div id="add_series_completas" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg text-black">
-                <h5 class="modal-title" id="my-modal-title">Agregar series</h5>
-                <button class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+<!-- 1 -->
+<div id="add_series_completas_1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg text-black">
+                            <h5 class="modal-title" id="my-modal-title">Agregar series</h5>
+                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Serie</th>
+                                            <th>Serie completa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="div_serie_completa_1">
+                                        <!-- for para agregar cada columna de cada serie que selecccione -->
+                                    </tbody>
+                                </table>
+                                <br>
+                                <input value="insert_serie_completa" name="action" id="action" hidden>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                    <table class="table" id="tbl">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>Serie</th>
-                                <th>Serie completa</th>
-                            </tr>
-                        </thead>
-                        <tbody id="div_serie_completa">
-
-                            <!-- for para agregar cada columna de cada serie que selecccione -->
-
-                        </tbody>
-                    </table>
-
-                    <br>
-                    <input value="insert_serie_completa" name="action" id="action" hidden>
-                    
+<!-- 2 -->
+<div id="add_series_completas_2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg text-black">
+                            <h5 class="modal-title" id="my-modal-title">Agregar series</h5>
+                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Serie</th>
+                                            <th>Serie completa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="div_serie_completa_2">
+                                        <!-- for para agregar cada columna de cada serie que selecccione -->
+                                    </tbody>
+                                </table>
+                                <br>
+                                <input value="insert_serie_completa" name="action" id="action" hidden>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
+<!-- 3 -->
+<div id="add_series_completas_3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg text-black">
+                            <h5 class="modal-title" id="my-modal-title">Agregar series</h5>
+                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Serie</th>
+                                            <th>Serie completa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="div_serie_completa_3">
+                                        <!-- for para agregar cada columna de cada serie que selecccione -->
+                                    </tbody>
+                                </table>
+                                <br>
+                                <input value="insert_serie_completa" name="action" id="action" hidden>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!-- 4 -->
+<div id="add_series_completas_4" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg text-black">
+                            <h5 class="modal-title" id="my-modal-title">Agregar series</h5>
+                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Serie</th>
+                                            <th>Serie completa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="div_serie_completa_4">
+                                        <!-- for para agregar cada columna de cada serie que selecccione -->
+                                    </tbody>
+                                </table>
+                                <br>
+                                <input value="insert_serie_completa" name="action" id="action" hidden>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!-- 5 -->
+<div id="add_series_completas_5" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg text-black">
+                            <h5 class="modal-title" id="my-modal-title">Agregar series</h5>
+                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Serie</th>
+                                            <th>Serie completa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="div_serie_completa_5">
+                                        <!-- for para agregar cada columna de cada serie que selecccione -->
+                                    </tbody>
+                                </table>
+                                <br>
+                                <input value="insert_serie_completa" name="action" id="action" hidden>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
 <div id="lista_salida">
@@ -544,8 +653,9 @@ include "accion/conexion.php";
 
                         <!-- series reales -->
                         <div class="col-lg">
-                            <label>Series</label>
-                            <button data-toggle="modal" data-target="#add_series_completas" onclick="cargar_datos_serie_real_salida(1)" class="btn btn-md btn-primary" type="button" ><i class="fas fa-plus"></i> Añadir</button>                           
+                            <label>Series &nbsp;</label>
+                            <button onclick="cargar_datos_serie_real_salida(1)" class="btn btn-md btn-primary" type="button" ><i class="fas fa-plus"></i></button>    
+                            <button data-toggle="modal" data-target="#add_series_completas_1" class="btn btn-md btn-primary" type="button" ><i class="fas fa-eye"></i></button>                          
                         </div>
 
                         <div class="col-lg-2">
@@ -610,7 +720,7 @@ include "accion/conexion.php";
                             <label for="cantidad">Cantidad</label>
                             <input onchange="multiplicar_precio(2)" type="number" value=1 class="form-control" name="cantidad_2" id="cantidad_2">
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <label for="origen">Origen</label>
                             <!--<input type="text" class="form-control" name="origen_1" id="origen_1" onkeyup="mayusculas(this)"> -->
                             <div id="divorigen_2">
@@ -624,6 +734,14 @@ include "accion/conexion.php";
                                 </select>
                             </div>
                         </div>
+
+                        <!-- series reales -->
+                        <div class="col-lg">
+                            <label>Series &nbsp;</label>
+                            <button onclick="cargar_datos_serie_real_salida(2)" class="btn btn-md btn-primary" type="button" ><i class="fas fa-plus"></i></button>    
+                            <button data-toggle="modal" data-target="#add_series_completas_2" class="btn btn-md btn-primary" type="button" ><i class="fas fa-eye"></i></button>                          
+                        </div>
+
                         <div class="col-lg-2">
                             <label for="tipo_precio">Tipo de precio</label>
                               <select onchange="mostrar_precios(2)" class="form-control" id="tipo_precio_2" name="tipo_precio_2">
@@ -686,7 +804,7 @@ include "accion/conexion.php";
                             <label for="cantidad">Cantidad</label>
                             <input onchange="multiplicar_precio(3)" type="number" value=1 class="form-control" name="cantidad_3" id="cantidad_3">
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <label for="origen">Origen</label>
                             <div id="divorigen_3">
                                 <select class="form-control js-example-data-array" id="origen_3" name="origen_3">
@@ -699,6 +817,14 @@ include "accion/conexion.php";
                                 </select>
                             </div>
                         </div>
+
+                        <!-- series reales -->
+                        <div class="col-lg">
+                            <label>Series &nbsp;</label>
+                            <button onclick="cargar_datos_serie_real_salida(3)" class="btn btn-md btn-primary" type="button" ><i class="fas fa-plus"></i></button>    
+                            <button data-toggle="modal" data-target="#add_series_completas_3" class="btn btn-md btn-primary" type="button" ><i class="fas fa-eye"></i></button>                          
+                        </div>
+
                         <div class="col-lg-2">
                             <label for="tipo_precio">Tipo de precio</label>
                               <select onchange="mostrar_precios(3)" class="form-control" id="tipo_precio_3" name="tipo_precio_3">
@@ -761,7 +887,7 @@ include "accion/conexion.php";
                             <label for="cantidad">Cantidad</label>
                             <input onchange="multiplicar_precio(4)" type="number" value=1 class="form-control" name="cantidad_4" id="cantidad_4">
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <label for="origen">Origen</label>
                             <div id="divorigen_4">
                                 <select class="form-control js-example-data-array" id="origen_4" name="origen_4">
@@ -774,6 +900,14 @@ include "accion/conexion.php";
                                 </select>
                             </div>
                         </div>
+
+                        <!-- series reales -->
+                        <div class="col-lg">
+                            <label>Series &nbsp;</label>
+                            <button onclick="cargar_datos_serie_real_salida(4)" class="btn btn-md btn-primary" type="button" ><i class="fas fa-plus"></i></button>    
+                            <button data-toggle="modal" data-target="#add_series_completas_4" class="btn btn-md btn-primary" type="button" ><i class="fas fa-eye"></i></button>                          
+                        </div>
+
                         <div class="col-lg-2">
                             <label for="tipo_precio">Tipo de precio</label>
                               <select onchange="mostrar_precios(4)" class="form-control" id="tipo_precio_4" name="tipo_precio_4">
@@ -836,7 +970,7 @@ include "accion/conexion.php";
                             <label for="cantidad">Cantidad</label>
                             <input onchange="multiplicar_precio(5)" type="number" value=1 class="form-control" name="cantidad_5" id="cantidad_5">
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <label for="origen">Origen</label>
                             <div id="divorigen_5">
                                 <select class="form-control js-example-data-array" id="origen_5" name="origen_5">
@@ -849,6 +983,14 @@ include "accion/conexion.php";
                                 </select>
                             </div>
                         </div>
+
+                        <!-- series reales -->
+                        <div class="col-lg">
+                            <label>Series &nbsp;</label>
+                            <button onclick="cargar_datos_serie_real_salida(5)" class="btn btn-md btn-primary" type="button" ><i class="fas fa-plus"></i></button>    
+                            <button data-toggle="modal" data-target="#add_series_completas_5" class="btn btn-md btn-primary" type="button" ><i class="fas fa-eye"></i></button>                          
+                        </div>
+
                         <div class="col-lg-2">
                             <label for="tipo_precio">Tipo de precio</label>
                               <select onchange="mostrar_precios(5)" class="form-control" id="tipo_precio_5" name="tipo_precio_5">

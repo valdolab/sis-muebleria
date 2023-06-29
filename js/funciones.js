@@ -2325,7 +2325,8 @@ $('#id_cliente').on('select2:select', function (e)
 
             $("#subzona").empty();
             $('#subzona').append(cliente.data_subzona);
-            $('option[value="'+cliente.data_subzona+'"]').prop("selected", "selected");
+            //console.log(cliente.subzona);
+            $('option[value="'+cliente.subzona+'"]').prop("selected", "selected");
         },
         error: function(error) {
             //$('#prueba').val('error');
@@ -2353,7 +2354,7 @@ $('#nom_cliente').on('select2:select', function (e)
 
             $("#subzona").empty();
             $('#subzona').append(cliente.data_subzona);
-            $('option[value="'+cliente.data_subzona+'"]').prop("selected", "selected");
+            $('option[value="'+cliente.subzona+'"]').prop("selected", "selected");
         },
         error: function(error) {
             //$('#prueba').val('error');
@@ -2612,6 +2613,18 @@ function multiplicar_precio(id)
     }
 }
 
+$('#add_series_completas_1, #add_series_completas_2, #add_series_completas_3, #add_series_completas_4, #add_series_completas_5').on('hide.bs.modal', function (e) 
+{
+    document.getElementById('divzoom').style.zoom = "100%";
+    document.getElementById('page-top').style.zoom = "80%";
+})
+
+$('#add_series_completas_1, #add_series_completas_2, #add_series_completas_3, #add_series_completas_4, #add_series_completas_5').on('show.bs.modal', function (e) 
+{
+    document.getElementById('divzoom').style.zoom = "80%";
+    document.getElementById('page-top').style.zoom = "100%";
+})
+
 //funcion para mostrar los inputs de las series completas
 function cargar_datos_serie_real_salida(id) 
 {
@@ -2621,24 +2634,92 @@ function cargar_datos_serie_real_salida(id)
 
     let origen_text = $('#origen_'+id+' option:selected').text();
     let origen_multi_text = $('#origen_multi_'+id+' option:selected').text();
-    console.log(origen_multi_text);
-    let response = "";
+    //console.log(origen_multi_text);
 
+    let response = "";
     if(cantidad == 1)
     {
         response = '<tr>\
-                            <td>qwe</td>\
-                            <td><input type="text" class="form-control" name="serie_completa_1" id="serie_completa_1" maxlength="99">\
-                            <input type="text" value=""  readonly name="id_salida_serie_origen" id="id_salida_serie_origen" maxlength="99">\
+                            <td>'+origen_text+'</td>\
+                            <td><input type="text" class="form-control" name="serie_completa_'+id+'" id="serie_completa_'+id+'" maxlength="99">\
+                            <input hidden type="text" value="'+origen+'" readonly name="id_salida_serie_origen_'+id+'" id="id_salida_serie_origen_'+id+'" maxlength="99">\
                             </td>\
                         </tr>';
     }
     else if(cantidad > 1)
     {
-
+        //console.log(origen_multi_text);
+        for (var i = 0; i < origen_multi.length; i++) 
+        {
+            let array_series = origen_multi_text.split("-");
+            response = response + '<tr>\
+                            <td>'+array_series[i]+'-'+'</td>\
+                            <td><input type="text" class="form-control" name="serie_multi_completa_'+id+'[]" id="serie_multi_completa_'+id+'[]" maxlength="99">\
+                            <input hidden type="text" value="'+origen_multi[i]+'"  readonly name="id_salida_multi_serie_origen_'+id+'[]" id="id_salida_multi_serie_origen_'+id+'[]" maxlength="99">\
+                            </td>\
+                        </tr>';
+        }
     }
 
-    $('#div_serie_completa').html(response);
+    $('#div_serie_completa_'+id).html(response);
+
+    //avisar que ya se creo
+    Swal.fire({
+                          icon: 'success',
+                          title: 'Ok!',
+                          text: '',
+                        }).then((result) => {})
+}
+
+function mostrar_datos_serie_real(id) 
+{
+    let origen_multi = $("#origen_multi_"+id).val();
+    let cantidad = $("#cantidad_"+id).val();
+    let identificador = $("#identificador_pro_"+id).val();
+    //aqui poner el id de salida producto
+    let idsalida_producto = $("#idsalida_producto_"+id).val();
+
+
+    //console.log(origen_multi_text);
+    var action = "select_serie_completa";
+        $.ajax({
+        url: "ajax.php",
+        type: "POST",
+        data: {action: action, idsalida_producto: idsalida_producto, id: id},
+        success: function (response) 
+        {
+            console.log(response);
+            var data = $.parseJSON(response);
+
+            $('#div_serie_completa_'+id).html(data.cadenaTabla);
+        },
+        error: function(error) {
+            //$('#prueba').val('error');
+        }
+    });
+
+
+    let response = "";
+        //console.log(origen_multi_text);
+        for (var i = 0; i < origen_multi.length; i++) 
+        {
+            let array_series = origen_multi_text.split("-");
+            response = response + '<tr>\
+                            <td>'+array_series[i]+'-'+'</td>\
+                            <td><input type="text" class="form-control" name="serie_multi_completa_'+id+'[]" id="serie_multi_completa_'+id+'[]" maxlength="99">\
+                            <input type="text" value="'+origen_multi[i]+'"  readonly name="id_salida_multi_serie_origen_'+id+'[]" id="id_salida_multi_serie_origen_'+id+'[]" maxlength="99">\
+                            </td>\
+                        </tr>';
+        }
+
+    $('#div_serie_completa_'+id).html(response);
+
+    //avisar que ya se creo
+    Swal.fire({
+                          icon: 'success',
+                          title: 'Ok!',
+                          text: '',
+                        }).then((result) => {})
 }
 
 Number.prototype.format = function(n, x) {

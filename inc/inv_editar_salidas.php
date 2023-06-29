@@ -781,6 +781,147 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
     </div>
 </div>
 
+<!-- modal de las series reales -->
+<!-- 1 -->
+<div id="series_completas_1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg text-black">
+                            <h5 class="modal-title" id="my-modal-title">Agregar series</h5>
+                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Serie</th>
+                                            <th>Serie completa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="div_serie_completa_1">
+                                    </tbody>
+                                </table>
+                                <br>
+                                <input value="insert_serie_completa" name="action" id="action" hidden>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!-- 2 -->
+<div id="series_completas_2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg text-black">
+                            <h5 class="modal-title" id="my-modal-title">Agregar series</h5>
+                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Serie</th>
+                                            <th>Serie completa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="div_serie_completa_2">
+                                        <!-- for para agregar cada columna de cada serie que selecccione -->
+                                    </tbody>
+                                </table>
+                                <br>
+                                <input value="insert_serie_completa" name="action" id="action" hidden>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!-- 3 -->
+<div id="series_completas_3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg text-black">
+                            <h5 class="modal-title" id="my-modal-title">Agregar series</h5>
+                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Serie</th>
+                                            <th>Serie completa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="div_serie_completa_3">
+                                        <!-- for para agregar cada columna de cada serie que selecccione -->
+                                    </tbody>
+                                </table>
+                                <br>
+                                <input value="insert_serie_completa" name="action" id="action" hidden>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!-- 4 -->
+<div id="series_completas_4" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg text-black">
+                            <h5 class="modal-title" id="my-modal-title">Agregar series</h5>
+                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Serie</th>
+                                            <th>Serie completa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="div_serie_completa_4">
+                                        <!-- for para agregar cada columna de cada serie que selecccione -->
+                                    </tbody>
+                                </table>
+                                <br>
+                                <input value="insert_serie_completa" name="action" id="action" hidden>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!-- 5 -->
+<div id="series_completas_5" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg text-black">
+                            <h5 class="modal-title" id="my-modal-title">Agregar series</h5>
+                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Serie</th>
+                                            <th>Serie completa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="div_serie_completa_5">
+                                        <!-- for para agregar cada columna de cada serie que selecccione -->
+                                    </tbody>
+                                </table>
+                                <br>
+                                <input value="insert_serie_completa" name="action" id="action" hidden>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 <div id="prueba">
 </div>
 
@@ -1258,10 +1399,14 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
             </div>
         </div>
     </div>
+
+</fieldset>
 <!-- aqui va los añadidios dinamicos de las salidas -->
 <!-- ya no se hizo dinamicamente, lo que se muestra a continuacion NO ES UNA PRACTICA ADECUADA -->
 <!-- se hizo así por fines rapidos y practicos, ya no habia mucho tiempo, y funciona para el poco uso que tendra-->
 <!-- ya esta empezado lo de que sea dinamico, pero aun tiene varios bugs por arreglar, si tienen tiempo, haganlo bien, por si quieren intentar.... -->
+
+
 <div id="lista_salida">
     <?php 
         //para mostrar los productos que compro y eso
@@ -1281,7 +1426,7 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
             array_push($up_tipo_precio, $data_salida['tipo_precio']);
             array_push($up_precio_x_unidad, $data_salida['precio_x_unidad']);
             array_push($up_precio_total, $data_salida['precio_total']);
-            array_push($up_id_salida_producto, $data_salida['idsalida_producto']);
+            array_push($up_id_salida_producto, $data_salida['idsalida_producto']);           
         }
 
         for ($i=0; $i < $num_salida_pro; $i++) 
@@ -1295,6 +1440,8 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-3">
+                                    <input readonly hidden value="<?php echo $up_id_salida_producto[$i]; ?>" type="text" name="idsalida_producto_<?php echo ($i+1); ?>" id="idsalida_producto_<?php echo ($i+1); ?>">
+
                                     <label for="identificador_pro">Identificador</label>
                                     <select class="form-control js-example-data-array identificadorpro" id="identificador_pro_<?php echo ($i+1); ?>" name="identificador_pro_<?php echo ($i+1); ?>" onchange="cargar_series(<?php echo ($i+1); ?>)" disabled>
                                     <option value=0 selected hidden></option>
@@ -1322,13 +1469,13 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                                 </div>
                                 <div class="col-lg-1">
                                     <label for="cantidad">Cantidad</label>
-                                    <input onchange="multiplicar_precio(<?php echo ($i+1); ?>)" type="number" class="form-control" name="cantidad_<?php echo ($i+1); ?>" id="cantidad_<?php echo ($i+1); ?>" value="<?php echo $up_cantidad[$i] ?>">
+                                    <input disabled onchange="multiplicar_precio(<?php echo ($i+1); ?>)" type="number" class="form-control" name="cantidad_<?php echo ($i+1); ?>" id="cantidad_<?php echo ($i+1); ?>" value="<?php echo $up_cantidad[$i] ?>">
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg">
                                     <label for="origen">Origen</label>
                                     <!--<input type="text" class="form-control" name="origen_1" id="origen_1" onkeyup="mayusculas(this)"> -->
                                     <?php 
-                                        $query_salida_series = mysqli_query($conexion,"SELECT entrada.folio_compra, entrada_productos_serie.serie, entrada_productos_serie.identrada_producto_serie from entrada INNER JOIN entrada_productos_serie on entrada_productos_serie.entrada = entrada.identrada INNER JOIN salida_productos_origen on salida_productos_origen.serie_origen = entrada_productos_serie.identrada_producto_serie INNER JOIN salida_productos on salida_productos.idsalida_producto = salida_productos_origen.salida_productos WHERE salida_productos.idsalida_producto = '$up_id_salida_producto[$i]'");
+                                        $query_salida_series = mysqli_query($conexion,"SELECT entrada.folio_compra, entrada_productos_serie.serie, entrada_productos_serie.identrada_producto_serie, salida_productos_origen.serie_completa from entrada INNER JOIN entrada_productos_serie on entrada_productos_serie.entrada = entrada.identrada INNER JOIN salida_productos_origen on salida_productos_origen.serie_origen = entrada_productos_serie.identrada_producto_serie INNER JOIN salida_productos on salida_productos.idsalida_producto = salida_productos_origen.salida_productos WHERE salida_productos.idsalida_producto = '$up_id_salida_producto[$i]'");
                                         $data_series =  mysqli_fetch_assoc($query_salida_series);
                                         if($up_cantidad[$i] == 1)
                                         {
@@ -1347,6 +1494,9 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                                                           }
                                                           echo "<option selected value='".$data_series["identrada_producto_serie"]."'>".$data_series["folio_compra"]."-".$data_series['serie']."</option>"; 
                                                         }
+
+                                                        //recuperar la serie completa
+                                                        $up_serie_completa = $data_series['serie_completa'];
                                                      ?>
                                                 </select>
                                             </div>
@@ -1377,10 +1527,17 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                                                           {
                                                             echo "<option value='".$row["identrada_producto_serie"]."'>".$row["folio_compra"]."-".$row['serie']."</option>";    
                                                           }
-                                                          $query_salida_series = mysqli_query($conexion,"SELECT entrada.folio_compra, entrada_productos_serie.serie, entrada_productos_serie.identrada_producto_serie from entrada INNER JOIN entrada_productos_serie on entrada_productos_serie.entrada = entrada.identrada INNER JOIN salida_productos_origen on salida_productos_origen.serie_origen = entrada_productos_serie.identrada_producto_serie INNER JOIN salida_productos on salida_productos.idsalida_producto = salida_productos_origen.salida_productos WHERE salida_productos.idsalida_producto = '$up_id_salida_producto[$i]'"); 
+                                                          $query_salida_series = mysqli_query($conexion,"SELECT entrada.folio_compra, entrada_productos_serie.serie, entrada_productos_serie.identrada_producto_serie, salida_productos_origen.serie_completa from entrada INNER JOIN entrada_productos_serie on entrada_productos_serie.entrada = entrada.identrada INNER JOIN salida_productos_origen on salida_productos_origen.serie_origen = entrada_productos_serie.identrada_producto_serie INNER JOIN salida_productos on salida_productos.idsalida_producto = salida_productos_origen.salida_productos WHERE salida_productos.idsalida_producto = '$up_id_salida_producto[$i]'"); 
+                                                          //here recall serie completa
+                                                          
+                                                          $m = 0;
+                                                          $up_serie_completa_multi = [];
                                                           while ($data_series =  mysqli_fetch_assoc($query_salida_series)) 
                                                           {
                                                               echo "<option selected value='".$data_series["identrada_producto_serie"]."'>".$data_series["folio_compra"]."-".$data_series['serie']."</option>";  
+
+                                                              $up_serie_completa_multi[$m] = $data_series['serie_completa'];
+                                                              $m = $m + 1;
                                                           }
                                                         }
                                                      ?>
@@ -1395,9 +1552,35 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                                      ?>
 
                                 </div>
+
+
+                            <?php 
+                                if($up_cantidad[$i] == 1)
+                                {
+                             ?>
+                                <div class="col-lg">
+                                    <label for="origen">Series</label>
+                                    <input disabled name="" id="serie_completa_<?php echo ($i+1); ?>" type="text" class="form-control" value="<?php echo $up_serie_completa; ?>">
+                                </div>
+                            <?php 
+                                }
+                                else
+                                {
+                                    ?>
+                                        <!-- here put the modals -->
+                                        <div class="col-lg-1">
+                                            <label>Series &nbsp;</label>
+                                            <!-- <button onclick="cargar_datos_serie_real_salida(($i+1))" class="btn btn-md btn-primary" type="button" ><i class="fas fa-plus"></i></button> -->
+                                            <button onclick="mostrar_datos_serie_real(<?php echo ($i+1);?>)" data-toggle="modal" data-target="#series_completas_<?php echo ($i+1); ?>" class="btn btn-md btn-primary" type="button" ><i class="fas fa-eye"></i></button>                 
+                                        </div>
+                                    <?php 
+                                }
+                             ?>
+
+
                                 <div class="col-lg-2">
                                     <label for="tipo_precio">Tipo de precio</label>
-                                      <select onchange="mostrar_precios(<?php echo ($i+1); ?>)" class="form-control" id="tipo_precio_<?php echo ($i+1); ?>" name="tipo_precio_<?php echo ($i+1); ?>">
+                                      <select disabled onchange="mostrar_precios(<?php echo ($i+1); ?>)" class="form-control" id="tipo_precio_<?php echo ($i+1); ?>" name="tipo_precio_<?php echo ($i+1); ?>">
                                         <option value=0 selected hidden></option>
                                         <?php 
                                             if($up_tipo_precio[$i] == "costo_contado")
@@ -1437,7 +1620,7 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                                       <div class="input-group-prepend">
                                         <span class="input-group-text">$</span>
                                       </div>
-                                      <input name="precio_<?php echo ($i+1); ?>" id="precio_<?php echo ($i+1); ?>" type="number" class="form-control" aria-label="Monto en pesos mexicanos" step="any" value="<?php echo $up_precio_x_unidad[$i]; ?>">
+                                      <input disabled name="precio_<?php echo ($i+1); ?>" id="precio_<?php echo ($i+1); ?>" type="number" class="form-control" aria-label="Monto en pesos mexicanos" step="any" value="<?php echo $up_precio_x_unidad[$i]; ?>">
                                     </div>
                                 </div>
                                 <div class="col-lg-1" align="right">
@@ -1568,7 +1751,7 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
             <h4>Descuento</h4>
         </div>
         <div class="col-lg-2" align="right">
-            <input id="descuento_venta" type="number" name="descuento_venta" class="form-control" value="<?php echo $up_descuento; ?>">
+            <input disabled id="descuento_venta" type="number" name="descuento_venta" class="form-control" value="<?php echo $up_descuento; ?>">
         </div>
     </div>
     <div class="row">
@@ -1588,7 +1771,7 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
 <div class="row">
     <div class="col-lg-1"></div>
     <div class="form-group col-lg-5">
-        <button id="btn_vender"  onclick="calcular_cuenta(1)" type="button" class="btn btn-block btn-primary"><i class="fas fa-cash-register"></i> Calcular</button>
+        <button id="btn_vender" disabled onclick="calcular_cuenta(1)" type="button" class="btn btn-block btn-primary"><i class="fas fa-cash-register"></i> Calcular</button>
     </div>
     <div class="col-lg-5">
         <button disabled id="btn_haz_venta" type="submit" class="btn btn-block btn-success"><i class="fas fa-money-check"></i> Actualizar</button>
@@ -1597,7 +1780,7 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
 <input hidden readonly type="text" name="action" id="action" value="edit_salida_venta">
 <input hidden readonly type="text" name="flag_id_salida" id="flag_id_salida" value="<?php echo $id_salida; ?>">
 </form>
-</fieldset>
+<!-- </fieldset> -->
 <br><br>
 
     <div class="col-lg-12">
@@ -1631,124 +1814,139 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                 </div>
                 <div class="col-lg-2">
                     <?php 
-                    
+
                         //tambien para la tabla ideal que se mostrara más abajo
                         $tabla_credito_ideal = "";
-                            //array to save all the dates in the ideal pay dates
-                            $ultimo_pago_liquidacion = 0;
-                            $fecha_liquidacion_ideal = 0;
-                            $fechas_ideales = [$up_fecha];
-                            $f = 1;
-                                $new_total = $up_total_general - $up_enganche;
-                                $tabla_credito_ideal = $tabla_credito_ideal."<tr>
-                                        <td>1</td>
-                                        <td>".date("d/m/Y", strtotime($up_fecha))."</td>
-                                        <td>"."$".number_format($up_enganche,0,'.',',')."</td>
-                                        <td>"."$".number_format($up_descuento,0,'.',',')."</td>
-                                        <td>$0</td>
-                                        <td>"."$".number_format($new_total,0,'.',',')."</td>
-                                    </tr>";
-
-                                $no_pagos_int = ceil($up_no_pagos);
-                                //$up_total_general
-                            $new_pago_parcial = $up_pago_parcial;
-                            $new_fecha = $up_per_dia_pago;
-                            for ($i=1; $i < $no_pagos_int; $i++) 
-                            { 
-                                if($new_pago_parcial > $new_total)
-                                {   
-                                    $new_pago_parcial = $new_total;
-                                }
-                                $new_total = $new_total - $new_pago_parcial;
-                                $ultimo_pago_liquidacion = $new_pago_parcial;
-                                $fecha_liquidacion_ideal = $new_fecha;
-                                if($new_pago_parcial != 0)
-                                {
+                        //array to save all the dates in the ideal pay dates
+                        $ultimo_pago_liquidacion = 0;
+                        $fecha_liquidacion_ideal = 0;
+                        //CALCULAR FECHAS IDEALES
+                            /////////////////////////////////////
+                                $fechas_ideales = [$up_fecha];
+                                $f = 1;
+                                    $new_total = $up_total_general - $up_enganche;
                                     $tabla_credito_ideal = $tabla_credito_ideal."<tr>
-                                        <td>".($i+1)."</td>
-                                        <td>".date("d/m/Y", strtotime($new_fecha))."</td>
-                                        <td>"."$".number_format($new_pago_parcial,0,'.',',')."</td>
-                                        <td>"."$".number_format(0,0,'.',',')."</td>
-                                        <td>$0</td>
-                                        <td>"."$".number_format($new_total,0,'.',',')."</td>
-                                    </tr>";
-                                    $fechas_ideales[$f] = $new_fecha;
-                                    $f = $f + 1;
-                                    if($up_modalidad == "mensual")
-                                    {
-                                        //up_dias_pago_mensual
-                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 month'));
-                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
-                                        if(intval($dia) <= intval($up_dias_pago_mensual)-10)
-                                        {
-                                            $new_fecha = $anio."-".strval(intval($mes))."-".$up_dias_pago_mensual;
-                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                        }
-                                        else
-                                        {
-                                            if(intval($mes) == 12)
-                                            {
-                                                $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_mensual;
-                                                $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                            }
-                                            else
-                                            {
-                                                $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_mensual;
-                                                $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                            }
-                                        }
+                                            <td>1</td>
+                                            <td>".date("d/m/Y", strtotime($up_fecha))."</td>
+                                            <td>"."$".number_format($up_enganche,0,'.',',')."</td>
+                                            <td>"."$".number_format($up_descuento,0,'.',',')."</td>
+                                            <td>$0</td>
+                                            <td>"."$".number_format($new_total,0,'.',',')."</td>
+                                        </tr>";
+
+                                    $no_pagos_int = ceil($up_no_pagos);
+                                    //$up_total_general
+                                $new_pago_parcial = $up_pago_parcial;
+                                $new_fecha = $up_per_dia_pago;
+                                for ($i=1; $i < $no_pagos_int; $i++) 
+                                { 
+                                    if($new_pago_parcial > $new_total)
+                                    {   
+                                        $new_pago_parcial = $new_total;
                                     }
-                                    else if($up_modalidad == "quincenal")
+                                    $new_total = $new_total - $new_pago_parcial;
+                                    $ultimo_pago_liquidacion = $new_pago_parcial;
+                                    $fecha_liquidacion_ideal = $new_fecha;
+                                    if($new_pago_parcial != 0)
                                     {
-                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 2 weeks'));
-                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
-                                        if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
+                                        $tabla_credito_ideal = $tabla_credito_ideal."<tr>
+                                            <td>".($i+1)."</td>
+                                            <td>".date("d/m/Y", strtotime($new_fecha))."</td>
+                                            <td>"."$".number_format($new_pago_parcial,0,'.',',')."</td>
+                                            <td>"."$".number_format(0,0,'.',',')."</td>
+                                            <td>$0</td>
+                                            <td>"."$".number_format($new_total,0,'.',',')."</td>
+                                        </tr>";
+                                        $fechas_ideales[$f] = $new_fecha;
+                                        $f = $f + 1;
+                                        if($up_modalidad == "mensual")
                                         {
-                                            if(intval($mes) == 12)
+                                            //up_dias_pago_mensual
+                                            //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 month'));
+                                            list($anio, $mes, $dia) = explode("-", $new_fecha);
+                                            if(intval($dia) <= intval($up_dias_pago_mensual)-10)
                                             {
-                                                $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_quincenal;
+                                                $new_fecha = $anio."-".strval(intval($mes))."-".$up_dias_pago_mensual;
                                                 $new_fecha = date("Y-m-d", strtotime($new_fecha));
                                             }
                                             else
+                                            {
+                                                if(intval($mes) == 12)
+                                                {
+                                                    $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_mensual;
+                                                    $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                                }
+                                                else
+                                                {
+                                                    $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_mensual;
+                                                    $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                                }
+                                            }
+                                        }
+                                        else if($up_modalidad == "quincenal")
+                                        {
+                                            //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 2 weeks'));
+                                            list($anio, $mes, $dia) = explode("-", $new_fecha);
+                                            if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
+                                            {
+                                                if(intval($mes) == 12)
+                                                {
+                                                    $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_quincenal;
+                                                    $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                                }
+                                                else
+                                                {
+                                                    $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_quincenal;
+                                                    $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if(intval($mes) == 12)
+                                                {
+                                                    $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_quincenal;
+                                                    $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                                }
+                                                else
+                                                {
+                                                    $new_fecha = $anio."-".$mes."-".$up_dias_pago_quincenal_2;
+                                                    $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                                }
+                                            }
+                                            /* old code
+                                            //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 2 weeks'));
+                                            list($anio, $mes, $dia) = explode("-", $new_fecha);
+                                            if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
                                             {
                                                 $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_quincenal;
                                                 $new_fecha = date("Y-m-d", strtotime($new_fecha));
                                             }
-                                        }
-                                        else
-                                        {
-                                            if(intval($mes) == 12)
-                                            {
-                                                $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_quincenal;
-                                                $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                            }
                                             else
                                             {
-                                                $new_fecha = $anio."-".$mes."-".$up_dias_pago_quincenal_2;
+                                                $new_fecha = $anio."-".strval(intval($mes))."-".$up_dias_pago_quincenal_2;
                                                 $new_fecha = date("Y-m-d", strtotime($new_fecha));
                                             }
+                                            */
                                         }
-                                        /* old code
-                                        //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 2 weeks'));
-                                        list($anio, $mes, $dia) = explode("-", $new_fecha);
-                                        if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
+                                        else if($up_modalidad == "semanal")
                                         {
-                                            $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_quincenal;
-                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 week'));
                                         }
-                                        else
-                                        {
-                                            $new_fecha = $anio."-".strval(intval($mes))."-".$up_dias_pago_quincenal_2;
-                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                        }
-                                        */
-                                    }
-                                    else if($up_modalidad == "semanal")
-                                    {
-                                        $new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 1 week'));
                                     }
                                 }
-                            }
+                                ///////////////////////////////////////
+                                //Fin calcular fechas ideales
+
+                        //checar si ya se creo y almaceno las fechas ideales, sino, crearlas y guardarlas, sisí, recupararlas de la bd
+                        $query_select_fi = mysqli_query($conexion, "SELECT fecha_ideal from salida where idsalida = '$id_salida'");
+                        $fechas_ideales_recalled = mysqli_fetch_assoc($query_select_fi)['fecha_ideal'];
+
+                        if(is_null($fechas_ideales_recalled))
+                        {
+                                //GUARDAR el array de fechas ideales
+                                $fechasIdeales = serialize($fechas_ideales);
+                                $query_act_sal = mysqli_query($conexion, "UPDATE salida set fecha_ideal = '$fechasIdeales' where idsalida = '$id_salida'");
+                        }
 
                             //esto es para lo del nivel, calculamos con lo ya calculado
                             //calculamos su nivel con la regla
@@ -1812,6 +2010,8 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                             }
 
                             //insertar en la bd, actualizar la tabla salida
+                            $query_act_sal = mysqli_query($conexion, "UPDATE salida set nivel_salida = '$nivel_actual_salida' where idsalida = '$id_salida'");
+
 
                             //imprimir niveles
                             if ($nivel_actual_salida == 0)
@@ -2152,8 +2352,8 @@ function mayusculas(e) {
     e.value = e.value.toUpperCase();
 }
 
-//document.getElementById('divzoom').style.zoom = "100%";
-//document.getElementById('page-top').style.zoom = "80%";
+document.getElementById('divzoom').style.zoom = "80%";
+document.getElementById('page-top').style.zoom = "100%";
 
 </script>
 

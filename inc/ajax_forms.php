@@ -1479,9 +1479,15 @@ if ($_POST['action'] == 'insert_salida_venta')
       //ahora insertamos cada serie de los productos sacados
       if($cantidad[$i] == 1)
       {
+        //recall series reales de los productos salidas, 
+        //$id_salida_serie_origen = $_POST['id_salida_serie_origen_'.($i+1)];
+        $serie_completa = $_POST['serie_completa_'.($i+1)];
+        
+
         $resultIDSalida_origen= mysqli_query($conexion, "SELECT UUID() as idsalida_productos_origen");
         $uuid_salida_origen = mysqli_fetch_assoc($resultIDSalida_origen)['idsalida_productos_origen'];
-        $insert_series = mysqli_query($conexion, "INSERT INTO salida_productos_origen(idsalida_producto_origen, salida_productos, salida, producto, serie_origen) VALUES ('$uuid_salida_origen','$uuid_salida_productos','$uuid_salida','$id_producto[$i]','$origen')");
+
+        $insert_series = mysqli_query($conexion, "INSERT INTO salida_productos_origen(idsalida_producto_origen, salida_productos, salida, producto, serie_origen, serie_completa) VALUES ('$uuid_salida_origen','$uuid_salida_productos','$uuid_salida','$id_producto[$i]','$origen','$serie_completa')");
         if($insert_series) 
         {
           //poner esa serie como vendida
@@ -1496,13 +1502,16 @@ if ($_POST['action'] == 'insert_salida_venta')
       {
         //es mas de uno
         $origen_array = $_POST['origen_multi_'.($i+1)];
+        //recall series reales de los productos salidas, series completas
+        $serie_completa_multi = $_POST['serie_multi_completa_'.($i+1)];
+
         $size_series = $cantidad[$i];
         for ($j=0; $j < $size_series; $j++) 
         { 
           //insertar cada serie
           $resultIDSalida_origen= mysqli_query($conexion, "SELECT UUID() as idsalida_productos_origen");
           $uuid_salida_origen = mysqli_fetch_assoc($resultIDSalida_origen)['idsalida_productos_origen'];
-          $insert_series = mysqli_query($conexion, "INSERT INTO salida_productos_origen(idsalida_producto_origen, salida_productos, salida, producto, serie_origen) VALUES ('$uuid_salida_origen','$uuid_salida_productos','$uuid_salida','$id_producto[$i]','$origen_array[$j]')");
+          $insert_series = mysqli_query($conexion, "INSERT INTO salida_productos_origen(idsalida_producto_origen, salida_productos, salida, producto, serie_origen, serie_completa) VALUES ('$uuid_salida_origen','$uuid_salida_productos','$uuid_salida','$id_producto[$i]','$origen_array[$j]','$serie_completa_multi[$j]')");
           if($insert_series)
           {
             //poner esa serie como vendida
@@ -1513,6 +1522,7 @@ if ($_POST['action'] == 'insert_salida_venta')
             $flag_control = 0;
           }
         }
+        
       }
       if($flag_control or $insert_salida)
       {

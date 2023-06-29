@@ -80,7 +80,7 @@ include "accion/conexion.php";
         </thead>
         <tbody>
             <?php
-            $query = mysqli_query($conexion, "SELECT salida.idsalida,salida.fecha_salida, salida.folio_venta, venta_tipo.nombre_venta, salida.modalidad_pago, salida.dias_pago_semanal, salida.dias_pago_quincenal, salida.dias_pago_quincenal_2, salida.dias_pago_mensual, salida.total_general, salida.activo, salida.nivel_salida, usuario.usuario_acceso from salida INNER JOIN venta_tipo on venta_tipo.idtipo_venta = salida.tipo_venta INNER JOIN usuario on usuario.idusuario = salida.vendedor");
+            $query = mysqli_query($conexion, "SELECT salida.idsalida,salida.fecha_salida, salida.folio_venta, venta_tipo.nombre_venta, salida.modalidad_pago, salida.dias_pago_semanal, salida.dias_pago_quincenal, salida.dias_pago_quincenal_2, salida.dias_pago_mensual, salida.total_general, salida.activo, salida.nivel_salida, usuario.usuario_acceso, salida.enganche, salida.pago_parcial from salida INNER JOIN venta_tipo on venta_tipo.idtipo_venta = salida.tipo_venta INNER JOIN usuario on usuario.idusuario = salida.vendedor");
             $result = mysqli_num_rows($query);
             if ($result > 0) 
             {
@@ -101,29 +101,110 @@ include "accion/conexion.php";
                         $dias_de_pago = "Cada <strong>".$data['dias_pago_mensual']."</strong>";
                     }
 
+                    //ESTO ES PARA CALCULAR EL NIVEL DE SALIDAA
+                    //y no tener que estar entrando para que se calcula el nivel
+                    $id_salida = $data['idsalida'];
+                    $query_select_fi = mysqli_query($conexion, "SELECT fecha_ideal from salida where idsalida = '$id_salida'");
+                    $fechas_ideales_recalled = mysqli_fetch_assoc($query_select_fi)['fecha_ideal'];
+
+                    $nivel_actual_salida = 0;
+                    $up_enganche = $data['enganche'];
+                    $up_pago_parcial = $data['pago_parcial'];
+                    $up_total_general = $data['total_general'];
+                    $up_modalidad = $data['modalidad_pago'];
+
+                    //print($fechas_ideales_recalled);
+                    if($fechas_ideales_recalled != null)
+                    {
+                        $fechas_ideales = unserialize($fechas_ideales_recalled);
+                        //calculamos su nivel con la regla
+                            $query_nivel_sal = mysqli_query($conexion, "SELECT saldo_al_momento FROM movimiento WHERE salida = '$id_salida' order by creado_en DESC LIMIT 1");
+                            $debe_al_momento = floatval(mysqli_fetch_assoc($query_nivel_sal)['saldo_al_momento']);
+                            $hoy = date("Y-m-d");
+                            //$hoy = date('2023-03-20');
+
+                            $j = 1;
+                            $size_fechas = sizeof($fechas_ideales);
+                            $total_ideal = $up_enganche;
+                            while ($hoy > $fechas_ideales[$j]) 
+                            {
+                                $total_ideal = $total_ideal + $up_pago_parcial;
+
+                                if($j+1 >= $size_fechas)
+                                {
+                                    break;
+                                }
+                                $j = $j + 1;
+                            }
+
+                            $total_pagado = $up_total_general - $debe_al_momento;
+                            $diff_totalPagado_ideal = $total_ideal - $total_pagado;
+                            if($up_modalidad == "mensual")
+                            {
+                                $dias_atraso_aux = round(($diff_totalPagado_ideal*30)/$up_pago_parcial, 2);
+                                $periodo_atraso = round($dias_atraso_aux/30,2);
+                            }
+                            else if($up_modalidad == "quincenal")
+                            {
+                                $dias_atraso_aux = round(($diff_totalPagado_ideal*15)/$up_pago_parcial, 2);
+                                $periodo_atraso = round($dias_atraso_aux/15,2);
+                            }
+                            else if($up_modalidad == "semanal")
+                            {
+                                $dias_atraso_aux = round(($diff_totalPagado_ideal*7)/$up_pago_parcial, 2);
+                                $periodo_atraso = round($dias_atraso_aux/7,2);
+                            }
+
+                            if($dias_atraso_aux <= 0)
+                            {
+                                $nivel_actual_salida = 5;
+                            }
+                            else if($dias_atraso_aux < 15)
+                            {
+                                $nivel_actual_salida = 4;
+                            }
+                            else if($dias_atraso_aux < 30)
+                            {
+                                $nivel_actual_salida = 3;
+                            }
+                            else if($dias_atraso_aux < 60)
+                            {
+                                $nivel_actual_salida = 2;
+                            }
+                            else if($dias_atraso_aux >= 60)
+                            {
+                                $nivel_actual_salida = 1;
+                            }
+
+                            //insertar en la bd, actualizar la tabla salida
+                            $query_act_sal = mysqli_query($conexion, "UPDATE salida set nivel_salida = '$nivel_actual_salida' where idsalida = '$id_salida'");
+                    }
+
+                    //FIN CALCULAR NIVEL DE SALIDA
+                    //echo $nivel_actual_salida;
                     //nivel de la venta
                     $nivel_salida = "";
-                    if ($data['nivel_salida'] == 0)
+                    if ($nivel_actual_salida == 0)
                             {
                                 $nivel_salida = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-secondary">'.$data['nivel_salida'].'</span></h5></div>';
                             }
-                            if ($data['nivel_salida'] == 1)
+                            if ($nivel_actual_salida == 1)
                             {
                                 $nivel_salida = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-dark" style="background-color: #FF7A33;">'.$data['nivel_salida'].'</span></h5></div>';
                             }
-                            if ($data['nivel_salida'] == 2)
+                            if ($nivel_actual_salida == 2)
                             {
                                 $nivel_salida = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-warning">'.$data['nivel_salida'].'</span></h5></div>';
                             }
-                            if ($data['nivel_salida'] == 3)
+                            if ($nivel_actual_salida == 3)
                             {
                                 $nivel_salida = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-success">'.$data['nivel_salida'].'</span></h5></div>';
                             }
-                            if ($data['nivel_salida'] == 4)
+                            if ($nivel_actual_salida == 4)
                             {
                                 $nivel_salida = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-info">'.$data['nivel_salida'].'</span></h5></div>';
                             }
-                            if ($data['nivel_salida'] == 5)
+                            if ($nivel_actual_salida == 5)
                             {
                                 $nivel_salida = '<div style="text-align:center;"><h5><span class="badge badge-pill badge-primary">'.$data['nivel_salida'].'</span></h5></div>';
                             }
