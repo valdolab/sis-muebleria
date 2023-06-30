@@ -92,25 +92,18 @@ function actualizar_fechas($f, $size_fechas, $fechas_ideales, $up_dias_pago_mens
                                     {
                                         //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 2 weeks'));
                                         list($anio, $mes, $dia) = explode("-", $new_fecha);
-                                        if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
+                                        if(intval($mes) == 12 and inval($dia) > $up_dias_pago_quincenal_2-10)
                                         {
-                                            if(intval($mes) == 12)
-                                            {
-                                                $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_quincenal;
-                                                $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                            }
-                                            else
-                                            {
-                                                $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_quincenal;
-                                                $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                            }
+                                            $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_quincenal;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
                                         }
                                         else
                                         {
-                                            if(intval($mes) == 12)
+                                            if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
                                             {
-                                                $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_quincenal;
+                                                $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_quincenal;
                                                 $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                                
                                             }
                                             else
                                             {
@@ -168,25 +161,19 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                                     {
                                         //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 2 weeks'));
                                         list($anio, $mes, $dia) = explode("-", $new_fecha);
-                                        if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
+
+                                        if(intval($mes) == 12 and intval($dia) > $up_dias_pago_quincenal_2-10)
                                         {
-                                            if(intval($mes) == 12)
-                                            {
-                                                $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_quincenal;
-                                                $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                            }
-                                            else
-                                            {
-                                                $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_quincenal;
-                                                $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                            }
+                                            $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_quincenal;
+                                            $new_fecha = date("Y-m-d", strtotime($new_fecha));
                                         }
                                         else
                                         {
-                                            if(intval($mes) == 12)
+                                            if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
                                             {
-                                                $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_quincenal;
+                                                $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_quincenal;
                                                 $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                                
                                             }
                                             else
                                             {
@@ -1887,25 +1874,18 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                                         {
                                             //$new_fecha = date("Y-m-d", strtotime($new_fecha. ' + 2 weeks'));
                                             list($anio, $mes, $dia) = explode("-", $new_fecha);
-                                            if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
+                                            if(intval($mes) == 12 and intval($dia) > $up_dias_pago_quincenal_2-10)
                                             {
-                                                if(intval($mes) == 12)
-                                                {
-                                                    $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_quincenal;
-                                                    $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                                }
-                                                else
-                                                {
-                                                    $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_quincenal;
-                                                    $new_fecha = date("Y-m-d", strtotime($new_fecha));
-                                                }
+                                                $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_quincenal;
+                                                $new_fecha = date("Y-m-d", strtotime($new_fecha));
                                             }
                                             else
                                             {
-                                                if(intval($mes) == 12)
+                                                if($dia <= intval($up_dias_pago_quincenal)-10 or $dia >= intval($up_dias_pago_quincenal_2)-10)
                                                 {
-                                                    $new_fecha = strval(intval($anio)+1)."-01-".$up_dias_pago_quincenal;
+                                                    $new_fecha = $anio."-".strval(intval($mes)+1)."-".$up_dias_pago_quincenal;
                                                     $new_fecha = date("Y-m-d", strtotime($new_fecha));
+                                                    
                                                 }
                                                 else
                                                 {
