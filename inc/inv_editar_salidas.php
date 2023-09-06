@@ -2232,11 +2232,11 @@ function actualizar_fechas_inicial($fechas_ideales, $up_dias_pago_mensual, $up_d
                                         //echo "<br>";
                                         //hay que guardar los vacios en la bd
 
+                                        $fecha_aux = date("Y-m-d", strtotime($fechas_ideales[$f+1]. ' - 1 day'));
+                                        $resultIDmovimiento= mysqli_query($conexion, "SELECT UUID() as idmovimiento");
+                                        $uuid_movimiento = mysqli_fetch_assoc($resultIDmovimiento)['idmovimiento'];
                                         if($up_activo)
                                         {
-                                            $fecha_aux = date("Y-m-d", strtotime($fechas_ideales[$f+1]. ' - 1 day'));
-                                            $resultIDmovimiento= mysqli_query($conexion, "SELECT UUID() as idmovimiento");
-                                            $uuid_movimiento = mysqli_fetch_assoc($resultIDmovimiento)['idmovimiento'];
                                             $insert_mov = mysqli_query($conexion,"INSERT INTO movimiento(idmovimiento, salida, fecha, abono, descuento, recargo, saldo_al_momento) VALUES ('$uuid_movimiento','$id_salida', '$fecha_aux','0','0','0','$saldo_al_momento_vacio')");
                                         }
 
